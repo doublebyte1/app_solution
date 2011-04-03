@@ -613,95 +613,119 @@ bool ModelInterface::rollback(const bool bSubmitted)
         tRefFrame->submitAll(): revertAll());
 }
 
+bool ModelInterface::readOneGLS(const int inRow, const int outRow, const QModelIndex& parent, const bool bBin, QModelIndex& cIndex)
+{
+    treeModel->insertRow(outRow,parent);
+
+    if (!mapData(inRow,outRow,1,0,parent,tRefGLS))
+        return false;//Name
+
+    if (!mapData(inRow,outRow,3,1,parent,tRefGLS))
+        return false;//Description
+
+    if (!mapData(inRow,outRow,4,3,parent,tRefGLS))
+        return false;//Comments
+
+    if (!mapData(inRow,outRow,0,4,parent,tRefGLS))
+        return false;//ID
+
+    QModelIndex gls = treeModel->index(outRow, 2, parent);
+    treeModel->setData(gls, QVariant(TreeModel::GLS));//level
+
+    gls = treeModel->index(outRow, 6, parent);
+    treeModel->setData(gls, -1);//origin
+
+    gls = treeModel->index(outRow, 7, parent);
+    bBin?treeModel->setData(gls, tr(":/app_new/glsd.png"))
+        :treeModel->setData(gls, tr(":/app_new/gls.png"));//symb
+
+    cIndex=treeModel->index(outRow, 0, parent);
+    return (cIndex.isValid());
+}
+
 bool ModelInterface::readRefGLS(const QModelIndex& index, const bool bBin)
 {
     for (int i=0; i < tRefGLS->rowCount(); ++i)
     {
-        treeModel->insertRow(i,index);
-
-        if (!mapData(i,1,0,index,tRefGLS))
-            return false;//Name
-
-        if (!mapData(i,3,1,index,tRefGLS))
-            return false;//Description
-
-        if (!mapData(i,4,3,index,tRefGLS))
-            return false;//Comments
-
-        if (!mapData(i,0,4,index,tRefGLS))
-            return false;//ID
-
-        QModelIndex gls = treeModel->index(i, 2, index);
-        treeModel->setData(gls, QVariant(TreeModel::GLS));//level
-
-        gls = treeModel->index(i, 6, index);
-        treeModel->setData(gls, -1);//origin
-
-        gls = treeModel->index(i, 7, index);
-        bBin?treeModel->setData(gls, tr(":/app_new/glsd.png"))
-            :treeModel->setData(gls, tr(":/app_new/gls.png"));//symb
-
+        QModelIndex idx;
+        if (!readOneGLS(i,i,index,bBin,idx)) return false;
     }
 
     return true;
 }
 
-bool ModelInterface::readRefLS(const QModelIndex& bin)
+bool ModelInterface::readOneLS(const int inRow, const int outRow, const QModelIndex& parent, const bool bBin, QModelIndex& cIndex)
+{
+    treeModel->insertRow(outRow,parent);
+
+    if (!mapData(inRow,outRow,4,0,parent,tRefLS))
+        return false;//Name
+
+    if (!mapData(inRow,outRow,6,1,parent,tRefLS))
+        return false;//Description
+
+    if (!mapData(inRow,outRow,7,3,parent,tRefLS))
+        return false;//Comments
+
+    if (!mapData(inRow,outRow,0,4,parent,tRefLS))
+        return false;//ID
+
+    QModelIndex ls = treeModel->index(outRow, 2, parent);
+    treeModel->setData(ls, QVariant(TreeModel::LS));//level
+
+    ls = treeModel->index(outRow, 6, parent);
+    treeModel->setData(ls, -1);//origin
+
+    ls = treeModel->index(outRow, 7, parent);
+    treeModel->setData(ls, bBin?tr(":/app_new/lsd.png"):
+        tr(":/app_new/ls.png"));//symb
+
+    cIndex=treeModel->index(outRow, 0, parent);
+
+    return (cIndex.isValid());
+}
+bool ModelInterface::readRefLS(const QModelIndex& parent,const bool bBin)
 {
     for (int i=0; i < tRefLS->rowCount(); ++i)
     {
-        treeModel->insertRow(i,bin);
-
-        if (!mapData(i,4,0,bin,tRefLS))
-            return false;//Name
-
-        if (!mapData(i,6,1,bin,tRefLS))
-            return false;//Description
-
-        if (!mapData(i,7,3,bin,tRefLS))
-            return false;//Comments
-
-        if (!mapData(i,0,4,bin,tRefLS))
-            return false;//ID
-
-        QModelIndex ls = treeModel->index(i, 2, bin);
-        treeModel->setData(ls, QVariant(TreeModel::LS));//level
-
-        ls = treeModel->index(i, 6, bin);
-        treeModel->setData(ls, -1);//origin
-
-        ls = treeModel->index(i, 7, bin);
-        treeModel->setData(ls, tr(":/app_new/lsd.png"));//symb
-
+        QModelIndex idx;
+        if (!readOneLS(i,i,parent,bBin,idx)) return false;
     }
 
     return true;
 }
 
-bool ModelInterface::readRefVS(const QModelIndex& bin)
+bool ModelInterface::readOneVS(const int inRow, const int outRow, const bool bBin, const QModelIndex& parent)
+{
+    treeModel->insertRow(outRow,parent);
+
+    if (!mapData(inRow,outRow,10,0,parent,tRefVessels))
+        return false;//Name
+
+    if (!mapData(inRow,outRow,7,3,parent,tRefVessels))
+        return false;//Comments
+
+    if (!mapData(inRow,outRow,0,4,parent,tRefVessels))
+        return false;//VesselID
+
+    QModelIndex vs = treeModel->index(outRow, 2, parent);
+    treeModel->setData(vs, QVariant(TreeModel::VS));//level
+
+    vs = treeModel->index(outRow, 6, parent);
+    treeModel->setData(vs, -1);//origin
+
+    vs = treeModel->index(outRow, 7, parent);
+    treeModel->setData(vs, bBin?tr(":/app_new/vesseld.png"):
+        tr(":/app_new/vessel.png"));//symb
+
+    return true;
+}
+
+bool ModelInterface::readRefVS(const QModelIndex& parent, const bool bBin)
 {
     for (int i=0; i < tRefVessels->rowCount(); ++i)
     {
-        treeModel->insertRow(i,bin);
-
-        if (!mapData(i,10,0,bin,tRefVessels))
-            return false;//Name
-
-        if (!mapData(i,7,3,bin,tRefVessels))
-            return false;//Comments
-
-        if (!mapData(i,0,4,bin,tRefVessels))
-            return false;//VesselID
-
-        QModelIndex vs = treeModel->index(i, 2, bin);
-        treeModel->setData(vs, QVariant(TreeModel::VS));//level
-
-        vs = treeModel->index(i, 6, bin);
-        treeModel->setData(vs, -1);//origin
-
-        vs = treeModel->index(i, 7, bin);
-        treeModel->setData(vs, tr(":/app_new/vesseld.png"));//symb
-
+        if (!readOneVS(i,i,bBin,parent)) return false;
     }
 
     return true;
@@ -722,9 +746,9 @@ bool ModelInterface::readModel(const int frameId)
     for (int i=0; i < tSubFrame->rowCount(); ++i)
     {
         if (tSubFrame->index(i,1).data()==1){
-            if (!readRoot(tSubFrame->index(i,0).data().toInt(),root)) return false;
+            if (!readRoot(tSubFrame->index(i,0).data().toInt(),root,false)) return false;
         }else{
-            if (!readBin(tSubFrame->index(i,0).data().toInt())) return false;
+            if (!readBin(tSubFrame->index(i,0).data().toInt(),bin,true)) return false;
         }
     }
 
@@ -732,7 +756,12 @@ bool ModelInterface::readModel(const int frameId)
     return true;
 }
 
-bool ModelInterface::readRoot(const int subFrameId, QModelIndex& root)
+bool ModelInterface::readRoot(const int subFrameId, QModelIndex& root, const bool bBin)
+{
+    return readGenericStructure(subFrameId,root,bBin);
+}
+
+bool ModelInterface::readGenericStructure(const int subFrameId, QModelIndex& root, const bool bBin)
 {
     tLinkFr2GLS->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString());
 
@@ -744,21 +773,100 @@ bool ModelInterface::readRoot(const int subFrameId, QModelIndex& root)
 
         strFilter.append(tr("ID=")+tLinkFr2GLS->index(i,2).data().toString());
     }
-    qDebug() << strFilter << endl;
-    qDebug() << tRefGLS->rowCount() << endl;
     tRefGLS->setFilter(strFilter);
-    qDebug() << tRefGLS->rowCount() << endl;
 
-    if (!readRefGLS(root,false)) return false;
+    //Read GLS
+    for (int i=0; i < tRefGLS->rowCount(); ++i)
+    {
+        QModelIndex gls;
+        if (!readOneGLS(i,i,root,bBin,gls)) return false;
+        QModelIndex idx=tRefGLS->index(i,0);
+        if (!idx.isValid()) return false;
+
+        tLinkGLS2LS->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString() +
+            tr(" AND ") + tr("id_gls=") + idx.data().toString());
+
+        //read LS
+        for (int j=0; j < tLinkGLS2LS->rowCount(); ++j)
+        {
+            tRefLS->setFilter(tr("ID=") + tLinkGLS2LS->index(j,3).data().toString());
+            QModelIndex ls;
+            if (!readOneLS(0,j,gls,bBin,ls)) return false;
+
+            QModelIndex aIdx=tRefLS->index(0,0);
+            if (!aIdx.isValid()) return false;
+
+            tLinkLS2Vessels->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString() +
+                tr(" AND ") + tr("id_abstract_landingsite=") + aIdx.data().toString());
+
+            //read Vessel
+            for (int k=0; k < tLinkLS2Vessels->rowCount(); ++k)
+            {
+                tRefVessels->setFilter(tr("VesselId=") + tLinkLS2Vessels->index(k,3).data().toString());
+                if (!readOneVS(0,k,bBin,ls)) return false;
+            }
+        }
+    }
 
     tRefGLS->setFilter(tr(""));
     tLinkFr2GLS->setFilter(tr(""));
+    tLinkGLS2LS->setFilter(tr(""));
+    tRefLS->setFilter(tr(""));
+    tLinkLS2Vessels->setFilter(tr(""));
+    tRefVessels->setFilter(tr(""));
 
     return true;
 }
 
-bool ModelInterface::readBin(const int subFrameId)
+bool ModelInterface::readBin(const int subFrameId, QModelIndex& bin, const bool bBin)
 {
+    if (!readGenericStructure(subFrameId,bin,true)) return false;
+
+    tLinkGLS2LS->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString());
+
+    //read LS
+    for (int j=0; j < tLinkGLS2LS->rowCount(); ++j)
+    {
+        QModelIndex index=tLinkGLS2LS->index(j,2);
+        if (index.data()==1){//TODO: get this value programatically
+
+            tRefLS->setFilter(tr("ID=") + tLinkGLS2LS->index(j,3).data().toString());
+            QModelIndex ls;
+            if (!readOneLS(0,j,bin,bBin,ls)) return false;
+
+            QModelIndex aIdx=tRefLS->index(0,0);
+            if (!aIdx.isValid()) return false;
+
+            tLinkLS2Vessels->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString() +
+                tr(" AND ") + tr("id_abstract_landingsite=") + aIdx.data().toString());
+
+            //read Vessel
+            for (int k=0; k < tLinkLS2Vessels->rowCount(); ++k)
+            {
+                tRefVessels->setFilter(tr("VesselId=") + tLinkLS2Vessels->index(k,3).data().toString());
+                if (!readOneVS(0,k,bBin,ls)) return false;
+            }
+        }
+    }
+
+    tLinkLS2Vessels->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString());
+
+    //read Vessel
+    for (int k=0; k < tLinkLS2Vessels->rowCount(); ++k)
+    {
+        QModelIndex index=tLinkLS2Vessels->index(k,2);
+        if (index.data()==34){//TODO: get this value programatically
+
+        tRefVessels->setFilter(tr("VesselId=") + tLinkLS2Vessels->index(k,3).data().toString());
+        if (!readOneVS(0,k,bBin,bin)) return false;
+
+        }
+    }
+
+    tLinkGLS2LS->setFilter(tr(""));
+    tRefLS->setFilter(tr(""));
+    tLinkLS2Vessels->setFilter(tr(""));
+    tRefVessels->setFilter(tr(""));
 
     return true;
 }
@@ -809,12 +917,12 @@ bool ModelInterface::createRootElements(QModelIndex& bin, QModelIndex& root)
     return true;
 }
 
-bool ModelInterface::mapData(const int row, const int cIn, const int cOut, const QModelIndex& parent,
+bool ModelInterface::mapData(const int inRow, const int outRow, const int cIn, const int cOut, const QModelIndex& parent,
                               QSqlTableModel* tModel)
 {
-    QModelIndex mIdx = treeModel->index(row, cOut, parent);
+    QModelIndex mIdx = treeModel->index(outRow, cOut, parent);
     if (!mIdx.isValid()) return false;
-    QModelIndex tIdx = tModel->index(row, cIn);
+    QModelIndex tIdx = tModel->index(inRow, cIn);
     if (!tIdx.isValid()) return false;
     treeModel->setData(mIdx, tIdx.data());
 

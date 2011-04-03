@@ -329,7 +329,7 @@ bool FrmFrameDetails::setupItems(const Mode mode, const int frameId)
 {
     switch (mode) {
     case FrmFrameDetails::VIEW:
-        return readModel();
+        return modelInterface->readModel(frameId);
     case FrmFrameDetails::EDIT:
         return modelInterface->readModel(frameId);
     case FrmFrameDetails::CREATE:
