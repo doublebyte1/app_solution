@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmframedetails</class>
+ <widget class="QWidget" name="frmframedetails">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>726</width>
+    <height>591</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Name</string>
+          </property>
+          <property name="buddy">
+           <cstring>lineName</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineName"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Type</string>
+          </property>
+          <property name="buddy">
+           <cstring>cmbType</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cmbType"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Persistence</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbPersistence">
+          <property name="styleSheet">
+           <string notr="true">background:rgb(255, 255, 255)</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="text">
+           <string>TYPE SOMETHING HERE &lt;--</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textDesc">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Comments</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textComments">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QCheckBox" name="checkClone">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Clone from Previous Frame</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Cloned Frame</string>
+          </property>
+          <property name="buddy">
+           <cstring>lineCloned</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineCloned">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Press edit key F2 to edit items</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2"/>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushExpand">
+       <property name="text">
+        <string>Expand All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushCollapse">
+       <property name="text">
+        <string>Collapse All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>37</width>
+         <height>17</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushBack">
+       <property name="toolTip">
+        <string>Go back</string>
+       </property>
+       <property name="statusTip">
+        <string>Go back to previous form</string>
+       </property>
+       <property name="whatsThis">
+        <string>Goes back to previous form</string>
+       </property>
+       <property name="text">
+        <string>Back</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushVerify">
+       <property name="toolTip">
+        <string>Verify changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Verify</string>
+       </property>
+       <property name="whatsThis">
+        <string>Verifies changes</string>
+       </property>
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushApply">
+       <property name="toolTip">
+        <string>Apply changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Apply</string>
+       </property>
+       <property name="whatsThis">
+        <string>Applies changes</string>
+       </property>
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushUndo">
+       <property name="toolTip">
+        <string>Undo applying changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Undo</string>
+       </property>
+       <property name="whatsThis">
+        <string>Undo changes</string>
+       </property>
+       <property name="text">
+        <string>Undo Apply</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>lineName</tabstop>
+  <tabstop>cmbType</tabstop>
+  <tabstop>textDesc</tabstop>
+  <tabstop>checkClone</tabstop>
+  <tabstop>lineCloned</tabstop>
+  <tabstop>pushExpand</tabstop>
+  <tabstop>pushCollapse</tabstop>
+  <tabstop>pushBack</tabstop>
+ </tabstops>
+ <resources>
+  <include location="app_new.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushApply</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>678</x>
+     <y>569</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineCloned</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>isClonedFromPreviousFrame(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>593</x>
+     <y>253</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushBack</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>back()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>436</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushUndo</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>undo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>673</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushVerify</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>verify()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>435</x>
+     <y>569</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cancel()</slot>
+  <slot>apply()</slot>
+  <slot>isClonedFromPreviousFrame(QString)</slot>
+  <slot>back()</slot>
+  <slot>undo()</slot>
+  <slot>verify()</slot>
+ </slots>
+</ui>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmframe</class>
+ <widget class="QWidget" name="frmframe">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>747</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupPhysical">
+     <property name="title">
+      <string>Physical Frame</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="radioPreExistent">
+        <property name="text">
+         <string>Choose pre-existent</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cmbPrexistent"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QToolButton" name="toolView">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="radioNew">
+        <property name="text">
+         <string>Create New</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QGroupBox" name="groupNew">
+        <property name="title">
+         <string/>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radioCreate">
+           <property name="text">
+            <string>Create from Scratch</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>200</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="radioCopy">
+           <property name="text">
+            <string>Copy from pre-existent</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="cmbCopy"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QToolButton" name="toolEdit">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupTime">
+     <property name="title">
+      <string>Time Frame</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Start Date</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>End Date</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer name="horizontalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>542</width>
+       <height>45</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="1">
+    <widget class="QGroupBox" name="groupBackNext">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pushPrevious">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Previous</string>
+        </property>
+        <property name="icon">
+         <iconset resource="app_new.qrc">
+          <normaloff>:/app_new/back.png</normaloff>:/app_new/back.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pushNext">
+        <property name="text">
+         <string>Next</string>
+        </property>
+        <property name="icon">
+         <iconset resource="app_new.qrc">
+          <normaloff>:/app_new/forward.png</normaloff>:/app_new/forward.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>radioPreExistent</tabstop>
+  <tabstop>cmbPrexistent</tabstop>
+  <tabstop>toolView</tabstop>
+  <tabstop>radioNew</tabstop>
+  <tabstop>radioCreate</tabstop>
+  <tabstop>radioCopy</tabstop>
+  <tabstop>cmbCopy</tabstop>
+  <tabstop>toolEdit</tabstop>
+  <tabstop>pushPrevious</tabstop>
+  <tabstop>pushNext</tabstop>
+ </tabstops>
+ <resources>
+  <include location="app_new.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>radioPreExistent</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframe</receiver>
+   <slot>onChoosePreExistent()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>373</x>
+     <y>259</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioNew</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframe</receiver>
+   <slot>onCreateNew()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>373</x>
+     <y>259</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onChoosePreExistent()</slot>
+  <slot>onCreateNew()</slot>
+ </slots>
+</ui>
