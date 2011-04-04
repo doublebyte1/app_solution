@@ -57,8 +57,13 @@ void FrmFrame::onCreateNew()
 
 void FrmFrame::onHideFrameDetails()
 {
+    int copyIndex=cmbCopy->currentIndex();
+    int exIndex=cmbPrexistent->currentIndex();
+
     tRefFrame->relationModel(0)->select();
-    //tRefFrame2->relationModel(0)->select();
+
+    cmbCopy->setCurrentIndex(copyIndex);
+    cmbPrexistent->setCurrentIndex(exIndex);
 }
 
 void FrmFrame::onShowFrameDetails()

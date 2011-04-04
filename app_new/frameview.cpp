@@ -182,25 +182,53 @@ void FrameView::dragEnterEvent ( QDragEnterEvent * event )
 
 void FrameView::dragMoveEvent(QDragMoveEvent * event )
 {
-    /*
-    const TreeMimeData * mimeData=
-            qobject_cast<const TreeMimeData *>(event->mimeData());
+    QModelIndex index;
+    int col = -1;
+    int row = -1;
+    if (dropOn(event, &row, &col, &index)) {
 
-    if (mimeData==0) return;
+        TreeItem *pItem = static_cast<TreeItem*>
+            (index.internalPointer());
 
-    QModelIndex move_to = indexAt(event->pos());
+        if (pItem!=0){
 
-            d->dropIndicatorRect = QRect();
-            d->dropIndicatorPosition = OnViewport;
-            if (d->isIndexDropEnabled(rootIndex()))
-                event->accept(); // allow dropping in empty areas
-/*
-    foreach (QModelIndex index, mimeData->treeItemDefs()->itemIndexes) {
-    {
+            if (event->mimeData()->hasFormat(tr("application/tree"))!=0){
 
+                const TreeMimeData * mimeData=
+                        qobject_cast<const TreeMimeData *>(event->mimeData());
+
+                if (mimeData!=0){
+
+                    //Get the droplevel and parent name
+                    int dropLevel=pItem->data(2).toInt();
+                    QString strParentName=pItem->data(0).toString();
+
+                    QList<ComplexItem>::const_iterator i;
+                    for (i = mimeData->itemList()->begin(); i != mimeData->itemList()->end(); ++i){
+
+                        foreach (QPersistentModelIndex pIdx, (*i).m_indexList) {
+
+                            if (pIdx.column()==2){
+
+                                int dragLevel=pIdx.data().toInt();
+                                if (dropLevel!=dragLevel-1 &&
+                                    strParentName.compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)!=0
+                                    ){
+                                    event->ignore();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    return QTreeView::dragMoveEvent(event);
+                }
+            }
+        }
     }
-*/
-    return QTreeView::dragMoveEvent(event);
+
+    event->ignore();
+
+
 }
 
 QAbstractItemView::DropIndicatorPosition

@@ -34,32 +34,32 @@ bool DragDropModel::insertComplexItem(const ComplexItem& cItem, const QModelInde
 bool DragDropModel::dropMimeData(const QMimeData *data,
     Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
-    if (action == Qt::IgnoreAction)
-        return true;
+    qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
-    if (!data->hasFormat(tr("application/tree")))
+    if (action == Qt::IgnoreAction){
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        return true;
+    }
+
+    if (!data->hasFormat(tr("application/tree"))){
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         return false;
+    }
 
     const TreeMimeData * mimeData=
             qobject_cast<const TreeMimeData *>(data);
 
-    if (mimeData==0) return false;
-
-    /*
-    int beginRow;
-
-    if (row != -1)
-        beginRow = row;
-    else if (parent.isValid())
-        beginRow = 0;
-    else
-        beginRow = rowCount(QModelIndex());
-*/
+    if (mimeData==0){
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        return false;
+    }
 
     QList<ComplexItem>::const_iterator i;
      for (i = mimeData->itemList()->begin(); i != mimeData->itemList()->end(); ++i){
          insertComplexItem(*i,parent);
      }
+
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 
     return true;
 }

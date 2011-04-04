@@ -765,6 +765,8 @@ bool ModelInterface::readGenericStructure(const int subFrameId, QModelIndex& roo
 {
     tLinkFr2GLS->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString());
 
+    if (tLinkFr2GLS->rowCount()<1) return true;//there is nothing on the bin/root
+
     QString strFilter;
     for (int i=0; i < tLinkFr2GLS->rowCount();++i)
     {

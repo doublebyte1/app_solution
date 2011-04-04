@@ -21,19 +21,6 @@ QWidget(parent, flags){
     setupUi(this);
 
     initTree();
-/*
-    textDesc->setMaximumSize(256,100);
-    textComments->setMaximumSize(256,100);
-    horizontalLayout_3->setSizeConstraint(QLayout::SetMaximumSize);
-
-    qDebug() << horizontalLayout_3->sizeConstraint() << endl;
-    qDebug() << horizontalLayout_3->sizeHint() << endl;
-    qDebug() << horizontalLayout_3->spacing() << endl;
-
-    qDebug() << textComments->sizeHint() << endl;
-    qDebug() << textComments->sizePolicy() << endl;
-*/
-    //initMapper();
 }
 
 FrmFrameDetails::~FrmFrameDetails()
@@ -149,6 +136,8 @@ void FrmFrameDetails::back()
 
 void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, const int frameId)
 {
+    qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+
     m_mode=mode;
     m_persistence=persistence;
     m_verified=false;
@@ -172,9 +161,13 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     textComments->clear();
     textDesc->clear();
 
-    if (!initModel(mode,frameId)) emit showError(tr("Could not create frame view!"));
+    if (!initModel(mode,frameId)){
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        emit showError(tr("Could not create frame view!"));
+    }
 
     if (mode==FrmFrameDetails::VIEW){// read-only
+        frame->setToolTip(tr(""));
         groupBox->setEnabled(false);
         treeView->setDragEnabled(false);
         treeView->setSelectionMode(
@@ -192,7 +185,10 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
         mapper->toLast();
 
     }else{
+        frame->setToolTip(tr("Press edit key F2 to edit items"));
+
         if (!modelInterface->insertNewRecord(modelInterface->tRefFrame)){
+            qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
             QString strErrors;
             if (modelInterface->getErrors(strErrors))
                 emit showError(strErrors);
@@ -209,6 +205,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                               tr("WHERE     (dbo.FR_Frame.ID = ?)"));
                 query.addBindValue(frameId);
                 if (!query.exec() || query.numRowsAffected()<1){
+                    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                     if (query.lastError().type()!=QSqlError::NoError)
                         emit showError(query.lastError().text());
                     else
@@ -223,6 +220,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                               tr("WHERE     (dbo.FR_Frame.ID = ?)"));
                 query.addBindValue(frameId);
                 if (!query.exec() || query.numRowsAffected()<1){
+                    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                     if (query.lastError().type()!=QSqlError::NoError)
                         emit showError(query.lastError().text());
                     else
@@ -252,6 +250,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
 
     }
 
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
 void FrmFrameDetails::initTree()
@@ -491,8 +490,8 @@ void NullRelationalDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
     }else{
 
         if (index.column()==3 || index.column()==6){//textEdits
-            model->setData(index, editor->property("toPlainText") == tr("") ?
-            QVariant() :
+            model->setData(index, editor->property("plainText") == tr("") ?
+                QVariant() :
             editor->property("plainText"));
         }else {
             model->setData(index, editor->property("text") == tr("") ?
