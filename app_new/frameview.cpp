@@ -182,10 +182,14 @@ void FrameView::dragEnterEvent ( QDragEnterEvent * event )
 
 void FrameView::dragMoveEvent(QDragMoveEvent * event )
 {
+    //return QTreeView::dragMoveEvent(event);
+
     QModelIndex index;
     int col = -1;
     int row = -1;
     if (dropOn(event, &row, &col, &index)) {
+
+        if (!index.isValid()) return QTreeView::dragMoveEvent(event);
 
         TreeItem *pItem = static_cast<TreeItem*>
             (index.internalPointer());
@@ -223,8 +227,8 @@ void FrameView::dragMoveEvent(QDragMoveEvent * event )
                     return QTreeView::dragMoveEvent(event);
                 }
             }
-        }
-    }
+        }else return QTreeView::dragMoveEvent(event);
+    }else return QTreeView::dragMoveEvent(event);
 
     event->ignore();
 
@@ -371,7 +375,7 @@ void FrameView::dropEvent ( QDropEvent * event )
 
                             foreach (QPersistentModelIndex pIdx, (*i).m_indexList) {
 
-                                if (index!=pIdx.parent()){
+                                //if (index!=pIdx.parent()){
                                     if (pIdx.column()==2){
 
                                         int dragLevel=pIdx.data().toInt();
@@ -379,14 +383,16 @@ void FrameView::dropEvent ( QDropEvent * event )
                                         QModelIndex idName=pModel->sourceModel()->index(pIdx.row(),0,pIdx.parent());
 
                                         //check if its dropping on itself!
+                                        /*
                                         TreeItem *curItem = static_cast<TreeItem*>
                                             (idName.internalPointer());
-                                        if (curItem!=0){
+                                        if (curItem!=0){*/
 
                                             if ( (dropLevel==dragLevel-1 || strParentName
                                                 .compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)==0
-                                                ) && curItem!=pItem ){
+                                                ) /*&& curItem!=pItem*/ && index!=pIdx.parent()){
 
+                                                    //Set the origin
                                                     QModelIndex idx=pModel->sourceModel()->index(pIdx.row(),6,pIdx.parent());
                                                     if (idx.data()==-1){
                                                         pModel->sourceModel()->setData(idx,
@@ -398,9 +404,9 @@ void FrameView::dropEvent ( QDropEvent * event )
                                                         bOk=false;
 
                                         }else bOk=false;
-                                    }else bOk=false;
+                                    //}else bOk=false;
                                 }
-                            }else bOk=false;
+                            //}else bOk=false;
 
                         }//foreach
                     }//for
