@@ -211,9 +211,9 @@ void FrameView::dragMoveEvent(QDragMoveEvent * event )
                             if (pIdx.column()==2){
 
                                 int dragLevel=pIdx.data().toInt();
-                                if (dropLevel!=dragLevel-1 &&
+                                if ( (dropLevel!=dragLevel-1 &&
                                     strParentName.compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)!=0
-                                    ){
+                                    ) || index==pIdx.parent()){
                                     event->ignore();
                                     return;
                                 }
@@ -338,7 +338,7 @@ void FrameView::dropEvent ( QDropEvent * event )
       \param QDropEvent a drop event
       \sa dragEnterEvent ( QDragEnterEvent * event )
     */
-    bool bOk=false;
+    bool bOk=true;
     QModelIndex index;
     int col = -1;
     int row = -1;
@@ -371,35 +371,37 @@ void FrameView::dropEvent ( QDropEvent * event )
 
                             foreach (QPersistentModelIndex pIdx, (*i).m_indexList) {
 
-                                if (pIdx.column()==2){
+                                if (index!=pIdx.parent()){
+                                    if (pIdx.column()==2){
 
-                                    int dragLevel=pIdx.data().toInt();
+                                        int dragLevel=pIdx.data().toInt();
 
-                                    QModelIndex idName=pModel->sourceModel()->index(pIdx.row(),0,pIdx.parent());
+                                        QModelIndex idName=pModel->sourceModel()->index(pIdx.row(),0,pIdx.parent());
 
-                                    //check if its dropping on itself!
-                                    TreeItem *curItem = static_cast<TreeItem*>
-                                        (idName.internalPointer());
-                                    if (curItem!=0){
+                                        //check if its dropping on itself!
+                                        TreeItem *curItem = static_cast<TreeItem*>
+                                            (idName.internalPointer());
+                                        if (curItem!=0){
 
-                                        if ( (dropLevel==dragLevel-1 || strParentName
-                                            .compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)==0
-                                            ) && curItem!=pItem ){
+                                            if ( (dropLevel==dragLevel-1 || strParentName
+                                                .compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)==0
+                                                ) && curItem!=pItem ){
 
-                                                QModelIndex idx=pModel->sourceModel()->index(pIdx.row(),6,pIdx.parent());
-                                                if (idx.data()==-1){
-                                                    pModel->sourceModel()->setData(idx,
-                                                        idx.parent().internalId());
-                                                }
+                                                    QModelIndex idx=pModel->sourceModel()->index(pIdx.row(),6,pIdx.parent());
+                                                    if (idx.data()==-1){
+                                                        pModel->sourceModel()->setData(idx,
+                                                            idx.parent().internalId());
+                                                    }
 
-                                                //Flag the symbols
-                                                if (flagBin((*i),pIdx.parent(),bBin))
+                                                    //Flag the symbols
+                                                    if (!flagBin((*i),pIdx.parent(),bBin))
+                                                        bOk=false;
 
-                                                bOk=true;
-
+                                        }else bOk=false;
                                     }else bOk=false;
-                                }else bOk=false;
-                            }
+                                }
+                            }else bOk=false;
+
                         }//foreach
                     }//for
                 }else bOk=false;//pModel
