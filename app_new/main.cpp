@@ -23,12 +23,12 @@ int main(int argc, char *argv[])
     #endif
 
     QApplication a(argc, argv);
-/*
-    QFile qss(QObject::tr(":/app/stylesheet.qss"));
+
+    QFile qss(QObject::tr(":/app_new/stylesheet.qss"));
     qss.open(QFile::ReadOnly);
     a.setStyleSheet(qss.readAll());
     qss.close();
-*/
+
     Login l;
     l.show();
 

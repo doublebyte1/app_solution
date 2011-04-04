@@ -6,6 +6,9 @@ GenericTab(0,parent, flags){
 
     setupUi(this);
 
+    customDtStart->setIsDateTime(true,false);
+    customDtEnd->setIsDateTime(true,false);
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(goForward()));
 

@@ -16,5 +16,6 @@
     <file>vessel.png</file>
     <file>trashcan.png</file>
     <file>exec.png</file>
+    <file>stylesheet.qss</file>
   </qresource>
 </RCC>

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Mon 4. Apr 12:16:31 2011
+** Created: Mon 4. Apr 16:16:40 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -26,6 +26,7 @@
 #include <QtGui/QSpacerItem>
 #include <QtGui/QToolButton>
 #include <QtGui/QWidget>
+#include "customtimectrl.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -50,7 +51,9 @@ public:
     QGroupBox *groupTime;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
+    CustomTimeCtrl *customDtStart;
     QLabel *label_2;
+    CustomTimeCtrl *customDtEnd;
     QSpacerItem *horizontalSpacer_3;
     QGroupBox *groupBackNext;
     QFormLayout *formLayout;
@@ -63,7 +66,7 @@ public:
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
-        frmframe->resize(747, 520);
+        frmframe->resize(770, 520);
         gridLayout_3 = new QGridLayout(frmframe);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         groupPhysical = new QGroupBox(frmframe);
@@ -134,13 +137,30 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         label = new QLabel(groupTime);
         label->setObjectName(QString::fromUtf8("label"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(label);
 
+        customDtStart = new CustomTimeCtrl(groupTime);
+        customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
+
+        horizontalLayout->addWidget(customDtStart);
+
         label_2 = new QLabel(groupTime);
         label_2->setObjectName(QString::fromUtf8("label_2"));
+        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy);
 
         horizontalLayout->addWidget(label_2);
+
+        customDtEnd = new CustomTimeCtrl(groupTime);
+        customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
+
+        horizontalLayout->addWidget(customDtEnd);
 
 
         gridLayout_3->addWidget(groupTime, 2, 0, 1, 2);
@@ -151,11 +171,11 @@ public:
 
         groupBackNext = new QGroupBox(frmframe);
         groupBackNext->setObjectName(QString::fromUtf8("groupBackNext"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
-        groupBackNext->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
+        groupBackNext->setSizePolicy(sizePolicy1);
         formLayout = new QFormLayout(groupBackNext);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         pushPrevious = new QPushButton(groupBackNext);
