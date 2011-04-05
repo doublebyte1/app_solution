@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Mon 4. Apr 16:16:40 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Tue 5. Apr 11:57:21 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -147,6 +147,11 @@ public:
 
         customDtStart = new CustomTimeCtrl(groupTime);
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
+        customDtStart->setSizePolicy(sizePolicy1);
 
         horizontalLayout->addWidget(customDtStart);
 
@@ -159,6 +164,8 @@ public:
 
         customDtEnd = new CustomTimeCtrl(groupTime);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
+        sizePolicy1.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
+        customDtEnd->setSizePolicy(sizePolicy1);
 
         horizontalLayout->addWidget(customDtEnd);
 
@@ -171,11 +178,11 @@ public:
 
         groupBackNext = new QGroupBox(frmframe);
         groupBackNext->setObjectName(QString::fromUtf8("groupBackNext"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
-        groupBackNext->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
+        groupBackNext->setSizePolicy(sizePolicy2);
         formLayout = new QFormLayout(groupBackNext);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         pushPrevious = new QPushButton(groupBackNext);

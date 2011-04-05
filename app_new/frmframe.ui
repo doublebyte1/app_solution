@@ -126,7 +126,14 @@
        </widget>
       </item>
       <item>
-       <widget class="CustomTimeCtrl" name="customDtStart"/>
+       <widget class="CustomTimeCtrl" name="customDtStart">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_2">
@@ -142,7 +149,14 @@
        </widget>
       </item>
       <item>
-       <widget class="CustomTimeCtrl" name="customDtEnd"/>
+       <widget class="CustomTimeCtrl" name="customDtEnd">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

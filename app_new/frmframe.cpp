@@ -6,8 +6,11 @@ GenericTab(0,parent, flags){
 
     setupUi(this);
 
-    customDtStart->setIsDateTime(true,false);
-    customDtEnd->setIsDateTime(true,false);
+    customDtStart->setIsDateTime(true,true);
+    customDtStart->setIsUTC(false);
+    customDtStart->setIsAuto(true);
+
+    customDtEnd->setIsDateTime(true,true);
 
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(goForward()));
@@ -33,12 +36,26 @@ GenericTab(0,parent, flags){
     tRefFrame->select();
     filterTable(tRefFrame->relationModel(0));
 
+    tDateTime= new DateModel();
+    tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
+        QSqlDriver::TableName));
+    tDateTime->select();
+    tDateTime->insertNewRecord(customDtStart->getIsAuto());
+
+    mapper1=0;
+    mapper2=0;
+    mapper3=0;
+
     initMappers();
 }
 
 FrmFrame::~FrmFrame()
 {
     if (tRefFrame!=0) delete tRefFrame;
+    if (tDateTime!=0) delete tDateTime;
+    if (mapper1!=0) delete mapper1;
+    if (mapper2!=0) delete mapper2;
+    if (mapper3!=0) delete mapper3;
 }
 
 void FrmFrame::enableDisableStuff(const bool b)
@@ -100,7 +117,6 @@ void FrmFrame::initMappers()
         tRefFrame->relationModel(0)->fieldIndex(tr("Name")));
 
     mapper2= new QDataWidgetMapper(this);
-
     mapper2->setModel(tRefFrame);
     mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper2->setItemDelegate(new QSqlRelationalDelegate(this));
@@ -112,6 +128,15 @@ void FrmFrame::initMappers()
     mapper1->addMapping(this->cmbPrexistent, 0, tr("currentIndex").toAscii());
     mapper2->addMapping(this->cmbCopy, 0, tr("currentIndex").toAscii());
 
+    if (tDateTime==0) return;
+
+    mapper3= new QDataWidgetMapper(this);
+    mapper3->setModel(tDateTime);
+    mapper3->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    mapper3->setItemDelegate(new QSqlRelationalDelegate(this));
+    mapper3->addMapping(customDtStart,3,tr("dateTime").toAscii());
+
     mapper1->toLast();
     mapper2->toLast();
+    mapper3->toLast();
 }

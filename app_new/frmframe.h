@@ -2,6 +2,7 @@
 #include <QtSql>
 #include "ui_frmframe.h"
 #include "generictab.h"
+#include "datemodel.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -35,8 +36,9 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   enableDisableStuff(const bool b);
         void                                   initMappers();
         QSqlRelationalTableModel*              tRefFrame;
+        DateModel*                             tDateTime;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;
-
+        QDataWidgetMapper*                     mapper3;
 };
 #endif //FRMFRAME_H
