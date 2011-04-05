@@ -12,7 +12,7 @@ GenericTab(0,parent, flags){
 
     customDtEnd->setIsDateTime(true,true);
 
-    connect(pushNext, SIGNAL(clicked()), this,
+    connect(this, SIGNAL(forward()), this,
     SLOT(goForward()));
 
     connect(toolView, SIGNAL(clicked()), this,
@@ -39,8 +39,15 @@ GenericTab(0,parent, flags){
     tDateTime= new DateModel();
     tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
         QSqlDriver::TableName));
+    tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tDateTime->select();
-    tDateTime->insertNewRecord(customDtStart->getIsAuto());
+
+    connect(customDtStart, SIGNAL(isDateTime(bool)), tDateTime,
+        SLOT(amendDateTimeType(bool)));
+
+    bool bDate, bTime;
+    customDtStart->getIsDateTime(bDate,bTime);
+    tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
 
     mapper1=0;
     mapper2=0;
@@ -139,4 +146,28 @@ void FrmFrame::initMappers()
     mapper1->toLast();
     mapper2->toLast();
     mapper3->toLast();
+}
+
+void FrmFrame::next()
+{
+    bool bError=false;
+    if (!mapper3->submit()){
+       if (tDateTime->lastError().type()!=QSqlError::NoError)
+            emit showError(tDateTime->lastError().text());
+        else
+            emit showError(tr("Could not submit mapper!"));
+
+        bError=true;
+    }else{
+        if (!tDateTime->submitAll()){
+            if (tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(tDateTime->lastError().text());
+            else
+                emit showError(tr("Could not write DateTime in the database!"));
+
+            bError=true;
+        }
+    }
+    mapper3->toLast();
+    if (!bError) emit forward();
 }

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 5. Apr 11:54:32 2011
+** Created: Tue 5. Apr 14:48:40 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,6 +35,7 @@ static const uint qt_meta_data_FrmFrame[] = {
       31,    9,    9,    9, 0x08,
       52,    9,    9,    9, 0x08,
       74,    9,    9,    9, 0x08,
+      88,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -42,7 +43,7 @@ static const uint qt_meta_data_FrmFrame[] = {
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0onHideFrameDetails()\0"
     "onShowFrameDetails()\0onChoosePreExistent()\0"
-    "onCreateNew()\0"
+    "onCreateNew()\0next()\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -80,9 +81,10 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: onShowFrameDetails(); break;
         case 2: onChoosePreExistent(); break;
         case 3: onCreateNew(); break;
+        case 4: next(); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

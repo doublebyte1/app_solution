@@ -31,6 +31,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   onShowFrameDetails();
         void                                   onChoosePreExistent();
         void                                   onCreateNew();
+        void                                   next();
 
     private:
         void                                   enableDisableStuff(const bool b);

@@ -25,6 +25,7 @@ class GenericTab : public QWidget
         ~GenericTab();
 
     signals:
+        void            forward();
         void            navigate(const bool bNext, const int idx);
         void            hideFrameDetails();
         void            showFrameDetails(const FrmFrameDetails::Mode mode,

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Tue 5. Apr 11:57:21 2011
+** Created: Tue 5. Apr 17:15:33 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -226,6 +226,7 @@ public:
         retranslateUi(frmframe);
         QObject::connect(radioPreExistent, SIGNAL(clicked()), frmframe, SLOT(onChoosePreExistent()));
         QObject::connect(radioNew, SIGNAL(clicked()), frmframe, SLOT(onCreateNew()));
+        QObject::connect(pushNext, SIGNAL(clicked()), frmframe, SLOT(next()));
 
         QMetaObject::connectSlotsByName(frmframe);
     } // setupUi

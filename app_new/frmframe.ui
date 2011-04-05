@@ -297,9 +297,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushNext</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframe</receiver>
+   <slot>next()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>699</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>384</x>
+     <y>259</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onChoosePreExistent()</slot>
   <slot>onCreateNew()</slot>
+  <slot>next()</slot>
  </slots>
 </ui>
