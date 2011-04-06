@@ -722,7 +722,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png"
+						AdditionalDependencies="$(InputPath);.\lsd.png;.\vesseld.png;.\glsd.png;.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png;.\trashcan.png;.\exec.png;.\stylesheet.qss;.\mail_find.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -733,7 +733,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png"
+						AdditionalDependencies="$(InputPath);.\lsd.png;.\vesseld.png;.\glsd.png;.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png;.\trashcan.png;.\exec.png;.\stylesheet.qss;.\mail_find.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -779,6 +779,26 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\exec.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\forward.png"
 				>
 				<FileConfiguration
@@ -800,6 +820,26 @@
 			</File>
 			<File
 				RelativePath=".\gls.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\glsd.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -879,6 +919,46 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\lsd.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\mail_find.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\medfisis.ico"
 				>
 				<FileConfiguration
@@ -939,7 +1019,67 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\stylesheet.qss"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\trashcan.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\vessel.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\vesseld.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"

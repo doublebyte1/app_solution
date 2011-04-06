@@ -25,5 +25,11 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         FrmMinorStrata(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmMinorStrata();
 
+    private slots:
+        void            showDetails();
+
+    private:
+        void            setHeader(){setLbHead(this->lbHeader);}
+        void            initUI();
 };
 #endif //FRMMINORSTRATA_H

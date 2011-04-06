@@ -12,7 +12,6 @@ GenericTab::~GenericTab()
 {
 }
 
-
 void GenericTab::goBack()
 {
     emit navigate(false,m_index);

@@ -64,6 +64,10 @@ void MainFrm::initTabs()
          connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
         SLOT(statusShow(QString)));
 
+         if (i < vTabs.size()-1){
+             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+            SLOT(fillHeader(const QString)));
+         }
      }
 
 }

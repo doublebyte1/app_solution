@@ -33,11 +33,12 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   apply();
 
     private:
+        void                                   setHeader(){}//does nothing
         bool                                   getCurrentFrame(int& id);
-        bool                                   getStartDt(int& id);
-        bool                                   getEndDt(int& id);
+        bool                                   getStartDt(const int mapIdx, int& id);
+        bool                                   getEndDt(const int mapIdx, int& id);
         void                                   initModels();
-        void                                   setUiDefaults();
+        void                                   initUI();
         void                                   initMappers();
         QSqlRelationalTableModel*              tRefFrame;
         DateModel*                             tDateTime;

@@ -24,9 +24,14 @@ class GenericTab : public QWidget
         GenericTab(const int index, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
+        void            setLbHead(QLabel* inLbHeader){lbHead=inLbHeader;}
+
+    public slots:
+        void            fillHeader(const QString str){lbHead->setText(str);}
+
     signals:
         void            lockControls(bool bLock,QList<QWidget*>& lWidgets);
-        void            forward();
+        void            forward(const QString str);
         void            navigate(const bool bNext, const int idx);
         void            hideFrameDetails();
         void            showFrameDetails(const FrmFrameDetails::Mode mode,
@@ -35,6 +40,8 @@ class GenericTab : public QWidget
         void            showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     protected:
+        virtual void    initUI()=0;
+        virtual void    setHeader()=0;
         int             m_index;
 
     private slots:
@@ -43,6 +50,7 @@ class GenericTab : public QWidget
         void            onLockControls(bool bLock,QList<QWidget*>& lWidgets);
 
     private:
+        QLabel*         lbHead;
 };
 
 Q_DECLARE_METATYPE( QList<QWidget*>);

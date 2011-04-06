@@ -18,7 +18,7 @@ GenericTab(0,parent, flags){
     customDtEnd->setIsUTC(false);
     customDtEnd->setIsAuto(false);
 
-    connect(this, SIGNAL(forward()), this,
+    connect(this, SIGNAL(forward(QString)), this,
     SLOT(goForward()));
 
     connect(toolView, SIGNAL(clicked()), this,
@@ -47,7 +47,7 @@ GenericTab(0,parent, flags){
     mapperEndDt=0;
 
     initMappers();
-    setUiDefaults();
+    initUI();
 }
 
 FrmFrame::~FrmFrame()
@@ -86,7 +86,7 @@ void FrmFrame::initModels()
     tFrameTime->select();
 }
 
-void FrmFrame::setUiDefaults()
+void FrmFrame::initUI()
 {
     radioCopy->setChecked(true);
     pushApply->setEnabled(true);
@@ -148,13 +148,13 @@ void FrmFrame::initMappers()
     mapperStartDt= new QDataWidgetMapper(this);
     mapperStartDt->setModel(tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapperStartDt->setItemDelegate(new QSqlRelationalDelegate(this));
+    mapperStartDt->setItemDelegate(new QItemDelegate(this));
     mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapperEndDt->setItemDelegate(new QSqlRelationalDelegate(this));
+    mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
 
     mapper1->toLast();
@@ -171,17 +171,17 @@ bool FrmFrame::getCurrentFrame(int& id)
     return true;
 }
 
-bool FrmFrame::getStartDt(int& id)
+bool FrmFrame::getStartDt(const int mapIdx, int& id)
 {
-    QModelIndex idx= tDateTime->index(tDateTime->rowCount()-2,0);
+    QModelIndex idx= tDateTime->index(mapIdx,0);
     if (!idx.isValid()) return false;
     id=tDateTime->data(idx).toInt();
     return true;
 }
 
-bool FrmFrame::getEndDt(int& id)
+bool FrmFrame::getEndDt(const int mapIdx, int& id)
 {
-    QModelIndex idx= tDateTime->index(tDateTime->rowCount()-1,0);
+    QModelIndex idx= tDateTime->index(mapIdx,0);
     if (!idx.isValid()) return false;
     id=tDateTime->data(idx).toInt();
     return true;
@@ -190,15 +190,17 @@ bool FrmFrame::getEndDt(int& id)
 void FrmFrame::apply()
 {
     bool bError=false;
+    int startIdx=mapperStartDt->currentIndex();
+    int endIdx=mapperEndDt->currentIndex();
     //First insert the dates...
     if (!mapperStartDt->submit() || !mapperEndDt->submit()){
-       if (tDateTime->lastError().type()!=QSqlError::NoError)
+        if (tDateTime->lastError().type()!=QSqlError::NoError)
             emit showError(tDateTime->lastError().text());
         else
             emit showError(tr("Could not submit mapper!"));
-
         bError=true;
-    }else{
+    }
+    else{
         if (!tDateTime->submitAll()){
             if (tDateTime->lastError().type()!=QSqlError::NoError)
                 emit showError(tDateTime->lastError().text());
@@ -208,8 +210,9 @@ void FrmFrame::apply()
             bError=true;
         }
     }
-    mapperStartDt->setCurrentIndex(tDateTime->rowCount()-1);
-    mapperEndDt->toLast();
+
+    mapperStartDt->setCurrentIndex(startIdx);
+    mapperEndDt->setCurrentIndex(endIdx);
 
     if (bError) {
         emit showError(tr("Could not create dates in the database!"));
@@ -225,12 +228,12 @@ void FrmFrame::apply()
                 QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,2);//start dt
                 if (idx.isValid()){
                     int idStart;
-                    if (getStartDt(idStart)){
+                    if (getStartDt(startIdx,idStart)){
                         tFrameTime->setData(idx,idStart);
                         idx=tFrameTime->index(tFrameTime->rowCount()-1,3);//end dt
                         if (idx.isValid()){
                             int idEnd;
-                            if (getEndDt(idEnd)){
+                            if (getEndDt(endIdx,idEnd)){
                                 tFrameTime->setData(idx,idEnd);
                             }else bError=true;
                         }
@@ -259,5 +262,5 @@ void FrmFrame::apply()
 
 void FrmFrame::next()
 {
-    emit forward();
+    emit forward(cmbPrexistent->currentText());
 }

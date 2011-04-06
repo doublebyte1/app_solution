@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Wed 6. Apr 11:48:21 2011
+** Created: Wed 6. Apr 18:01:34 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -32,7 +32,7 @@ QT_BEGIN_NAMESPACE
 class Ui_frmframe
 {
 public:
-    QGridLayout *gridLayout_3;
+    QGridLayout *gridLayout_4;
     QGroupBox *groupPhysical;
     QGridLayout *gridLayout_2;
     QComboBox *cmbPrexistent;
@@ -47,26 +47,25 @@ public:
     QLabel *label_3;
     QLabel *label_4;
     QGroupBox *groupTime;
-    QHBoxLayout *horizontalLayout;
+    QGridLayout *gridLayout_3;
     QLabel *label;
-    CustomTimeCtrl *customDtStart;
     QLabel *label_2;
+    CustomTimeCtrl *customDtStart;
     CustomTimeCtrl *customDtEnd;
+    QSpacerItem *horizontalSpacer;
     QGroupBox *groupBackNext;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushPrevious;
     QPushButton *pushApply;
     QPushButton *pushNext;
-    QSpacerItem *verticalSpacer;
-    QSpacerItem *verticalSpacer_2;
 
     void setupUi(QWidget *frmframe)
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
         frmframe->resize(770, 520);
-        gridLayout_3 = new QGridLayout(frmframe);
-        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        gridLayout_4 = new QGridLayout(frmframe);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
         groupPhysical = new QGroupBox(frmframe);
         groupPhysical->setObjectName(QString::fromUtf8("groupPhysical"));
         gridLayout_2 = new QGridLayout(groupPhysical);
@@ -124,21 +123,28 @@ public:
         gridLayout_2->addWidget(label_4, 0, 0, 1, 1);
 
 
-        gridLayout_3->addWidget(groupPhysical, 1, 0, 1, 2);
+        gridLayout_4->addWidget(groupPhysical, 0, 0, 1, 2);
 
         groupTime = new QGroupBox(frmframe);
         groupTime->setObjectName(QString::fromUtf8("groupTime"));
-        horizontalLayout = new QHBoxLayout(groupTime);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        gridLayout_3 = new QGridLayout(groupTime);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         label = new QLabel(groupTime);
         label->setObjectName(QString::fromUtf8("label"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
         label->setSizePolicy(sizePolicy);
 
-        horizontalLayout->addWidget(label);
+        gridLayout_3->addWidget(label, 0, 0, 1, 1);
+
+        label_2 = new QLabel(groupTime);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy);
+
+        gridLayout_3->addWidget(label_2, 0, 2, 1, 1);
 
         customDtStart = new CustomTimeCtrl(groupTime);
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
@@ -148,24 +154,21 @@ public:
         sizePolicy1.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
         customDtStart->setSizePolicy(sizePolicy1);
 
-        horizontalLayout->addWidget(customDtStart);
-
-        label_2 = new QLabel(groupTime);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
-        label_2->setSizePolicy(sizePolicy);
-
-        horizontalLayout->addWidget(label_2);
+        gridLayout_3->addWidget(customDtStart, 1, 1, 1, 1);
 
         customDtEnd = new CustomTimeCtrl(groupTime);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
         sizePolicy1.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
         customDtEnd->setSizePolicy(sizePolicy1);
 
-        horizontalLayout->addWidget(customDtEnd);
+        gridLayout_3->addWidget(customDtEnd, 1, 2, 1, 1);
 
 
-        gridLayout_3->addWidget(groupTime, 2, 0, 1, 2);
+        gridLayout_4->addWidget(groupTime, 1, 0, 1, 2);
+
+        horizontalSpacer = new QSpacerItem(484, 45, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_4->addItem(horizontalSpacer, 2, 0, 1, 1);
 
         groupBackNext = new QGroupBox(frmframe);
         groupBackNext->setObjectName(QString::fromUtf8("groupBackNext"));
@@ -199,15 +202,7 @@ public:
         horizontalLayout_2->addWidget(pushNext);
 
 
-        gridLayout_3->addWidget(groupBackNext, 4, 1, 1, 1);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_3->addItem(verticalSpacer, 0, 0, 1, 1);
-
-        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-        gridLayout_3->addItem(verticalSpacer_2, 3, 0, 1, 1);
+        gridLayout_4->addWidget(groupBackNext, 2, 1, 1, 1);
 
         QWidget::setTabOrder(cmbPrexistent, toolView);
         QWidget::setTabOrder(toolView, radioCreate);

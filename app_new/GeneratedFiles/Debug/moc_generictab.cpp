@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'generictab.h'
 **
-** Created: Wed 6. Apr 10:27:37 2011
+** Created: Wed 6. Apr 12:56:13 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_GenericTab[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,18 +32,19 @@ static const uint qt_meta_data_GenericTab[] = {
 
  // signals: signature, parameters, type, tag, flags
       27,   12,   11,   11, 0x05,
-      63,   11,   11,   11, 0x05,
-      83,   73,   11,   11, 0x05,
-     102,   11,   11,   11, 0x05,
-     146,  121,   11,   11, 0x05,
-     223,  219,   11,   11, 0x05,
-     259,  243,   11,   11, 0x05,
-     283,  219,   11,   11, 0x25,
+      67,   63,   11,   11, 0x05,
+      94,   84,   11,   11, 0x05,
+     113,   11,   11,   11, 0x05,
+     157,  132,   11,   11, 0x05,
+     230,   63,   11,   11, 0x05,
+     266,  250,   11,   11, 0x05,
+     290,   63,   11,   11, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     302,   11,   11,   11, 0x08,
-     311,   11,   11,   11, 0x08,
-     323,   12,   11,   11, 0x08,
+     309,   63,   11,   11, 0x0a,
+     329,   11,   11,   11, 0x08,
+     338,   11,   11,   11, 0x08,
+     350,   12,   11,   11, 0x08,
 
        0        // eod
 };
@@ -51,13 +52,14 @@ static const uint qt_meta_data_GenericTab[] = {
 static const char qt_meta_stringdata_GenericTab[] = {
     "GenericTab\0\0bLock,lWidgets\0"
     "lockControls(bool,QList<QWidget*>&)\0"
-    "forward()\0bNext,idx\0navigate(bool,int)\0"
-    "hideFrameDetails()\0mode,persistence,frameId\0"
+    "str\0forward(QString)\0bNext,idx\0"
+    "navigate(bool,int)\0hideFrameDetails()\0"
+    "mode,persistence,frameId\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,in"
     "t)\0"
-    "str\0showStatus(QString)\0str,bShowMsgBox\0"
+    "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
-    "goBack()\0goForward()\0"
+    "fillHeader(QString)\0goBack()\0goForward()\0"
     "onLockControls(bool,QList<QWidget*>&)\0"
 };
 
@@ -91,19 +93,20 @@ int GenericTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: lockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
-        case 1: forward(); break;
+        case 1: forward((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: navigate((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
         case 3: hideFrameDetails(); break;
         case 4: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< const int(*)>(_a[3]))); break;
         case 5: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 6: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 7: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 8: goBack(); break;
-        case 9: goForward(); break;
-        case 10: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
+        case 8: fillHeader((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 9: goBack(); break;
+        case 10: goForward(); break;
+        case 11: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
 }
@@ -116,9 +119,10 @@ void GenericTab::lockControls(bool _t1, QList<QWidget*> & _t2)
 }
 
 // SIGNAL 1
-void GenericTab::forward()
+void GenericTab::forward(const QString _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 1, 0);
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
