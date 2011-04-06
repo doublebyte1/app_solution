@@ -29,17 +29,22 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
-        void                                   onChoosePreExistent();
-        void                                   onCreateNew();
         void                                   next();
+        void                                   apply();
 
     private:
-        void                                   enableDisableStuff(const bool b);
+        bool                                   getCurrentFrame(int& id);
+        bool                                   getStartDt(int& id);
+        bool                                   getEndDt(int& id);
+        void                                   initModels();
+        void                                   setUiDefaults();
         void                                   initMappers();
         QSqlRelationalTableModel*              tRefFrame;
         DateModel*                             tDateTime;
+        QSqlTableModel*                        tFrameTime;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;
-        QDataWidgetMapper*                     mapper3;
+        QDataWidgetMapper*                     mapperStartDt;
+        QDataWidgetMapper*                     mapperEndDt;
 };
 #endif //FRMFRAME_H

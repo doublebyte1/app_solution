@@ -25,6 +25,7 @@ class GenericTab : public QWidget
         ~GenericTab();
 
     signals:
+        void            lockControls(bool bLock,QList<QWidget*>& lWidgets);
         void            forward();
         void            navigate(const bool bNext, const int idx);
         void            hideFrameDetails();
@@ -39,8 +40,11 @@ class GenericTab : public QWidget
     private slots:
         void            goBack();
         void            goForward();
+        void            onLockControls(bool bLock,QList<QWidget*>& lWidgets);
 
     private:
-
 };
+
+Q_DECLARE_METATYPE( QList<QWidget*>);
+
 #endif //GENERICTAB_H

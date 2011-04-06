@@ -20,27 +20,22 @@
       <string>Physical Frame</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioPreExistent">
-        <property name="text">
-         <string>Choose pre-existent</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="cmbPrexistent"/>
       </item>
       <item row="0" column="2">
        <widget class="QToolButton" name="toolView">
+        <property name="toolTip">
+         <string>View Frame</string>
+        </property>
+        <property name="statusTip">
+         <string>View Frame</string>
+        </property>
+        <property name="whatsThis">
+         <string>Allows viewing this frame</string>
+        </property>
         <property name="text">
          <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="radioNew">
-        <property name="text">
-         <string>Create New</string>
         </property>
        </widget>
       </item>
@@ -85,23 +80,36 @@
       </item>
       <item row="3" column="2">
        <widget class="QToolButton" name="toolEdit">
+        <property name="toolTip">
+         <string>Edit Frame</string>
+        </property>
+        <property name="statusTip">
+         <string>Edit Frame</string>
+        </property>
+        <property name="whatsThis">
+         <string>Allows editing this frame</string>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Create New</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-       </spacer>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Choose frame</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -161,19 +169,6 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>542</width>
-       <height>45</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="4" column="1">
     <widget class="QGroupBox" name="groupBackNext">
      <property name="sizePolicy">
@@ -185,8 +180,8 @@
      <property name="title">
       <string/>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
        <widget class="QPushButton" name="pushPrevious">
         <property name="enabled">
          <bool>false</bool>
@@ -200,7 +195,14 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item>
+       <widget class="QPushButton" name="pushApply">
+        <property name="text">
+         <string>Apply</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushNext">
         <property name="text">
          <string>Next</string>
@@ -227,7 +229,7 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="1">
+   <item row="3" column="0">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -250,49 +252,62 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>radioPreExistent</tabstop>
   <tabstop>cmbPrexistent</tabstop>
   <tabstop>toolView</tabstop>
-  <tabstop>radioNew</tabstop>
   <tabstop>radioCreate</tabstop>
   <tabstop>radioCopy</tabstop>
   <tabstop>cmbCopy</tabstop>
   <tabstop>toolEdit</tabstop>
   <tabstop>pushPrevious</tabstop>
-  <tabstop>pushNext</tabstop>
  </tabstops>
  <resources>
   <include location="app_new.qrc"/>
  </resources>
  <connections>
   <connection>
-   <sender>radioPreExistent</sender>
-   <signal>clicked()</signal>
-   <receiver>frmframe</receiver>
-   <slot>onChoosePreExistent()</slot>
+   <sender>radioCreate</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>cmbCopy</receiver>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>188</x>
-     <y>147</y>
+     <x>451</x>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>373</x>
-     <y>259</y>
+     <x>631</x>
+     <y>157</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>radioNew</sender>
-   <signal>clicked()</signal>
-   <receiver>frmframe</receiver>
-   <slot>onCreateNew()</slot>
+   <sender>radioCopy</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>cmbCopy</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>188</x>
-     <y>172</y>
+     <x>451</x>
+     <y>157</y>
     </hint>
     <hint type="destinationlabel">
-     <x>373</x>
+     <x>631</x>
+     <y>157</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushApply</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframe</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>574</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>384</x>
      <y>259</y>
     </hint>
    </hints>
@@ -304,7 +319,7 @@
    <slot>next()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>699</x>
+     <x>693</x>
      <y>486</y>
     </hint>
     <hint type="destinationlabel">
@@ -318,5 +333,6 @@
   <slot>onChoosePreExistent()</slot>
   <slot>onCreateNew()</slot>
   <slot>next()</slot>
+  <slot>apply()</slot>
  </slots>
 </ui>
