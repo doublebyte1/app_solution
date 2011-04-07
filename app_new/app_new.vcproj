@@ -1168,6 +1168,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\ui_frmminorstrata.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\ui_login.h"
 				>
 			</File>

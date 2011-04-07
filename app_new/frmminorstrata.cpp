@@ -32,21 +32,83 @@ FrmMinorStrata::~FrmMinorStrata()
     if (mapper3!=0) delete mapper3;
 }
 
-void FrmMinorStrata::viewRecord()
+void FrmMinorStrata::setReadOnly(const bool bRO)
 {
-    /*
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-    */
+
+    label_3->setEnabled(!bRO);
+    cmbGLS->setEnabled(!bRO);
+    groupActivity->setEnabled(!bRO);
+    radioActive->setEnabled(!bRO);
+    horizontalLayout->setEnabled(!bRO);
+    radioInactive->setEnabled(!bRO);
+    cmbReasons->setEnabled(!bRO);
+    label_4->setEnabled(!bRO);
+    textComments->setEnabled(!bRO);
+    label->setEnabled(!bRO);
+    label_2->setEnabled(!bRO);
+    customDtStart->setEnabled(!bRO);
+    customDtEnd->setEnabled(!bRO);
+
+    if (bRO){
+        buttonBox->button(QDialogButtonBox::Apply)->hide();
+    }else{
+        buttonBox->button(QDialogButtonBox::Apply)->show();
+    }
+
 }
 
+void FrmMinorStrata::viewRecord()
+{
+    if (!this->groupDetails->isVisible())
+        this->groupDetails->setVisible(true);
+
+    setReadOnly(true);
+
+    QSqlQueryModel DtModel1,DtModel2;
+    if (!getDateModel(1,DtModel1)) emit showError(tr("Could not init date model!"));
+    if (!getDateModel(2,DtModel2)) emit showError(tr("Could not init date model!"));
+    mapper2->setModel(&DtModel1);
+    mapper3->setModel(&DtModel2);
+
+}
+
+void FrmMinorStrata::createRecord()
+{
+    if (!this->groupDetails->isVisible())
+        this->groupDetails->setVisible(true);
+
+    setReadOnly(false);
+
+    tRefMinorStrata->insertRow(tRefMinorStrata->rowCount());
+    mapper1->toLast();
+
+    m_tDateTime->insertRow(m_tDateTime->rowCount()-1);
+    mapper2->toLast();
+    m_tDateTime->insertRow(m_tDateTime->rowCount()-1);
+    mapper3->toLast();
+
+}
+
+void FrmMinorStrata::onButtonClick(QAbstractButton* button)
+{
+    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
+    {
+        this->groupDetails->hide();
+        this->tRefMinorStrata->revertAll();
+
+    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
+        //COMIT DATES, COMIT MAPPERS, ERRORS
+        this->tRefMinorStrata->submitAll();
+    }
+}
+/*
 void FrmMinorStrata::showDetails()
 {
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
     //TODO:refresh preview
 }
-
+*/
 void FrmMinorStrata::initUI()
 {
     setHeader();
@@ -126,17 +188,11 @@ void FrmMinorStrata::initMappers()
 
     mapper2= new QDataWidgetMapper(this);
 
-    QSqlQueryModel DtModel1,DtModel2;
-    if (!getDateModel(1,DtModel1)) emit showError(tr("Could not init date model!"));
-    if (!getDateModel(2,DtModel2)) emit showError(tr("Could not init date model!"));
-
-    mapper2->setModel(&DtModel1);
     mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper2->setItemDelegate(new QItemDelegate(this));
     mapper2->addMapping(customDtStart,0,tr("dateTime").toAscii());
 
     mapper3= new QDataWidgetMapper(this);
-    mapper3->setModel(&DtModel2);
     mapper3->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper3->setItemDelegate(new QItemDelegate(this));
     mapper3->addMapping(customDtEnd,0,tr("dateTime").toAscii());
@@ -145,43 +201,3 @@ void FrmMinorStrata::initMappers()
     mapper3->toFirst();
 }
 
-///////////////////////////////////////////////
-
-DateTimeDelegate::DateTimeDelegate(QObject *parent):
-                        QItemDelegate(parent)
-{
-
-}
-void DateTimeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    /*
-    if (m_colsOthers.contains(index.column())){//others
-        QSqlRelationalDelegate::setModelData(editor,model,index);
-    }else{
-
-        if (m_colsText.contains(index.column())){//textEdits
-            model->setData(index, editor->property("plainText") == tr("") ?
-                QVariant() :
-            editor->property("plainText"));
-        }else {
-            model->setData(index, editor->property("text") == tr("") ?
-            QVariant() :
-            editor->property("text"));
-        }
-    }*/
-}
-
-void DateTimeDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    qDebug() << index.data() << endl;
-    /*
-    if (m_colsOthers.contains(index.column())){//others
-        QSqlRelationalDelegate::setEditorData(editor,index);
-    }else{
-        if (m_colsText.contains(index.column())){//text edits
-            editor->setProperty("plainText", index.data());
-        }else {
-            editor->setProperty("text", index.data());
-        }
-    }*/
-}

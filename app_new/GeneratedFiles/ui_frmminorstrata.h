@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Thu 7. Apr 13:41:59 2011
+** Created: Thu 7. Apr 15:00:45 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -209,7 +209,7 @@ public:
 
         buttonBox = new QDialogButtonBox(groupDetails);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
 
         gridLayout->addWidget(buttonBox, 4, 4, 1, 1);
 
@@ -267,7 +267,7 @@ public:
         QIcon icon3;
         icon3.addFile(QString::fromUtf8(":/app_new/mail_find.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushView->setIcon(icon3);
-        pushView->setCheckable(true);
+        pushView->setCheckable(false);
 
         gridLayout_2->addWidget(pushView, 1, 2, 1, 1);
 
@@ -278,7 +278,9 @@ public:
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(frmminorstrata);
-        QObject::connect(pushView, SIGNAL(clicked(bool)), groupDetails, SLOT(setVisible(bool)));
+        QObject::connect(pushView, SIGNAL(clicked()), frmminorstrata, SLOT(viewRecord()));
+        QObject::connect(pushNew, SIGNAL(clicked()), frmminorstrata, SLOT(createRecord()));
+        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmminorstrata, SLOT(onButtonClick(QAbstractButton*)));
 
         QMetaObject::connectSlotsByName(frmminorstrata);
     } // setupUi

@@ -9,33 +9,6 @@
      #define new DEBUG_NEW
   #endif
 
-//////////////////////////////////////////////////////////////////
-#ifndef DATETIMEDELEGATE_H
-#define DATETIMEDELEGATE_H
-
-//! DateTime Delegate Class
-/*!
-TODO: put a description here later!
-*/
-
-class DateTimeDelegate : public QItemDelegate
-    {
-        Q_OBJECT
-
-        public:
-            DateTimeDelegate (QObject *parent = 0);
-
-        public:
-            void setEditorData(QWidget *editor, const QModelIndex &index) const;
-            void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-
-};
-
-#endif //DATETIMEDELEGATE_H
-
-//////////////////////////////////////////////////////////////////////
-
-
 //////////////////////////////////////////////////////////////////////
 #ifndef FRMMINORSTRATA_H
 #define FRMMINORSTRATA_H
@@ -54,10 +27,13 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         ~FrmMinorStrata();
 
     private slots:
-        void                                   showDetails();
+        //void                                   showDetails();
         void                                   viewRecord();
+        void                                   createRecord();
+        void                                   onButtonClick(QAbstractButton * button);
 
     private:
+        void                                   setReadOnly(const bool bRO);
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   initModels();
         void                                   initMappers();
