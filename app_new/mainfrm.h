@@ -36,6 +36,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
 
     private:
         void                    initTabs();
+        DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
         FrmFrameDetails         *pFrmFrameDetails;

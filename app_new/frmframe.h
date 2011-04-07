@@ -2,7 +2,7 @@
 #include <QtSql>
 #include "ui_frmframe.h"
 #include "generictab.h"
-#include "datemodel.h"
+//#include "datemodel.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -23,7 +23,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     Q_OBJECT
 
     public:
-        FrmFrame(QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmFrame(DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrame();
 
     private slots:
@@ -38,10 +38,9 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         bool                                   getStartDt(const int mapIdx, int& id);
         bool                                   getEndDt(const int mapIdx, int& id);
         void                                   initModels();
-        void                                   initUI();
         void                                   initMappers();
+        void                                   initUI();
         QSqlRelationalTableModel*              tRefFrame;
-        DateModel*                             tDateTime;
         QSqlTableModel*                        tFrameTime;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;

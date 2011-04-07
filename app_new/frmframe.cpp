@@ -1,13 +1,13 @@
 #include <QTest>
 #include "frmframe.h"
 
-FrmFrame::FrmFrame(QWidget *parent, Qt::WFlags flags):
-GenericTab(0,parent, flags){
+FrmFrame::FrmFrame(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
+GenericTab(0,inTDateTime,parent,flags){
 
     setupUi(this);
 
     tRefFrame=0;
-    tDateTime;
+    //tDateTime;
     tFrameTime=0;
 
     customDtStart->setIsDateTime(true,false,false);
@@ -32,28 +32,28 @@ GenericTab(0,parent, flags){
 
     initModels();
 
-    connect(customDtStart, SIGNAL(isDateTime(bool)), tDateTime,
+    connect(customDtStart, SIGNAL(isDateTime(bool)), m_tDateTime,
         SLOT(amendDateTimeType(bool)));
 
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
-    tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
+    m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
     customDtEnd->getIsDateTime(bDate,bTime);
-    tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
+    m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
 
     mapper1=0;
     mapper2=0;
     mapperStartDt=0;
     mapperEndDt=0;
 
-    initMappers();
     initUI();
+    initMappers();
 }
 
 FrmFrame::~FrmFrame()
 {
     if (tRefFrame!=0) delete tRefFrame;
-    if (tDateTime!=0) delete tDateTime;
+    //if (tDateTime!=0) delete tDateTime;
     if(tFrameTime!=0) delete tFrameTime;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
@@ -70,13 +70,6 @@ void FrmFrame::initModels()
     tRefFrame->setRelation(0, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
     tRefFrame->select();
     filterTable(tRefFrame->relationModel(0));
-
-    //Dates
-    tDateTime= new DateModel();
-    tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
-        QSqlDriver::TableName));
-    tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tDateTime->select();
 
     //Frame_Time (Physical frame + time frame!)
     tFrameTime=new QSqlTableModel();
@@ -143,23 +136,23 @@ void FrmFrame::initMappers()
     mapper1->addMapping(this->cmbPrexistent, 0, tr("currentIndex").toAscii());
     mapper2->addMapping(this->cmbCopy, 0, tr("currentIndex").toAscii());
 
-    if (tDateTime==0) return;
+    if (m_tDateTime==0) return;
 
     mapperStartDt= new QDataWidgetMapper(this);
-    mapperStartDt->setModel(tDateTime);
+    mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
     mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
-    mapperEndDt->setModel(tDateTime);
+    mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
 
     mapper1->toLast();
     mapper2->toLast();
-    mapperStartDt->setCurrentIndex(tDateTime->rowCount()-2);//just before last
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
     mapperEndDt->toLast();
 }
 
@@ -173,17 +166,17 @@ bool FrmFrame::getCurrentFrame(int& id)
 
 bool FrmFrame::getStartDt(const int mapIdx, int& id)
 {
-    QModelIndex idx= tDateTime->index(mapIdx,0);
+    QModelIndex idx= m_tDateTime->index(mapIdx,0);
     if (!idx.isValid()) return false;
-    id=tDateTime->data(idx).toInt();
+    id=m_tDateTime->data(idx).toInt();
     return true;
 }
 
 bool FrmFrame::getEndDt(const int mapIdx, int& id)
 {
-    QModelIndex idx= tDateTime->index(mapIdx,0);
+    QModelIndex idx= m_tDateTime->index(mapIdx,0);
     if (!idx.isValid()) return false;
-    id=tDateTime->data(idx).toInt();
+    id=m_tDateTime->data(idx).toInt();
     return true;
 }
 
@@ -194,16 +187,16 @@ void FrmFrame::apply()
     int endIdx=mapperEndDt->currentIndex();
     //First insert the dates...
     if (!mapperStartDt->submit() || !mapperEndDt->submit()){
-        if (tDateTime->lastError().type()!=QSqlError::NoError)
-            emit showError(tDateTime->lastError().text());
+        if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+            emit showError(m_tDateTime->lastError().text());
         else
             emit showError(tr("Could not submit mapper!"));
         bError=true;
     }
     else{
-        if (!tDateTime->submitAll()){
-            if (tDateTime->lastError().type()!=QSqlError::NoError)
-                emit showError(tDateTime->lastError().text());
+        if (!m_tDateTime->submitAll()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
             else
                 emit showError(tr("Could not write DateTime in the database!"));
 

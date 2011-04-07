@@ -14,6 +14,7 @@
 #define FRMFRAMEDETAILS_H
 
 class QTreeView;
+class NullRelationalDelegate;
 
 //! Frm Frame Details Class
 /*!

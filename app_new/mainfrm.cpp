@@ -4,6 +4,7 @@
 MainFrm::MainFrm(QWidget *parent, Qt::WFlags flags):
 QMainWindow(parent, flags){
 
+    tDateTime=0;
     pFrmFrame=0;
     pFrmMinorStrata=0;
     pFrmFrameDetails=0;
@@ -13,6 +14,7 @@ QMainWindow(parent, flags){
 
 MainFrm::~MainFrm()
 {
+    if (tDateTime!=0) delete tDateTime;
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
@@ -20,14 +22,21 @@ MainFrm::~MainFrm()
 
 void MainFrm::initTabs()
 {
+    //Dates
+    tDateTime= new DateModel();
+    tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
+        QSqlDriver::TableName));
+    tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tDateTime->select();
+
     if (pFrmFrame==0){
-        pFrmFrame=new FrmFrame();
+        pFrmFrame=new FrmFrame(tDateTime);
         vTabs.push_back(pFrmFrame);
     }
     this->tabWidget->insertTab(0,pFrmFrame, tr("Frame"));
 
     if (pFrmMinorStrata==0){
-        pFrmMinorStrata=new FrmMinorStrata();
+        pFrmMinorStrata=new FrmMinorStrata(tDateTime);
         vTabs.push_back(pFrmMinorStrata);
     }
     this->tabWidget->insertTab(1,pFrmMinorStrata, tr("Minor Strata"));

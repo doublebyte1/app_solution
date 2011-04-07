@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>711</width>
-    <height>609</height>
+    <height>615</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,38 +42,6 @@
    </item>
    <item row="1" column="1" rowspan="2">
     <widget class="QTableView" name="tableView"/>
-   </item>
-   <item row="2" column="2" rowspan="2">
-    <widget class="QPushButton" name="pushDetails">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>Show Details</string>
-     </property>
-     <property name="statusTip">
-      <string>Show Details</string>
-     </property>
-     <property name="whatsThis">
-      <string>Shows Details</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="app_new.qrc">
-       <normaloff>:/app_new/mail_find.png</normaloff>:/app_new/mail_find.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>32</width>
-       <height>32</height>
-      </size>
-     </property>
-    </widget>
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_5">
@@ -128,6 +96,9 @@
            <property name="text">
             <string>Active</string>
            </property>
+           <attribute name="buttonGroup">
+            <string>buttonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item row="1" column="0">
@@ -137,10 +108,13 @@
              <property name="text">
               <string>Inactive</string>
              </property>
+             <attribute name="buttonGroup">
+              <string>buttonGroup</string>
+             </attribute>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox"/>
+            <widget class="QComboBox" name="cmbReasons"/>
            </item>
            <item>
             <spacer name="horizontalSpacer_2">
@@ -181,7 +155,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QPlainTextEdit" name="plainTextEdit">
+       <widget class="QPlainTextEdit" name="textComments">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -277,6 +251,49 @@
      </item>
     </layout>
    </item>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="pushNew">
+     <property name="toolTip">
+      <string>Create new record</string>
+     </property>
+     <property name="statusTip">
+      <string>Create new record</string>
+     </property>
+     <property name="whatsThis">
+      <string>Creates new record</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="app_new.qrc">
+       <normaloff>:/app_new/pencil.png</normaloff>:/app_new/pencil.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="pushView">
+     <property name="toolTip">
+      <string>View details</string>
+     </property>
+     <property name="statusTip">
+      <string>View details</string>
+     </property>
+     <property name="whatsThis">
+      <string>View details of this record</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="app_new.qrc">
+       <normaloff>:/app_new/mail_find.png</normaloff>:/app_new/mail_find.png</iconset>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -291,23 +308,27 @@
  </resources>
  <connections>
   <connection>
-   <sender>pushDetails</sender>
-   <signal>clicked()</signal>
-   <receiver>frmminorstrata</receiver>
-   <slot>showDetails()</slot>
+   <sender>pushView</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>groupDetails</receiver>
+   <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>678</x>
-     <y>166</y>
+     <x>686</x>
+     <y>40</y>
     </hint>
     <hint type="destinationlabel">
      <x>355</x>
-     <y>244</y>
+     <y>338</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <slot>showDetails()</slot>
+  <slot>viewRecord()</slot>
  </slots>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

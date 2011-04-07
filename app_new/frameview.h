@@ -154,30 +154,3 @@ class FrameView: public QTreeView
 
 };
 #endif //FRAMEVIEW_H
-
-//////////////////////////////////////////////////////////////////
-#ifndef NULLRELATIONALDELEGATE_H
-#define NULLRELATIONALDELEGATE_H
-
-//! Null Delegate Class
-/*!
-This class implements a delegate between model and mapper, preventing the controls from going empty;
-because of the comboboxes, it has to derived from QSqlRelationalDelegate
-*/
-
-class NullRelationalDelegate : public QSqlRelationalDelegate
-    {
-        Q_OBJECT
-
-        public:
-            NullRelationalDelegate (QObject *parent = 0);
-
-        public:
-            void setEditorData(QWidget *editor, const QModelIndex &index) const;
-            void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-
-};
-
-#endif //NULLRELATIONALDELEGATE_H
-
-//////////////////////////////////////////////////////////////////////
