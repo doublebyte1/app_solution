@@ -2,6 +2,7 @@
 #include "globaldefs.h"
 #include "frmframedetails.h"
 #include "modelinterface.h"
+#include "generictab.h"
 
 FrmFrameDetails::FrmFrameDetails(QWidget *parent, Qt::WFlags flags):
 QWidget(parent, flags){
@@ -455,7 +456,12 @@ void FrmFrameDetails::initMapper()
     mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
     if (nullDellegate!=0) delete nullDellegate;
-    nullDellegate=new NullRelationalDelegate(this);
+    QList<int> lCmb;
+    lCmb << 5;
+    QList<int> lText;
+    lText << 3 << 6;
+
+    nullDellegate=new NullRelationalDelegate(lCmb,lText,this);
     mapper->setItemDelegate(nullDellegate);
 
     mapper->addMapping(lineName, 1);
@@ -475,41 +481,4 @@ void FrmFrameDetails::isClonedFromPreviousFrame(QString str)
         checkClone->setChecked(str.compare(
             qApp->translate("null_replacements", strNa)
             , Qt::CaseInsensitive)!=0);
-}
-///////////////////////////////////////////////
-
-NullRelationalDelegate::NullRelationalDelegate(QObject *parent):
-                        QSqlRelationalDelegate(parent)
-{
-
-}
-void NullRelationalDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
-{
-    if (index.column()==5){//source
-        QSqlRelationalDelegate::setModelData(editor,model,index);
-    }else{
-
-        if (index.column()==3 || index.column()==6){//textEdits
-            model->setData(index, editor->property("plainText") == tr("") ?
-                QVariant() :
-            editor->property("plainText"));
-        }else {
-            model->setData(index, editor->property("text") == tr("") ?
-            QVariant() :
-            editor->property("text"));
-        }
-    }
-}
-
-void NullRelationalDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
-{
-    if (index.column()==5){//source
-        QSqlRelationalDelegate::setEditorData(editor,index);
-    }else{
-        if (index.column()==3 || index.column()==6){//text edits
-            editor->setProperty("plainText", index.data());
-        }else {
-            editor->setProperty("text", index.data());
-        }
-    }
 }

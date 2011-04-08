@@ -53,7 +53,6 @@ bool DateModel::getLocationID(int& ID)
 bool DateModel::insertNewRecord(const bool bAuto, const bool bDate, const bool bTime)
 {
     if (!bDate && !bTime) return false;
-
     this->insertRow(this->rowCount());
 
     QModelIndex idx=index(this->rowCount()-1,1);//location: for now we always grab it from the session data

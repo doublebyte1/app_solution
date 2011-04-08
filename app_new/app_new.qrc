@@ -1,22 +1,23 @@
 <RCC>
-    <qresource prefix="/app_new">
-        <file>lsd.png</file>
-        <file>vesseld.png</file>
-        <file>glsd.png</file>
-        <file>ok.png</file>
-        <file>cancel.png</file>
-        <file>password.png</file>
-        <file>medfisis.ico</file>
-        <file>forward.png</file>
-        <file>back.png</file>
-        <file>khexedit.png</file>
-        <file>kview.png</file>
-        <file>gls.png</file>
-        <file>ls.png</file>
-        <file>vessel.png</file>
-        <file>trashcan.png</file>
-        <file>exec.png</file>
-        <file>stylesheet.qss</file>
-        <file>mail_find.png</file>
-    </qresource>
+  <qresource prefix="/app_new">
+    <file>pencil.png</file>
+    <file>lsd.png</file>
+    <file>vesseld.png</file>
+    <file>glsd.png</file>
+    <file>ok.png</file>
+    <file>cancel.png</file>
+    <file>password.png</file>
+    <file>medfisis.ico</file>
+    <file>forward.png</file>
+    <file>back.png</file>
+    <file>khexedit.png</file>
+    <file>kview.png</file>
+    <file>gls.png</file>
+    <file>ls.png</file>
+    <file>vessel.png</file>
+    <file>trashcan.png</file>
+    <file>exec.png</file>
+    <file>stylesheet.qss</file>
+    <file>mail_find.png</file>
+  </qresource>
 </RCC>

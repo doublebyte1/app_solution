@@ -1,13 +1,13 @@
 #include <QTest>
 #include "frmframe.h"
 
-FrmFrame::FrmFrame(QWidget *parent, Qt::WFlags flags):
-GenericTab(0,parent, flags){
+FrmFrame::FrmFrame(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
+GenericTab(0,inTDateTime,parent,flags){
 
     setupUi(this);
 
     tRefFrame=0;
-    tDateTime;
+    //tDateTime;
     tFrameTime=0;
 
     customDtStart->setIsDateTime(true,false,false);
@@ -18,7 +18,7 @@ GenericTab(0,parent, flags){
     customDtEnd->setIsUTC(false);
     customDtEnd->setIsAuto(false);
 
-    connect(this, SIGNAL(forward(QString)), this,
+    connect(this, SIGNAL(forward(QString,QVariant)), this,
     SLOT(goForward()));
 
     connect(toolView, SIGNAL(clicked()), this,
@@ -32,28 +32,28 @@ GenericTab(0,parent, flags){
 
     initModels();
 
-    connect(customDtStart, SIGNAL(isDateTime(bool)), tDateTime,
+    connect(customDtStart, SIGNAL(isDateTime(bool)), m_tDateTime,
         SLOT(amendDateTimeType(bool)));
 
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
-    tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
+    m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
     customDtEnd->getIsDateTime(bDate,bTime);
-    tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
+    m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
 
     mapper1=0;
     mapper2=0;
     mapperStartDt=0;
     mapperEndDt=0;
 
-    initMappers();
     initUI();
+    initMappers();
 }
 
 FrmFrame::~FrmFrame()
 {
     if (tRefFrame!=0) delete tRefFrame;
-    if (tDateTime!=0) delete tDateTime;
+    //if (tDateTime!=0) delete tDateTime;
     if(tFrameTime!=0) delete tFrameTime;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
@@ -70,13 +70,6 @@ void FrmFrame::initModels()
     tRefFrame->setRelation(0, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
     tRefFrame->select();
     filterTable(tRefFrame->relationModel(0));
-
-    //Dates
-    tDateTime= new DateModel();
-    tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
-        QSqlDriver::TableName));
-    tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tDateTime->select();
 
     //Frame_Time (Physical frame + time frame!)
     tFrameTime=new QSqlTableModel();
@@ -95,25 +88,38 @@ void FrmFrame::initUI()
 
 void FrmFrame::onHideFrameDetails()
 {
+    int curP=cmbPrexistent->currentIndex();
+    int curC=cmbCopy->currentIndex();
+
     tRefFrame->relationModel(0)->select();
 
-    cmbCopy->setCurrentIndex(cmbCopy->count()-1);
-    cmbPrexistent->setCurrentIndex(cmbPrexistent->count()-1);
+    if (m_curMode==FrmFrameDetails::VIEW){
+        cmbPrexistent->setCurrentIndex(curP);
+        cmbCopy->setCurrentIndex(curC);
+    }else{
+        cmbCopy->setCurrentIndex(cmbCopy->count()-1);
+        cmbPrexistent->setCurrentIndex(cmbPrexistent->count()-1);
+    }
 }
 
 void FrmFrame::onShowFrameDetails()
 {
     if (dynamic_cast<QToolButton*>(QObject::sender())!=0){
         if (QObject::sender()->objectName()==tr("toolView")){
+            m_curMode=FrmFrameDetails::VIEW;
             if (cmbPrexistent->currentIndex()!=-1)
                 emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::PERMANENT,
                 cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt());
         }else if (QObject::sender()->objectName()==tr("toolEdit")){
-            if (radioCopy->isChecked() && cmbCopy->currentIndex()!=-1)
+            if (radioCopy->isChecked() && cmbCopy->currentIndex()!=-1){
+                m_curMode=FrmFrameDetails::EDIT;
                 emit showFrameDetails(FrmFrameDetails::EDIT,FrmFrameDetails::PERMANENT,
                 cmbCopy->model()->index(cmbCopy->currentIndex(),0).data().toInt());
-            else if (radioCreate->isChecked())
+            }
+            else if (radioCreate->isChecked()){
+                m_curMode=FrmFrameDetails::CREATE;
                 emit showFrameDetails(FrmFrameDetails::CREATE,FrmFrameDetails::PERMANENT,-1);
+            }
         }
     }
 }
@@ -143,24 +149,26 @@ void FrmFrame::initMappers()
     mapper1->addMapping(this->cmbPrexistent, 0, tr("currentIndex").toAscii());
     mapper2->addMapping(this->cmbCopy, 0, tr("currentIndex").toAscii());
 
-    if (tDateTime==0) return;
+    if (m_tDateTime==0) return;
 
     mapperStartDt= new QDataWidgetMapper(this);
-    mapperStartDt->setModel(tDateTime);
+    mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
     mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
-    mapperEndDt->setModel(tDateTime);
+    mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
 
     mapper1->toLast();
     mapper2->toLast();
-    mapperStartDt->setCurrentIndex(tDateTime->rowCount()-2);//just before last
+
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
     mapperEndDt->toLast();
+
 }
 
 bool FrmFrame::getCurrentFrame(int& id)
@@ -171,22 +179,6 @@ bool FrmFrame::getCurrentFrame(int& id)
     return true;
 }
 
-bool FrmFrame::getStartDt(const int mapIdx, int& id)
-{
-    QModelIndex idx= tDateTime->index(mapIdx,0);
-    if (!idx.isValid()) return false;
-    id=tDateTime->data(idx).toInt();
-    return true;
-}
-
-bool FrmFrame::getEndDt(const int mapIdx, int& id)
-{
-    QModelIndex idx= tDateTime->index(mapIdx,0);
-    if (!idx.isValid()) return false;
-    id=tDateTime->data(idx).toInt();
-    return true;
-}
-
 void FrmFrame::apply()
 {
     bool bError=false;
@@ -194,16 +186,16 @@ void FrmFrame::apply()
     int endIdx=mapperEndDt->currentIndex();
     //First insert the dates...
     if (!mapperStartDt->submit() || !mapperEndDt->submit()){
-        if (tDateTime->lastError().type()!=QSqlError::NoError)
-            emit showError(tDateTime->lastError().text());
+        if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+            emit showError(m_tDateTime->lastError().text());
         else
             emit showError(tr("Could not submit mapper!"));
         bError=true;
     }
     else{
-        if (!tDateTime->submitAll()){
-            if (tDateTime->lastError().type()!=QSqlError::NoError)
-                emit showError(tDateTime->lastError().text());
+        if (!m_tDateTime->submitAll()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
             else
                 emit showError(tr("Could not write DateTime in the database!"));
 
@@ -228,12 +220,12 @@ void FrmFrame::apply()
                 QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,2);//start dt
                 if (idx.isValid()){
                     int idStart;
-                    if (getStartDt(startIdx,idStart)){
+                    if (getDtId(startIdx,idStart)){
                         tFrameTime->setData(idx,idStart);
                         idx=tFrameTime->index(tFrameTime->rowCount()-1,3);//end dt
                         if (idx.isValid()){
                             int idEnd;
-                            if (getEndDt(endIdx,idEnd)){
+                            if (getDtId(endIdx,idEnd)){
                                 tFrameTime->setData(idx,idEnd);
                             }else bError=true;
                         }
@@ -262,5 +254,10 @@ void FrmFrame::apply()
 
 void FrmFrame::next()
 {
-    emit forward(cmbPrexistent->currentText());
+    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
+    if (!idx.isValid()){
+        emit showError(tr("Could not retrieve index of the last inserted frame!"));
+        return;
+    }
+    emit forward(cmbPrexistent->currentText(),idx.data().toInt());
 }
