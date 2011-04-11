@@ -7,6 +7,7 @@ GenericTab(1,inTDateTime,parent, flags){
 
     setupUi(this);
 
+    viewMinorStrata=0;
     tRefMinorStrata=0;
     buttonGroup=0;
     nullDellegate=0;
@@ -31,6 +32,7 @@ FrmMinorStrata::~FrmMinorStrata()
     if (nullDellegate!=0) delete nullDellegate;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
+    if (viewMinorStrata!=0) delete viewMinorStrata;
 }
 
 void FrmMinorStrata::setReadOnly(const bool bRO)
@@ -81,6 +83,8 @@ void FrmMinorStrata::createRecord()
         this->groupDetails->setVisible(true);
 
     setReadOnly(false);
+
+    //TODO: UI defaults
 
     if (tRefMinorStrata==0) return ;
 
@@ -252,6 +256,7 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
         }
         button->setEnabled(bError);
         setReadOnly(!bError);
+        setMinorStrataQuery();
     }
 }
 void FrmMinorStrata::initUI()
@@ -270,6 +275,38 @@ void FrmMinorStrata::initUI()
     buttonGroup=new ButtonGroup(this);
     buttonGroup->addButton(radioActive,0);
     buttonGroup->addButton(radioInactive,1);
+
+    tableView->setModel(viewMinorStrata);
+    tableView->setAlternatingRowColors(true);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+}
+
+void FrmMinorStrata::resizeEvent ( QResizeEvent * event )
+{
+    resizeToVisibleColumns(tableView);
+}
+
+void FrmMinorStrata::resizeToVisibleColumns ( QTableView* table )
+{
+    int ct=0;
+    for (int i=0; i < table->model()->columnCount(); ++i)
+        if (!table->isColumnHidden(i)) ++ ct;
+
+    for (int i=0; i < table->model()->columnCount(); ++i)
+        if (!table->isColumnHidden(i))
+            table->setColumnWidth(i,table->width()/ct);
+
+}
+
+void FrmMinorStrata::setMinorStrataQuery()
+{
+    viewMinorStrata->setQuery(
+tr("SELECT     dbo.Ref_Minor_Strata.Name, F1.Date_Local AS start_date, F2.Date_Local AS end_date, dbo.Ref_Minor_Strata.IsClosed") +
+tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
+tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
+tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
+tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
+);
 }
 
 void FrmMinorStrata::initModels()
@@ -282,6 +319,14 @@ void FrmMinorStrata::initModels()
     tRefMinorStrata->setRelation(6, QSqlRelation(tr("Ref_No_Recording_Activities"), tr("ID"), tr("Name")));
     tRefMinorStrata->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tRefMinorStrata->select();
+
+    viewMinorStrata = new QSqlQueryModel;
+    setMinorStrataQuery();
+    viewMinorStrata->setHeaderData(0, Qt::Horizontal, tr("Name"));
+    viewMinorStrata->setHeaderData(1, Qt::Horizontal, tr("Start"));
+    viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
+    viewMinorStrata->setHeaderData(3, Qt::Horizontal, tr("Closed"));
+
 }
 
 bool FrmMinorStrata::getDateModel(const int dtField, QSqlQueryModel& model)

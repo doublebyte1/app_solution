@@ -33,6 +33,9 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         void                                   onButtonClick(QAbstractButton * button);
 
     private:
+        void                                   resizeToVisibleColumns ( QTableView* table );
+        void                                   resizeEvent ( QResizeEvent * event );
+        void                                   setMinorStrataQuery();
         void                                   setReadOnly(const bool bRO);
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   initModels();
@@ -40,6 +43,7 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         void                                   initUI();
         bool                                   getDateModel(const int dtField, QSqlQueryModel& model);
         QSqlRelationalTableModel*              tRefMinorStrata;
+        QSqlQueryModel*                        viewMinorStrata;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
