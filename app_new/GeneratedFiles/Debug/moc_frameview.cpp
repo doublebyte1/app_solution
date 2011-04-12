@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frameview.h'
 **
-** Created: Thu 7. Apr 20:49:08 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+** Created: Tue 12. Apr 12:15:08 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'frameview.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.7.0. It"
+#error "This file was generated using the moc from 4.6.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,7 +20,7 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_CustomAction[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
        3,   14, // methods
@@ -94,7 +94,7 @@ void CustomAction::triggered(const QModelIndex & _t1)
 static const uint qt_meta_data_ComboBoxItem[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
        1,   14, // methods
@@ -153,7 +153,7 @@ int ComboBoxItem::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 static const uint qt_meta_data_TreeItemDelegate[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
        0,    0, // methods
@@ -202,7 +202,7 @@ int TreeItemDelegate::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 static const uint qt_meta_data_FrameView[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
        5,   14, // methods

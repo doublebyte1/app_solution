@@ -11,6 +11,7 @@ GenericTab(1,inTDateTime,parent, flags){
     tRefMinorStrata=0;
     buttonGroup=0;
     nullDellegate=0;
+    mapper1=0;
     mapperStartDt=0;
     mapperEndDt=0;
 
@@ -60,6 +61,33 @@ void FrmMinorStrata::setReadOnly(const bool bRO)
 
 }
 
+void FrmMinorStrata::disableReasonCombo()
+{
+    if (static_cast<QRadioButton*>(QObject::sender())==0) return;
+    cmbReasons->setEnabled(static_cast<QRadioButton*>(QObject::sender())!=radioActive);
+
+}
+
+void FrmMinorStrata::setActiveReason(bool bActive)
+{
+    if (bActive){
+        int index=cmbReasons->findText(qApp->translate("null_replacements", strNa ));
+        cmbReasons->setCurrentIndex(index);
+    }
+}
+
+void FrmMinorStrata::previewRow(QModelIndex index)
+{
+    if (!this->groupDetails->isVisible())
+        this->groupDetails->setVisible(true);
+
+    setReadOnly(true);
+}
+
+void FrmMinorStrata::onShowForm()
+{
+    setMinorStrataQuery();
+}
 
 void FrmMinorStrata::viewRecord()
 {
@@ -84,11 +112,27 @@ void FrmMinorStrata::createRecord()
 
     setReadOnly(false);
 
-    //TODO: UI defaults
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     if (tRefMinorStrata==0) return ;
 
+    //tRefMinorStrata->select();
+
+    while(tRefMinorStrata->canFetchMore())
+        tRefMinorStrata->fetchMore();
+
+    //Check for uncomitted changes
+    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
+    if (!idx.isValid()) return;
+
+    if (tRefMinorStrata->isDirty(idx))
+        tRefMinorStrata->revertAll();
+
     tRefMinorStrata->insertRow(tRefMinorStrata->rowCount());
+
+    qDebug() << tRefMinorStrata->rowCount() << endl;
+
+    if (mapper1!=0) delete mapper1;
 
     mapper1= new QDataWidgetMapper(this);
     mapper1->setModel(tRefMinorStrata);
@@ -116,6 +160,14 @@ void FrmMinorStrata::createRecord()
     mapper1->addMapping(buttonGroup,5);
     mapper1->addMapping(textComments,7);
     mapper1->toLast();
+
+    //UI defaults: put this somewhere else
+    lineNew->clear();
+    radioActive->click();
+    textComments->clear();
+    //TODO: put dates from the frame as default
+
+    qDebug() << mapper1->currentIndex() << endl;
 
     if(!m_tDateTime) return;
     m_tDateTime->select();
@@ -150,7 +202,10 @@ void FrmMinorStrata::createRecord()
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
-    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
+    qDebug() << mapperStartDt->currentIndex() << endl;
+    qDebug() << mapperEndDt->currentIndex() << endl;
+
+    idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
     tRefMinorStrata->setData(idx,m_varData);//id_sub_frame
 
     QString strQuery=
@@ -215,6 +270,9 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
             }
         }
 
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
+
         int startIdx=m_tDateTime->rowCount()-2;
         int endIdx=m_tDateTime->rowCount()-1;
 
@@ -256,7 +314,11 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
         }
         button->setEnabled(bError);
         setReadOnly(!bError);
-        setMinorStrataQuery();
+        if (!bError){
+            setMinorStrataQuery();
+            tableView->selectRow(0);
+            tRefMinorStrata->select();
+        }
     }
 }
 void FrmMinorStrata::initUI()
@@ -279,6 +341,8 @@ void FrmMinorStrata::initUI()
     tableView->setModel(viewMinorStrata);
     tableView->setAlternatingRowColors(true);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->verticalHeader()->hide();
+
 }
 
 void FrmMinorStrata::resizeEvent ( QResizeEvent * event )
@@ -301,12 +365,16 @@ void FrmMinorStrata::resizeToVisibleColumns ( QTableView* table )
 void FrmMinorStrata::setMinorStrataQuery()
 {
     viewMinorStrata->setQuery(
-tr("SELECT     dbo.Ref_Minor_Strata.Name, F1.Date_Local AS start_date, F2.Date_Local AS end_date, dbo.Ref_Minor_Strata.IsClosed") +
-tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
-tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
-tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
-tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
-);
+    tr("SELECT     dbo.Ref_Minor_Strata.Name, F1.Date_Local AS [Start Date], F2.Date_Local AS [End Date], ") +
+    tr("CASE WHEN dbo.Ref_Minor_Strata.IsClosed=0 THEN 'false' ELSE 'true' END Closed ") +
+    tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
+    tr("                      WHERE     (dbo.Ref_Minor_Strata.id_frame_time = ") + this->m_varData.toString() + tr(")") +
+    tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
+    );
+
+    resizeToVisibleColumns(tableView);
 }
 
 void FrmMinorStrata::initModels()
@@ -321,7 +389,6 @@ void FrmMinorStrata::initModels()
     tRefMinorStrata->select();
 
     viewMinorStrata = new QSqlQueryModel;
-    setMinorStrataQuery();
     viewMinorStrata->setHeaderData(0, Qt::Horizontal, tr("Name"));
     viewMinorStrata->setHeaderData(1, Qt::Horizontal, tr("Start"));
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
@@ -380,4 +447,3 @@ void FrmMinorStrata::initMappers()
     //mapperStartDt->toFirst();
     //mapperEndDt->toFirst();
 }
-

@@ -79,6 +79,10 @@ void MainFrm::initTabs()
              connect(vTabs.at(i), SIGNAL(forward(const QString, QVariant)), vTabs.at(i+1),
             SLOT(getPar(const QString, QVariant)));
          }
+
+         connect(vTabs.at(i), SIGNAL(gotPar()), vTabs.at(i),
+        SLOT(onShowForm()));
+
      }
 
 }

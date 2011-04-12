@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Mon 11. Apr 11:11:31 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Tue 12. Apr 19:04:33 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -68,7 +68,6 @@ public:
     QPushButton *pushPrevious;
     QPushButton *pushNext;
     QPushButton *pushNew;
-    QPushButton *pushView;
     QButtonGroup *buttonGroup;
 
     void setupUi(QWidget *frmminorstrata)
@@ -96,6 +95,7 @@ public:
 
         tableView = new QTableView(frmminorstrata);
         tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setShowGrid(false);
 
         gridLayout_2->addWidget(tableView, 1, 1, 2, 1);
 
@@ -262,15 +262,6 @@ public:
 
         gridLayout_2->addWidget(pushNew, 3, 2, 1, 1);
 
-        pushView = new QPushButton(frmminorstrata);
-        pushView->setObjectName(QString::fromUtf8("pushView"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/app_new/mail_find.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushView->setIcon(icon3);
-        pushView->setCheckable(false);
-
-        gridLayout_2->addWidget(pushView, 1, 2, 1, 1);
-
 #ifndef QT_NO_SHORTCUT
         label_6->setBuddy(tableView);
         label_5->setBuddy(lineNew);
@@ -278,9 +269,12 @@ public:
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(frmminorstrata);
-        QObject::connect(pushView, SIGNAL(clicked()), frmminorstrata, SLOT(viewRecord()));
         QObject::connect(pushNew, SIGNAL(clicked()), frmminorstrata, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmminorstrata, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(radioActive, SIGNAL(clicked(bool)), frmminorstrata, SLOT(setActiveReason(bool)));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmminorstrata, SLOT(previewRow(QModelIndex)));
+        QObject::connect(radioActive, SIGNAL(clicked(bool)), frmminorstrata, SLOT(disableReasonCombo()));
+        QObject::connect(radioInactive, SIGNAL(clicked()), frmminorstrata, SLOT(disableReasonCombo()));
 
         QMetaObject::connectSlotsByName(frmminorstrata);
     } // setupUi
@@ -312,16 +306,6 @@ public:
         pushNew->setWhatsThis(QApplication::translate("frmminorstrata", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
-#ifndef QT_NO_TOOLTIP
-        pushView->setToolTip(QApplication::translate("frmminorstrata", "View details", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        pushView->setStatusTip(QApplication::translate("frmminorstrata", "View details", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        pushView->setWhatsThis(QApplication::translate("frmminorstrata", "View details of this record", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        pushView->setText(QString());
     } // retranslateUi
 
 };

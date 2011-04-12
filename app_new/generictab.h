@@ -55,21 +55,23 @@ class GenericTab : public QWidget
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
-        void            setLbHead(QLabel* inLbHeader){lbHead=inLbHeader;}
+        void                    setLbHead(QLabel* inLbHeader){lbHead=inLbHeader;}
 
     public slots:
-        void            fillHeader(const QString str){lbHead->setText(str);}
-        void            getPar(const QString str, QVariant varData){m_varData=varData;}
+        void                    fillHeader(const QString str){lbHead->setText(str);}
+        void                    getPar(const QString str, QVariant varData){m_varData=varData; emit gotPar();}
+        virtual void            onShowForm()=0;
 
     signals:
-        void            lockControls(bool bLock,QList<QWidget*>& lWidgets);
-        void            forward(const QString str, QVariant data);
-        void            navigate(const bool bNext, const int idx);
-        void            hideFrameDetails();
-        void            showFrameDetails(const FrmFrameDetails::Mode mode,
-                            const FrmFrameDetails::Persistence persistence, const int frameId);
-        void            showStatus(QString str);//!< signal for showing messages in the status bar
-        void            showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+        void                    lockControls(bool bLock,QList<QWidget*>& lWidgets);
+        void                    forward(const QString str, QVariant data);
+        void                    gotPar();
+        void                    navigate(const bool bNext, const int idx);
+        void                    hideFrameDetails();
+        void                    showFrameDetails(const FrmFrameDetails::Mode mode,
+                                    const FrmFrameDetails::Persistence persistence, const int frameId);
+        void                    showStatus(QString str);//!< signal for showing messages in the status bar
+        void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     protected:
         virtual void        setHeader()=0;

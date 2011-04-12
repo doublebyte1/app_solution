@@ -26,8 +26,15 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         FrmMinorStrata(DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmMinorStrata();
 
+    signals:
+
+    public slots:
+        void                                  onShowForm();
+
     private slots:
-        //void                                   showDetails();
+        void                                   previewRow(QModelIndex index);
+        void                                   setActiveReason(bool bActive);
+        void                                   disableReasonCombo();
         void                                   viewRecord();
         void                                   createRecord();
         void                                   onButtonClick(QAbstractButton * button);
