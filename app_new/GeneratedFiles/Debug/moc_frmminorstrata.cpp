@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Mon 11. Apr 11:11:09 2011
+** Created: Wed 13. Apr 18:08:07 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,16 +31,22 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      16,   15,   15,   15, 0x08,
+      16,   15,   15,   15, 0x0a,
       29,   15,   15,   15, 0x08,
-      51,   44,   15,   15, 0x08,
+      36,   15,   15,   15, 0x08,
+      57,   51,   15,   15, 0x08,
+      89,   81,   15,   15, 0x08,
+     111,   15,   15,   15, 0x08,
+     139,  132,   15,   15, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmMinorStrata[] = {
-    "FrmMinorStrata\0\0viewRecord()\0"
-    "createRecord()\0button\0"
+    "FrmMinorStrata\0\0onShowForm()\0next()\0"
+    "createRecord()\0index\0previewRow(QModelIndex)\0"
+    "bActive\0setActiveReason(bool)\0"
+    "disableReasonCombo()\0button\0"
     "onButtonClick(QAbstractButton*)\0"
 };
 
@@ -75,12 +81,16 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: viewRecord(); break;
-        case 1: createRecord(); break;
-        case 2: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 0: onShowForm(); break;
+        case 1: next(); break;
+        case 2: createRecord(); break;
+        case 3: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 4: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: disableReasonCombo(); break;
+        case 6: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 7;
     }
     return _id;
 }

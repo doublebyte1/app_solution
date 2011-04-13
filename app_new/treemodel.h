@@ -12,6 +12,12 @@
 
 class TreeItem;
 
+//! Tree Model Class
+/*!
+This class implements the concept of a tree model, that can be pluged into a tree widget.
+A tree model is a set of tree items;
+*/
+
 class TreeModel : public QAbstractItemModel
 {
     Q_OBJECT

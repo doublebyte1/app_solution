@@ -166,8 +166,11 @@ void FrmFrame::initMappers()
     mapper1->toLast();
     mapper2->toLast();
 
+    while(m_tDateTime->canFetchMore())
+        m_tDateTime->fetchMore();
+
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
-    mapperEndDt->toLast();
+    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
 }
 
@@ -182,8 +185,6 @@ bool FrmFrame::getCurrentFrame(int& id)
 void FrmFrame::apply()
 {
     bool bError=false;
-    int startIdx=mapperStartDt->currentIndex();
-    int endIdx=mapperEndDt->currentIndex();
     //First insert the dates...
     if (!mapperStartDt->submit() || !mapperEndDt->submit()){
         if (m_tDateTime->lastError().type()!=QSqlError::NoError)
@@ -203,14 +204,23 @@ void FrmFrame::apply()
         }
     }
 
-    mapperStartDt->setCurrentIndex(startIdx);
-    mapperEndDt->setCurrentIndex(endIdx);
+    while(m_tDateTime->canFetchMore())
+        m_tDateTime->fetchMore();
+
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
+    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
+
+    int startIdx=mapperStartDt->currentIndex();
+    int endIdx=mapperEndDt->currentIndex();
 
     if (bError) {
         emit showError(tr("Could not create dates in the database!"));
     }else{
 
     //Now insert the record
+    while(tFrameTime->canFetchMore())
+        tFrameTime->fetchMore();
+
     tFrameTime->insertRow(tFrameTime->rowCount());
     QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);//id frame
     if (idx.isValid()){
@@ -254,6 +264,9 @@ void FrmFrame::apply()
 
 void FrmFrame::next()
 {
+    while(tFrameTime->canFetchMore())
+    tFrameTime->fetchMore();
+
     QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
     if (!idx.isValid()){
         emit showError(tr("Could not retrieve index of the last inserted frame!"));

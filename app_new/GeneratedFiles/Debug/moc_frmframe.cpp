@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Fri 8. Apr 11:46:59 2011
+** Created: Wed 13. Apr 17:16:27 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,16 +31,17 @@ static const uint qt_meta_data_FrmFrame[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      10,    9,    9,    9, 0x08,
-      31,    9,    9,    9, 0x08,
-      52,    9,    9,    9, 0x08,
-      59,    9,    9,    9, 0x08,
+      10,    9,    9,    9, 0x0a,
+      23,    9,    9,    9, 0x08,
+      44,    9,    9,    9, 0x08,
+      65,    9,    9,    9, 0x08,
+      72,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrame[] = {
-    "FrmFrame\0\0onHideFrameDetails()\0"
+    "FrmFrame\0\0onShowForm()\0onHideFrameDetails()\0"
     "onShowFrameDetails()\0next()\0apply()\0"
 };
 
@@ -75,13 +76,14 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onHideFrameDetails(); break;
-        case 1: onShowFrameDetails(); break;
-        case 2: next(); break;
-        case 3: apply(); break;
+        case 0: onShowForm(); break;
+        case 1: onHideFrameDetails(); break;
+        case 2: onShowFrameDetails(); break;
+        case 3: next(); break;
+        case 4: apply(); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

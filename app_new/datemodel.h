@@ -10,7 +10,8 @@
 
 //! Date Model Class
 /*!
-//TODO: add a description here later
+//This class implements a Model to use with the CustomTimeCtrl widget; this model represents the table "GL_Dates" on the database,
+and for each record filled by the user (with local date), we need to fill the rest of the columns.
 */
 
 class DateModel: public QSqlTableModel

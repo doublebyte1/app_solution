@@ -1,6 +1,12 @@
 #ifndef GLOBALDEFS_H
 #define GLOBALDEFS_H
 
+//! Global Defs
+/*!
+This is just a file where we store all the string constants, in a translating friendly way,
+so that we are able to change them easily on a global basis.
+*/
+
 static const char *strNa = 
      QT_TRANSLATE_NOOP("null_replacements", "n/a");
 

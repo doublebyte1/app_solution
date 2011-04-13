@@ -1,10 +1,11 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_mainfrm.h"
+#include "CustomMsgBox.h"
+#include "frmframedetails.h"
 #include "frmframe.h"
 #include "frmminorstrata.h"
-#include "frmframedetails.h"
-#include "CustomMsgBox.h"
+#include "frmcell.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -40,6 +41,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
         FrmFrameDetails         *pFrmFrameDetails;
+        FrmCell                 *pFrmCell;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
 

@@ -26,6 +26,9 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrame(DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrame();
 
+    public slots:
+        void                                   onShowForm(){;}//does nothing
+
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();

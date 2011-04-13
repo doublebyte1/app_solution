@@ -11,6 +11,7 @@ GenericTab(1,inTDateTime,parent, flags){
     tRefMinorStrata=0;
     buttonGroup=0;
     nullDellegate=0;
+    mapper1=0;
     mapperStartDt=0;
     mapperEndDt=0;
 
@@ -35,9 +36,30 @@ FrmMinorStrata::~FrmMinorStrata()
     if (viewMinorStrata!=0) delete viewMinorStrata;
 }
 
+void FrmMinorStrata::next()
+{
+    //TODO: retrieve the selection model properly
+
+    if (!m_selectedIdx.isValid()){
+        emit showError(tr("You must select only one Minor Strata!"));
+        return;
+    }
+
+    QModelIndex idx1=m_selectedIdx;
+    QModelIndex idx2=viewMinorStrata->index(idx1.row(),1);//name of selected index
+    QModelIndex idx3=viewMinorStrata->index(idx1.row(),0);//id of selected index
+
+    if (!idx1.isValid() || !idx2.isValid() || !idx3.isValid())
+    {
+        emit showError(tr("Unable to retrieve information about selected index!"));
+        return;
+    }
+
+    emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString(),idx3.data());
+}
 void FrmMinorStrata::setReadOnly(const bool bRO)
 {
-
+    lineNew->setEnabled(!bRO);
     label_3->setEnabled(!bRO);
     cmbGLS->setEnabled(!bRO);
     groupActivity->setEnabled(!bRO);
@@ -60,99 +82,99 @@ void FrmMinorStrata::setReadOnly(const bool bRO)
 
 }
 
-
-void FrmMinorStrata::viewRecord()
+void FrmMinorStrata::disableReasonCombo()
 {
-    /*
+    if (static_cast<QRadioButton*>(QObject::sender())==0) return;
+    cmbReasons->setEnabled(static_cast<QRadioButton*>(QObject::sender())!=radioActive);
+}
+
+void FrmMinorStrata::setActiveReason(bool bActive)
+{
+    if (bActive){
+        int index=cmbReasons->findText(qApp->translate("null_replacements", strNa ));
+        cmbReasons->setCurrentIndex(index);
+    }
+}
+
+void FrmMinorStrata::previewRow(QModelIndex index)
+{
+    m_selectedIdx=index;//stores the index
+
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     setReadOnly(true);
 
-    QSqlQueryModel DtModel1,DtModel2;
-    if (!getDateModel(1,DtModel1)) emit showError(tr("Could not init date model!"));
-    if (!getDateModel(2,DtModel2)) emit showError(tr("Could not init date model!"));
-    mapperStartDt->setModel(&DtModel1);
-    mapperEndDt->setModel(&DtModel2);
-*/
+    QModelIndex idx=viewMinorStrata->index(index.row(),0);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+
+    QString id=idx.data().toString();
+
+    tRefMinorStrata->setFilter(tr("Ref_Minor_Strata.ID=")+id);
+    if (tRefMinorStrata->rowCount()!=1)
+        return;
+
+    mapper1->toLast();
+
+    //Now fix the dates
+    idx=tRefMinorStrata->index(0,1);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+    QString strStartDt=idx.data().toString();
+    idx=tRefMinorStrata->index(0,2);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+    QString strEndDt=idx.data().toString();
+
+    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+    if (m_tDateTime->rowCount()!=2)
+        return;
+
+    mapperEndDt->toLast();
+    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 }
 
-void FrmMinorStrata::createRecord()
+void FrmMinorStrata::onShowForm()
+{
+    //Make sure all models are up to date, and without filters
+    tRefMinorStrata->select();
+    m_tDateTime->select();
+    setMinorStrataQuery();
+
+    if (tRefMinorStrata==0) return ;
+    if (!tRefMinorStrata->filter().isEmpty()) tRefMinorStrata->setFilter(tr(""));
+
+    if (m_tDateTime==0) return ;
+    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
+
+    //filter the relational model from GLS
+    filterGLS();
+}
+
+void FrmMinorStrata::uI4NewRecord()
 {
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     setReadOnly(false);
 
-    //TODO: UI defaults
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
-    if (tRefMinorStrata==0) return ;
+    lineNew->clear();
+    radioActive->click();
+    textComments->clear();
+}
 
-    tRefMinorStrata->insertRow(tRefMinorStrata->rowCount());
-
-    mapper1= new QDataWidgetMapper(this);
-    mapper1->setModel(tRefMinorStrata);
-    mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-
-    if (nullDellegate!=0) delete nullDellegate;
-    QList<int> lCmb;
-    lCmb << 4 << 5 << 6;
-    QList<int> lText;
-    lText << 7;
-    nullDellegate=new NullRelationalDelegate(lCmb,lText);
-    mapper1->setItemDelegate(nullDellegate);
-
-    cmbGLS->setModel(tRefMinorStrata->relationModel(4));
-    cmbGLS->setModelColumn(
-        tRefMinorStrata->relationModel(4)->fieldIndex(tr("Name")));
-
-    cmbReasons->setModel(tRefMinorStrata->relationModel(6));
-    cmbReasons->setModelColumn(
-        tRefMinorStrata->relationModel(6)->fieldIndex(tr("Name")));
-
-    mapper1->addMapping(lineNew, 8);
-    mapper1->addMapping(cmbGLS, 4);
-    mapper1->addMapping(cmbReasons, 6);
-    mapper1->addMapping(buttonGroup,5);
-    mapper1->addMapping(textComments,7);
-    mapper1->toLast();
-
-    if(!m_tDateTime) return;
-    m_tDateTime->select();
-
-    bool bDate, bTime;
-    customDtStart->getIsDateTime(bDate,bTime);
-    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
-        emit showError(tr("Could not insert start date!"));
-        return;
-    }
-    customDtEnd->getIsDateTime(bDate,bTime);
-    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
-        emit showError(tr("Could not insert start date!"));
-        return;
-    }
-
-    if (mapperStartDt!=0) delete mapperStartDt;
-    if (mapperEndDt!=0) delete mapperEndDt;
-
-    mapperStartDt= new QDataWidgetMapper(this);
-    mapperStartDt->setModel(m_tDateTime);
-    mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
-
-    mapperEndDt= new QDataWidgetMapper(this);
-    mapperEndDt->setModel(m_tDateTime);
-    mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
-
-    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
-    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
-
-    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
-    tRefMinorStrata->setData(idx,m_varData);//id_sub_frame
-
+void FrmMinorStrata::filterGLS()
+{
     QString strQuery=
     tr("SELECT     dbo.FR_F2GLS.id_gls ") +
     tr("FROM         dbo.FR_Sub_Frame INNER JOIN") +
@@ -185,6 +207,55 @@ void FrmMinorStrata::createRecord()
     tRefMinorStrata->relationModel(4)->setFilter(strFilter);
 }
 
+void FrmMinorStrata::createRecord()
+{
+    //removing filters
+    if (tRefMinorStrata==0) return ;
+    if (!tRefMinorStrata->filter().isEmpty()) tRefMinorStrata->setFilter(tr(""));
+
+    if (m_tDateTime==0) return ;
+    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
+
+    while(tRefMinorStrata->canFetchMore())
+        tRefMinorStrata->fetchMore();
+
+    //Check for uncomitted changes
+    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
+    if (!idx.isValid()) return;
+
+    if (tRefMinorStrata->isDirty(idx))
+        tRefMinorStrata->revertAll();
+
+    tRefMinorStrata->insertRow(tRefMinorStrata->rowCount());
+
+    mapper1->toLast();
+
+    //TODO: put dates from the frame as default
+
+    if(!m_tDateTime) return;
+    m_tDateTime->select();
+
+    bool bDate, bTime;
+    customDtStart->getIsDateTime(bDate,bTime);
+    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
+        emit showError(tr("Could not insert start date!"));
+        return;
+    }
+    customDtEnd->getIsDateTime(bDate,bTime);
+    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
+        emit showError(tr("Could not insert start date!"));
+        return;
+    }
+
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
+    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
+
+    idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
+    tRefMinorStrata->setData(idx,m_varData);//id_sub_frame
+
+    uI4NewRecord();//init UI
+}
+
 void FrmMinorStrata::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
@@ -214,6 +285,9 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
                 bError=true;
             }
         }
+
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
 
         int startIdx=m_tDateTime->rowCount()-2;
         int endIdx=m_tDateTime->rowCount()-1;
@@ -256,7 +330,11 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
         }
         button->setEnabled(bError);
         setReadOnly(!bError);
-        setMinorStrataQuery();
+        if (!bError){
+            setMinorStrataQuery();
+            tableView->selectRow(0);
+            tRefMinorStrata->select();
+        }
     }
 }
 void FrmMinorStrata::initUI()
@@ -282,6 +360,8 @@ void FrmMinorStrata::initUI()
     tableView->verticalHeader()->hide();
     tableView->setSelectionMode(
         QAbstractItemView::SingleSelection);
+    tableView->horizontalHeader()->setClickable(false);
+    tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
 }
 
 void FrmMinorStrata::resizeEvent ( QResizeEvent * event )
@@ -304,12 +384,17 @@ void FrmMinorStrata::resizeToVisibleColumns ( QTableView* table )
 void FrmMinorStrata::setMinorStrataQuery()
 {
     viewMinorStrata->setQuery(
-tr("SELECT     dbo.Ref_Minor_Strata.Name, F1.Date_Local AS start_date, F2.Date_Local AS end_date, dbo.Ref_Minor_Strata.IsClosed") +
-tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
-tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
-tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
-tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
-);
+    tr("SELECT     dbo.Ref_Minor_Strata.ID, dbo.Ref_Minor_Strata.Name, F1.Date_Local AS [Start Date], F2.Date_Local AS [End Date], ") +
+    tr("CASE WHEN dbo.Ref_Minor_Strata.IsClosed=0 THEN 'false' ELSE 'true' END Closed ") +
+    tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
+    tr("                      WHERE     (dbo.Ref_Minor_Strata.id_frame_time = ") + this->m_varData.toString() + tr(")") +
+    tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
+    );
+
+    tableView->hideColumn(0);
+    resizeToVisibleColumns(tableView);
 }
 
 void FrmMinorStrata::initModels()
@@ -324,7 +409,6 @@ void FrmMinorStrata::initModels()
     tRefMinorStrata->select();
 
     viewMinorStrata = new QSqlQueryModel;
-    setMinorStrataQuery();
     viewMinorStrata->setHeaderData(0, Qt::Horizontal, tr("Name"));
     viewMinorStrata->setHeaderData(1, Qt::Horizontal, tr("Start"));
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
@@ -343,8 +427,7 @@ bool FrmMinorStrata::getDateModel(const int dtField, QSqlQueryModel& model)
 
 void FrmMinorStrata::initMappers()
 {
-    /*
-    if (tRefMinorStrata==0) return ;
+    if (mapper1!=0) delete mapper1;
 
     mapper1= new QDataWidgetMapper(this);
     mapper1->setModel(tRefMinorStrata);
@@ -371,15 +454,19 @@ void FrmMinorStrata::initMappers()
     mapper1->addMapping(cmbReasons, 6);
     mapper1->addMapping(buttonGroup,5);
     mapper1->addMapping(textComments,7);
-    //mapper1->toLast();
-*/
-    /*
-    if (m_tDateTime==0) return ;
+
+    if (mapperStartDt!=0) delete mapperStartDt;
+    if (mapperEndDt!=0) delete mapperEndDt;
 
     mapperStartDt= new QDataWidgetMapper(this);
-    mapperEndDt= new QDataWidgetMapper(this);
-*/
-    //mapperStartDt->toFirst();
-    //mapperEndDt->toFirst();
-}
+    mapperStartDt->setModel(m_tDateTime);
+    mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    mapperStartDt->setItemDelegate(new QItemDelegate(this));
+    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
 
+    mapperEndDt= new QDataWidgetMapper(this);
+    mapperEndDt->setModel(m_tDateTime);
+    mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    mapperEndDt->setItemDelegate(new QItemDelegate(this));
+    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+}

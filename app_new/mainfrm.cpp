@@ -8,6 +8,7 @@ QMainWindow(parent, flags){
     pFrmFrame=0;
     pFrmMinorStrata=0;
     pFrmFrameDetails=0;
+    pFrmCell=0;
     setupUi(this);
     initTabs();
 }
@@ -18,6 +19,7 @@ MainFrm::~MainFrm()
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
+    if (pFrmCell!=0) delete pFrmCell;
 }
 
 void MainFrm::initTabs()
@@ -40,6 +42,12 @@ void MainFrm::initTabs()
         vTabs.push_back(pFrmMinorStrata);
     }
     this->tabWidget->insertTab(1,pFrmMinorStrata, tr("Minor Strata"));
+
+    if (pFrmCell==0){
+        pFrmCell=new FrmCell(tDateTime);
+        vTabs.push_back(pFrmCell);
+    }
+    this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
 
     if (pFrmFrameDetails==0){
         pFrmFrameDetails=new FrmFrameDetails();
@@ -79,6 +87,10 @@ void MainFrm::initTabs()
              connect(vTabs.at(i), SIGNAL(forward(const QString, QVariant)), vTabs.at(i+1),
             SLOT(getPar(const QString, QVariant)));
          }
+
+         connect(vTabs.at(i), SIGNAL(gotPar()), vTabs.at(i),
+        SLOT(onShowForm()));
+
      }
 
 }

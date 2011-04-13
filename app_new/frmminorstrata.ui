@@ -41,7 +41,11 @@
     </widget>
    </item>
    <item row="1" column="1" rowspan="2">
-    <widget class="QTableView" name="tableView"/>
+    <widget class="QTableView" name="tableView">
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_5">
@@ -267,30 +271,7 @@
      </property>
      <property name="icon">
       <iconset resource="app_new.qrc">
-       <normaloff>:/app_new/pencil.png</normaloff>:/app_new/pencil.png</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="pushView">
-     <property name="toolTip">
-      <string>View details</string>
-     </property>
-     <property name="statusTip">
-      <string>View details</string>
-     </property>
-     <property name="whatsThis">
-      <string>View details of this record</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="app_new.qrc">
-       <normaloff>:/app_new/mail_find.png</normaloff>:/app_new/mail_find.png</iconset>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
+       <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
      </property>
     </widget>
    </item>
@@ -307,22 +288,6 @@
   <include location="app_new.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>pushView</sender>
-   <signal>clicked()</signal>
-   <receiver>frmminorstrata</receiver>
-   <slot>viewRecord()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>686</x>
-     <y>40</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>355</x>
-     <y>307</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushNew</sender>
    <signal>clicked()</signal>
@@ -355,12 +320,96 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>radioActive</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>setActiveReason(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>527</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>previewRow(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>389</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioActive</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>disableReasonCombo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>527</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioInactive</sender>
+   <signal>clicked()</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>disableReasonCombo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>407</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushNext</sender>
+   <signal>clicked()</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>next()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>652</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showDetails()</slot>
   <slot>viewRecord()</slot>
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>setActiveReason(bool)</slot>
+  <slot>previewRow(QModelIndex)</slot>
+  <slot>disableReasonCombo()</slot>
+  <slot>next()</slot>
  </slots>
  <buttongroups>
   <buttongroup name="buttonGroup"/>
