@@ -279,6 +279,9 @@ void FrmMinorStrata::initUI()
     tableView->setModel(viewMinorStrata);
     tableView->setAlternatingRowColors(true);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->verticalHeader()->hide();
+    tableView->setSelectionMode(
+        QAbstractItemView::SingleSelection);
 }
 
 void FrmMinorStrata::resizeEvent ( QResizeEvent * event )
@@ -326,7 +329,6 @@ void FrmMinorStrata::initModels()
     viewMinorStrata->setHeaderData(1, Qt::Horizontal, tr("Start"));
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
     viewMinorStrata->setHeaderData(3, Qt::Horizontal, tr("Closed"));
-
 }
 
 bool FrmMinorStrata::getDateModel(const int dtField, QSqlQueryModel& model)
