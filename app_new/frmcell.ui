@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>685</width>
+    <width>712</width>
     <height>583</height>
    </rect>
   </property>
@@ -63,7 +63,45 @@
       <string>Details</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="3" column="0" rowspan="3">
+      <item row="0" column="0" colspan="4">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Landing Site</string>
+          </property>
+          <property name="buddy">
+           <cstring>cmbLS</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cmbLS"/>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0" rowspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Start Date</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="CustomTimeCtrl" name="customDtStart"/>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="1" colspan="3">
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" rowspan="4">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QLabel" name="label_3">
@@ -163,56 +201,34 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinNC"/>
+           <widget class="QSpinBox" name="spinNC">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinAC"/>
+           <widget class="QSpinBox" name="spinAC">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinIC"/>
+           <widget class="QSpinBox" name="spinIC">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinOC"/>
+           <widget class="QSpinBox" name="spinOC">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
          </layout>
-        </item>
-       </layout>
-      </item>
-      <item row="5" column="1" colspan="3">
-       <widget class="QDialogButtonBox" name="buttonBox">
-        <property name="standardButtons">
-         <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="4">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Landing Site</string>
-          </property>
-          <property name="buddy">
-           <cstring>cmbLS</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="cmbLS"/>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0" rowspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Start Date</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="CustomTimeCtrl" name="customDtStart"/>
         </item>
        </layout>
       </item>
@@ -242,12 +258,20 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="2">
+       <widget class="QPlainTextEdit" name="textComments"/>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Comments</string>
+        </property>
+        <property name="buddy">
+         <cstring>textComments</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
-     <zorder>buttonBox</zorder>
-     <zorder></zorder>
-     <zorder></zorder>
-     <zorder>toolButton</zorder>
-     <zorder>label_6</zorder>
     </widget>
    </item>
    <item>
@@ -310,6 +334,8 @@
   <tabstop>spinIC</tabstop>
   <tabstop>spinOE</tabstop>
   <tabstop>spinOC</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>textComments</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>pushPrevious</tabstop>
   <tabstop>pushNext</tabstop>
@@ -317,5 +343,42 @@
  <resources>
   <include location="app_new.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushNew</sender>
+   <signal>clicked()</signal>
+   <receiver>frmCell</receiver>
+   <slot>createRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>686</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>frmCell</receiver>
+   <slot>onButtonClick(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>540</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>createRecord()</slot>
+  <slot>onButtonClick(QAbstractButton*)</slot>
+ </slots>
 </ui>

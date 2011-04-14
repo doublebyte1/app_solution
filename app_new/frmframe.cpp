@@ -7,7 +7,6 @@ GenericTab(0,inTDateTime,parent,flags){
     setupUi(this);
 
     tRefFrame=0;
-    //tDateTime;
     tFrameTime=0;
 
     customDtStart->setIsDateTime(true,false,false);
@@ -17,9 +16,6 @@ GenericTab(0,inTDateTime,parent,flags){
     customDtEnd->setIsDateTime(true,false,false);
     customDtEnd->setIsUTC(false);
     customDtEnd->setIsAuto(false);
-
-    connect(this, SIGNAL(forward(QString,QVariant)), this,
-    SLOT(goForward()));
 
     connect(toolView, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));//TODO:change curidex to grabb the id

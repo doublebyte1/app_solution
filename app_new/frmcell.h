@@ -29,31 +29,30 @@ class FrmCell : public GenericTab, public Ui::frmCell
     signals:
 
     public slots:
-        void                                  onShowForm();
+        void                                   onShowForm();
 
     private slots:
-        //void                                   onButtonClick(QAbstractButton * button);
+        //void                                   next();
+        void                                   createRecord();
+        //void                                   previewRow(QModelIndex index);
+        void                                   onButtonClick(QAbstractButton * button);
 
     private:
-        /*
-        void                                   filterGLS();
+        void                                   filterLS();
         void                                   uI4NewRecord();
-        void                                   resizeToVisibleColumns ( QTableView* table );
-        void                                   resizeEvent ( QResizeEvent * event );
-        void                                   setMinorStrataQuery();
-        void                                   setReadOnly(const bool bRO);*/
+        //void                                   resizeEvent ( QResizeEvent * event );
+        void                                   setSampCellQuery();
+        //void                                   setReadOnly(const bool bRO);
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
-        /*
-        bool                                   getDateModel(const int dtField, QSqlQueryModel& model);
-        QSqlRelationalTableModel*              tRefMinorStrata;
-        QSqlQueryModel*                        viewMinorStrata;
+        QSqlRelationalTableModel*              tSampCell;
+        QSqlQueryModel*                        viewCell;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
-        ButtonGroup*                           buttonGroup;
-        NullRelationalDelegate*                nullDellegate;*/
+        //ButtonGroup*                           buttonGroup;
+        //NullRelationalDelegate*                nullDellegate;
 };
 #endif //FRMCELL_H

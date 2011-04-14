@@ -10,13 +10,9 @@ GenericTab(1,inTDateTime,parent, flags){
     viewMinorStrata=0;
     tRefMinorStrata=0;
     buttonGroup=0;
-    nullDellegate=0;
     mapper1=0;
     mapperStartDt=0;
     mapperEndDt=0;
-
-    connect(pushNext, SIGNAL(clicked()), this,
-    SLOT(goForward()));
 
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
@@ -30,7 +26,6 @@ FrmMinorStrata::~FrmMinorStrata()
 {
     if (tRefMinorStrata!=0) delete tRefMinorStrata;
     if (buttonGroup!=0) delete buttonGroup;
-    if (nullDellegate!=0) delete nullDellegate;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
     if (viewMinorStrata!=0) delete viewMinorStrata;
@@ -337,6 +332,7 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
         }
     }
 }
+
 void FrmMinorStrata::initUI()
 {
     setHeader();
@@ -369,22 +365,11 @@ void FrmMinorStrata::resizeEvent ( QResizeEvent * event )
     resizeToVisibleColumns(tableView);
 }
 
-void FrmMinorStrata::resizeToVisibleColumns ( QTableView* table )
-{
-    int ct=0;
-    for (int i=0; i < table->model()->columnCount(); ++i)
-        if (!table->isColumnHidden(i)) ++ ct;
-
-    for (int i=0; i < table->model()->columnCount(); ++i)
-        if (!table->isColumnHidden(i))
-            table->setColumnWidth(i,table->width()/ct);
-
-}
 
 void FrmMinorStrata::setMinorStrataQuery()
 {
     viewMinorStrata->setQuery(
-    tr("SELECT     dbo.Ref_Minor_Strata.ID, dbo.Ref_Minor_Strata.Name, F1.Date_Local AS [Start Date], F2.Date_Local AS [End Date], ") +
+    tr("SELECT     dbo.Ref_Minor_Strata.ID, dbo.Ref_Minor_Strata.Name, CONVERT(CHAR(10),F1.Date_Local,103) AS [Start Date], CONVERT(CHAR(10),F2.Date_Local,103) AS [End Date], ") +
     tr("CASE WHEN dbo.Ref_Minor_Strata.IsClosed=0 THEN 'false' ELSE 'true' END Closed ") +
     tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
     tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
@@ -414,7 +399,7 @@ void FrmMinorStrata::initModels()
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
     viewMinorStrata->setHeaderData(3, Qt::Horizontal, tr("Closed"));
 }
-
+/*
 bool FrmMinorStrata::getDateModel(const int dtField, QSqlQueryModel& model)
 {
     QModelIndex dtID=tRefMinorStrata->index(mapper1->currentIndex(),dtField);
@@ -424,7 +409,7 @@ bool FrmMinorStrata::getDateModel(const int dtField, QSqlQueryModel& model)
 
     return true;
 }
-
+*/
 void FrmMinorStrata::initMappers()
 {
     if (mapper1!=0) delete mapper1;

@@ -4,12 +4,19 @@
 GenericTab::GenericTab(const int index, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
 QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime){
 
+    nullDellegate=0;
+
     connect(this, SIGNAL(lockControls(bool,QList<QWidget*>&)), this,
     SLOT(onLockControls(bool,QList<QWidget*>&)));
+
+    connect(this, SIGNAL(forward(QString,QVariant)), this,
+    SLOT(goForward()));
+
 }
 
 GenericTab::~GenericTab()
 {
+    if (nullDellegate!=0) delete nullDellegate;
 }
 
 bool GenericTab::getDtId(const int mapIdx, int& id)
@@ -34,6 +41,18 @@ void GenericTab::onLockControls(bool bLock,QList<QWidget*>& lWidgets)
 {
     for (int i=0; i < lWidgets.size();++i)
         lWidgets.at(i)->setDisabled(bLock);
+}
+
+void GenericTab::resizeToVisibleColumns ( QTableView* table )
+{
+    int ct=0;
+    for (int i=0; i < table->model()->columnCount(); ++i)
+        if (!table->isColumnHidden(i)) ++ ct;
+
+    for (int i=0; i < table->model()->columnCount(); ++i)
+        if (!table->isColumnHidden(i))
+            table->setColumnWidth(i,table->width()/ct);
+
 }
 
 ///////////////////////////////////////////////

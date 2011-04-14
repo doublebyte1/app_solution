@@ -42,7 +42,7 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
     private:
         void                                   filterGLS();
         void                                   uI4NewRecord();
-        void                                   resizeToVisibleColumns ( QTableView* table );
+        //void                                   resizeToVisibleColumns ( QTableView* table );
         void                                   resizeEvent ( QResizeEvent * event );
         void                                   setMinorStrataQuery();
         void                                   setReadOnly(const bool bRO);
@@ -50,14 +50,14 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
-        bool                                   getDateModel(const int dtField, QSqlQueryModel& model);
+        //bool                                   getDateModel(const int dtField, QSqlQueryModel& model);
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         ButtonGroup*                           buttonGroup;
-        NullRelationalDelegate*                nullDellegate;
+        //NullRelationalDelegate*                nullDellegate;
         QModelIndex                            m_selectedIdx;
 };
 #endif //FRMMINORSTRATA_H

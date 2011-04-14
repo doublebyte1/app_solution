@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Wed 13. Apr 18:32:21 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Thu 14. Apr 14:06:36 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -21,6 +21,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
+#include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
@@ -42,6 +43,13 @@ public:
     QPushButton *pushNew;
     QGroupBox *groupDetails;
     QGridLayout *gridLayout;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label;
+    QComboBox *cmbLS;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *label_2;
+    CustomTimeCtrl *customDtStart;
+    QDialogButtonBox *buttonBox;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_3;
     CustomTimeCtrl *customDtEnd;
@@ -64,15 +72,10 @@ public:
     QSpinBox *spinAC;
     QSpinBox *spinIC;
     QSpinBox *spinOC;
-    QDialogButtonBox *buttonBox;
-    QHBoxLayout *horizontalLayout_3;
-    QLabel *label;
-    QComboBox *cmbLS;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *label_2;
-    CustomTimeCtrl *customDtStart;
     QToolButton *toolButton;
     QLabel *label_6;
+    QPlainTextEdit *textComments;
+    QLabel *label_12;
     QHBoxLayout *horizontalLayout_6;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushPrevious;
@@ -82,7 +85,7 @@ public:
     {
         if (frmCell->objectName().isEmpty())
             frmCell->setObjectName(QString::fromUtf8("frmCell"));
-        frmCell->resize(685, 583);
+        frmCell->resize(712, 583);
         verticalLayout_4 = new QVBoxLayout(frmCell);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         lbHeader = new QLabel(frmCell);
@@ -118,6 +121,42 @@ public:
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
         gridLayout = new QGridLayout(groupDetails);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label = new QLabel(groupDetails);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        horizontalLayout_3->addWidget(label);
+
+        cmbLS = new QComboBox(groupDetails);
+        cmbLS->setObjectName(QString::fromUtf8("cmbLS"));
+
+        horizontalLayout_3->addWidget(cmbLS);
+
+
+        gridLayout->addLayout(horizontalLayout_3, 0, 0, 1, 4);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        label_2 = new QLabel(groupDetails);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+
+        horizontalLayout_2->addWidget(label_2);
+
+        customDtStart = new CustomTimeCtrl(groupDetails);
+        customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
+
+        horizontalLayout_2->addWidget(customDtStart);
+
+
+        gridLayout->addLayout(horizontalLayout_2, 1, 0, 2, 1);
+
+        buttonBox = new QDialogButtonBox(groupDetails);
+        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+        buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
+
+        gridLayout->addWidget(buttonBox, 6, 1, 1, 3);
+
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         label_3 = new QLabel(groupDetails);
@@ -131,7 +170,7 @@ public:
         horizontalLayout_4->addWidget(customDtEnd);
 
 
-        gridLayout->addLayout(horizontalLayout_4, 3, 0, 3, 1);
+        gridLayout->addLayout(horizontalLayout_4, 3, 0, 4, 1);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -208,21 +247,25 @@ public:
 
         spinNC = new QSpinBox(groupDetails);
         spinNC->setObjectName(QString::fromUtf8("spinNC"));
+        spinNC->setEnabled(false);
 
         verticalLayout_3->addWidget(spinNC);
 
         spinAC = new QSpinBox(groupDetails);
         spinAC->setObjectName(QString::fromUtf8("spinAC"));
+        spinAC->setEnabled(false);
 
         verticalLayout_3->addWidget(spinAC);
 
         spinIC = new QSpinBox(groupDetails);
         spinIC->setObjectName(QString::fromUtf8("spinIC"));
+        spinIC->setEnabled(false);
 
         verticalLayout_3->addWidget(spinIC);
 
         spinOC = new QSpinBox(groupDetails);
         spinOC->setObjectName(QString::fromUtf8("spinOC"));
+        spinOC->setEnabled(false);
 
         verticalLayout_3->addWidget(spinOC);
 
@@ -231,42 +274,6 @@ public:
 
 
         gridLayout->addLayout(horizontalLayout, 1, 2, 1, 1);
-
-        buttonBox = new QDialogButtonBox(groupDetails);
-        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
-
-        gridLayout->addWidget(buttonBox, 5, 1, 1, 3);
-
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        label = new QLabel(groupDetails);
-        label->setObjectName(QString::fromUtf8("label"));
-
-        horizontalLayout_3->addWidget(label);
-
-        cmbLS = new QComboBox(groupDetails);
-        cmbLS->setObjectName(QString::fromUtf8("cmbLS"));
-
-        horizontalLayout_3->addWidget(cmbLS);
-
-
-        gridLayout->addLayout(horizontalLayout_3, 0, 0, 1, 4);
-
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_2 = new QLabel(groupDetails);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-
-        horizontalLayout_2->addWidget(label_2);
-
-        customDtStart = new CustomTimeCtrl(groupDetails);
-        customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
-
-        horizontalLayout_2->addWidget(customDtStart);
-
-
-        gridLayout->addLayout(horizontalLayout_2, 1, 0, 2, 1);
 
         toolButton = new QToolButton(groupDetails);
         toolButton->setObjectName(QString::fromUtf8("toolButton"));
@@ -278,9 +285,16 @@ public:
 
         gridLayout->addWidget(label_6, 3, 2, 1, 1);
 
-        buttonBox->raise();
-        toolButton->raise();
-        label_6->raise();
+        textComments = new QPlainTextEdit(groupDetails);
+        textComments->setObjectName(QString::fromUtf8("textComments"));
+
+        gridLayout->addWidget(textComments, 4, 2, 1, 1);
+
+        label_12 = new QLabel(groupDetails);
+        label_12->setObjectName(QString::fromUtf8("label_12"));
+
+        gridLayout->addWidget(label_12, 4, 1, 1, 1);
+
 
         verticalLayout_4->addWidget(groupDetails);
 
@@ -312,6 +326,7 @@ public:
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(cmbLS);
         label_6->setBuddy(toolButton);
+        label_12->setBuddy(textComments);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
         QWidget::setTabOrder(pushNew, cmbLS);
@@ -323,11 +338,15 @@ public:
         QWidget::setTabOrder(spinIE, spinIC);
         QWidget::setTabOrder(spinIC, spinOE);
         QWidget::setTabOrder(spinOE, spinOC);
-        QWidget::setTabOrder(spinOC, buttonBox);
+        QWidget::setTabOrder(spinOC, toolButton);
+        QWidget::setTabOrder(toolButton, textComments);
+        QWidget::setTabOrder(textComments, buttonBox);
         QWidget::setTabOrder(buttonBox, pushPrevious);
         QWidget::setTabOrder(pushPrevious, pushNext);
 
         retranslateUi(frmCell);
+        QObject::connect(pushNew, SIGNAL(clicked()), frmCell, SLOT(createRecord()));
+        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmCell, SLOT(onButtonClick(QAbstractButton*)));
 
         QMetaObject::connectSlotsByName(frmCell);
     } // setupUi
@@ -347,6 +366,8 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
         groupDetails->setTitle(QApplication::translate("frmCell", "Details", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("frmCell", "Landing Site", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("frmCell", "Start Date", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("frmCell", "End Date", 0, QApplication::UnicodeUTF8));
         label_11->setText(QString());
         label_7->setText(QApplication::translate("frmCell", "No of Vessels", 0, QApplication::UnicodeUTF8));
@@ -355,8 +376,6 @@ public:
         label_10->setText(QApplication::translate("frmCell", "Vessels from Outside", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmCell", "Estimated", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("frmCell", "Calculated", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("frmCell", "Landing Site", 0, QApplication::UnicodeUTF8));
-        label_2->setText(QApplication::translate("frmCell", "Start Date", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         toolButton->setToolTip(QApplication::translate("frmCell", "Call the details form", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -368,6 +387,7 @@ public:
 #endif // QT_NO_WHATSTHIS
         toolButton->setText(QApplication::translate("frmCell", "...", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmCell", "Input Details", 0, QApplication::UnicodeUTF8));
+        label_12->setText(QApplication::translate("frmCell", "Comments", 0, QApplication::UnicodeUTF8));
         pushPrevious->setText(QApplication::translate("frmCell", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmCell", "Next", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

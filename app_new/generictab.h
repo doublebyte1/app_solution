@@ -75,22 +75,24 @@ class GenericTab : public QWidget
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     protected:
-        virtual void        setHeader()=0;
-        virtual void        initModels()=0;
-        virtual void        initMappers()=0;
-        virtual void        initUI()=0;
-        bool                getDtId(const int mapIdx, int& id);
-        int                 m_index;
-        DateModel*          m_tDateTime;//pointer to the DateTime Table, hosted on the main form
-        QVariant            m_varData;//this is how we pass data around between forms
+        virtual void            setHeader()=0;
+        virtual void            initModels()=0;
+        virtual void            initMappers()=0;
+        virtual void            initUI()=0;
+        bool                    getDtId(const int mapIdx, int& id);
+        void                    resizeToVisibleColumns ( QTableView* table );
+        int                     m_index;
+        DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
+        QVariant                m_varData;//this is how we pass data around between forms
+        NullRelationalDelegate* nullDellegate;
 
     private slots:
-        void            goBack();
-        void            goForward();
-        void            onLockControls(bool bLock,QList<QWidget*>& lWidgets);
+        void                    goBack();
+        void                    goForward();
+        void                    onLockControls(bool bLock,QList<QWidget*>& lWidgets);
 
     private:
-        QLabel*         lbHead;
+        QLabel*                 lbHead;
 };
 
 Q_DECLARE_METATYPE( QList<QWidget*>);
