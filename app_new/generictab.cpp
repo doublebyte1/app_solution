@@ -21,8 +21,9 @@ GenericTab::~GenericTab()
 
 bool GenericTab::getDtId(const int mapIdx, int& id)
 {
-    QModelIndex idx= m_tDateTime->index(mapIdx,0);
+    QModelIndex idx= m_tDateTime->index(mapIdx,0,QModelIndex());
     if (!idx.isValid()) return false;
+
     id=m_tDateTime->data(idx).toInt();
     return true;
 }

@@ -29,6 +29,7 @@ void MainFrm::initTabs()
     tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
         QSqlDriver::TableName));
     tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tDateTime->setAuto(false);
     tDateTime->select();
 
     if (pFrmFrame==0){

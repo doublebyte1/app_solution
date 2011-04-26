@@ -78,6 +78,14 @@ void FrmCell::previewRow(QModelIndex index)
     if (m_tDateTime->rowCount()!=2)
         return;
 
+    //adjusting the display format of the dates on preview
+    QModelIndex idxDType=m_tDateTime->index(0,4);
+    if (!idxDType.isValid()) return;
+    customDtStart->adjustDateTime(idxDType,idxDType.data());
+    idxDType=m_tDateTime->index(1,4);
+    if (!idxDType.isValid()) return;
+    customDtEnd->adjustDateTime(idxDType,idxDType.data());
+
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 }

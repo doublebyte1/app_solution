@@ -84,14 +84,3 @@ bool DateModel::insertNewRecord(const bool bAuto, const bool bDate, const bool b
     }
     return true;
 }
-
-QVariant DateModel::data(const QModelIndex &index, int role) const
-{
-    QModelIndex idx=this->index(index.row(),4);
-    if (!idx.isValid())
-        return QVariant();
-
-    QVariant var=QSqlTableModel::data(idx);
-    emit getDateType(idx,var);
-    return var;
-}

@@ -21,7 +21,6 @@ class DateModel: public QSqlTableModel
     public:
         bool            insertNewRecord(const bool bAuto, const bool bDate, const bool bTime);
         void            setAuto(const bool bAuto){m_bAuto=bAuto;}
-        QVariant        data(const QModelIndex &index, int role=0) const;
 
     signals:
         void            getDateType(QModelIndex index, QVariant var) const;
