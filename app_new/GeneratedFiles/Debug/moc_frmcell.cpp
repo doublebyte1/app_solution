@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcell.h'
 **
-** Created: Tue 26. Apr 09:52:43 2011
+** Created: Tue 26. Apr 16:41:29 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmCell[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,22 +31,21 @@ static const uint qt_meta_data_FrmCell[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-       9,    8,    8,    8, 0x0a,
-      22,    8,    8,    8, 0x08,
-      43,   37,    8,    8, 0x08,
-      74,   67,    8,    8, 0x08,
+       9,    8,    8,    8, 0x08,
+      30,   24,    8,    8, 0x08,
+      61,   54,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmCell[] = {
-    "FrmCell\0\0onShowForm()\0createRecord()\0"
-    "index\0previewRow(QModelIndex)\0button\0"
+    "FrmCell\0\0createRecord()\0index\0"
+    "previewRow(QModelIndex)\0button\0"
     "onButtonClick(QAbstractButton*)\0"
 };
 
 const QMetaObject FrmCell::staticMetaObject = {
-    { &GenericTab::staticMetaObject, qt_meta_stringdata_FrmCell,
+    { &PreviewTab::staticMetaObject, qt_meta_stringdata_FrmCell,
       qt_meta_data_FrmCell, 0 }
 };
 
@@ -66,23 +65,22 @@ void *FrmCell::qt_metacast(const char *_clname)
         return static_cast<void*>(const_cast< FrmCell*>(this));
     if (!strcmp(_clname, "Ui::frmCell"))
         return static_cast< Ui::frmCell*>(const_cast< FrmCell*>(this));
-    return GenericTab::qt_metacast(_clname);
+    return PreviewTab::qt_metacast(_clname);
 }
 
 int FrmCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = GenericTab::qt_metacall(_c, _id, _a);
+    _id = PreviewTab::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onShowForm(); break;
-        case 1: createRecord(); break;
-        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 3: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 0: createRecord(); break;
+        case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 2: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 3;
     }
     return _id;
 }

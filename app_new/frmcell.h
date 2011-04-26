@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_frmcell.h"
-#include "generictab.h"
+#include "previewtab.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -18,7 +18,7 @@ This class implements the widget that corresponds to the Sampled Cell definition
 applicable to logbook type frames;
 */
 
-class FrmCell : public GenericTab, public Ui::frmCell
+class FrmCell : public PreviewTab, public Ui::frmCell
 {
     Q_OBJECT
 
@@ -28,32 +28,56 @@ class FrmCell : public GenericTab, public Ui::frmCell
 
     signals:
 
-    public slots:
-        void                                   onShowForm();
-
     private slots:
         //void                                   next();
+        //! Create Record
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   createRecord();
+        //! Preview Row
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   previewRow(QModelIndex index);
+        //! On Button Click
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   onButtonClick(QAbstractButton * button);
 
     private:
-        void                                   setReadOnly(const bool bRO);
-        void                                   filterLS();
+        //! Filter combo box
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   filterModel4Combo();
+        //! Set main model query
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   setPreviewQuery();
+        //! Initialize UI for new record
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   uI4NewRecord();
-        //void                                   resizeEvent ( QResizeEvent * event );
-        void                                   setSampCellQuery();
-        //void                                   setReadOnly(const bool bRO);
+
+        //! Set Header widget
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   setHeader(){setLbHead(this->lbHeader);}
+        //! Init Models
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   initModels();
+        //! Init Mappers
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   initMappers();
+        //! Init UI
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   initUI();
+
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
-        //ButtonGroup*                           buttonGroup;
-        //NullRelationalDelegate*                nullDellegate;
 };
 #endif //FRMCELL_H

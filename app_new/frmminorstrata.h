@@ -26,8 +26,6 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         FrmMinorStrata(DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmMinorStrata();
 
-    signals:
-
     public slots:
         void                                  onShowForm();
 
@@ -35,29 +33,30 @@ class FrmMinorStrata : public GenericTab, public Ui::frmminorstrata
         void                                   next();
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
-        void                                   setActiveReason(bool bActive);
-        void                                   disableReasonCombo();
         void                                   onButtonClick(QAbstractButton * button);
 
+        void                                   setActiveReason(bool bActive);
+        void                                   disableReasonCombo();
+
     private:
-        void                                   filterGLS();
-        void                                   uI4NewRecord();
-        //void                                   resizeToVisibleColumns ( QTableView* table );
-        void                                   resizeEvent ( QResizeEvent * event );
         void                                   setMinorStrataQuery();
+        void                                   filterGLS();
+
+        void                                   uI4NewRecord();
         void                                   setReadOnly(const bool bRO);
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
-        //bool                                   getDateModel(const int dtField, QSqlQueryModel& model);
+
+        void                                   resizeEvent ( QResizeEvent * event );
+
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         ButtonGroup*                           buttonGroup;
-        //NullRelationalDelegate*                nullDellegate;
         QModelIndex                            m_selectedIdx;
 };
 #endif //FRMMINORSTRATA_H
