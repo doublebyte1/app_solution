@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Sun 17. Apr 18:01:27 2011
+** Created: Sun 24. Apr 20:01:27 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -347,6 +347,7 @@ public:
         retranslateUi(frmCell);
         QObject::connect(pushNew, SIGNAL(clicked()), frmCell, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmCell, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmCell, SLOT(previewRow(QModelIndex)));
 
         QMetaObject::connectSlotsByName(frmCell);
     } // setupUi

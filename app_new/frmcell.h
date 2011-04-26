@@ -34,10 +34,11 @@ class FrmCell : public GenericTab, public Ui::frmCell
     private slots:
         //void                                   next();
         void                                   createRecord();
-        //void                                   previewRow(QModelIndex index);
+        void                                   previewRow(QModelIndex index);
         void                                   onButtonClick(QAbstractButton * button);
 
     private:
+        void                                   setReadOnly(const bool bRO);
         void                                   filterLS();
         void                                   uI4NewRecord();
         //void                                   resizeEvent ( QResizeEvent * event );

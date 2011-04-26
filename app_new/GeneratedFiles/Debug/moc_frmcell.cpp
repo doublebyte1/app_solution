@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcell.h'
 **
-** Created: Sun 17. Apr 18:01:21 2011
+** Created: Thu 21. Apr 19:43:52 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmCell[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,14 +33,16 @@ static const uint qt_meta_data_FrmCell[] = {
  // slots: signature, parameters, type, tag, flags
        9,    8,    8,    8, 0x0a,
       22,    8,    8,    8, 0x08,
-      44,   37,    8,    8, 0x08,
+      43,   37,    8,    8, 0x08,
+      74,   67,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmCell[] = {
     "FrmCell\0\0onShowForm()\0createRecord()\0"
-    "button\0onButtonClick(QAbstractButton*)\0"
+    "index\0previewRow(QModelIndex)\0button\0"
+    "onButtonClick(QAbstractButton*)\0"
 };
 
 const QMetaObject FrmCell::staticMetaObject = {
@@ -76,10 +78,11 @@ int FrmCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: onShowForm(); break;
         case 1: createRecord(); break;
-        case 2: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 3: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

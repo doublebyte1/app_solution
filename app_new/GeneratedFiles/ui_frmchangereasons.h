@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmchangereasons.ui'
 **
-** Created: Sun 17. Apr 18:01:26 2011
+** Created: Sun 24. Apr 20:01:27 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

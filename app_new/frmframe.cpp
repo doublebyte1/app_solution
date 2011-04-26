@@ -27,10 +27,10 @@ GenericTab(0,inTDateTime,parent,flags){
         SLOT(onHideFrameDetails()));
 
     initModels();
-
+/*
     connect(customDtStart, SIGNAL(isDateTime(bool)), m_tDateTime,
         SLOT(amendDateTimeType(bool)));
-
+*/
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
     m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);

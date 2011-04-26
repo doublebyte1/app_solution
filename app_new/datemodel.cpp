@@ -1,8 +1,10 @@
 #include "datemodel.h"
 
-void DateModel::amendDateTimeType(bool bIsDateTime)
+void DateModel::amendDateTimeType(bool bIsDateTime, int row)
 {
-    QModelIndex idx=index(this->rowCount()-1,4);//Type
+    if (row==-1) return; //row not initialized!
+
+    QModelIndex idx=index(row,4);//Type
     if (!idx.isValid()) return;
     int typeID;
     if (!getDateTimeType(true,bIsDateTime,typeID)) return;
@@ -81,4 +83,15 @@ bool DateModel::insertNewRecord(const bool bAuto, const bool bDate, const bool b
         this->setData(idx,now.toUTC());
     }
     return true;
+}
+
+QVariant DateModel::data(const QModelIndex &index, int role) const
+{
+    QModelIndex idx=this->index(index.row(),4);
+    if (!idx.isValid())
+        return QVariant();
+
+    QVariant var=QSqlTableModel::data(idx);
+    emit getDateType(idx,var);
+    return var;
 }
