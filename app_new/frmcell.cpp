@@ -2,8 +2,8 @@
 #include "globaldefs.h"
 #include "FrmCell.h"
 
-FrmCell::FrmCell(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(2,inTDateTime,parent, flags){
+FrmCell::FrmCell(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
+PreviewTab(2,inSample,inTDateTime,parent, flags){
 
     setupUi(this);
 
@@ -12,6 +12,9 @@ PreviewTab(2,inTDateTime,parent, flags){
 
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
+
+    connect(toolButton, SIGNAL(clicked()), this,
+        SLOT(onShowFrameDetails()));
 
     tSampCell=0;
     viewCell=0;
@@ -28,6 +31,12 @@ FrmCell::~FrmCell()
 {
     if (tSampCell!=0) delete tSampCell;
     if (viewCell!=0) delete viewCell;
+}
+
+void FrmCell::onShowFrameDetails()
+{
+    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
+        m_sample->frameId);
 }
 
 void FrmCell::previewRow(QModelIndex index)
@@ -100,7 +109,7 @@ tr("FROM         dbo.Sampled_Cell INNER JOIN") +
 tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
 tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
 tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
-tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + this->m_varData.toString() + tr(") ") +
+tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(") ") +
 tr("ORDER BY dbo.Sampled_Cell.ID DESC")
 );
 
@@ -225,6 +234,9 @@ void FrmCell::onButtonClick(QAbstractButton* button)
     } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
 
         bool bError=false;
+
+        qDebug() << mapperStartDt->currentIndex() << endl;
+
         //First insert the dates...
         if (!mapperStartDt->submit() 
             || !mapperEndDt->submit()){
@@ -325,26 +337,6 @@ void FrmCell::uI4NewRecord()
 
 void FrmCell::createRecord()
 {
-    /*
-    //removing filters
-    if (tSampCell==0) return ;
-    if (!tSampCell->filter().isEmpty()) tSampCell->setFilter(tr(""));
-
-    if (m_tDateTime==0) return ;
-    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
-
-    while(tSampCell->canFetchMore())
-        tSampCell->fetchMore();
-
-    //Check for uncomitted changes
-    QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
-    if (!idx.isValid()) return;
-
-    if (tSampCell->isDirty(idx))
-        tSampCell->revertAll();
-
-    tSampCell->insertRow(tSampCell->rowCount());
-*/
     genericCreateRecord();
 
     mapper1->toLast();
@@ -378,7 +370,7 @@ void FrmCell::createRecord()
         SLOT(adjustDateTime(QModelIndex,QVariant)));
 
     QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,1);
-    tSampCell->setData(idx,m_varData);//id_minor_strata
+    tSampCell->setData(idx,m_sample->minorStrataId);//id_minor_strata
 
     uI4NewRecord();//init UI
 }
@@ -397,7 +389,7 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
 
     QSqlQuery query;
     query.prepare(strQuery);
-    query.bindValue(0,m_varData);
+    query.bindValue(0,m_sample->minorStrataId);
     if (!query.exec()){
         emit showError(tr("Could not obtain filter for Landing Sites!"));
         return;

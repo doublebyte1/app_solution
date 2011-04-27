@@ -3,18 +3,6 @@
 #include "modelinterface.h"
 #include "globaldefs.h"
 
-ModelInterface::ModelInterface(QSqlRelationalTableModel* refFrame, QSqlTableModel* subFrame,
-        QSqlTableModel* refGLS, QSqlTableModel* refLS, QSqlTableModel* refVessels,
-        QSqlTableModel* linkFr2GLS, QSqlTableModel* linkGLS2LS, QSqlTableModel* linkLS2Vessels,
-        QSqlTableModel* changesPermVessel, QSqlTableModel* changesPermLS, QSqlTableModel* changesPermGLS,
-        TreeModel* aTreeModel, QObject *parent):
-QObject(parent),tRefFrame(refFrame),tSubFrame(subFrame),tRefGLS(refGLS), tRefLS(refLS), tRefVessels(refVessels),
-tLinkFr2GLS(linkFr2GLS), tLinkGLS2LS(linkGLS2LS), tLinkLS2Vessels(linkLS2Vessels),
-tChangesPermVessel(changesPermVessel),tChangesPermLS(changesPermVessel),tChangesPermGLS(changesPermGLS),treeModel(aTreeModel)
-{
-
-}
-
 ModelInterface::ModelInterface (QObject *parent):
 QObject(parent)
 {
@@ -24,11 +12,23 @@ QObject(parent)
 ModelInterface::ModelInterface (TreeModel* aTreeModel, QObject *parent):
 QObject(parent),treeModel(aTreeModel)
 {
+    tRefFrame=0;
+    tSubFrame=0;
+    tRefGLS=0;
+    tRefLS=0;
+    tRefVessels=0;
+    tLinkFr2GLS=0;
+    tLinkGLS2LS=0;
+    tLinkLS2Vessels=0;
+    tChangesPermVessel=0;
+    tChangesPermLS=0;
+    tChangesPermGLS=0;
     initModels();
 }
 
 void ModelInterface::initModels()
 {
+    if (tRefFrame!=0) delete tRefFrame;
     tRefFrame=new QSqlRelationalTableModel;
     tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Frame"),
         QSqlDriver::TableName));
@@ -40,15 +40,25 @@ void ModelInterface::initModels()
     tRefFrame->select();
     vTables << tRefFrame;
 
+    if (tSubFrame!=0) delete tSubFrame;
     tSubFrame=new QSqlTableModel();
+    if (tRefGLS!=0) delete tRefGLS;
     tRefGLS=new QSqlTableModel();
+    if (tRefLS!=0) delete tRefLS;
     tRefLS=new QSqlTableModel();
+    if (tRefVessels!=0) delete tRefVessels;
     tRefVessels=new QSqlTableModel();
+    if (tLinkFr2GLS!=0) delete tLinkFr2GLS;
     tLinkFr2GLS=new QSqlTableModel();
+    if (tLinkGLS2LS!=0) delete tLinkGLS2LS;
     tLinkGLS2LS=new QSqlTableModel();
+    if (tLinkLS2Vessels!=0) delete tLinkLS2Vessels;
     tLinkLS2Vessels=new QSqlTableModel();
+    if (tChangesPermVessel!=0) delete tChangesPermVessel;
     tChangesPermVessel=new QSqlTableModel();
+    if (tChangesPermLS!=0) delete tChangesPermLS;
     tChangesPermLS=new QSqlTableModel();
+    if (tChangesPermGLS!=0) delete tChangesPermGLS;
     tChangesPermGLS=new QSqlTableModel();
 
     initModel(tSubFrame,tr("FR_Sub_Frame"));

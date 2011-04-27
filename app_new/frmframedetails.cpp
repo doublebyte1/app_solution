@@ -135,6 +135,25 @@ void FrmFrameDetails::back()
     emit hideFrameDetails();
 }
 
+bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
+{
+    if (bRO){
+        frame->setToolTip(tr(""));
+        treeView->setDragEnabled(false);
+        treeView->setSelectionMode(
+            QAbstractItemView::NoSelection);
+        treeView->setContextMenuPolicy(Qt::NoContextMenu);
+    }else{
+        frame->setToolTip(tr("Press edit key F2 to edit items"));
+        treeView->setDragEnabled(true);
+        treeView->setSelectionMode(
+        QAbstractItemView::ExtendedSelection);
+        treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
+    }
+
+    return true;
+}
+
 void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, const int frameId)
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
@@ -152,7 +171,6 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     pushApply->setEnabled(!pushVerify->isEnabled());
     pushUndo->setEnabled(!pushVerify->isEnabled());
 
-    //pushOk->setVisible(mode!=FrmFrameDetails::VIEW);
     pushVerify->setVisible(mode!=FrmFrameDetails::VIEW);
     pushApply->setVisible(mode!=FrmFrameDetails::VIEW);
     pushUndo->setVisible(mode!=FrmFrameDetails::VIEW);
@@ -165,29 +183,24 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     if (!initModel(mode,frameId)){
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         emit showError(tr("Could not create frame view!"));
+        return;
     }
 
-    if (mode==FrmFrameDetails::VIEW){// read-only
-        frame->setToolTip(tr(""));
+    if (mode==FrmFrameDetails::VIEW){// read-only on Permanent mode
         groupBox->setEnabled(false);
-        treeView->setDragEnabled(false);
-        treeView->setSelectionMode(
-            QAbstractItemView::NoSelection);
-        treeView->setContextMenuPolicy(Qt::NoContextMenu);
-
+        setTreeReadOnly(true);
         horizontalLayout->addWidget(pushBack);
-        //horizontalLayout->removeWidget(pushOk);
         horizontalLayout->removeWidget(pushVerify);
         horizontalLayout->removeWidget(pushApply);
         horizontalLayout->removeWidget(pushUndo);
+
+        persistence==FrmFrameDetails::PERMANENT?setTreeReadOnly(true):setTreeReadOnly(false);
 
         initMapper();//TODO: maybe throw an error here later?
         modelInterface->tRefFrame->setFilter(tr("Fr_Frame.ID=") + QVariant(frameId).toString());
         mapper->toLast();
 
     }else{
-        frame->setToolTip(tr("Press edit key F2 to edit items"));
-
         if (!modelInterface->insertNewRecord(modelInterface->tRefFrame)){
             qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
             QString strErrors;
@@ -238,10 +251,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
         }
 
         groupBox->setEnabled(true);
-        treeView->setDragEnabled(true);
-        treeView->setSelectionMode(
-        QAbstractItemView::ExtendedSelection);
-        treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
+        setTreeReadOnly(false);
 
         //horizontalLayout->addWidget(pushOk);
         horizontalLayout->addWidget(pushVerify);

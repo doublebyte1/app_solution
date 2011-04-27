@@ -27,12 +27,6 @@ class ModelInterface : public QObject
     Q_OBJECT
 
 public:
-
-    ModelInterface(QSqlRelationalTableModel* refFrame, QSqlTableModel* subFrame,
-        QSqlTableModel* refGLS, QSqlTableModel* refLS, QSqlTableModel* refVessels,
-        QSqlTableModel* linkFr2GLS, QSqlTableModel* linkGLS2LS, QSqlTableModel* linkLS2Vessels, QSqlTableModel* changesPermVessel,
-        QSqlTableModel* changesPermLS, QSqlTableModel* changesPermGLS,
-        TreeModel* aTreeModel, QObject *parent = 0);
     ModelInterface(TreeModel* aTreeModel, QObject *parent=0);
     ModelInterface(QObject *parent=0);
 

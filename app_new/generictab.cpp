@@ -1,15 +1,15 @@
 #include <QTest>
 #include "generictab.h"
 
-GenericTab::GenericTab(const int index, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime){
+GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
+QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample) {
 
     nullDellegate=0;
 
     connect(this, SIGNAL(lockControls(bool,QList<QWidget*>&)), this,
     SLOT(onLockControls(bool,QList<QWidget*>&)));
 
-    connect(this, SIGNAL(forward(QString,QVariant)), this,
+    connect(this, SIGNAL(forward(QString)), this,
     SLOT(goForward()));
 
 }
@@ -17,6 +17,11 @@ QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime){
 GenericTab::~GenericTab()
 {
     if (nullDellegate!=0) delete nullDellegate;
+}
+
+void GenericTab::showEvent ( QShowEvent * event ) 
+{
+    onShowForm();
 }
 
 bool GenericTab::getDtId(const int mapIdx, int& id)

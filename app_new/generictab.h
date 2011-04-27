@@ -9,6 +9,25 @@
   #endif
 
 //////////////////////////////////////////////////////////////////
+#ifndef SAMPLE_H
+#define SAMPLE_H
+
+//! Sample structure
+/*!
+This structure encapsulates the data that we want to pass around forms
+*/
+
+struct Sample{
+    int         frameId;
+    int         frameTimeId;
+    int         subFrameId;
+    int         minorStrataId;
+    int         cellId;
+};
+
+#endif //SAMPLE_H
+
+//////////////////////////////////////////////////////////////////
 #ifndef NULLRELATIONALDELEGATE_H
 #define NULLRELATIONALDELEGATE_H
 
@@ -61,7 +80,7 @@ class GenericTab : public QWidget
     Q_OBJECT
 
     public:
-        GenericTab(const int index, DateModel* inTDateTime,
+        GenericTab(const int index, Sample* inSample, DateModel* inTDateTime,
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
@@ -69,12 +88,11 @@ class GenericTab : public QWidget
 
     public slots:
         void                    fillHeader(const QString str){lbHead->setText(str);}
-        void                    getPar(const QString str, QVariant varData){m_varData=varData; emit gotPar();}
         virtual void            onShowForm()=0;
 
     signals:
         void                    lockControls(bool bLock,QList<QWidget*>& lWidgets);
-        void                    forward(const QString str, QVariant data);
+        void                    forward(const QString str);
         void                    gotPar();
         void                    navigate(const bool bNext, const int idx);
         void                    hideFrameDetails();
@@ -88,11 +106,12 @@ class GenericTab : public QWidget
         virtual void            initModels()=0;
         virtual void            initMappers()=0;
         virtual void            initUI()=0;
+        void                    showEvent ( QShowEvent * event );
         bool                    getDtId(const int mapIdx, int& id);
         void                    resizeToVisibleColumns ( QTableView* table );
         int                     m_index;
         DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
-        QVariant                m_varData;//this is how we pass data around between forms
+        Sample*                 m_sample;
         NullRelationalDelegate* nullDellegate;
 
     private slots:

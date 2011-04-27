@@ -9,6 +9,7 @@ QMainWindow(parent, flags){
     pFrmMinorStrata=0;
     pFrmFrameDetails=0;
     pFrmCell=0;
+    sSample=0;
     setupUi(this);
     initTabs();
 }
@@ -20,6 +21,7 @@ MainFrm::~MainFrm()
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
     if (pFrmCell!=0) delete pFrmCell;
+    if (sSample!=0) delete sSample;
 }
 
 void MainFrm::initTabs()
@@ -32,20 +34,23 @@ void MainFrm::initTabs()
     tDateTime->setAuto(false);
     tDateTime->select();
 
+    //Sample
+    sSample=new Sample();
+
     if (pFrmFrame==0){
-        pFrmFrame=new FrmFrame(tDateTime);
+        pFrmFrame=new FrmFrame(sSample,tDateTime);
         vTabs.push_back(pFrmFrame);
     }
     this->tabWidget->insertTab(0,pFrmFrame, tr("Frame"));
 
     if (pFrmMinorStrata==0){
-        pFrmMinorStrata=new FrmMinorStrata(tDateTime);
+        pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
         vTabs.push_back(pFrmMinorStrata);
     }
     this->tabWidget->insertTab(1,pFrmMinorStrata, tr("Minor Strata"));
 
     if (pFrmCell==0){
-        pFrmCell=new FrmCell(tDateTime);
+        pFrmCell=new FrmCell(sSample,tDateTime);
         vTabs.push_back(pFrmCell);
     }
     this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
@@ -83,14 +88,14 @@ void MainFrm::initTabs()
         SLOT(statusShow(QString)));
 
          if (i < vTabs.size()-1){
-             connect(vTabs.at(i), SIGNAL(forward(const QString, QVariant)), vTabs.at(i+1),
+             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
             SLOT(fillHeader(const QString)));
-             connect(vTabs.at(i), SIGNAL(forward(const QString, QVariant)), vTabs.at(i+1),
-            SLOT(getPar(const QString, QVariant)));
+             //connect(vTabs.at(i), SIGNAL(forward(const QString, Sample*)), vTabs.at(i+1),
+            //SLOT(getPar(const QString, Sample*)));
          }
 
-         connect(vTabs.at(i), SIGNAL(gotPar()), vTabs.at(i),
-        SLOT(onShowForm()));
+         //connect(vTabs.at(i), SIGNAL(gotPar()), vTabs.at(i),
+        //SLOT(onShowForm()));
 
      }
 

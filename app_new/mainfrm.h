@@ -44,6 +44,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmCell                 *pFrmCell;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
+        Sample*                 sSample;
 
     private slots:
         void                    navigateThroughTabs(const bool bNext, const int idx);

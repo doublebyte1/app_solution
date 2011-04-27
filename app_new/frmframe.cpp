@@ -1,8 +1,8 @@
 #include <QTest>
 #include "frmframe.h"
 
-FrmFrame::FrmFrame(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-GenericTab(0,inTDateTime,parent,flags){
+FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
+GenericTab(0,inSample,inTDateTime,parent,flags){
 
     setupUi(this);
 
@@ -268,5 +268,14 @@ void FrmFrame::next()
         emit showError(tr("Could not retrieve index of the last inserted frame!"));
         return;
     }
-    emit forward(cmbPrexistent->currentText(),idx.data().toInt());
+    m_sample->frameTimeId=idx.data().toInt();
+
+    idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
+    if (!idx.isValid()){
+        emit showError(tr("Could not retrieve index of the last inserted frame!"));
+        return;
+    }
+    m_sample->frameId=idx.data().toInt();
+
+    emit forward(cmbPrexistent->currentText());
 }

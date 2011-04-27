@@ -85,6 +85,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         void                    initTree();
         void                    initMapper();
         bool                    readModel();
+        bool                    setTreeReadOnly(const bool bRO);
 };
 
 Q_DECLARE_METATYPE( FrmFrameDetails::Mode );

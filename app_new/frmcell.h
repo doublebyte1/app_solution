@@ -23,7 +23,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
     Q_OBJECT
 
     public:
-        FrmCell(DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmCell(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmCell();
 
     signals:
@@ -42,6 +42,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   onButtonClick(QAbstractButton * button);
+        void                                   onShowFrameDetails();
 
     private:
         //! Filter combo box

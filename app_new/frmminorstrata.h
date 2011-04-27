@@ -23,7 +23,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
     Q_OBJECT
 
     public:
-        FrmMinorStrata(DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmMinorStrata(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmMinorStrata();
 
     public slots:

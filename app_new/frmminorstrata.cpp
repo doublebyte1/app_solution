@@ -2,8 +2,8 @@
 #include "globaldefs.h"
 #include "frmminorstrata.h"
 
-FrmMinorStrata::FrmMinorStrata(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(1,inTDateTime,parent, flags){
+FrmMinorStrata::FrmMinorStrata(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
+PreviewTab(1,inSample,inTDateTime,parent, flags){
 
     setupUi(this);
 
@@ -50,7 +50,8 @@ void FrmMinorStrata::next()
         return;
     }
 
-    emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString(),idx3.data());
+    m_sample->minorStrataId=idx3.data().toInt();
+    emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString());
 }
 
 void FrmMinorStrata::disableReasonCombo()
@@ -160,7 +161,7 @@ void FrmMinorStrata::filterModel4Combo()
 
     QSqlQuery query;
     query.prepare(strQuery);
-    query.bindValue(0,m_varData);
+    query.bindValue(0,m_sample->frameTimeId);
     query.bindValue(1,qApp->translate("frame", strRoot));
 
     if (!query.exec()){
@@ -175,6 +176,10 @@ void FrmMinorStrata::filterModel4Combo()
      }
      if (!strFilter.isEmpty())
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+     else{
+        emit showError(tr("There are no Groups of Landing Sites in this frame!"));
+        return;
+     }
 
     tRefMinorStrata->relationModel(4)->setFilter(strFilter);
 }
@@ -223,7 +228,7 @@ void FrmMinorStrata::createRecord()
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
     idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
-    tRefMinorStrata->setData(idx,m_varData);//id_sub_frame
+    tRefMinorStrata->setData(idx,m_sample->frameTimeId);//id_frame_time
 
     uI4NewRecord();//init UI
 }
@@ -365,7 +370,7 @@ void FrmMinorStrata::setPreviewQuery()
     tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
     tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
     tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
-    tr("                      WHERE     (dbo.Ref_Minor_Strata.id_frame_time = ") + this->m_varData.toString() + tr(")") +
+    tr("                      WHERE     (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(m_sample->frameTimeId).toString() + tr(")") +
     tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
     );
 
