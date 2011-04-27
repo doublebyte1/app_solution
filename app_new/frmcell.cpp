@@ -3,7 +3,7 @@
 #include "FrmCell.h"
 
 FrmCell::FrmCell(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-GenericTab(2,inTDateTime,parent, flags){
+PreviewTab(2,inTDateTime,parent, flags){
 
     setupUi(this);
 
@@ -30,38 +30,82 @@ FrmCell::~FrmCell()
     if (viewCell!=0) delete viewCell;
 }
 
-void FrmCell::onShowForm()
+void FrmCell::previewRow(QModelIndex index)
 {
-    //Make sure all models are up to date, and without filters
-    tSampCell->select();
-    m_tDateTime->select();
-    setSampCellQuery();
+    //m_selectedIdx=index;//stores the index
 
-    if (tSampCell==0) return ;
-    if (!tSampCell->filter().isEmpty()) tSampCell->setFilter(tr(""));
+    if (!this->groupDetails->isVisible())
+        this->groupDetails->setVisible(true);
 
-    if (m_tDateTime==0) return ;
-    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
+    emit lockControls(true,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->hide();
 
-    //filter the relational model from LS
-    filterLS();
+    QModelIndex idx=viewCell->index(index.row(),0);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this cell!"));
+        return;
+    }
+
+    QString id=idx.data().toString();
+
+    tSampCell->setFilter(tr("Sampled_Cell.ID=")+id);
+    if (tSampCell->rowCount()!=1)
+        return;
+
+    mapper1->toLast();
+
+    //Now fix the dates
+    idx=tSampCell->index(0,1);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this cell!"));
+        return;
+    }
+    idx=tSampCell->index(0,2);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this cell!"));
+        return;
+    }
+    QString strStartDt=idx.data().toString();
+
+    idx=tSampCell->index(0,3);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this cell!"));
+        return;
+    }
+    QString strEndDt=idx.data().toString();
+
+    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+    if (m_tDateTime->rowCount()!=2)
+        return;
+
+    //adjusting the display format of the dates on preview
+    QModelIndex idxDType=m_tDateTime->index(0,4);
+    if (!idxDType.isValid()) return;
+    customDtStart->adjustDateTime(idxDType,idxDType.data());
+    idxDType=m_tDateTime->index(1,4);
+    if (!idxDType.isValid()) return;
+    customDtEnd->adjustDateTime(idxDType,idxDType.data());
+
+    mapperEndDt->toLast();
+    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 }
 
-void FrmCell::setSampCellQuery()
+void FrmCell::setPreviewQuery()
 {
     viewCell->setQuery(
-tr("SELECT     TOP (100) PERCENT dbo.Ref_Abstract_LandingSite.Name, CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
+tr("SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
 tr("                      F2.Date_Local, 103) AS [End Date] ") +
 tr("FROM         dbo.Sampled_Cell INNER JOIN") +
 tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
 tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
-tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite") +
-tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + this->m_varData.toString() + tr(")") +
+tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
+tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + this->m_varData.toString() + tr(") ") +
 tr("ORDER BY dbo.Sampled_Cell.ID DESC")
 );
 
+    tableView->hideColumn(0);
     resizeToVisibleColumns(tableView);
-
 }
 
 void FrmCell::initModels()
@@ -72,6 +116,8 @@ void FrmCell::initModels()
     tSampCell->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
     tSampCell->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSampCell->select();
+
+    setPreviewModel(tSampCell);
 
     viewCell = new QSqlQueryModel;
     viewCell->setHeaderData(0, Qt::Horizontal, tr("Site"));
@@ -85,16 +131,19 @@ void FrmCell::initUI()
 
     this->groupDetails->setVisible(false);
 
-    customDtStart->setIsDateTime(true,true,true);
     customDtStart->setIsUTC(false);
     customDtStart->setIsAuto(false);
-    customDtStart->checkBox()->click();//the click is necessary to imit the relavant signal
 
-    customDtEnd->setIsDateTime(true,true,true);
     customDtEnd->setIsUTC(false);
     customDtEnd->setIsAuto(false);
-    customDtEnd->checkBox()->click();//the click is necessary to imit the relavant signal
 
+    connect(customDtStart, SIGNAL(isDateTime(bool,int)), m_tDateTime,
+        SLOT(amendDateTimeType(bool,int)));
+
+    connect(customDtEnd, SIGNAL(isDateTime(bool,int)), m_tDateTime,
+        SLOT(amendDateTimeType(bool,int)));
+
+    setPreviewTable(tableView);
     tableView->setModel(viewCell);
     tableView->setAlternatingRowColors(true);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -104,6 +153,16 @@ void FrmCell::initUI()
     tableView->horizontalHeader()->setClickable(false);
     tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
 
+    //initializing the container for the readonly!S
+    m_lWidgets << cmbLS;
+    m_lWidgets << customDtStart;
+    m_lWidgets << customDtEnd;
+    m_lWidgets << textComments;
+    m_lWidgets << toolButton;
+    m_lWidgets << spinNE;
+    m_lWidgets << spinAE;
+    m_lWidgets << spinIE;
+    m_lWidgets << spinOE;
 }
 
 void FrmCell::initMappers()
@@ -115,11 +174,11 @@ void FrmCell::initMappers()
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
     if (nullDellegate!=0) delete nullDellegate;
-    QList<int> lCmb;
-    lCmb << 4;
+    QList<int> lOthers;
+    lOthers << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12;
     QList<int> lText;
     lText << 13;
-    nullDellegate=new NullRelationalDelegate(lCmb,lText);
+    nullDellegate=new NullRelationalDelegate(lOthers,lText);
     mapper1->setItemDelegate(nullDellegate);
 
     cmbLS->setModel(tSampCell->relationModel(4));
@@ -127,14 +186,16 @@ void FrmCell::initMappers()
         tSampCell->relationModel(4)->fieldIndex(tr("Name")));
 
     mapper1->addMapping(cmbLS, 4);
+
     mapper1->addMapping(spinNE, 5);
-    //mapper1->addMapping(spinNC, 6);
+    mapper1->addMapping(spinNC, 6);
     mapper1->addMapping(spinAE, 7);
-    //mapper1->addMapping(spinAC, 8);
+    mapper1->addMapping(spinAC, 8);
     mapper1->addMapping(spinIE, 9);
-    //mapper1->addMapping(spinIC, 10);
+    mapper1->addMapping(spinIC, 10);
     mapper1->addMapping(spinOE, 11);
-    //mapper1->addMapping(spinOC, 12);
+    mapper1->addMapping(spinOC, 12);
+
     mapper1->addMapping(textComments,13);
 
     if (mapperStartDt!=0) delete mapperStartDt;
@@ -227,9 +288,16 @@ void FrmCell::onButtonClick(QAbstractButton* button)
             }
         }
         button->setEnabled(bError);
-        //setReadOnly(!bError);
+
+        emit lockControls(!bError,m_lWidgets);
         if (!bError){
-            setSampCellQuery();
+            buttonBox->button(QDialogButtonBox::Apply)->hide();
+        }else{
+            buttonBox->button(QDialogButtonBox::Apply)->show();
+        }
+
+        if (!bError){
+            setPreviewQuery();
             tableView->selectRow(0);
             tSampCell->select();
         }
@@ -241,13 +309,23 @@ void FrmCell::uI4NewRecord()
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
-    //setReadOnly(false);
+    emit lockControls(false,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->show();
+
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+
+    customDtStart->setIsDateTime(true,true,true);
+    customDtStart->checkBox()->click();//the click is necessary to imit the relavant signal
+
+    customDtEnd->setIsDateTime(true,true,true);
+    customDtEnd->checkBox()->click();//the click is necessary to imit the relavant signal
 
     textComments->clear();
 }
 
 void FrmCell::createRecord()
 {
+    /*
     //removing filters
     if (tSampCell==0) return ;
     if (!tSampCell->filter().isEmpty()) tSampCell->setFilter(tr(""));
@@ -266,6 +344,8 @@ void FrmCell::createRecord()
         tSampCell->revertAll();
 
     tSampCell->insertRow(tSampCell->rowCount());
+*/
+    genericCreateRecord();
 
     mapper1->toLast();
 
@@ -284,16 +364,26 @@ void FrmCell::createRecord()
         return;
     }
 
+    customDtStart->setModelRow(m_tDateTime->rowCount()-2);
+    customDtEnd->setModelRow(m_tDateTime->rowCount()-1);
+
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
-    idx=tSampCell->index(tSampCell->rowCount()-1,1);
+    //IMPORTANT: do this after setting the model row!
+    connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtStart,
+        SLOT(adjustDateTime(QModelIndex,QVariant)));
+
+    connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtEnd,
+        SLOT(adjustDateTime(QModelIndex,QVariant)));
+
+    QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,1);
     tSampCell->setData(idx,m_varData);//id_minor_strata
 
     uI4NewRecord();//init UI
 }
 
-void FrmCell::filterLS()
+void FrmCell::filterModel4Combo()
 {
     QString strQuery =
 tr("SELECT     dbo.FR_GLS2ALS.id_abstract_landingsite AS ls, dbo.Ref_Minor_Strata.id_gls, dbo.FR_GLS2ALS.id_gls AS Expr1") +

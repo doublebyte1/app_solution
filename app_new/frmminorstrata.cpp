@@ -3,7 +3,7 @@
 #include "frmminorstrata.h"
 
 FrmMinorStrata::FrmMinorStrata(DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-GenericTab(1,inTDateTime,parent, flags){
+PreviewTab(1,inTDateTime,parent, flags){
 
     setupUi(this);
 
@@ -52,30 +52,6 @@ void FrmMinorStrata::next()
 
     emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString(),idx3.data());
 }
-void FrmMinorStrata::setReadOnly(const bool bRO)
-{
-    lineNew->setEnabled(!bRO);
-    label_3->setEnabled(!bRO);
-    cmbGLS->setEnabled(!bRO);
-    groupActivity->setEnabled(!bRO);
-    radioActive->setEnabled(!bRO);
-    horizontalLayout->setEnabled(!bRO);
-    radioInactive->setEnabled(!bRO);
-    cmbReasons->setEnabled(!bRO);
-    label_4->setEnabled(!bRO);
-    textComments->setEnabled(!bRO);
-    label->setEnabled(!bRO);
-    label_2->setEnabled(!bRO);
-    customDtStart->setEnabled(!bRO);
-    customDtEnd->setEnabled(!bRO);
-
-    if (bRO){
-        buttonBox->button(QDialogButtonBox::Apply)->hide();
-    }else{
-        buttonBox->button(QDialogButtonBox::Apply)->show();
-    }
-
-}
 
 void FrmMinorStrata::disableReasonCombo()
 {
@@ -98,7 +74,8 @@ void FrmMinorStrata::previewRow(QModelIndex index)
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
-    setReadOnly(true);
+    emit lockControls(true,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
 
     QModelIndex idx=viewMinorStrata->index(index.row(),0);
     if (!idx.isValid()){
@@ -142,7 +119,7 @@ void FrmMinorStrata::onShowForm()
     //Make sure all models are up to date, and without filters
     tRefMinorStrata->select();
     m_tDateTime->select();
-    setMinorStrataQuery();
+    setPreviewQuery();
 
     if (tRefMinorStrata==0) return ;
     if (!tRefMinorStrata->filter().isEmpty()) tRefMinorStrata->setFilter(tr(""));
@@ -151,7 +128,7 @@ void FrmMinorStrata::onShowForm()
     if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
 
     //filter the relational model from GLS
-    filterGLS();
+    filterModel4Combo();
 }
 
 void FrmMinorStrata::uI4NewRecord()
@@ -159,8 +136,8 @@ void FrmMinorStrata::uI4NewRecord()
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
-    setReadOnly(false);
-
+    emit lockControls(false,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     lineNew->clear();
@@ -168,7 +145,7 @@ void FrmMinorStrata::uI4NewRecord()
     textComments->clear();
 }
 
-void FrmMinorStrata::filterGLS()
+void FrmMinorStrata::filterModel4Combo()
 {
     QString strQuery=
     tr("SELECT     dbo.FR_F2GLS.id_gls ") +
@@ -324,9 +301,12 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
             }
         }
         button->setEnabled(bError);
-        setReadOnly(!bError);
+
+        emit lockControls(!bError,m_lWidgets);
+        buttonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
+
         if (!bError){
-            setMinorStrataQuery();
+            setPreviewQuery();
             tableView->selectRow(0);
             tRefMinorStrata->select();
         }
@@ -358,15 +338,26 @@ void FrmMinorStrata::initUI()
         QAbstractItemView::SingleSelection);
     tableView->horizontalHeader()->setClickable(false);
     tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+
+    setPreviewTable(tableView);
+
+    m_lWidgets << lineNew;
+    m_lWidgets << label_3;
+    m_lWidgets << cmbGLS;
+    m_lWidgets << groupActivity;
+    m_lWidgets << radioActive;
+    //m_lWidgets << horizontalLayout;
+    m_lWidgets << radioInactive;
+    m_lWidgets << cmbReasons;
+    m_lWidgets << label_4;
+    m_lWidgets << textComments;
+    m_lWidgets << label;
+    m_lWidgets << label_2;
+    m_lWidgets << customDtStart;
+    m_lWidgets << customDtEnd;
 }
 
-void FrmMinorStrata::resizeEvent ( QResizeEvent * event )
-{
-    resizeToVisibleColumns(tableView);
-}
-
-
-void FrmMinorStrata::setMinorStrataQuery()
+void FrmMinorStrata::setPreviewQuery()
 {
     viewMinorStrata->setQuery(
     tr("SELECT     dbo.Ref_Minor_Strata.ID, dbo.Ref_Minor_Strata.Name, CONVERT(CHAR(10),F1.Date_Local,103) AS [Start Date], CONVERT(CHAR(10),F2.Date_Local,103) AS [End Date], ") +
@@ -393,23 +384,15 @@ void FrmMinorStrata::initModels()
     tRefMinorStrata->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tRefMinorStrata->select();
 
+    setPreviewModel(tRefMinorStrata);
+
     viewMinorStrata = new QSqlQueryModel;
     viewMinorStrata->setHeaderData(0, Qt::Horizontal, tr("Name"));
     viewMinorStrata->setHeaderData(1, Qt::Horizontal, tr("Start"));
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
     viewMinorStrata->setHeaderData(3, Qt::Horizontal, tr("Closed"));
 }
-/*
-bool FrmMinorStrata::getDateModel(const int dtField, QSqlQueryModel& model)
-{
-    QModelIndex dtID=tRefMinorStrata->index(mapper1->currentIndex(),dtField);
-    if (!dtID.isValid()) return false;
-    QString strId=dtID.data().toString();
-    model.setQuery(tr("SELECT Date_Local FROM GL_DATES WHERE ID=") + strId);
 
-    return true;
-}
-*/
 void FrmMinorStrata::initMappers()
 {
     if (mapper1!=0) delete mapper1;

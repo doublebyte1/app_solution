@@ -21,8 +21,9 @@ GenericTab::~GenericTab()
 
 bool GenericTab::getDtId(const int mapIdx, int& id)
 {
-    QModelIndex idx= m_tDateTime->index(mapIdx,0);
+    QModelIndex idx= m_tDateTime->index(mapIdx,0,QModelIndex());
     if (!idx.isValid()) return false;
+
     id=m_tDateTime->data(idx).toInt();
     return true;
 }
@@ -58,16 +59,15 @@ void GenericTab::resizeToVisibleColumns ( QTableView* table )
 ///////////////////////////////////////////////
 
 NullRelationalDelegate::NullRelationalDelegate(QList<int> colsOthers, QList<int> colsText, QObject *parent):
-                        QSqlRelationalDelegate(parent),m_colsText(colsText),m_colsOthers(colsOthers)
+                        QSqlRelationalDelegate(parent),m_colsText(colsText), m_colsOthers(colsOthers)
 {
 
 }
 void NullRelationalDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    if (m_colsOthers.contains(index.column())){//others
+    if (m_colsOthers.contains(index.column())){
         QSqlRelationalDelegate::setModelData(editor,model,index);
     }else{
-
         if (m_colsText.contains(index.column())){//textEdits
             model->setData(index, editor->property("plainText") == tr("") ?
                 QVariant() :

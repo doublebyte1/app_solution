@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Tue 19. Apr 13:46:52 2011
+** Created: Wed 27. Apr 10:34:43 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -35,9 +35,9 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
       29,   15,   15,   15, 0x08,
       36,   15,   15,   15, 0x08,
       57,   51,   15,   15, 0x08,
-      89,   81,   15,   15, 0x08,
-     111,   15,   15,   15, 0x08,
-     139,  132,   15,   15, 0x08,
+      88,   81,   15,   15, 0x08,
+     128,  120,   15,   15, 0x08,
+     150,   15,   15,   15, 0x08,
 
        0        // eod
 };
@@ -45,13 +45,13 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
 static const char qt_meta_stringdata_FrmMinorStrata[] = {
     "FrmMinorStrata\0\0onShowForm()\0next()\0"
     "createRecord()\0index\0previewRow(QModelIndex)\0"
+    "button\0onButtonClick(QAbstractButton*)\0"
     "bActive\0setActiveReason(bool)\0"
-    "disableReasonCombo()\0button\0"
-    "onButtonClick(QAbstractButton*)\0"
+    "disableReasonCombo()\0"
 };
 
 const QMetaObject FrmMinorStrata::staticMetaObject = {
-    { &GenericTab::staticMetaObject, qt_meta_stringdata_FrmMinorStrata,
+    { &PreviewTab::staticMetaObject, qt_meta_stringdata_FrmMinorStrata,
       qt_meta_data_FrmMinorStrata, 0 }
 };
 
@@ -71,12 +71,12 @@ void *FrmMinorStrata::qt_metacast(const char *_clname)
         return static_cast<void*>(const_cast< FrmMinorStrata*>(this));
     if (!strcmp(_clname, "Ui::frmminorstrata"))
         return static_cast< Ui::frmminorstrata*>(const_cast< FrmMinorStrata*>(this));
-    return GenericTab::qt_metacast(_clname);
+    return PreviewTab::qt_metacast(_clname);
 }
 
 int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = GenericTab::qt_metacall(_c, _id, _a);
+    _id = PreviewTab::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
@@ -85,9 +85,9 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: next(); break;
         case 2: createRecord(); break;
         case 3: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 4: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 5: disableReasonCombo(); break;
-        case 6: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 4: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 5: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 6: disableReasonCombo(); break;
         default: ;
         }
         _id -= 7;

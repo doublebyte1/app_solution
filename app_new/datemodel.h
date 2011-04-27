@@ -22,13 +22,16 @@ class DateModel: public QSqlTableModel
         bool            insertNewRecord(const bool bAuto, const bool bDate, const bool bTime);
         void            setAuto(const bool bAuto){m_bAuto=bAuto;}
 
+    signals:
+        void            getDateType(QModelIndex index, QVariant var) const;
+
     public slots:
         //! Function to listen for user dateTime type changes
         /*!
            Since the checkbox is not available for Time only widgets, the result can be only a DateTime or Date only dataType;
           \param bIsDateTime a boolean flag to set if it is DateTime
         */
-         void          amendDateTimeType(bool bIsDateTime);
+         void          amendDateTimeType(bool bIsDateTime, int row);
 
     private:
         //! Function to retrieve the location of last inserted Session data

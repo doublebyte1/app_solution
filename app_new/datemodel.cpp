@@ -1,8 +1,10 @@
 #include "datemodel.h"
 
-void DateModel::amendDateTimeType(bool bIsDateTime)
+void DateModel::amendDateTimeType(bool bIsDateTime, int row)
 {
-    QModelIndex idx=index(this->rowCount()-1,4);//Type
+    if (row==-1) return; //row not initialized!
+
+    QModelIndex idx=index(row,4);//Type
     if (!idx.isValid()) return;
     int typeID;
     if (!getDateTimeType(true,bIsDateTime,typeID)) return;

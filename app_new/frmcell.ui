@@ -376,9 +376,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>frmCell</receiver>
+   <slot>previewRow(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>337</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>previewRow(QModelIndex)</slot>
  </slots>
 </ui>
