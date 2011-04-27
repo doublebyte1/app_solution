@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmconnect.h'
 **
-** Created: Thu 14. Apr 12:14:08 2011
+** Created: Tue 19. Apr 13:46:56 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!

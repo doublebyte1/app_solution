@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'dragdropmodel.h'
 **
-** Created: Thu 14. Apr 12:14:12 2011
+** Created: Tue 19. Apr 13:47:00 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
