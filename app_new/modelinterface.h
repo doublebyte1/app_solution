@@ -11,6 +11,8 @@
  #define new DEBUG_NEW
 #endif
 
+struct Sample;
+
 void filterTable(QSqlTableModel* table);
 //////////////////////////////////////////////////
 
@@ -49,6 +51,7 @@ public:
     TreeModel*                             treeModel;
 
     bool                                   writeModel();
+    bool                                   writeTempChanges(Sample* sample);
     bool                                   rollback(const bool bSubmitted);
     bool                                   insertNewRecord(QSqlTableModel* model);
     bool                                   getErrors(QString& strError);

@@ -85,9 +85,12 @@ void FrmCell::onShowFrameDetails()
             }
 
     }
-    if (bOk)
+    if (bOk){
+        QList<int> blackList;
+        blackList << 1 << 2;
         emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
-            m_sample->frameId);
+            m_sample, blackList, false);
+    }
 }
 
 void FrmCell::previewRow(QModelIndex index)
@@ -364,7 +367,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             tSampCell->select();
         }
         return !bError;
-    }
+    }else return false;
 }
 
 void FrmCell::uI4NewRecord()

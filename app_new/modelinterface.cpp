@@ -2,6 +2,7 @@
 #include <QtSql>
 #include "modelinterface.h"
 #include "globaldefs.h"
+#include "generictab.h"
 
 ModelInterface::ModelInterface (QObject *parent):
 QObject(parent)
@@ -106,6 +107,17 @@ ModelInterface::~ModelInterface()
 bool ModelInterface::writeModel()
 {
     return writeTables();
+}
+
+bool ModelInterface::writeTempChanges(Sample* sample)
+{
+    //TODO: write temp changes
+
+    //Loop everything to vessels
+    //check if they have a reason
+    //if they do, write from to and reason
+
+    return true;
 }
 
 bool ModelInterface::insertNewRecord(QSqlTableModel* model)

@@ -7,8 +7,6 @@ FrameView::FrameView(QWidget *parent):
 QTreeView(parent){
 
     this->setEditTriggers(QAbstractItemView::EditKeyPressed);
-    //this->setEditTriggers(QAbstractItemView::AllEditTriggers);
-    //this->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
     this->header()->setClickable(true);
 
@@ -27,6 +25,14 @@ FrameView::~FrameView()
     if (newVirtualAct!=0) delete newVirtualAct;
     if (frmChangeReasons!=0) delete frmChangeReasons;
     if (itemDelegate!=0) delete itemDelegate;
+}
+
+void FrameView::setSupportNewItems(const bool bOk)
+{
+    if (bOk)
+        setContextMenuPolicy(Qt::DefaultContextMenu);
+    else
+        setContextMenuPolicy(Qt::PreventContextMenu);
 }
 
 void FrameView::initUi()
@@ -215,7 +221,8 @@ void FrameView::dragMoveEvent(QDragMoveEvent * event )
                             if (pIdx.column()==2){
 
                                 int dragLevel=pIdx.data().toInt();
-                                if ( (dropLevel!=dragLevel-1 &&
+                                if ( m_blackList.contains(dragLevel) ||
+                                    (dropLevel!=dragLevel-1 &&
                                     strParentName.compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)!=0
                                     ) || index==pIdx.parent()){
                                     event->ignore();
@@ -388,7 +395,8 @@ void FrameView::dropEvent ( QDropEvent * event )
                                             (idName.internalPointer());
                                         if (curItem!=0){*/
 
-                                            if ( (dropLevel==dragLevel-1 || strParentName
+                                            if (m_blackList.contains(dragLevel) ||
+                                                (dropLevel==dragLevel-1 || strParentName
                                                 .compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)==0
                                                 ) /*&& curItem!=pItem*/ && index!=pIdx.parent()){
 
