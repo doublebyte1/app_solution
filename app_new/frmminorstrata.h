@@ -33,7 +33,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   next();
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
-        void                                   onButtonClick(QAbstractButton * button);
+        bool                                   onButtonClick(QAbstractButton * button);
 
         void                                   setActiveReason(bool bActive);
         void                                   disableReasonCombo();

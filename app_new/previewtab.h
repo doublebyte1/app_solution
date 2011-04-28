@@ -80,7 +80,7 @@ class PreviewTab : public GenericTab
         /*! Slot that implements the two buttons on the preview/edit dialog: close and apply
           \sa createRecord(), previewRow(QModelIndex index)
         */
-        virtual void                          onButtonClick(QAbstractButton * button)=0;
+        virtual bool                          onButtonClick(QAbstractButton * button)=0;
 
     private:
         QSqlRelationalTableModel*             m_model;/**< pointer for the main model in this form */

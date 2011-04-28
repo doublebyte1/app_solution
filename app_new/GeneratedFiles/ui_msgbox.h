@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'msgbox.ui'
 **
-** Created: Wed 27. Apr 09:38:00 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 28. Apr 12:41:51 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

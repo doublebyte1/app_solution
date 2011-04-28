@@ -121,8 +121,7 @@ void MainFrm::hideFrameDetails()
 }
 
 void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,
-                               const FrmFrameDetails::Persistence persistence,const int frameId)
-{
+                               const FrmFrameDetails::Persistence persistence,const int frameId){
     pFrmFrameDetails->setFrameDetails(mode,persistence,frameId);
     tabWidget->hide();
     pFrmFrameDetails->show();
