@@ -115,10 +115,6 @@ bool ModelInterface::writeModel()
 bool ModelInterface::writeTempChanges(Sample* sample)
 {
     //TODO: CACHE THE CHANGES
-    //check if there are effective changes
-    //Loop everything to vessels
-    //check if they have a reason
-    //if they do, write from to and reason
 
     sample->cellId=1; //TODO: remove this later!!!!
 
@@ -140,15 +136,33 @@ bool ModelInterface::writeTempChanges(Sample* sample)
                     for (int l=0; l < ls->childCount(); ++l){
                         TreeItem* vs=ls->child(l);
 
-                        if (writeTempChangesVessel(vs,sample))
+                        if (writeTempChangesVessel(false,vs,sample))
                             ct++;
-                        //qDebug() << vs->data(0).toString() << endl;
-
                     }
                 }
             }
 
         }else{//bin
+
+            TreeItem* frameBin=root->child(i);
+
+            for (int j=0; j < frameBin->childCount(); ++j){
+
+                TreeItem* gls=frameBin->child(j);
+
+                if (writeTempChangesVessel(true,gls,sample))
+                            ct++;
+
+                for (int k=0; k < gls->childCount(); ++k){
+                    TreeItem* ls=gls->child(k);
+                    for (int l=0; l < ls->childCount(); ++l){
+                        TreeItem* vs=ls->child(l);
+
+                        if (writeTempChangesVessel(true,vs,sample))
+                            ct++;
+                    }
+                }
+            }
 
 
         }
@@ -157,17 +171,128 @@ bool ModelInterface::writeTempChanges(Sample* sample)
     return true;
 }
 
-bool ModelInterface::writeTempChangesVessel(TreeItem* vs, Sample* sample)
+bool ModelInterface::writeTempChangesVessel(const bool bBin, TreeItem* vs, Sample* sample)
 {
-    //5 - reasons
-    //6 - origin
     if (vs->data(6)!=-1 ){
+        if (!insertNewRecord(tChangesTempVessel)) return false;
 
+        int outsideId;
+        if (!getOutsideALS(outsideId)) return false;
 
+        QModelIndex idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,1);//cell
+        if (!idx.isValid())
+            return false;
+        tChangesTempVessel->setData(idx,sample->cellId);
 
-        qDebug() << vs->data(5) << endl;
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,2);//vessel
+        if (!idx.isValid())
+            return false;
+        tChangesTempVessel->setData(idx,vs->data(4));
+
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,3);//from
+        if (!idx.isValid())
+            return false;
+        int from;
+        if (!findOrigin(vs,outsideId,from))
+            return false;
+
+        if (!tChangesTempVessel->setData(idx,from)) return false;//origin
+
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,4);//to
+        if (!idx.isValid())
+            return false;
+
+        QVariant to;
+        if (bBin)
+            to=QVariant(outsideId);
+        else
+            to=vs->parent()->data(4);
+
+        if (!tChangesTempVessel->setData(idx,to)) return false;
+
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,5);//reasons
+        if (!idx.isValid())
+            return false;
+        int reasonId;
+
+        if (!getIdofReason(vs->data(5).toString(), reasonId)) return false;
+        if (!tChangesTempVessel->setData(idx,reasonId)) return false;
+
+        return tChangesTempVessel->submitAll();
     }
     return false;
+}
+
+bool ModelInterface::findOrigin(TreeItem* vs, const int outsideId, int& lsId)
+{
+    int internalId=vs->data(6).toInt();
+
+    QModelIndex root=treeModel->index(0,0,QModelIndex());
+    if (!root.isValid()) return false;
+
+    //Search inside the bin first
+    QModelIndex bin=treeModel->index(1,0,QModelIndex());
+    if (!bin.isValid()) return false;
+    TreeItem *pBin = static_cast<TreeItem*>
+        (bin.internalPointer());
+
+    for (int i=0; i < pBin->childCount(); ++i)
+    {
+            QModelIndex gls=treeModel->index(i,0,bin);
+            if (!gls.isValid()) return false;
+            TreeItem *pGls = static_cast<TreeItem*>
+                (gls.internalPointer());
+
+                //n.b.: search in the root first!
+                if (gls.internalId()==internalId)
+                {
+                    lsId=outsideId;
+                    return true;
+                }
+                //than dive into the ls level
+                for (int j=0; j < pGls->childCount(); ++j)
+                {
+                    QModelIndex ls=treeModel->index(j,0,gls);
+                    if (!ls.isValid()) return false;
+                    TreeItem *pLs = static_cast<TreeItem*>
+                        (ls.internalPointer());
+
+                    if (ls.internalId()==internalId)
+                    {
+                        lsId=outsideId;
+                        return true;
+                    }
+                }
+    }
+
+    //Now search the root
+    TreeItem *pRoot = static_cast<TreeItem*>
+        (root.internalPointer());
+
+    for (int i=0; i < pRoot->childCount(); ++i)
+    {
+            QModelIndex gls=treeModel->index(i,0,root);
+            if (!gls.isValid()) return false;
+            TreeItem *pGls = static_cast<TreeItem*>
+                (gls.internalPointer());
+            for (int j=0; j < pGls->childCount(); ++j)
+            {
+                QModelIndex ls=treeModel->index(j,0,gls);
+                if (!ls.isValid()) return false;
+                TreeItem *pLs = static_cast<TreeItem*>
+                    (ls.internalPointer());
+
+                if (ls.internalId()==internalId)
+                {
+                    lsId=pLs->data(4).toInt();
+                    return true;
+                }
+
+            }
+
+    }
+
+    return true;
 }
 
 bool ModelInterface::insertNewRecord(QSqlTableModel* model)
@@ -418,16 +543,42 @@ bool ModelInterface::getIdofBin(const QString strTable, int& id)
 bool ModelInterface::getIdofReason(const QString strReason, int& id)
 {
     QSqlQuery query;
+
     query.prepare(
     tr("SELECT     ID")+
     tr(" FROM         Ref_Changes")+
     tr(" WHERE     (Name = :name)")
     );
 
-    query.bindValue(0, strReason);
+    if (strReason.isEmpty())
+    {
+        query.bindValue(0, qApp->translate("null_replacements", strMissing));
+    }else{
+        query.bindValue(0, strReason);
+    }
 
     if (!query.exec()) return false;
     if (query.numRowsAffected()<1) return false;//It must *always* find an id
+
+    query.first();
+    id=query.value(0).toInt();
+
+    return true;
+}
+
+bool ModelInterface::getOutsideALS(int& id)
+{
+    QSqlQuery query;
+    query.prepare(
+    tr("SELECT     ID")+
+    tr(" FROM         Ref_Abstract_LandingSite")+
+    tr(" WHERE     (Name = :name)")
+    );
+
+    query.bindValue(0, qApp->translate("bin", strOutside));
+
+    if (!query.exec()) return false;
+    if (query.numRowsAffected()<1) return false;//It must *always* find the Vessel ID!
 
     query.first();
     id=query.value(0).toInt();

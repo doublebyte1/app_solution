@@ -27,14 +27,6 @@ TreeModel::~TreeModel()
 QModelIndexList TreeModel::verifyChanges()
 {
     QModelIndexList list;
-/*
-    for (int column = 0; column < columnCount(); ++column){
-        for (int row = 0; row < rowCount(); ++row)
-        {
-            QModelIndex idx=index(row,column,
-        }
-    }
-*/
 
     if (rootItem->childCount()>0)
         recursiveVerifyChanges(rootItem, list);
@@ -45,14 +37,6 @@ QModelIndexList TreeModel::verifyChanges()
 bool TreeModel::recursiveVerifyChanges(TreeItem* item, QModelIndexList& list)
 {
     qDebug() << "stored id"<< item->data(6) << endl;
-    //TODO: grab current parent id
-
-
-        /*
-    for (int i=0; i < item->childCount(); ++i)
-    {
-        recursiveVerifyChanges(item->child(i),list);
-    }*/
     return true;
 }
 

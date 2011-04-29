@@ -101,7 +101,9 @@ private:
     bool                                   submitAll();
     bool                                   filterTables();
 
-    bool                                   writeTempChangesVessel(TreeItem* vs, Sample* sample);
+    bool                                   writeTempChangesVessel(const bool bBin, TreeItem* vs, Sample* sample);
+    bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
+    bool                                   getOutsideALS(int& id);
     QVector<QSqlTableModel*>               vTables;
 
 };
