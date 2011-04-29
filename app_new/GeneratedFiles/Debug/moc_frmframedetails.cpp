@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframedetails.h'
 **
-** Created: Wed 27. Apr 15:39:30 2011
+** Created: Fri 29. Apr 09:30:32 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrameDetails[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,12 +39,11 @@ static const uint qt_meta_data_FrmFrameDetails[] = {
  // slots: signature, parameters, type, tag, flags
      119,   16,   16,   16, 0x08,
      126,   16,   16,   16, 0x08,
-     131,   16,   16,   16, 0x08,
-     140,   16,   16,   16, 0x08,
-     148,   16,   16,   16, 0x08,
-     157,   16,   16,   16, 0x08,
-     164,   36,   16,   16, 0x08,
-     199,   16,   16,   16, 0x08,
+     135,   16,   16,   16, 0x08,
+     143,   16,   16,   16, 0x08,
+     152,   16,   16,   16, 0x08,
+     159,   36,   16,   16, 0x08,
+     194,   16,   16,   16, 0x08,
 
        0        // eod
 };
@@ -53,7 +52,7 @@ static const char qt_meta_stringdata_FrmFrameDetails[] = {
     "FrmFrameDetails\0\0hideFrameDetails()\0"
     "str\0showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
-    "back()\0ok()\0cancel()\0apply()\0verify()\0"
+    "back()\0cancel()\0apply()\0verify()\0"
     "undo()\0isClonedFromPreviousFrame(QString)\0"
     "enableVerify()\0"
 };
@@ -94,16 +93,15 @@ int FrmFrameDetails::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 4: back(); break;
-        case 5: ok(); break;
-        case 6: cancel(); break;
-        case 7: apply(); break;
-        case 8: verify(); break;
-        case 9: undo(); break;
-        case 10: isClonedFromPreviousFrame((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 11: enableVerify(); break;
+        case 5: cancel(); break;
+        case 6: apply(); break;
+        case 7: verify(); break;
+        case 8: undo(); break;
+        case 9: isClonedFromPreviousFrame((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 10: enableVerify(); break;
         default: ;
         }
-        _id -= 12;
+        _id -= 11;
     }
     return _id;
 }

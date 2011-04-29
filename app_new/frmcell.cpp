@@ -33,10 +33,64 @@ FrmCell::~FrmCell()
     if (viewCell!=0) delete viewCell;
 }
 
+void FrmCell::showEvent ( QShowEvent * event )
+{
+    bool bShow=this->groupDetails->isVisible();
+
+    createRecord();
+
+    this->groupDetails->setVisible(bShow);
+}
+
 void FrmCell::onShowFrameDetails()
 {
-    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
-        m_sample->frameId);
+    bool bOk=true;
+
+    //check for uncomitted changes
+    while(m_tDateTime->canFetchMore())
+        m_tDateTime->fetchMore();
+
+    QModelIndex idx1=m_tDateTime->index(m_tDateTime->rowCount()-1,0);
+    if (!idx1.isValid()) return;
+
+    while(tSampCell->canFetchMore())
+        tSampCell->fetchMore();
+
+    QModelIndex idx2=tSampCell->index(tSampCell->rowCount()-1,0);
+    if (!idx2.isValid()) return;
+
+    if (m_tDateTime->isDirty(idx1) || tSampCell->isDirty(idx2))
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("This record has been modified."));
+        msgBox.setInformativeText(tr("Would you like to apply uncommitted changes?"));
+        msgBox.setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Apply);
+        int ret = msgBox.exec();
+
+            switch (ret) {
+            case QMessageBox::Apply:
+                bOk=onButtonClick(buttonBox->button(QDialogButtonBox::Apply));
+                break;
+            case QMessageBox::Discard:
+                // NOTHING
+                break;
+            case QMessageBox::Cancel:
+                return;
+                break;
+            default:
+                // should never be reached
+                break;
+            }
+
+    }
+    if (bOk){
+        QList<int> blackList;
+        blackList << 1 << 2;
+        emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
+            m_sample, blackList, false);
+    }
 }
 
 void FrmCell::previewRow(QModelIndex index)
@@ -224,18 +278,17 @@ void FrmCell::initMappers()
 
 }
 
-void FrmCell::onButtonClick(QAbstractButton* button)
+bool FrmCell::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
         this->groupDetails->hide();
         this->tSampCell->revertAll();
+        return true;
 
     } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
 
         bool bError=false;
-
-        qDebug() << mapperStartDt->currentIndex() << endl;
 
         //First insert the dates...
         if (!mapperStartDt->submit() 
@@ -313,7 +366,8 @@ void FrmCell::onButtonClick(QAbstractButton* button)
             tableView->selectRow(0);
             tSampCell->select();
         }
-    }
+        return !bError;
+    }else return false;
 }
 
 void FrmCell::uI4NewRecord()

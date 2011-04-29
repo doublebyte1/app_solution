@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframedetails.ui'
 **
-** Created: Wed 27. Apr 09:38:01 2011
+** Created: Fri 29. Apr 11:52:05 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -52,7 +52,7 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QCheckBox *checkClone;
     QLabel *label_3;
-    QLineEdit *lineCloned;
+    QComboBox *cmbCloned;
     QFrame *frame;
     QGridLayout *gridLayout_2;
     QHBoxLayout *horizontalLayout;
@@ -172,11 +172,11 @@ public:
 
         horizontalLayout_4->addWidget(label_3);
 
-        lineCloned = new QLineEdit(groupBox);
-        lineCloned->setObjectName(QString::fromUtf8("lineCloned"));
-        lineCloned->setEnabled(false);
+        cmbCloned = new QComboBox(groupBox);
+        cmbCloned->setObjectName(QString::fromUtf8("cmbCloned"));
+        cmbCloned->setEnabled(false);
 
-        horizontalLayout_4->addWidget(lineCloned);
+        horizontalLayout_4->addWidget(cmbCloned);
 
 
         verticalLayout->addLayout(horizontalLayout_4);
@@ -240,19 +240,16 @@ public:
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(lineName);
         label_4->setBuddy(cmbType);
-        label_3->setBuddy(lineCloned);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(lineName, cmbType);
         QWidget::setTabOrder(cmbType, textDesc);
         QWidget::setTabOrder(textDesc, checkClone);
-        QWidget::setTabOrder(checkClone, lineCloned);
-        QWidget::setTabOrder(lineCloned, pushExpand);
+        QWidget::setTabOrder(checkClone, pushExpand);
         QWidget::setTabOrder(pushExpand, pushCollapse);
         QWidget::setTabOrder(pushCollapse, pushBack);
 
         retranslateUi(frmframedetails);
         QObject::connect(pushApply, SIGNAL(clicked()), frmframedetails, SLOT(apply()));
-        QObject::connect(lineCloned, SIGNAL(textChanged(QString)), frmframedetails, SLOT(isClonedFromPreviousFrame(QString)));
         QObject::connect(pushBack, SIGNAL(clicked()), frmframedetails, SLOT(back()));
         QObject::connect(pushUndo, SIGNAL(clicked()), frmframedetails, SLOT(undo()));
         QObject::connect(pushVerify, SIGNAL(clicked()), frmframedetails, SLOT(verify()));

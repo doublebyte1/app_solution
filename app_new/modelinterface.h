@@ -11,6 +11,8 @@
  #define new DEBUG_NEW
 #endif
 
+struct Sample;
+
 void filterTable(QSqlTableModel* table);
 //////////////////////////////////////////////////
 
@@ -44,11 +46,13 @@ public:
     QSqlTableModel*                        tLinkGLS2LS;
     QSqlTableModel*                        tLinkLS2Vessels;
     QSqlTableModel*                        tChangesPermVessel;
+    QSqlTableModel*                        tChangesTempVessel;
     QSqlTableModel*                        tChangesPermLS;
     QSqlTableModel*                        tChangesPermGLS;
     TreeModel*                             treeModel;
 
     bool                                   writeModel();
+    bool                                   writeTempChanges(Sample* sample);
     bool                                   rollback(const bool bSubmitted);
     bool                                   insertNewRecord(QSqlTableModel* model);
     bool                                   getErrors(QString& strError);
@@ -97,6 +101,7 @@ private:
     bool                                   submitAll();
     bool                                   filterTables();
 
+    bool                                   writeTempChangesVessel(TreeItem* vs, Sample* sample);
     QVector<QSqlTableModel*>               vTables;
 
 };

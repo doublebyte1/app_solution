@@ -49,7 +49,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
     private slots:
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 
-                                        const FrmFrameDetails::Persistence persistence,const int frameId);
+                                        const FrmFrameDetails::Persistence persistence,Sample* sample, 
+                                        QList<int>& blackList, const bool bSupportNewItems);
         void                    hideFrameDetails();
         void                    statusShow(QString str);
         void                    statusClean(QString str);

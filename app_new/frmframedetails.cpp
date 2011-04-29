@@ -10,6 +10,7 @@ QWidget(parent, flags){
     qRegisterMetaType<FrmFrameDetails::Mode>("Mode");
     qRegisterMetaType<FrmFrameDetails::Persistence>("Persistence");
 
+    m_sample=0;
     m_submitted=false;
     m_verified=false;
     model=0;
@@ -31,20 +32,6 @@ FrmFrameDetails::~FrmFrameDetails()
     if (modelInterface!=0) delete modelInterface;
     if (mapper!=0) delete mapper;
     if (nullDellegate!=0) delete nullDellegate;
-}
-
-void FrmFrameDetails::ok()
-{
-    //OBSOLETE CODE
-
-    /*
-    if (!m_submitted)
-        apply();
-
-    if (m_submitted){
-        emit hideFrameDetails();
-        emit showStatus(tr("Frame successfully written in the database!"));
-    }*/
 }
 
 void FrmFrameDetails::cancel()
@@ -83,26 +70,45 @@ void FrmFrameDetails::apply()
     if (!m_verified) return;
 
     bool bError=false;
-   if (!mapper->submit()){
-        QString strErrors;
-        if (modelInterface->getErrors(strErrors))
-            emit showError(strErrors);
-        else
-            emit showError(tr("Could not submit mapper!"));
 
-        bError=true;
-    }else{
-        if (!modelInterface->writeModel()){
+    if (m_persistence==FrmFrameDetails::PERMANENT)
+    {
+
+       if (!mapper->submit()){
             QString strErrors;
             if (modelInterface->getErrors(strErrors))
                 emit showError(strErrors);
             else
-                emit showError(tr("Could not write frame in the database!"));
+                emit showError(tr("Could not submit mapper!"));
 
             bError=true;
+        }else{
+            if (!modelInterface->writeModel()){
+                QString strErrors;
+                if (modelInterface->getErrors(strErrors))
+                    emit showError(strErrors);
+                else
+                    emit showError(tr("Could not write frame in the database!"));
+
+                bError=true;
+            }
         }
+        mapper->toLast();
+
+    }else{
+        //TODO: write temp changes
+            if (!modelInterface->writeTempChanges(m_sample)){
+                QString strErrors;
+                if (modelInterface->getErrors(strErrors))
+                    emit showError(strErrors);
+                else
+                    emit showError(tr("Could not write frame in the database!"));
+
+                bError=true;
+            }
+
     }
-    mapper->toLast();
+
     pushApply->setEnabled(bError);
     pushUndo->setEnabled(!bError);
     m_submitted=!bError;
@@ -112,19 +118,26 @@ void FrmFrameDetails::undo()
 {
     bool bError=false;
 
-    if (!modelInterface->rollback(m_submitted)){
-        QString strErrors;
-        if (modelInterface->getErrors(strErrors))
-            emit showError(strErrors);
-        else
-            emit showError(tr("Could not rollback!"));
-        bError=true;
-    }else{
-        emit showStatus(tr("Successfully rollback!"));
-        emit hideFrameDetails();
-        bError=true;
-    }
+    if (m_persistence==FrmFrameDetails::PERMANENT)
+    {
 
+        if (!modelInterface->rollback(m_submitted)){
+            QString strErrors;
+            if (modelInterface->getErrors(strErrors))
+                emit showError(strErrors);
+            else
+                emit showError(tr("Could not rollback!"));
+            bError=true;
+        }else{
+            emit showStatus(tr("Successfully rollback!"));
+            emit hideFrameDetails();
+            bError=true;
+        }
+
+    }else{
+        //TODO: undo temp changes
+
+    }
     pushApply->setEnabled(bError);
     pushUndo->setEnabled(!bError);
     m_submitted=!bError;
@@ -137,27 +150,37 @@ void FrmFrameDetails::back()
 
 bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
 {
+    treeView->setDragEnabled(!bRO);
+
     if (bRO){
         frame->setToolTip(tr(""));
-        treeView->setDragEnabled(false);
         treeView->setSelectionMode(
             QAbstractItemView::NoSelection);
-        treeView->setContextMenuPolicy(Qt::NoContextMenu);
+        //treeView->setContextMenuPolicy(Qt::NoContextMenu);
+
     }else{
         frame->setToolTip(tr("Press edit key F2 to edit items"));
-        treeView->setDragEnabled(true);
         treeView->setSelectionMode(
         QAbstractItemView::ExtendedSelection);
-        treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
+        //treeView->setContextMenuPolicy(Qt::DefaultContextMenu);
     }
 
     return true;
 }
 
-void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, const int frameId)
+void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, Sample* sample, 
+                                      QList<int>& blackList, const bool bSupportNewItems)
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
+    if (treeView==0) return;
+
+    if (blackList.size()>0)
+        treeView->setBlackList(blackList);
+
+    treeView->setSupportNewItems(bSupportNewItems);
+
+    m_sample=sample;
     m_mode=mode;
     m_persistence=persistence;
     m_verified=false;
@@ -171,16 +194,16 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     pushApply->setEnabled(!pushVerify->isEnabled());
     pushUndo->setEnabled(!pushVerify->isEnabled());
 
-    pushVerify->setVisible(mode!=FrmFrameDetails::VIEW);
-    pushApply->setVisible(mode!=FrmFrameDetails::VIEW);
-    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW);
+    pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
+    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
+    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
     pushBack->setVisible(true);
 
     lineName->clear();
     textComments->clear();
     textDesc->clear();
 
-    if (!initModel(mode,frameId)){
+    if (!initModel(mode,sample->frameId)){
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         emit showError(tr("Could not create frame view!"));
         return;
@@ -190,14 +213,14 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
         groupBox->setEnabled(false);
         setTreeReadOnly(true);
         horizontalLayout->addWidget(pushBack);
-        horizontalLayout->removeWidget(pushVerify);
-        horizontalLayout->removeWidget(pushApply);
-        horizontalLayout->removeWidget(pushUndo);
+        persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushVerify):horizontalLayout->addWidget(pushVerify);
+        persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushApply): horizontalLayout->addWidget(pushApply);
+        persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushUndo): horizontalLayout->addWidget(pushUndo);
 
         persistence==FrmFrameDetails::PERMANENT?setTreeReadOnly(true):setTreeReadOnly(false);
 
         initMapper();//TODO: maybe throw an error here later?
-        modelInterface->tRefFrame->setFilter(tr("Fr_Frame.ID=") + QVariant(frameId).toString());
+        modelInterface->tRefFrame->setFilter(tr("Fr_Frame.ID=") + QVariant(sample->frameId).toString());
         mapper->toLast();
 
     }else{
@@ -217,7 +240,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                 QSqlQuery query;
                 query.prepare(tr("SELECT dbo.FR_Frame.Name FROM dbo.FR_Frame ") + 
                               tr("WHERE     (dbo.FR_Frame.ID = ?)"));
-                query.addBindValue(frameId);
+                query.addBindValue(sample->frameId);
                 if (!query.exec() || query.numRowsAffected()<1){
                     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                     if (query.lastError().type()!=QSqlError::NoError)
@@ -227,12 +250,14 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                     return;
                 }
                 query.first();
-                this->lineCloned->setText(query.value(0).toString());
+                this->cmbCloned->setCurrentIndex(this->cmbCloned->findText(
+                    query.value(0).toString()));
+
                 //Set src ID
                 query.prepare(tr("SELECT dbo.Ref_Source.Name FROM dbo.FR_Frame INNER JOIN ") + 
                               tr("dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID ") +
                               tr("WHERE     (dbo.FR_Frame.ID = ?)"));
-                query.addBindValue(frameId);
+                query.addBindValue(sample->frameId);
                 if (!query.exec() || query.numRowsAffected()<1){
                     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                     if (query.lastError().type()!=QSqlError::NoError)
@@ -246,14 +271,16 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                 this->cmbType->setCurrentIndex(this->cmbType->findText(query.value(0).toString()));
 
             }else if (mode==FrmFrameDetails::CREATE)
-                this->lineCloned->setText(qApp->translate("null_replacements", strNa));
+
+                this->cmbCloned->setCurrentIndex(this->cmbCloned->findText(
+                    qApp->translate("null_replacements", strNa)));
+
             emit showStatus(tr("Record successfully initialized!"));
         }
 
         groupBox->setEnabled(true);
         setTreeReadOnly(false);
 
-        //horizontalLayout->addWidget(pushOk);
         horizontalLayout->addWidget(pushVerify);
         horizontalLayout->addWidget(pushApply);
         horizontalLayout->addWidget(pushUndo);
@@ -467,7 +494,7 @@ void FrmFrameDetails::initMapper()
 
     if (nullDellegate!=0) delete nullDellegate;
     QList<int> lCmb;
-    lCmb << 5;
+    lCmb << 5 << 4;
     QList<int> lText;
     lText << 3 << 6;
 
@@ -483,7 +510,12 @@ void FrmFrameDetails::initMapper()
         modelInterface->tRefFrame->relationModel(5)->fieldIndex(tr("Name")));
 
     mapper->addMapping(cmbType, 5);
-    mapper->addMapping(lineCloned, 4);
+
+    cmbCloned->setModel(modelInterface->tRefFrame->relationModel(4));
+    cmbCloned->setModelColumn(
+        modelInterface->tRefFrame->relationModel(4)->fieldIndex(tr("Name")));
+
+    mapper->addMapping(cmbCloned, 4);
 }
 
 void FrmFrameDetails::isClonedFromPreviousFrame(QString str)

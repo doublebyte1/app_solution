@@ -15,6 +15,7 @@
 
 class QTreeView;
 class NullRelationalDelegate;
+struct Sample;
 
 //! Frm Frame Details Class
 /*!
@@ -47,7 +48,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         ~FrmFrameDetails();
 
         void                    setFrameDetails(const Mode mode, const Persistence persistence,
-            const int frameId);
+            Sample* sample, QList<int>& blackList, const bool bSupportNewItems);
 
     public slots:
 
@@ -60,7 +61,6 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
 
     private slots:
         void                    back();
-        void                    ok();
         void                    cancel();
         void                    apply();
         void                    verify();
@@ -69,6 +69,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         void                    enableVerify();
 
     private:
+        Sample*                 m_sample;
         Mode                    m_mode;
         Persistence             m_persistence;
         bool                    m_submitted;

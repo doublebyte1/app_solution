@@ -75,8 +75,8 @@ void MainFrm::initTabs()
          connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
         SLOT(navigateThroughTabs(const bool, const int)));
 
-         connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, const int)), this,
-        SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, const int)));
+         connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const bool)), this,
+        SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&,const bool)));
 
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails()), vTabs.at(i),
         SIGNAL(hideFrameDetails()));
@@ -90,12 +90,7 @@ void MainFrm::initTabs()
          if (i < vTabs.size()-1){
              connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
             SLOT(fillHeader(const QString)));
-             //connect(vTabs.at(i), SIGNAL(forward(const QString, Sample*)), vTabs.at(i+1),
-            //SLOT(getPar(const QString, Sample*)));
          }
-
-         //connect(vTabs.at(i), SIGNAL(gotPar()), vTabs.at(i),
-        //SLOT(onShowForm()));
 
      }
 
@@ -121,9 +116,9 @@ void MainFrm::hideFrameDetails()
 }
 
 void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,
-                               const FrmFrameDetails::Persistence persistence,const int frameId)
-{
-    pFrmFrameDetails->setFrameDetails(mode,persistence,frameId);
+                               const FrmFrameDetails::Persistence persistence,Sample* sample,
+                               QList<int>& blackList, const bool bSupportNewItems){
+    pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList,bSupportNewItems);
     tabWidget->hide();
     pFrmFrameDetails->show();
 }

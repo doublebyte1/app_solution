@@ -97,7 +97,8 @@ class GenericTab : public QWidget
         void                    navigate(const bool bNext, const int idx);
         void                    hideFrameDetails();
         void                    showFrameDetails(const FrmFrameDetails::Mode mode,
-                                    const FrmFrameDetails::Persistence persistence, const int frameId);
+                                    const FrmFrameDetails::Persistence persistence, Sample* sample, 
+                                    QList<int>& blackList=QList<int>(), const bool bSupportNewItems=true);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
@@ -124,5 +125,6 @@ class GenericTab : public QWidget
 };
 
 Q_DECLARE_METATYPE( QList<QWidget*>);
+Q_DECLARE_METATYPE( Sample*);
 
 #endif //GENERICTAB_H

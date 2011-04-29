@@ -2,6 +2,7 @@
 #include <QtSql>
 #include "modelinterface.h"
 #include "globaldefs.h"
+#include "generictab.h"
 
 ModelInterface::ModelInterface (QObject *parent):
 QObject(parent)
@@ -21,6 +22,7 @@ QObject(parent),treeModel(aTreeModel)
     tLinkGLS2LS=0;
     tLinkLS2Vessels=0;
     tChangesPermVessel=0;
+    tChangesTempVessel=0;
     tChangesPermLS=0;
     tChangesPermGLS=0;
     initModels();
@@ -56,6 +58,8 @@ void ModelInterface::initModels()
     tLinkLS2Vessels=new QSqlTableModel();
     if (tChangesPermVessel!=0) delete tChangesPermVessel;
     tChangesPermVessel=new QSqlTableModel();
+    if (tChangesTempVessel!=0) delete tChangesTempVessel;
+    tChangesTempVessel=new QSqlTableModel();
     if (tChangesPermLS!=0) delete tChangesPermLS;
     tChangesPermLS=new QSqlTableModel();
     if (tChangesPermGLS!=0) delete tChangesPermGLS;
@@ -72,9 +76,9 @@ void ModelInterface::initModels()
     initModel(tLinkGLS2LS,tr("FR_GLS2ALS"));
     initModel(tLinkLS2Vessels,tr("FR_ALS2Vessel"));
     initModel(tChangesPermVessel,tr("Changes_Perm_Vessel"));
+    initModel(tChangesTempVessel,tr("Changes_Temp_Vessel"));
     initModel(tChangesPermLS,tr("Changes_Perm_LS"));
     initModel(tChangesPermGLS,tr("Changes_Perm_GLS"));
-
 }
 
 bool ModelInterface::filterTables()
@@ -106,6 +110,64 @@ ModelInterface::~ModelInterface()
 bool ModelInterface::writeModel()
 {
     return writeTables();
+}
+
+bool ModelInterface::writeTempChanges(Sample* sample)
+{
+    //TODO: CACHE THE CHANGES
+    //check if there are effective changes
+    //Loop everything to vessels
+    //check if they have a reason
+    //if they do, write from to and reason
+
+    sample->cellId=1; //TODO: remove this later!!!!
+
+    int ct=0;
+
+    TreeItem* root=treeModel->root();
+
+    for (int i=0; i < root->childCount(); ++i){
+        if (root->child(i)->data(0).toString().compare(
+                qApp->translate("bin", strBin)
+                , Qt::CaseInsensitive)!=0)//does not compare
+        {
+            TreeItem* frameRoot=root->child(i);
+            for (int j=0; j < frameRoot->childCount(); ++j){
+
+                TreeItem* gls=frameRoot->child(j);
+                for (int k=0; k < gls->childCount(); ++k){
+                    TreeItem* ls=gls->child(k);
+                    for (int l=0; l < ls->childCount(); ++l){
+                        TreeItem* vs=ls->child(l);
+
+                        if (writeTempChangesVessel(vs,sample))
+                            ct++;
+                        //qDebug() << vs->data(0).toString() << endl;
+
+                    }
+                }
+            }
+
+        }else{//bin
+
+
+        }
+    }
+
+    return true;
+}
+
+bool ModelInterface::writeTempChangesVessel(TreeItem* vs, Sample* sample)
+{
+    //5 - reasons
+    //6 - origin
+    if (vs->data(6)!=-1 ){
+
+
+
+        qDebug() << vs->data(5) << endl;
+    }
+    return false;
 }
 
 bool ModelInterface::insertNewRecord(QSqlTableModel* model)

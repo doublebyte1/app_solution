@@ -167,13 +167,10 @@
           <property name="text">
            <string>Cloned Frame</string>
           </property>
-          <property name="buddy">
-           <cstring>lineCloned</cstring>
-          </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineCloned">
+         <widget class="QComboBox" name="cmbCloned">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -306,7 +303,6 @@
   <tabstop>cmbType</tabstop>
   <tabstop>textDesc</tabstop>
   <tabstop>checkClone</tabstop>
-  <tabstop>lineCloned</tabstop>
   <tabstop>pushExpand</tabstop>
   <tabstop>pushCollapse</tabstop>
   <tabstop>pushBack</tabstop>
@@ -324,22 +320,6 @@
     <hint type="sourcelabel">
      <x>678</x>
      <y>569</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>362</x>
-     <y>295</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineCloned</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>frmframedetails</receiver>
-   <slot>isClonedFromPreviousFrame(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>593</x>
-     <y>253</y>
     </hint>
     <hint type="destinationlabel">
      <x>362</x>

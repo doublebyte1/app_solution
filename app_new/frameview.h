@@ -112,6 +112,8 @@ class FrameView: public QTreeView
         ~FrameView();
 
         bool                        verifyChanges();
+        void                        setBlackList(QList<int> blackList){m_blackList=blackList;}
+        void                        setSupportNewItems(const bool bOk);
 
     public slots:
         //void                        sortByColumn(int column, Qt::SortOrder order);
@@ -150,7 +152,7 @@ class FrameView: public QTreeView
         CustomAction                *newVirtualAct;
         FrmChangeReasons*           frmChangeReasons;
         TreeItemDelegate            *itemDelegate;
-
+        QList<int>                  m_blackList;//!< Here we can blacklist some levels! (useful to restrict functionality on temp changes)
 
 };
 #endif //FRAMEVIEW_H

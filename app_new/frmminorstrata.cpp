@@ -186,24 +186,7 @@ void FrmMinorStrata::filterModel4Combo()
 
 void FrmMinorStrata::createRecord()
 {
-    //removing filters
-    if (tRefMinorStrata==0) return ;
-    if (!tRefMinorStrata->filter().isEmpty()) tRefMinorStrata->setFilter(tr(""));
-
-    if (m_tDateTime==0) return ;
-    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
-
-    while(tRefMinorStrata->canFetchMore())
-        tRefMinorStrata->fetchMore();
-
-    //Check for uncomitted changes
-    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
-    if (!idx.isValid()) return;
-
-    if (tRefMinorStrata->isDirty(idx))
-        tRefMinorStrata->revertAll();
-
-    tRefMinorStrata->insertRow(tRefMinorStrata->rowCount());
+    genericCreateRecord();
 
     mapper1->toLast();
 
@@ -227,18 +210,19 @@ void FrmMinorStrata::createRecord()
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
-    idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
+    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
     tRefMinorStrata->setData(idx,m_sample->frameTimeId);//id_frame_time
 
     uI4NewRecord();//init UI
 }
 
-void FrmMinorStrata::onButtonClick(QAbstractButton* button)
+bool FrmMinorStrata::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
         this->groupDetails->hide();
         this->tRefMinorStrata->revertAll();
+        return true;
 
     } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
 
@@ -315,7 +299,8 @@ void FrmMinorStrata::onButtonClick(QAbstractButton* button)
             tableView->selectRow(0);
             tRefMinorStrata->select();
         }
-    }
+        return !bError;
+    } else return false;
 }
 
 void FrmMinorStrata::initUI()

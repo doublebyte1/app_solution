@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Wed 27. Apr 14:27:57 2011
+** Created: Fri 29. Apr 09:30:31 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -35,9 +35,9 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
       29,   15,   15,   15, 0x08,
       36,   15,   15,   15, 0x08,
       57,   51,   15,   15, 0x08,
-      88,   81,   15,   15, 0x08,
-     128,  120,   15,   15, 0x08,
-     150,   15,   15,   15, 0x08,
+      93,   86,   81,   15, 0x08,
+     133,  125,   15,   15, 0x08,
+     155,   15,   15,   15, 0x08,
 
        0        // eod
 };
@@ -45,7 +45,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
 static const char qt_meta_stringdata_FrmMinorStrata[] = {
     "FrmMinorStrata\0\0onShowForm()\0next()\0"
     "createRecord()\0index\0previewRow(QModelIndex)\0"
-    "button\0onButtonClick(QAbstractButton*)\0"
+    "bool\0button\0onButtonClick(QAbstractButton*)\0"
     "bActive\0setActiveReason(bool)\0"
     "disableReasonCombo()\0"
 };
@@ -85,7 +85,8 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: next(); break;
         case 2: createRecord(); break;
         case 3: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 4: onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1]))); break;
+        case 4: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 5: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 6: disableReasonCombo(); break;
         default: ;

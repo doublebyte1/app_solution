@@ -41,7 +41,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         //! On Button Click
         /*! Reimplemented from the PreviewTab base class
         */
-        void                                   onButtonClick(QAbstractButton * button);
+        bool                                   onButtonClick(QAbstractButton * button);
         void                                   onShowFrameDetails();
 
     private:
@@ -74,11 +74,14 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
+        void                                   showEvent ( QShowEvent * event );
 
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
+        //int                                    m_start;
+        //int                                    m_end;
 };
 #endif //FRMCELL_H

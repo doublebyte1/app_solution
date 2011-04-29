@@ -103,18 +103,22 @@ void FrmFrame::onShowFrameDetails()
     if (dynamic_cast<QToolButton*>(QObject::sender())!=0){
         if (QObject::sender()->objectName()==tr("toolView")){
             m_curMode=FrmFrameDetails::VIEW;
-            if (cmbPrexistent->currentIndex()!=-1)
+            if (cmbPrexistent->currentIndex()!=-1){
+                m_sample->frameId=cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt();
                 emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::PERMANENT,
-                cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt());
+                m_sample);
+            }
         }else if (QObject::sender()->objectName()==tr("toolEdit")){
             if (radioCopy->isChecked() && cmbCopy->currentIndex()!=-1){
                 m_curMode=FrmFrameDetails::EDIT;
+                m_sample->frameId=cmbCopy->model()->index(cmbCopy->currentIndex(),0).data().toInt();
                 emit showFrameDetails(FrmFrameDetails::EDIT,FrmFrameDetails::PERMANENT,
-                cmbCopy->model()->index(cmbCopy->currentIndex(),0).data().toInt());
+                m_sample);
             }
             else if (radioCreate->isChecked()){
                 m_curMode=FrmFrameDetails::CREATE;
-                emit showFrameDetails(FrmFrameDetails::CREATE,FrmFrameDetails::PERMANENT,-1);
+                m_sample->frameId=-1;
+                emit showFrameDetails(FrmFrameDetails::CREATE,FrmFrameDetails::PERMANENT,m_sample);
             }
         }
     }
