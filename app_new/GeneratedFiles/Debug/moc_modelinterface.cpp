@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'modelinterface.h'
 **
-** Created: Fri 29. Apr 19:17:48 2011
+** Created: Mon 2. May 13:11:29 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!

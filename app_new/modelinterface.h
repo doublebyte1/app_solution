@@ -52,7 +52,7 @@ public:
     TreeModel*                             treeModel;
 
     bool                                   writeModel();
-    bool                                   writeTempChanges(Sample* sample);
+    bool                                   writeTempChanges(Sample* sample, int& ct);
     bool                                   rollback(const bool bSubmitted);
     bool                                   insertNewRecord(QSqlTableModel* model);
     bool                                   getErrors(QString& strError);

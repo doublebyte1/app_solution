@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Fri 29. Apr 09:30:28 2011
+** Created: Mon 2. May 13:11:30 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainFrm[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,19 +31,21 @@ static const uint qt_meta_data_MainFrm[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      19,    9,    8,    8, 0x08,
-     100,   49,    8,    8, 0x08,
-     194,    8,    8,    8, 0x08,
-     217,  213,    8,    8, 0x08,
-     237,  213,    8,    8, 0x08,
-     279,  258,    8,    8, 0x08,
-     306,    8,    8,    8, 0x08,
+       9,    8,    8,    8, 0x08,
+      30,   20,    8,    8, 0x08,
+     111,   60,    8,    8, 0x08,
+     205,    8,    8,    8, 0x08,
+     228,  224,    8,    8, 0x08,
+     248,  224,    8,    8, 0x08,
+     290,  269,    8,    8, 0x08,
+     317,    8,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainFrm[] = {
-    "MainFrm\0\0bNext,idx\0navigateThroughTabs(bool,int)\0"
+    "MainFrm\0\0initTabs()\0bNext,idx\0"
+    "navigateThroughTabs(bool,int)\0"
     "mode,persistence,sample,blackList,bSupportNewItems\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,Sa"
     "mple*,QList<int>&,bool)\0"
@@ -83,16 +85,17 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
-        case 1: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const bool(*)>(_a[5]))); break;
-        case 2: hideFrameDetails(); break;
-        case 3: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 5: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 6: cleanupMsgBoxes(); break;
+        case 0: initTabs(); break;
+        case 1: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
+        case 2: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const bool(*)>(_a[5]))); break;
+        case 3: hideFrameDetails(); break;
+        case 4: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 5: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 6: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 7: cleanupMsgBoxes(); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

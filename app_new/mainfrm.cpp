@@ -11,7 +11,7 @@ QMainWindow(parent, flags){
     pFrmCell=0;
     sSample=0;
     setupUi(this);
-    initTabs();
+    //initTabs();
 }
 
 MainFrm::~MainFrm()
@@ -24,38 +24,53 @@ MainFrm::~MainFrm()
     if (sSample!=0) delete sSample;
 }
 
+void MainFrm::resetTabs()
+{
+        while (tabWidget->count()>0){
+            this->tabWidget->removeTab(tabWidget->count()-1);
+        }
+
+        tabWidget->repaint();
+        vTabs.clear();
+
+        if (pFrmCell!=0) {delete pFrmCell; pFrmCell=0;}
+        if (pFrmFrameDetails!=0) {delete pFrmFrameDetails; pFrmFrameDetails=0;}
+        if (pFrmMinorStrata!=0) {delete pFrmMinorStrata; pFrmMinorStrata=0;}
+        if (pFrmFrame!=0) {delete pFrmFrame; pFrmFrame=0;}
+        if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
+        if (sSample!=0) {delete sSample; sSample=0;}
+
+        //Dates
+        tDateTime= new DateModel();
+        tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
+            QSqlDriver::TableName));
+        tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        tDateTime->setAuto(false);
+        tDateTime->select();
+
+        //Sample
+        sSample=new Sample();
+}
+
 void MainFrm::initTabs()
 {
-    //Dates
-    tDateTime= new DateModel();
-    tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
-        QSqlDriver::TableName));
-    tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tDateTime->setAuto(false);
-    tDateTime->select();
+    qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+    statusShow(tr("Wait..."));
 
-    //Sample
-    sSample=new Sample();
+        resetTabs();
 
-    if (pFrmFrame==0){
         pFrmFrame=new FrmFrame(sSample,tDateTime);
         vTabs.push_back(pFrmFrame);
-    }
-    this->tabWidget->insertTab(0,pFrmFrame, tr("Frame"));
+        this->tabWidget->insertTab(0,pFrmFrame, tr("Frame"));
 
-    if (pFrmMinorStrata==0){
         pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
         vTabs.push_back(pFrmMinorStrata);
-    }
-    this->tabWidget->insertTab(1,pFrmMinorStrata, tr("Minor Strata"));
+        this->tabWidget->insertTab(1,pFrmMinorStrata, tr("Minor Strata"));
 
-    if (pFrmCell==0){
         pFrmCell=new FrmCell(sSample,tDateTime);
         vTabs.push_back(pFrmCell);
-    }
-    this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
+        this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
 
-    if (pFrmFrameDetails==0){
         pFrmFrameDetails=new FrmFrameDetails();
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails()), this,
         SLOT(hideFrameDetails()));
@@ -68,32 +83,34 @@ void MainFrm::initTabs()
 
         gridLayout->addWidget(pFrmFrameDetails);
         pFrmFrameDetails->hide();
-    }
 
-    // Connect all the signals
-     for (int i = 0; i < vTabs.size(); ++i) {
-         connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
-        SLOT(navigateThroughTabs(const bool, const int)));
+        // Connect all the signals
+         for (int i = 0; i < vTabs.size(); ++i) {
 
-         connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const bool)), this,
-        SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&,const bool)));
+             connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
+            SLOT(navigateThroughTabs(const bool, const int)),Qt::UniqueConnection);
 
-         connect(pFrmFrameDetails, SIGNAL(hideFrameDetails()), vTabs.at(i),
-        SIGNAL(hideFrameDetails()));
+             connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const bool)), this,
+            SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&,const bool)),Qt::UniqueConnection);
 
-         connect(vTabs.at(i), SIGNAL(showError(QString,bool)), this,
-        SLOT(displayError(QString,bool)));
+             connect(pFrmFrameDetails, SIGNAL(hideFrameDetails()), vTabs.at(i),
+            SIGNAL(hideFrameDetails()),Qt::UniqueConnection);
 
-         connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
-        SLOT(statusShow(QString)));
+             connect(vTabs.at(i), SIGNAL(showError(QString,bool)), this,
+            SLOT(displayError(QString,bool)),Qt::UniqueConnection);
 
-         if (i < vTabs.size()-1){
-             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
-            SLOT(fillHeader(const QString)));
+             connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
+            SLOT(statusShow(QString)),Qt::UniqueConnection);
+
+             if (i < vTabs.size()-1){
+                 connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+                SLOT(fillHeader(const QString)),Qt::UniqueConnection);
+             }
+
          }
 
-     }
-
+    statusShow(tr("Sampling Operation successfully initialized."));
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
 void MainFrm::navigateThroughTabs(const bool bNext, const int idx)

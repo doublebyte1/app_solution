@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Fri 29. Apr 09:30:43 2011
+** Created: Mon 2. May 13:11:29 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -17,6 +17,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QMainWindow>
+#include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QStatusBar>
 #include <QtGui/QTabWidget>
@@ -27,10 +28,16 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionNew;
+    QAction *actionLoad;
+    QAction *actionExit;
+    QAction *actionAbout;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
     QMenuBar *menubar;
+    QMenu *menuSampling_Operation;
+    QMenu *menuHelp;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -41,6 +48,14 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/medfisis.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
+        actionNew = new QAction(MainWindow);
+        actionNew->setObjectName(QString::fromUtf8("actionNew"));
+        actionLoad = new QAction(MainWindow);
+        actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
+        actionExit = new QAction(MainWindow);
+        actionExit->setObjectName(QString::fromUtf8("actionExit"));
+        actionAbout = new QAction(MainWindow);
+        actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -54,12 +69,26 @@ public:
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 18));
+        menuSampling_Operation = new QMenu(menubar);
+        menuSampling_Operation->setObjectName(QString::fromUtf8("menuSampling_Operation"));
+        menuHelp = new QMenu(menubar);
+        menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
 
+        menubar->addAction(menuSampling_Operation->menuAction());
+        menubar->addAction(menuHelp->menuAction());
+        menuSampling_Operation->addAction(actionNew);
+        menuSampling_Operation->addAction(actionLoad);
+        menuSampling_Operation->addSeparator();
+        menuSampling_Operation->addAction(actionExit);
+        menuHelp->addAction(actionAbout);
+
         retranslateUi(MainWindow);
+        QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
+        QObject::connect(actionNew, SIGNAL(triggered()), MainWindow, SLOT(initTabs()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -67,6 +96,33 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Medfisis 2-a", 0, QApplication::UnicodeUTF8));
+        actionNew->setText(QApplication::translate("MainWindow", "New", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionNew->setStatusTip(QApplication::translate("MainWindow", "New sampling operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionNew->setWhatsThis(QApplication::translate("MainWindow", "Starts a new sampling operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0, QApplication::UnicodeUTF8));
+        actionLoad->setText(QApplication::translate("MainWindow", "Load", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionLoad->setStatusTip(QApplication::translate("MainWindow", "Load sampling operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionLoad->setWhatsThis(QApplication::translate("MainWindow", "Loads an existent sampling operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionLoad->setShortcut(QApplication::translate("MainWindow", "Ctrl+L", 0, QApplication::UnicodeUTF8));
+        actionExit->setText(QApplication::translate("MainWindow", "Exit", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionExit->setStatusTip(QApplication::translate("MainWindow", "Exit app", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionExit->setWhatsThis(QApplication::translate("MainWindow", "Exits application", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionExit->setShortcut(QApplication::translate("MainWindow", "Ctrl+X", 0, QApplication::UnicodeUTF8));
+        actionAbout->setText(QApplication::translate("MainWindow", "About", 0, QApplication::UnicodeUTF8));
+        menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
+        menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

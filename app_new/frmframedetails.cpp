@@ -97,7 +97,8 @@ void FrmFrameDetails::apply()
 
     }else{
         //TODO: write temp changes
-            if (!modelInterface->writeTempChanges(m_sample)){
+            int ct;
+            if (!modelInterface->writeTempChanges(m_sample,ct)){
                 QString strErrors;
                 if (modelInterface->getErrors(strErrors))
                     emit showError(strErrors);
@@ -105,6 +106,19 @@ void FrmFrameDetails::apply()
                     emit showError(tr("Could not write frame in the database!"));
 
                 bError=true;
+            }
+
+            if (ct<1){
+                pushVerify->setEnabled(true);
+                pushApply->setEnabled(false);
+                pushUndo->setEnabled(false);
+                m_submitted=false;
+
+                QMessageBox msgBox;
+                msgBox.setIcon(QMessageBox::Information);
+                msgBox.setText(tr("The frame has not been modified."));
+                msgBox.exec();
+                return;
             }
 
     }
@@ -136,6 +150,7 @@ void FrmFrameDetails::undo()
 
     }else{
         //TODO: undo temp changes
+        //NOTHING?
 
     }
     pushApply->setEnabled(bError);

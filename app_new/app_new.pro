@@ -16,7 +16,11 @@ DEFINES += QT_LARGEFILE_SUPPORT QT_XML_LIB QT_SQL_LIB QT_XMLPATTERNS_LIB
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     . \
-    $(BOOSTDIR)
+    $(BOOSTDIR) \
+    ../../../customctrl_solution/CustomTimeCtrl \
+    ../../../customctrl_solution/CustomTimeCtrl/GeneratedFiles
+LIBS += -L"$(QTDIR)/plugins/designer" \
+    -lcustomtimectrld
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug

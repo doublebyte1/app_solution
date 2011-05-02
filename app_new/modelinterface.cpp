@@ -112,13 +112,11 @@ bool ModelInterface::writeModel()
     return writeTables();
 }
 
-bool ModelInterface::writeTempChanges(Sample* sample)
+bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
 {
     //TODO: CACHE THE CHANGES
-
     sample->cellId=1; //TODO: remove this later!!!!
-
-    int ct=0;
+    ct=0;
 
     TreeItem* root=treeModel->root();
 

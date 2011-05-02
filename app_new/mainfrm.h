@@ -36,7 +36,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         ~MainFrm();
 
     private:
-        void                    initTabs();
+        void                    resetTabs();
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
@@ -47,6 +47,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         Sample*                 sSample;
 
     private slots:
+        void                    initTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 
                                         const FrmFrameDetails::Persistence persistence,Sample* sample, 

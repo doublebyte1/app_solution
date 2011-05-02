@@ -384,7 +384,7 @@ void FrmCell::uI4NewRecord()
     customDtStart->checkBox()->click();//the click is necessary to imit the relavant signal
 
     customDtEnd->setIsDateTime(true,true,true);
-    customDtEnd->checkBox()->click();//the click is necessary to imit the relavant signal
+    customDtEnd->checkBox()->click();//the click is necessary to imit the relevant signal
 
     textComments->clear();
 }
