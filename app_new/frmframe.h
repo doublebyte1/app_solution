@@ -36,7 +36,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   apply();
 
     private:
-        void                                   setReadOnly(const bool bRO){}//does nothing
+        void                                   setReadOnly(const bool bRO){(void)bRO;}//does nothing
         void                                   setHeader(){}//does nothing
 
         bool                                   getCurrentFrame(int& id);

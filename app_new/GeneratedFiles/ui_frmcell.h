@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Mon 2. May 13:11:29 2011
+** Created: Mon 2. May 17:00:00 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -36,11 +36,13 @@ QT_BEGIN_NAMESPACE
 class Ui_frmCell
 {
 public:
-    QVBoxLayout *verticalLayout_4;
+    QGridLayout *gridLayout_2;
     QLabel *lbHeader;
     QHBoxLayout *horizontalLayout_5;
     QTableView *tableView;
+    QVBoxLayout *verticalLayout_4;
     QPushButton *pushNew;
+    QToolButton *toolButton;
     QGroupBox *groupDetails;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_3;
@@ -72,7 +74,6 @@ public:
     QSpinBox *spinAC;
     QSpinBox *spinIC;
     QSpinBox *spinOC;
-    QToolButton *toolButton;
     QLabel *label_6;
     QPlainTextEdit *textComments;
     QLabel *label_12;
@@ -86,8 +87,8 @@ public:
         if (frmCell->objectName().isEmpty())
             frmCell->setObjectName(QString::fromUtf8("frmCell"));
         frmCell->resize(712, 583);
-        verticalLayout_4 = new QVBoxLayout(frmCell);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        gridLayout_2 = new QGridLayout(frmCell);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         lbHeader = new QLabel(frmCell);
         lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -97,7 +98,7 @@ public:
         lbHeader->setSizePolicy(sizePolicy);
         lbHeader->setStyleSheet(QString::fromUtf8("background-color:rgb(247, 247, 247)"));
 
-        verticalLayout_4->addWidget(lbHeader);
+        gridLayout_2->addWidget(lbHeader, 0, 0, 1, 1);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
@@ -106,16 +107,31 @@ public:
 
         horizontalLayout_5->addWidget(tableView);
 
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         pushNew = new QPushButton(frmCell);
         pushNew->setObjectName(QString::fromUtf8("pushNew"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNew->setIcon(icon);
 
-        horizontalLayout_5->addWidget(pushNew);
+        verticalLayout_4->addWidget(pushNew);
+
+        toolButton = new QToolButton(frmCell);
+        toolButton->setObjectName(QString::fromUtf8("toolButton"));
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(toolButton->sizePolicy().hasHeightForWidth());
+        toolButton->setSizePolicy(sizePolicy1);
+
+        verticalLayout_4->addWidget(toolButton);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_5);
+        horizontalLayout_5->addLayout(verticalLayout_4);
+
+
+        gridLayout_2->addLayout(horizontalLayout_5, 1, 0, 1, 1);
 
         groupDetails = new QGroupBox(frmCell);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -275,11 +291,6 @@ public:
 
         gridLayout->addLayout(horizontalLayout, 1, 2, 1, 1);
 
-        toolButton = new QToolButton(groupDetails);
-        toolButton->setObjectName(QString::fromUtf8("toolButton"));
-
-        gridLayout->addWidget(toolButton, 3, 3, 1, 1);
-
         label_6 = new QLabel(groupDetails);
         label_6->setObjectName(QString::fromUtf8("label_6"));
 
@@ -296,7 +307,7 @@ public:
         gridLayout->addWidget(label_12, 4, 1, 1, 1);
 
 
-        verticalLayout_4->addWidget(groupDetails);
+        gridLayout_2->addWidget(groupDetails, 2, 0, 1, 1);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
@@ -321,7 +332,7 @@ public:
         horizontalLayout_6->addWidget(pushNext);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_6);
+        gridLayout_2->addLayout(horizontalLayout_6, 3, 0, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(cmbLS);
@@ -338,8 +349,7 @@ public:
         QWidget::setTabOrder(spinIE, spinIC);
         QWidget::setTabOrder(spinIC, spinOE);
         QWidget::setTabOrder(spinOE, spinOC);
-        QWidget::setTabOrder(spinOC, toolButton);
-        QWidget::setTabOrder(toolButton, textComments);
+        QWidget::setTabOrder(spinOC, textComments);
         QWidget::setTabOrder(textComments, buttonBox);
         QWidget::setTabOrder(buttonBox, pushPrevious);
         QWidget::setTabOrder(pushPrevious, pushNext);
@@ -366,6 +376,16 @@ public:
         pushNew->setWhatsThis(QApplication::translate("frmCell", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        toolButton->setToolTip(QApplication::translate("frmCell", "Setup temporary frame changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        toolButton->setStatusTip(QApplication::translate("frmCell", "Setup temporary frame changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        toolButton->setWhatsThis(QApplication::translate("frmCell", "Setups temporary frame changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        toolButton->setText(QApplication::translate("frmCell", "...", 0, QApplication::UnicodeUTF8));
         groupDetails->setTitle(QApplication::translate("frmCell", "Details", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmCell", "Landing Site", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmCell", "Start Date", 0, QApplication::UnicodeUTF8));
@@ -377,16 +397,6 @@ public:
         label_10->setText(QApplication::translate("frmCell", "Vessels from Outside", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmCell", "Estimated", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("frmCell", "Calculated", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        toolButton->setToolTip(QApplication::translate("frmCell", "Call the details form", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        toolButton->setStatusTip(QApplication::translate("frmCell", "Call the details form", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        toolButton->setWhatsThis(QApplication::translate("frmCell", "Calls the details form", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        toolButton->setText(QApplication::translate("frmCell", "...", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmCell", "Input Details", 0, QApplication::UnicodeUTF8));
         label_12->setText(QApplication::translate("frmCell", "Comments", 0, QApplication::UnicodeUTF8));
         pushPrevious->setText(QApplication::translate("frmCell", "Previous", 0, QApplication::UnicodeUTF8));

@@ -3,7 +3,7 @@
 #include "ui_frmframedetails.h"
 #include "dragdropmodel.h"
 #include "frameview.h"
-#include "modelinterface.h"
+//#include "modelinterface.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -16,6 +16,7 @@
 class QTreeView;
 class NullRelationalDelegate;
 struct Sample;
+class ModelInterface;
 
 //! Frm Frame Details Class
 /*!
@@ -41,7 +42,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         /*! Supported persistence modes are: permanent, temporary.
         */
         enum Persistence { PERMANENT, /*!< permanent changes on the frame. */
-                    TEMPORARY /*!< Enum value for temporary changes on the frame. */
+                    TEMPORARY_ALL, TEMPORARY_ONE  /*!< Enum value for temporary changes on the frame. */
                     };
 
         FrmFrameDetails(QWidget *parent = 0, Qt::WFlags flags = 0);
@@ -53,7 +54,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
     public slots:
 
     signals:
-        void                    hideFrameDetails();
+        void                    hideFrameDetails(bool bNotSubmitted);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 

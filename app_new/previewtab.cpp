@@ -14,6 +14,7 @@ PreviewTab::~PreviewTab()
 
 void PreviewTab::resizeEvent ( QResizeEvent * event )
 {
+    (void) event;
     if (m_table==0) return;
     resizeToVisibleColumns(m_table);
 }

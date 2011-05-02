@@ -10,6 +10,8 @@ _CRT_REPORT_HOOK prevHook;
  
 int reportingHook(int reportType, char* userMessage, int* retVal)
 {
+    (void) reportType;
+    (void) retVal;
   // This function is called several times for each memory leak.
   // Each time a part of the error message is supplied.
   // This holds number of subsequent detail messages after

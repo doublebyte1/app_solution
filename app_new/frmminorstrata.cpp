@@ -36,7 +36,7 @@ void FrmMinorStrata::next()
     //TODO: retrieve the selection model properly
 
     if (!m_selectedIdx.isValid()){
-        emit showError(tr("You must select only one Minor Strata!"));
+        emit showError(tr("You must select one Minor Strata!"));
         return;
     }
 

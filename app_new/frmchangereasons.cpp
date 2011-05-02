@@ -16,6 +16,7 @@ FrmChangeReasons::~FrmChangeReasons()
 
 void FrmChangeReasons::showEvent ( QShowEvent * event )
 {
+    (void) event;
     textChanges->setVisible(!m_VesselReasons);
     cmbChanges->setVisible(m_VesselReasons);
 }

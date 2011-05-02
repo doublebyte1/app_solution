@@ -1,5 +1,6 @@
 #include <QTest>
 #include "frmframe.h"
+#include "ModelInterface.h"
 
 FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
 GenericTab(0,inSample,inTDateTime,parent,flags){
@@ -23,7 +24,7 @@ GenericTab(0,inSample,inTDateTime,parent,flags){
     connect(toolEdit, SIGNAL(clicked()), this,
     SLOT(onShowFrameDetails()));
 
-    connect(this, SIGNAL(hideFrameDetails()), this,
+    connect(this, SIGNAL(hideFrameDetails(bool)), this,
         SLOT(onHideFrameDetails()));
 
     initModels();

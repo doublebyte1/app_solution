@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframedetails.h'
 **
-** Created: Mon 2. May 13:11:35 2011
+** Created: Mon 2. May 17:22:55 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -31,26 +31,27 @@ static const uint qt_meta_data_FrmFrameDetails[] = {
        4,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
-      17,   16,   16,   16, 0x05,
-      40,   36,   16,   16, 0x05,
-      76,   60,   16,   16, 0x05,
-     100,   36,   16,   16, 0x25,
+      31,   17,   16,   16, 0x05,
+      58,   54,   16,   16, 0x05,
+      94,   78,   16,   16, 0x05,
+     118,   54,   16,   16, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     119,   16,   16,   16, 0x08,
-     126,   16,   16,   16, 0x08,
-     135,   16,   16,   16, 0x08,
-     143,   16,   16,   16, 0x08,
-     152,   16,   16,   16, 0x08,
-     159,   36,   16,   16, 0x08,
-     194,   16,   16,   16, 0x08,
+     137,   16,   16,   16, 0x08,
+     144,   16,   16,   16, 0x08,
+     153,   16,   16,   16, 0x08,
+     161,   16,   16,   16, 0x08,
+     170,   16,   16,   16, 0x08,
+     177,   54,   16,   16, 0x08,
+     212,   16,   16,   16, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrameDetails[] = {
-    "FrmFrameDetails\0\0hideFrameDetails()\0"
-    "str\0showStatus(QString)\0str,bShowMsgBox\0"
+    "FrmFrameDetails\0\0bNotSubmitted\0"
+    "hideFrameDetails(bool)\0str\0"
+    "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
     "back()\0cancel()\0apply()\0verify()\0"
     "undo()\0isClonedFromPreviousFrame(QString)\0"
@@ -88,7 +89,7 @@ int FrmFrameDetails::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: hideFrameDetails(); break;
+        case 0: hideFrameDetails((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
@@ -107,9 +108,10 @@ int FrmFrameDetails::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void FrmFrameDetails::hideFrameDetails()
+void FrmFrameDetails::hideFrameDetails(bool _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 0, 0);
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1

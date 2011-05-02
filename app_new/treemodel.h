@@ -43,7 +43,6 @@ public:
         It returns a list of *effectively* changed items, so that we can do 
         something with them! (for instance highlight them!)
     */
-    QModelIndexList     verifyChanges();
 
     QVariant data(const QModelIndex &index, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -60,14 +59,11 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value,
                  int role = Qt::EditRole);
 
-    void sort(int column, Qt::SortOrder order);
-
     QList<QPersistentModelIndex> pIndexes;
 
 private:
     void setupModelData(TreeItem *parent);
     QString getEnumString(Level l) const;
-    bool recursiveVerifyChanges(TreeItem* item, QModelIndexList& list);
 
     TreeItem *rootItem;
 };

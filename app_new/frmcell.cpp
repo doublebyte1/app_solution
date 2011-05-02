@@ -32,18 +32,21 @@ FrmCell::~FrmCell()
     if (tSampCell!=0) delete tSampCell;
     if (viewCell!=0) delete viewCell;
 }
-
+/*
 void FrmCell::showEvent ( QShowEvent * event )
 {
+    (void) event;
+
     bool bShow=this->groupDetails->isVisible();
 
     createRecord();
 
     this->groupDetails->setVisible(bShow);
 }
-
+*/
 void FrmCell::onShowFrameDetails()
 {
+    /*
     bool bOk=true;
 
     //check for uncomitted changes
@@ -85,17 +88,29 @@ void FrmCell::onShowFrameDetails()
             }
 
     }
-    if (bOk){
-        QList<int> blackList;
-        blackList << 1 << 2;
-        emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
-            m_sample, blackList, false);
+    if (bOk){*/
+
+    if (!m_selectedIdx.isValid()){
+        emit showError(tr("You must select one cell!"));
+        return;
     }
+
+    QModelIndex idx=viewCell->index(m_selectedIdx.row(),0);
+    if (m_sample->cellId!=idx.data().toInt()){
+        emit showError(tr("We only support changes in the last inserted cell!"));
+        return;
+    }
+
+    QList<int> blackList;
+    blackList << 1 << 2;
+    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY_ALL,
+        m_sample, blackList, false);
+    //}
 }
 
 void FrmCell::previewRow(QModelIndex index)
 {
-    //m_selectedIdx=index;//stores the index
+    m_selectedIdx=index;//stores the index
 
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
@@ -188,9 +203,23 @@ void FrmCell::initModels()
     viewCell->setHeaderData(2, Qt::Horizontal, tr("Time"));
 }
 
+/*
+void FrmCell::enableFrameDetails(bool bSubmitted)
+{
+    toolButton->setEnabled(bSubmitted);
+}
+*/
 void FrmCell::initUI()
 {
     setHeader();
+
+    toolButton->setEnabled(false);
+
+    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
+        SLOT(setEnabled(bool)));
+
+//    connect(this, SIGNAL(hideFrameDetails(bool)), this,
+//        SLOT(enableFrameDetails(bool)));
 
     this->groupDetails->setVisible(false);
 
@@ -221,7 +250,7 @@ void FrmCell::initUI()
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
     m_lWidgets << textComments;
-    m_lWidgets << toolButton;
+    //m_lWidgets << toolButton;
     m_lWidgets << spinNE;
     m_lWidgets << spinAE;
     m_lWidgets << spinIE;
@@ -347,7 +376,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
                         if (tSampCell->lastError().type()!=QSqlError::NoError)
                             emit showError(tSampCell->lastError().text());
                         else
-                            emit showError(tr("Could not write Minor Strata in the database!"));
+                            emit showError(tr("Could not write cell in the database!"));
                     }mapper1->toLast();
                 }else bError=true;
             }
@@ -365,6 +394,10 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             setPreviewQuery();
             tableView->selectRow(0);
             tSampCell->select();
+            toolButton->setEnabled(true);
+            QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
+            if (!idx.isValid()) return false;
+            m_sample->cellId=idx.data().toInt();
         }
         return !bError;
     }else return false;
@@ -387,6 +420,8 @@ void FrmCell::uI4NewRecord()
     customDtEnd->checkBox()->click();//the click is necessary to imit the relevant signal
 
     textComments->clear();
+
+    toolButton->setEnabled(false);
 }
 
 void FrmCell::createRecord()

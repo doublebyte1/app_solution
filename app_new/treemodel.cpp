@@ -24,33 +24,12 @@ TreeModel::~TreeModel()
     delete rootItem;
 }
 
-QModelIndexList TreeModel::verifyChanges()
-{
-    QModelIndexList list;
-
-    if (rootItem->childCount()>0)
-        recursiveVerifyChanges(rootItem, list);
-
-    return list;
-}
-
-bool TreeModel::recursiveVerifyChanges(TreeItem* item, QModelIndexList& list)
-{
-    qDebug() << "stored id"<< item->data(6) << endl;
-    return true;
-}
-
 int TreeModel::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
         return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
     else
         return rootItem->columnCount();
-}
-
-void TreeModel::sort(int column, Qt::SortOrder order)
-{
-
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const

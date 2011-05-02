@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <widget class="QLabel" name="lbHeader">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -30,34 +30,60 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QTableView" name="tableView"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pushNew">
-       <property name="toolTip">
-        <string>Create new record</string>
-       </property>
-       <property name="statusTip">
-        <string>Create new record</string>
-       </property>
-       <property name="whatsThis">
-        <string>Creates new record</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="app_new.qrc">
-         <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pushNew">
+         <property name="toolTip">
+          <string>Create new record</string>
+         </property>
+         <property name="statusTip">
+          <string>Create new record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Creates new record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Setup temporary frame changes</string>
+         </property>
+         <property name="statusTip">
+          <string>Setup temporary frame changes</string>
+         </property>
+         <property name="whatsThis">
+          <string>Setups temporary frame changes</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupDetails">
      <property name="title">
       <string>Details</string>
@@ -232,22 +258,6 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="3">
-       <widget class="QToolButton" name="toolButton">
-        <property name="toolTip">
-         <string>Call the details form</string>
-        </property>
-        <property name="statusTip">
-         <string>Call the details form</string>
-        </property>
-        <property name="whatsThis">
-         <string>Calls the details form</string>
-        </property>
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="2">
        <widget class="QLabel" name="label_6">
         <property name="text">
@@ -274,7 +284,7 @@
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
       <spacer name="horizontalSpacer">
@@ -334,7 +344,6 @@
   <tabstop>spinIC</tabstop>
   <tabstop>spinOE</tabstop>
   <tabstop>spinOC</tabstop>
-  <tabstop>toolButton</tabstop>
   <tabstop>textComments</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>pushPrevious</tabstop>

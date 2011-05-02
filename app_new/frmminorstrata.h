@@ -54,6 +54,6 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         ButtonGroup*                           buttonGroup;
-        QModelIndex                            m_selectedIdx;
+        //QModelIndex                            m_selectedIdx;
 };
 #endif //FRMMINORSTRATA_H

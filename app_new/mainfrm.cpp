@@ -49,7 +49,7 @@ void MainFrm::resetTabs()
         tDateTime->select();
 
         //Sample
-        sSample=new Sample();
+        sSample=new Sample;
 }
 
 void MainFrm::initTabs()
@@ -72,7 +72,7 @@ void MainFrm::initTabs()
         this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
 
         pFrmFrameDetails=new FrmFrameDetails();
-         connect(pFrmFrameDetails, SIGNAL(hideFrameDetails()), this,
+         connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,
         SLOT(hideFrameDetails()));
 
          connect(pFrmFrameDetails, SIGNAL(showStatus(QString)), this,
@@ -93,8 +93,8 @@ void MainFrm::initTabs()
              connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const bool)), this,
             SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&,const bool)),Qt::UniqueConnection);
 
-             connect(pFrmFrameDetails, SIGNAL(hideFrameDetails()), vTabs.at(i),
-            SIGNAL(hideFrameDetails()),Qt::UniqueConnection);
+             connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), vTabs.at(i),
+            SIGNAL(hideFrameDetails(bool)),Qt::UniqueConnection);
 
              connect(vTabs.at(i), SIGNAL(showError(QString,bool)), this,
             SLOT(displayError(QString,bool)),Qt::UniqueConnection);
@@ -130,6 +130,7 @@ void MainFrm::hideFrameDetails()
 {
     pFrmFrameDetails->hide();
     tabWidget->show();
+    //emit hideFrameDetails(bCommited);
 }
 
 void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,

@@ -112,10 +112,8 @@ bool ModelInterface::writeModel()
     return writeTables();
 }
 
-bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
+bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persistence, Sample* sample, int& ct)
 {
-    //TODO: CACHE THE CHANGES
-    sample->cellId=1; //TODO: remove this later!!!!
     ct=0;
 
     TreeItem* root=treeModel->root();
@@ -134,7 +132,7 @@ bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
                     for (int l=0; l < ls->childCount(); ++l){
                         TreeItem* vs=ls->child(l);
 
-                        if (writeTempChangesVessel(false,vs,sample))
+                        if (writeTempChangesVessel(persistence,false,vs,sample))
                             ct++;
                     }
                 }
@@ -148,7 +146,7 @@ bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
 
                 TreeItem* gls=frameBin->child(j);
 
-                if (writeTempChangesVessel(true,gls,sample))
+                if (writeTempChangesVessel(persistence,true,gls,sample))
                             ct++;
 
                 for (int k=0; k < gls->childCount(); ++k){
@@ -156,7 +154,7 @@ bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
                     for (int l=0; l < ls->childCount(); ++l){
                         TreeItem* vs=ls->child(l);
 
-                        if (writeTempChangesVessel(true,vs,sample))
+                        if (writeTempChangesVessel(persistence,true,vs,sample))
                             ct++;
                     }
                 }
@@ -169,7 +167,7 @@ bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
     return true;
 }
 
-bool ModelInterface::writeTempChangesVessel(const bool bBin, TreeItem* vs, Sample* sample)
+bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample)
 {
     if (vs->data(6)!=-1 ){
         if (!insertNewRecord(tChangesTempVessel)) return false;
@@ -216,6 +214,10 @@ bool ModelInterface::writeTempChangesVessel(const bool bBin, TreeItem* vs, Sampl
         if (!getIdofReason(vs->data(5).toString(), reasonId)) return false;
         if (!tChangesTempVessel->setData(idx,reasonId)) return false;
 
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,6);//persistence
+        if (!tChangesTempVessel->setData(
+            idx,persistence==FrmFrameDetails::TEMPORARY_ALL? false: true)) return false;
+
         return tChangesTempVessel->submitAll();
     }
     return false;
@@ -252,7 +254,6 @@ bool ModelInterface::findOrigin(TreeItem* vs, const int outsideId, int& lsId)
                 {
                     QModelIndex ls=treeModel->index(j,0,gls);
                     if (!ls.isValid()) return false;
-                    TreeItem *pLs = static_cast<TreeItem*>
                         (ls.internalPointer());
 
                     if (ls.internalId()==internalId)
@@ -611,14 +612,14 @@ bool ModelInterface::writeManyVessels(TreeItem* item, const int lsId, const int 
     QVector<int> vId;
     for (int i=0; i < item->childCount(); ++i){
 
-        if (!writeVessel(item->child(i),lsId,frameId,vId))
+        if (!writeVessel(item->child(i),frameId,vId))
             return false;
     }
 
     return writeLS2Vessel(frameId,lsId,vId);
 }
 
-bool ModelInterface::writeVessel(TreeItem* item, const int lsId, const int frameId, QVector<int>& vId)
+bool ModelInterface::writeVessel(TreeItem* item, const int frameId, QVector<int>& vId)
 {
     int vesselId;
     if (!getIdofVessel(item,vesselId))
@@ -636,14 +637,14 @@ bool ModelInterface::writeManyLS(TreeItem* item, const int glsId, const int fram
     QVector<int> vId;
     for (int i=0; i < item->childCount(); ++i){
 
-        if (!writeLS(item->child(i),glsId,frameId,vId)) return false;
+        if (!writeLS(item->child(i),frameId,vId)) return false;
 
     }
 
     return writeGLS2LS(frameId,glsId,vId);
 }
 
-bool ModelInterface::writeLS(TreeItem* item, const int glsId, const int frameId, QVector<int>& vId)
+bool ModelInterface::writeLS(TreeItem* item, const int frameId, QVector<int>& vId)
 {
     int lsId;
     if (!getIdofLS(item,lsId))
@@ -674,7 +675,7 @@ bool ModelInterface::writeBin(TreeItem* item, const int id)
             if (!getIdofBin(tr("Ref_Group_of_LandingSites"),glsBinId))
                 return false;
             QVector<int> vId;
-            if (!writeLS(item->child(i),glsBinId,id, vId))
+            if (!writeLS(item->child(i),id, vId))
                 return false;
             if (!writeGLS2LS(id,glsBinId,vId)) return false;
 
@@ -684,7 +685,7 @@ bool ModelInterface::writeBin(TreeItem* item, const int id)
             if (!getIdofBin(tr("Ref_Abstract_LandingSite"),lsBinId))
                 return false;
             QVector<int> vId;
-            if (!writeVessel(item->child(i),lsBinId,id,vId)) return false;
+            if (!writeVessel(item->child(i),id,vId)) return false;
             if (!writeLS2Vessel(id,lsBinId,vId)) return false;
 
         } else

@@ -43,6 +43,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         */
         bool                                   onButtonClick(QAbstractButton * button);
         void                                   onShowFrameDetails();
+        //void                                   enableFrameDetails(bool bSubmitted);
 
     private:
         //! Filter combo box
@@ -74,7 +75,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
-        void                                   showEvent ( QShowEvent * event );
+        //void                                   showEvent ( QShowEvent * event );
 
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;

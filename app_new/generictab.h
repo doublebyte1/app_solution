@@ -20,7 +20,7 @@ This structure encapsulates the data that we want to pass around forms
 struct Sample{
     int         frameId;
     int         frameTimeId;
-    int         subFrameId;
+    //int         subFrameId;
     int         minorStrataId;
     int         cellId;
 };
@@ -95,7 +95,7 @@ class GenericTab : public QWidget
         void                    forward(const QString str);
         void                    gotPar();
         void                    navigate(const bool bNext, const int idx);
-        void                    hideFrameDetails();
+        void                    hideFrameDetails(bool bNotSubmitted);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode,
                                     const FrmFrameDetails::Persistence persistence, Sample* sample, 
                                     QList<int>& blackList=QList<int>(), const bool bSupportNewItems=true);

@@ -5,6 +5,7 @@
 #include <QSqlRelationalTableModel>
 #include "treeitem.h"
 #include "treemodel.h"
+#include "frmframedetails.h"
 
 #if defined(WIN32) && defined(_DEBUG)
  #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -52,7 +53,7 @@ public:
     TreeModel*                             treeModel;
 
     bool                                   writeModel();
-    bool                                   writeTempChanges(Sample* sample, int& ct);
+    bool                                   writeTempChanges(const FrmFrameDetails::Persistence persistence, Sample* sample, int& ct);
     bool                                   rollback(const bool bSubmitted);
     bool                                   insertNewRecord(QSqlTableModel* model);
     bool                                   getErrors(QString& strError);
@@ -78,9 +79,9 @@ private:
     bool                                   writeTables();
 
     bool                                   writeManyVessels(TreeItem* item, const int lsId, const int frameId);
-    bool                                   writeVessel(TreeItem* item, const int lsId, const int frameId, QVector<int>& vId);
+    bool                                   writeVessel(TreeItem* item, const int frameId, QVector<int>& vId);
     bool                                   writeManyLS(TreeItem* item, const int glsId, const int frameId);
-    bool                                   writeLS(TreeItem* item, const int glsId, const int frameId, QVector<int>& vId);
+    bool                                   writeLS(TreeItem* item, const int frameId, QVector<int>& vId);
     bool                                   writeManyGLS(TreeItem* item, const int id);
     bool                                   writeGLS(TreeItem* item, const int id, QVector<int>& vId);
     bool                                   writeBin(TreeItem* item, const int id);
@@ -101,7 +102,7 @@ private:
     bool                                   submitAll();
     bool                                   filterTables();
 
-    bool                                   writeTempChangesVessel(const bool bBin, TreeItem* vs, Sample* sample);
+    bool                                   writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample);
     bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
     bool                                   getOutsideALS(int& id);
     QVector<QSqlTableModel*>               vTables;

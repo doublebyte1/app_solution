@@ -36,7 +36,7 @@ FrmFrameDetails::~FrmFrameDetails()
 
 void FrmFrameDetails::cancel()
 {
-    emit hideFrameDetails();
+    emit hideFrameDetails(true);
     emit showStatus(tr("Cancelled frame creation!"));
 }
 
@@ -98,7 +98,7 @@ void FrmFrameDetails::apply()
     }else{
         //TODO: write temp changes
             int ct;
-            if (!modelInterface->writeTempChanges(m_sample,ct)){
+            if (!modelInterface->writeTempChanges(m_persistence,m_sample,ct)){
                 QString strErrors;
                 if (modelInterface->getErrors(strErrors))
                     emit showError(strErrors);
@@ -144,8 +144,8 @@ void FrmFrameDetails::undo()
             bError=true;
         }else{
             emit showStatus(tr("Successfully rollback!"));
-            emit hideFrameDetails();
             bError=true;
+            emit hideFrameDetails(bError);
         }
 
     }else{
@@ -160,7 +160,7 @@ void FrmFrameDetails::undo()
 
 void FrmFrameDetails::back()
 {
-    emit hideFrameDetails();
+    emit hideFrameDetails(!m_submitted);
 }
 
 bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
@@ -209,9 +209,9 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     pushApply->setEnabled(!pushVerify->isEnabled());
     pushUndo->setEnabled(!pushVerify->isEnabled());
 
-    pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
-    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
-    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
+    pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY_ALL || persistence==FrmFrameDetails::TEMPORARY_ONE);
+    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY_ALL || persistence==FrmFrameDetails::TEMPORARY_ONE);
+    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY_ALL || persistence==FrmFrameDetails::TEMPORARY_ONE);
     pushBack->setVisible(true);
 
     lineName->clear();
@@ -347,7 +347,7 @@ bool FrmFrameDetails::initModel(const Mode mode, const int frameId)
     if (modelInterface!=0) delete modelInterface;
     modelInterface=new ModelInterface(model);
 
-    QObject::connect(this, SIGNAL(hideFrameDetails()),
+    QObject::connect(this, SIGNAL(hideFrameDetails(bool)),
                      modelInterface, SLOT(removeFilters()));
 
     //fills the actual model

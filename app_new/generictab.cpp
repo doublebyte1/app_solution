@@ -21,6 +21,7 @@ GenericTab::~GenericTab()
 
 void GenericTab::showEvent ( QShowEvent * event ) 
 {
+    (void) event;
     onShowForm();
 }
 

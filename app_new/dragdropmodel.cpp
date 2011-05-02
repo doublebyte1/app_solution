@@ -34,6 +34,9 @@ bool DragDropModel::insertComplexItem(const ComplexItem& cItem, const QModelInde
 bool DragDropModel::dropMimeData(const QMimeData *data,
     Qt::DropAction action, int row, int column, const QModelIndex &parent)
 {
+    (void) row;
+    (void) column;
+
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
     if (action == Qt::IgnoreAction){
