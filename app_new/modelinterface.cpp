@@ -94,6 +94,8 @@ bool ModelInterface::initModel(QSqlTableModel* model, const QString strTable)
 {
     model->setTable(strTable);
     model->select();
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
     vTables << model;
 
     return true;
@@ -826,13 +828,19 @@ bool ModelInterface::getErrors(QString& strError)
     return !strError.isEmpty();
 }
 
-bool ModelInterface::rollback(const bool bSubmitted)
+bool ModelInterface::rollback(const bool bSubmitted, const FrmFrameDetails::Persistence persistence)
 {
     //if it was submited just remove the last frame and cascades will take care of everything!
     //otherwise rollbak
 
-    return (bSubmitted? tRefFrame->removeRow(tRefFrame->rowCount()-1) &&
-        tRefFrame->submitAll(): revertAll());
+    QSqlTableModel* m;
+    if (persistence==FrmFrameDetails::PERMANENT)
+        m=tRefFrame;
+    else
+        m=tChangesTempVessel;
+
+    return (bSubmitted? m->removeRow(m->rowCount()-1) &&
+        m->submitAll(): revertAll());
 }
 
 bool ModelInterface::readOneGLS(const int inRow, const int outRow, const QModelIndex& parent, const bool bBin, QModelIndex& cIndex)

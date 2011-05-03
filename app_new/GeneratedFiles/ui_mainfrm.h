@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Mon 2. May 17:00:00 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Tue 3. May 17:07:40 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -32,6 +32,7 @@ public:
     QAction *actionLoad;
     QAction *actionExit;
     QAction *actionAbout;
+    QAction *actionSave;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -56,6 +57,8 @@ public:
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
+        actionSave = new QAction(MainWindow);
+        actionSave->setObjectName(QString::fromUtf8("actionSave"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -82,6 +85,7 @@ public:
         menubar->addAction(menuHelp->menuAction());
         menuSampling_Operation->addAction(actionNew);
         menuSampling_Operation->addAction(actionLoad);
+        menuSampling_Operation->addAction(actionSave);
         menuSampling_Operation->addSeparator();
         menuSampling_Operation->addAction(actionExit);
         menuHelp->addAction(actionAbout);
@@ -121,6 +125,14 @@ public:
 #endif // QT_NO_WHATSTHIS
         actionExit->setShortcut(QApplication::translate("MainWindow", "Ctrl+X", 0, QApplication::UnicodeUTF8));
         actionAbout->setText(QApplication::translate("MainWindow", "About", 0, QApplication::UnicodeUTF8));
+        actionSave->setText(QApplication::translate("MainWindow", "Save", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionSave->setStatusTip(QApplication::translate("MainWindow", "Save sampling operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionSave->setWhatsThis(QApplication::translate("MainWindow", "Saves this sampling operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

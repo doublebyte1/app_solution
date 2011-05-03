@@ -20,7 +20,7 @@
    <string>Title</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="app.qrc">
+   <iconset>
     <normaloff>:/app/MedFisis.ico</normaloff>:/app/MedFisis.ico</iconset>
   </property>
   <property name="modal">
@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="app.qrc">:/app/qmessagebox-crit.ico</pixmap>
+        <pixmap>:/app/qmessagebox-crit.ico</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -109,6 +109,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="app_new.qrc"/>
   <include location="app.qrc"/>
  </resources>
  <connections>

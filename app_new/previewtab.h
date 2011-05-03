@@ -58,6 +58,7 @@ class PreviewTab : public GenericTab
     */
         void                                  genericCreateRecord();
         void                                  resizeEvent ( QResizeEvent * event );
+        //void                    showEvent ( QShowEvent * event );
         QList<QWidget*>                       m_lWidgets;
         QModelIndex                            m_selectedIdx;
 

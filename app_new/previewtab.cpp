@@ -58,3 +58,10 @@ void PreviewTab::genericCreateRecord()
 
     m_model->insertRow(m_model->rowCount());
 }
+/*
+void PreviewTab::showEvent ( QShowEvent * event ) 
+{
+    (void) event;
+    onShowForm();
+}
+*/

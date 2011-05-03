@@ -10,6 +10,8 @@ QMainWindow(parent, flags){
     pFrmFrameDetails=0;
     pFrmCell=0;
     sSample=0;
+    pFrmVesselType=0;
+
     setupUi(this);
     //initTabs();
 }
@@ -22,6 +24,7 @@ MainFrm::~MainFrm()
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
     if (pFrmCell!=0) delete pFrmCell;
     if (sSample!=0) delete sSample;
+    if (pFrmVesselType!=0) delete pFrmVesselType;
 }
 
 void MainFrm::resetTabs()
@@ -39,6 +42,7 @@ void MainFrm::resetTabs()
         if (pFrmFrame!=0) {delete pFrmFrame; pFrmFrame=0;}
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
         if (sSample!=0) {delete sSample; sSample=0;}
+        if (pFrmVesselType!=0) {delete pFrmVesselType; pFrmVesselType=0;}
 
         //Dates
         tDateTime= new DateModel();
@@ -70,6 +74,10 @@ void MainFrm::initTabs()
         pFrmCell=new FrmCell(sSample,tDateTime);
         vTabs.push_back(pFrmCell);
         this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
+
+        pFrmVesselType=new FrmVesselType(sSample,tDateTime);
+        vTabs.push_back(pFrmVesselType);
+        this->tabWidget->insertTab(3,pFrmVesselType, tr("Vessel Type"));
 
         pFrmFrameDetails=new FrmFrameDetails();
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,

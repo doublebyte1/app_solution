@@ -132,10 +132,10 @@ void FrmFrameDetails::undo()
 {
     bool bError=false;
 
-    if (m_persistence==FrmFrameDetails::PERMANENT)
-    {
+    //if (m_persistence==FrmFrameDetails::PERMANENT)
+    //{
 
-        if (!modelInterface->rollback(m_submitted)){
+        if (!modelInterface->rollback(m_submitted,m_persistence)){
             QString strErrors;
             if (modelInterface->getErrors(strErrors))
                 emit showError(strErrors);
@@ -148,11 +148,10 @@ void FrmFrameDetails::undo()
             emit hideFrameDetails(bError);
         }
 
-    }else{
+    //}else{
         //TODO: undo temp changes
-        //NOTHING?
 
-    }
+    //}
     pushApply->setEnabled(bError);
     pushUndo->setEnabled(!bError);
     m_submitted=!bError;

@@ -20,7 +20,6 @@ This structure encapsulates the data that we want to pass around forms
 struct Sample{
     int         frameId;
     int         frameTimeId;
-    //int         subFrameId;
     int         minorStrataId;
     int         cellId;
 };

@@ -6,6 +6,7 @@
 #include "frmframe.h"
 #include "frmminorstrata.h"
 #include "frmcell.h"
+#include "frmvesseltype.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -42,6 +43,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmMinorStrata          *pFrmMinorStrata;
         FrmFrameDetails         *pFrmFrameDetails;
         FrmCell                 *pFrmCell;
+        FrmVesselType           *pFrmVesselType;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;

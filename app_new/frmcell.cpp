@@ -1,6 +1,6 @@
 #include <QTest>
 #include "globaldefs.h"
-#include "FrmCell.h"
+#include "frmcell.h"
 
 FrmCell::FrmCell(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
 PreviewTab(2,inSample,inTDateTime,parent, flags){
@@ -213,13 +213,10 @@ void FrmCell::initUI()
 {
     setHeader();
 
-    toolButton->setEnabled(false);
-
     connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
         SLOT(setEnabled(bool)));
 
-//    connect(this, SIGNAL(hideFrameDetails(bool)), this,
-//        SLOT(enableFrameDetails(bool)));
+    toolButton->setEnabled(false);
 
     this->groupDetails->setVisible(false);
 

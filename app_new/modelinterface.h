@@ -54,7 +54,7 @@ public:
 
     bool                                   writeModel();
     bool                                   writeTempChanges(const FrmFrameDetails::Persistence persistence, Sample* sample, int& ct);
-    bool                                   rollback(const bool bSubmitted);
+    bool                                   rollback(const bool bSubmitted, const FrmFrameDetails::Persistence persistence);
     bool                                   insertNewRecord(QSqlTableModel* model);
     bool                                   getErrors(QString& strError);
 
