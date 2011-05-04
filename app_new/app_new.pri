@@ -14,6 +14,7 @@ HEADERS += ./buttongroup.h \
     ./frmframe.h \
     ./frmframedetails.h \
     ./frmminorstrata.h \
+    ./frmvesseltype.h \
     ./generictab.h \
     ./globaldefs.h \
     ./login.h \
@@ -34,6 +35,7 @@ SOURCES += ./buttongroup.cpp \
     ./frmframe.cpp \
     ./frmframedetails.cpp \
     ./frmminorstrata.cpp \
+    ./frmvesseltype.cpp \
     ./generictab.cpp \
     ./login.cpp \
     ./main.cpp \
@@ -49,6 +51,7 @@ FORMS += ./frmcell.ui \
     ./frmframe.ui \
     ./frmframedetails.ui \
     ./frmminorstrata.ui \
+    ./frmvesseltype.ui \
     ./login.ui \
     ./mainfrm.ui \
     ./msgbox.ui

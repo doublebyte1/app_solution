@@ -49,6 +49,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         Sample*                 sSample;
 
     private slots:
+        void                    enableTab(int idx, bool bOk);
+        void                    tabChanged(int curIndex);
         void                    initTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 

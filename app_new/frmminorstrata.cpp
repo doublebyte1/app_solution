@@ -31,13 +31,13 @@ FrmMinorStrata::~FrmMinorStrata()
     if (viewMinorStrata!=0) delete viewMinorStrata;
 }
 
-void FrmMinorStrata::next()
+bool FrmMinorStrata::next()
 {
     //TODO: retrieve the selection model properly
 
     if (!m_selectedIdx.isValid()){
         emit showError(tr("You must select one Minor Strata!"));
-        return;
+        return false;
     }
 
     QModelIndex idx1=m_selectedIdx;
@@ -47,11 +47,12 @@ void FrmMinorStrata::next()
     if (!idx1.isValid() || !idx2.isValid() || !idx3.isValid())
     {
         emit showError(tr("Unable to retrieve information about selected index!"));
-        return;
+        return false;
     }
 
     m_sample->minorStrataId=idx3.data().toInt();
     emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString());
+    return true;
 }
 
 void FrmMinorStrata::disableReasonCombo()
@@ -70,6 +71,7 @@ void FrmMinorStrata::setActiveReason(bool bActive)
 
 void FrmMinorStrata::previewRow(QModelIndex index)
 {
+    emit submitted(this->m_index,true);
     m_selectedIdx=index;//stores the index
 
     if (!this->groupDetails->isVisible())
@@ -113,23 +115,8 @@ void FrmMinorStrata::previewRow(QModelIndex index)
 
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-}
 
-void FrmMinorStrata::onShowForm()
-{
-    //Make sure all models are up to date, and without filters
-    tRefMinorStrata->select();
-    m_tDateTime->select();
-    setPreviewQuery();
-
-    if (tRefMinorStrata==0) return ;
-    if (!tRefMinorStrata->filter().isEmpty()) tRefMinorStrata->setFilter(tr(""));
-
-    if (m_tDateTime==0) return ;
-    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
-
-    //filter the relational model from GLS
-    filterModel4Combo();
+    pushNext->setEnabled(true);
 }
 
 void FrmMinorStrata::uI4NewRecord()
@@ -177,11 +164,17 @@ void FrmMinorStrata::filterModel4Combo()
      if (!strFilter.isEmpty())
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
      else{
-        emit showError(tr("There are no Groups of Landing Sites in this frame!"));
+         qDebug() << query.numRowsAffected() << endl;
+        emit showError(tr("Could not obtain a filter for Group of Landing Sites!"));
         return;
      }
 
     tRefMinorStrata->relationModel(4)->setFilter(strFilter);
+}
+
+void FrmMinorStrata::onShowUi()
+{
+    this->groupDetails->setVisible(false);
 }
 
 void FrmMinorStrata::createRecord()
@@ -306,7 +299,7 @@ bool FrmMinorStrata::onButtonClick(QAbstractButton* button)
 void FrmMinorStrata::initUI()
 {
     setHeader();
-    this->groupDetails->setVisible(false);
+    //this->groupDetails->setVisible(false);
 
     customDtStart->setIsDateTime(true,false,false);
     customDtStart->setIsUTC(false);
@@ -345,6 +338,8 @@ void FrmMinorStrata::initUI()
     m_lWidgets << label_2;
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
+
+    pushNext->setEnabled(m_selectedIdx.isValid());
 }
 
 void FrmMinorStrata::setPreviewQuery()

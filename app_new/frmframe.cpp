@@ -28,10 +28,7 @@ GenericTab(0,inSample,inTDateTime,parent,flags){
         SLOT(onHideFrameDetails()));
 
     initModels();
-/*
-    connect(customDtStart, SIGNAL(isDateTime(bool)), m_tDateTime,
-        SLOT(amendDateTimeType(bool)));
-*/
+
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
     m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
@@ -42,6 +39,7 @@ GenericTab(0,inSample,inTDateTime,parent,flags){
     mapper2=0;
     mapperStartDt=0;
     mapperEndDt=0;
+    m_submitted=false;
 
     initUI();
     initMappers();
@@ -186,66 +184,91 @@ bool FrmFrame::getCurrentFrame(int& id)
 void FrmFrame::apply()
 {
     bool bError=false;
-    //First insert the dates...
-    if (!mapperStartDt->submit() || !mapperEndDt->submit()){
-        if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-            emit showError(m_tDateTime->lastError().text());
-        else
-            emit showError(tr("Could not submit mapper!"));
+
+    //We call a stored procedure to see if there are GLS available outside the bin
+     QSqlQuery query;
+     query.setForwardOnly(true);
+
+     int id= cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt();
+
+    int n=0;
+    query.prepare("{CALL spCountGLS4Frame(?,?)}");
+    query.bindValue(0,id);
+    query.bindValue("Number",n,QSql::Out);
+
+     if (!query.exec()){
+         emit showError(query.lastError().text());
+         bError=true;;
+     }
+
+    n = query.boundValue("Number").toInt();
+
+    if (n<1){
+        emit showError(tr("There are no Group of Landing Sites for this frame!"));
         bError=true;
-    }
-    else{
-        if (!m_tDateTime->submitAll()){
+    }else{
+
+        //First insert the dates...
+        if (!mapperStartDt->submit() || !mapperEndDt->submit()){
             if (m_tDateTime->lastError().type()!=QSqlError::NoError)
                 emit showError(m_tDateTime->lastError().text());
             else
-                emit showError(tr("Could not write DateTime in the database!"));
-
+                emit showError(tr("Could not submit mapper!"));
             bError=true;
         }
-    }
+        else{
+            if (!m_tDateTime->submitAll()){
+                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_tDateTime->lastError().text());
+                else
+                    emit showError(tr("Could not write DateTime in the database!"));
 
-    while(m_tDateTime->canFetchMore())
-        m_tDateTime->fetchMore();
+                bError=true;
+            }
+        }
 
-    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
-    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
 
-    int startIdx=mapperStartDt->currentIndex();
-    int endIdx=mapperEndDt->currentIndex();
+        mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
+        mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
-    if (bError) {
-        emit showError(tr("Could not create dates in the database!"));
-    }else{
+        int startIdx=mapperStartDt->currentIndex();
+        int endIdx=mapperEndDt->currentIndex();
 
-    //Now insert the record
-    while(tFrameTime->canFetchMore())
-        tFrameTime->fetchMore();
+        if (bError) {
+            emit showError(tr("Could not create dates in the database!"));
+        }else{
 
-    tFrameTime->insertRow(tFrameTime->rowCount());
-    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);//id frame
-    if (idx.isValid()){
-            int idFrame;
-            if (getCurrentFrame(idFrame)){
-                tFrameTime->setData(idx,idFrame);
-                QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,2);//start dt
-                if (idx.isValid()){
-                    int idStart;
-                    if (getDtId(startIdx,idStart)){
-                        tFrameTime->setData(idx,idStart);
-                        idx=tFrameTime->index(tFrameTime->rowCount()-1,3);//end dt
-                        if (idx.isValid()){
-                            int idEnd;
-                            if (getDtId(endIdx,idEnd)){
-                                tFrameTime->setData(idx,idEnd);
-                            }else bError=true;
-                        }
+        //Now insert the record
+        while(tFrameTime->canFetchMore())
+            tFrameTime->fetchMore();
+
+        tFrameTime->insertRow(tFrameTime->rowCount());
+        QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);//id frame
+        if (idx.isValid()){
+                int idFrame;
+                if (getCurrentFrame(idFrame)){
+                    tFrameTime->setData(idx,idFrame);
+                    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,2);//start dt
+                    if (idx.isValid()){
+                        int idStart;
+                        if (getDtId(startIdx,idStart)){
+                            tFrameTime->setData(idx,idStart);
+                            idx=tFrameTime->index(tFrameTime->rowCount()-1,3);//end dt
+                            if (idx.isValid()){
+                                int idEnd;
+                                if (getDtId(endIdx,idEnd)){
+                                    tFrameTime->setData(idx,idEnd);
+                                }else bError=true;
+                            }
+                        }else bError=true;
                     }else bError=true;
                 }else bError=true;
             }else bError=true;
-        }else bError=true;
+        }
+        bError=!tFrameTime->submitAll();
     }
-    bError=!tFrameTime->submitAll();
 
     if (!bError){
         QList<QWidget*> lWidgets;
@@ -260,27 +283,40 @@ void FrmFrame::apply()
     pushNext->setEnabled(!bError);
     pushApply->setEnabled(bError);
 
-    emit showStatus(tr("Record successfully inserted in the database!"));
+    if (!bError)
+    {
+        emit showStatus(tr("Record successfully inserted in the database!"));
+        m_submitted=true;
+        emit submitted(m_index,m_submitted);
+    }
 }
 
-void FrmFrame::next()
+bool FrmFrame::next()
 {
-    while(tFrameTime->canFetchMore())
-    tFrameTime->fetchMore();
+    //We force a submitted record on this session
+    if (m_submitted){
 
-    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
-    if (!idx.isValid()){
-        emit showError(tr("Could not retrieve index of the last inserted frame!"));
-        return;
+        while(tFrameTime->canFetchMore())
+        tFrameTime->fetchMore();
+
+        QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
+        if (!idx.isValid()){
+            emit showError(tr("Could not retrieve index of the last inserted frame!"));
+            return false;
+        }
+        m_sample->frameTimeId=idx.data().toInt();
+
+        idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
+        if (!idx.isValid()){
+            emit showError(tr("Could not retrieve index of the last inserted frame!"));
+            return false;
+        }
+        m_sample->frameId=idx.data().toInt();
+
+        //TODO: Check if there are GLS?
+        emit forward(cmbPrexistent->currentText());
+        return true;
     }
-    m_sample->frameTimeId=idx.data().toInt();
-
-    idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
-    if (!idx.isValid()){
-        emit showError(tr("Could not retrieve index of the last inserted frame!"));
-        return;
-    }
-    m_sample->frameId=idx.data().toInt();
-
-    emit forward(cmbPrexistent->currentText());
+    emit showError(tr("It was not defined any time frame for this frame!"));
+    return false;
 }

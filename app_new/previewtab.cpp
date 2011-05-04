@@ -9,7 +9,7 @@ GenericTab(index,inSample,inTDateTime,parent, flags){
 
 PreviewTab::~PreviewTab()
 {
-    //if (m_model!=0) delete m_model;
+    //if (m_model!=0) delete m_model;//N.b.: dont delete model here: it does not belong to this class!
 }
 
 void PreviewTab::resizeEvent ( QResizeEvent * event )
@@ -35,6 +35,12 @@ void PreviewTab::onShowForm()
 
     //filter the relational model
     filterModel4Combo();
+
+    if (m_selectedIdx.isValid())
+        m_table->selectRow(m_selectedIdx.row());
+
+    onShowUi();
+
 }
 
 void PreviewTab::genericCreateRecord()
@@ -58,10 +64,3 @@ void PreviewTab::genericCreateRecord()
 
     m_model->insertRow(m_model->rowCount());
 }
-/*
-void PreviewTab::showEvent ( QShowEvent * event ) 
-{
-    (void) event;
-    onShowForm();
-}
-*/

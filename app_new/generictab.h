@@ -88,6 +88,7 @@ class GenericTab : public QWidget
     public slots:
         void                    fillHeader(const QString str){lbHead->setText(str);}
         virtual void            onShowForm()=0;
+        virtual bool            next()=0;
 
     signals:
         void                    lockControls(bool bLock,QList<QWidget*>& lWidgets);
@@ -100,6 +101,7 @@ class GenericTab : public QWidget
                                     QList<int>& blackList=QList<int>(), const bool bSupportNewItems=true);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+        void                   submitted(int idx, bool bOk);
 
     protected:
         virtual void            setHeader()=0;

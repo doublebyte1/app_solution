@@ -401,10 +401,27 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushNext</sender>
+   <signal>clicked()</signal>
+   <receiver>frmCell</receiver>
+   <slot>next()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>559</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>291</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
   <slot>previewRow(QModelIndex)</slot>
+  <slot>next()</slot>
  </slots>
 </ui>

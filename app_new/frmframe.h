@@ -32,7 +32,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
-        void                                   next();
+        bool                                   next();
         void                                   apply();
 
     private:
@@ -50,5 +50,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         FrmFrameDetails::Mode                  m_curMode;
+        bool                                   m_submitted;
 };
 #endif //FRMFRAME_H

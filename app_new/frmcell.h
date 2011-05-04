@@ -29,7 +29,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
     signals:
 
     private slots:
-        //void                                   next();
+        bool                                   next();
         //! Create Record
         /*! Reimplemented from the PreviewTab base class
         */
@@ -43,7 +43,6 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         */
         bool                                   onButtonClick(QAbstractButton * button);
         void                                   onShowFrameDetails();
-        //void                                   enableFrameDetails(bool bSubmitted);
 
     private:
         //! Filter combo box
@@ -75,14 +74,12 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
-        //void                                   showEvent ( QShowEvent * event );
+        void                                   onShowUi();
 
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
-        //int                                    m_start;
-        //int                                    m_end;
 };
 #endif //FRMCELL_H

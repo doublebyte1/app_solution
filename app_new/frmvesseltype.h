@@ -28,6 +28,7 @@ class FrmVesselType : public GenericTab, public Ui::FrmVesselType
 
     public slots:
         void                                  onShowForm();
+        bool                                  next();
 
     private:
         //! Set Header widget
@@ -46,7 +47,7 @@ class FrmVesselType : public GenericTab, public Ui::FrmVesselType
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
-
+        void                                   setViewQuery();
         QSqlQueryModel*                        tVesselType;
         //QSqlQueryModel*                        viewVesselType;
         //QDataWidgetMapper*                     mapper1;

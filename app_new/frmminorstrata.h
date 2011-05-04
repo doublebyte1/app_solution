@@ -27,10 +27,9 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         ~FrmMinorStrata();
 
     public slots:
-        void                                  onShowForm();
 
     private slots:
-        void                                   next();
+        bool                                   next();
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
         bool                                   onButtonClick(QAbstractButton * button);
@@ -47,6 +46,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
+        void                                   onShowUi();
 
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;
@@ -54,6 +54,5 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         ButtonGroup*                           buttonGroup;
-        //QModelIndex                            m_selectedIdx;
 };
 #endif //FRMMINORSTRATA_H

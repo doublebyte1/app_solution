@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 3. May 12:22:05 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+** Created: Wed 4. May 18:28:30 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'frmframe.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.7.0. It"
+#error "This file was generated using the moc from 4.6.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,7 +20,7 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_FrmFrame[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
        5,   14, // methods
@@ -34,15 +34,16 @@ static const uint qt_meta_data_FrmFrame[] = {
       10,    9,    9,    9, 0x0a,
       23,    9,    9,    9, 0x08,
       44,    9,    9,    9, 0x08,
-      65,    9,    9,    9, 0x08,
-      72,    9,    9,    9, 0x08,
+      70,    9,   65,    9, 0x08,
+      77,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0onShowForm()\0onHideFrameDetails()\0"
-    "onShowFrameDetails()\0next()\0apply()\0"
+    "onShowFrameDetails()\0bool\0next()\0"
+    "apply()\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -79,7 +80,8 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: onShowForm(); break;
         case 1: onHideFrameDetails(); break;
         case 2: onShowFrameDetails(); break;
-        case 3: next(); break;
+        case 3: { bool _r = next();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 4: apply(); break;
         default: ;
         }

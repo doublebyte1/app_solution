@@ -18,6 +18,8 @@ QMainWindow(parent, flags){
 
 MainFrm::~MainFrm()
 {
+    tabWidget->disconnect();
+    vTabs.clear();
     if (tDateTime!=0) delete tDateTime;
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
@@ -115,14 +117,42 @@ void MainFrm::initTabs()
                 SLOT(fillHeader(const QString)),Qt::UniqueConnection);
              }
 
+             connect(vTabs.at(i), SIGNAL(submitted(int,bool)), this,
+                SLOT(enableTab(int,bool)),Qt::UniqueConnection);
+
+             if (i>0)
+                 tabWidget->setTabEnabled(i,false);
+
          }
+
+     connect(this->tabWidget, SIGNAL(currentChanged(int)),this,
+        SLOT(tabChanged(int)),Qt::UniqueConnection);
 
     statusShow(tr("Sampling Operation successfully initialized."));
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
+void MainFrm::enableTab(int idx, bool bOk)
+{
+    if (idx<tabWidget->count()-1)
+        tabWidget->setTabEnabled(idx+1,bOk);
+}
+
+void MainFrm::tabChanged(int curIndex)
+{
+    //Is this the behaviour we want?
+    //it tries to pass from the previous form to this one; if it fails, it goes to the previous, till its ok
+
+    if (curIndex>0 && curIndex < tabWidget->count()){
+        if (!vTabs.at(curIndex-1)->next())
+            tabWidget->setCurrentIndex(curIndex-1);
+    }
+}
+
 void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
 {
+    tabWidget->blockSignals(true);//lets block the signals to prevent entering the next again...
+
     if (bNext){
         if (idx<tabWidget->count()){
             tabWidget->setCurrentIndex(idx+1);
@@ -132,6 +162,8 @@ void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
             tabWidget->setCurrentIndex(idx-1);
         }
     }
+
+    tabWidget->blockSignals(false);//and unblock...
 }
 
 void MainFrm::hideFrameDetails()

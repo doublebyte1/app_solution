@@ -32,63 +32,9 @@ FrmCell::~FrmCell()
     if (tSampCell!=0) delete tSampCell;
     if (viewCell!=0) delete viewCell;
 }
-/*
-void FrmCell::showEvent ( QShowEvent * event )
-{
-    (void) event;
 
-    bool bShow=this->groupDetails->isVisible();
-
-    createRecord();
-
-    this->groupDetails->setVisible(bShow);
-}
-*/
 void FrmCell::onShowFrameDetails()
 {
-    /*
-    bool bOk=true;
-
-    //check for uncomitted changes
-    while(m_tDateTime->canFetchMore())
-        m_tDateTime->fetchMore();
-
-    QModelIndex idx1=m_tDateTime->index(m_tDateTime->rowCount()-1,0);
-    if (!idx1.isValid()) return;
-
-    while(tSampCell->canFetchMore())
-        tSampCell->fetchMore();
-
-    QModelIndex idx2=tSampCell->index(tSampCell->rowCount()-1,0);
-    if (!idx2.isValid()) return;
-
-    if (m_tDateTime->isDirty(idx1) || tSampCell->isDirty(idx2))
-    {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(tr("This record has been modified."));
-        msgBox.setInformativeText(tr("Would you like to apply uncommitted changes?"));
-        msgBox.setStandardButtons(QMessageBox::Apply | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Apply);
-        int ret = msgBox.exec();
-
-            switch (ret) {
-            case QMessageBox::Apply:
-                bOk=onButtonClick(buttonBox->button(QDialogButtonBox::Apply));
-                break;
-            case QMessageBox::Discard:
-                // NOTHING
-                break;
-            case QMessageBox::Cancel:
-                return;
-                break;
-            default:
-                // should never be reached
-                break;
-            }
-
-    }
-    if (bOk){*/
 
     if (!m_selectedIdx.isValid()){
         emit showError(tr("You must select one cell!"));
@@ -105,12 +51,12 @@ void FrmCell::onShowFrameDetails()
     blackList << 1 << 2;
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY_ALL,
         m_sample, blackList, false);
-    //}
 }
 
 void FrmCell::previewRow(QModelIndex index)
 {
     m_selectedIdx=index;//stores the index
+    emit submitted(this->m_index,true);
 
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
@@ -167,6 +113,7 @@ void FrmCell::previewRow(QModelIndex index)
 
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+    pushNext->setEnabled(true);
 }
 
 void FrmCell::setPreviewQuery()
@@ -203,12 +150,6 @@ void FrmCell::initModels()
     viewCell->setHeaderData(2, Qt::Horizontal, tr("Time"));
 }
 
-/*
-void FrmCell::enableFrameDetails(bool bSubmitted)
-{
-    toolButton->setEnabled(bSubmitted);
-}
-*/
 void FrmCell::initUI()
 {
     setHeader();
@@ -247,11 +188,12 @@ void FrmCell::initUI()
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
     m_lWidgets << textComments;
-    //m_lWidgets << toolButton;
     m_lWidgets << spinNE;
     m_lWidgets << spinAE;
     m_lWidgets << spinIE;
     m_lWidgets << spinOE;
+
+    pushNext->setEnabled(false);
 }
 
 void FrmCell::initMappers()
@@ -301,6 +243,13 @@ void FrmCell::initMappers()
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+
+}
+
+void FrmCell::onShowUi()
+{
+    this->groupDetails->setVisible(false);
+    qDebug() << mapper1->mappedWidgetAt(4)->objectName() << endl;
 
 }
 
@@ -366,6 +315,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             }else bError=true;
 
             if (!bError){
+
                 if (mapper1->submit()){
                     bError=!
                         tSampCell->submitAll();
@@ -395,6 +345,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
             if (!idx.isValid()) return false;
             m_sample->cellId=idx.data().toInt();
+            mapper1->toLast();
         }
         return !bError;
     }else return false;
@@ -450,10 +401,13 @@ void FrmCell::createRecord()
 
     //IMPORTANT: do this after setting the model row!
     connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtStart,
-        SLOT(adjustDateTime(QModelIndex,QVariant)));
+        SLOT(adjustDateTime(QModelIndex,QVariant)),Qt::UniqueConnection);
 
     connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtEnd,
-        SLOT(adjustDateTime(QModelIndex,QVariant)));
+        SLOT(adjustDateTime(QModelIndex,QVariant)),Qt::UniqueConnection);
+
+    while(tSampCell->canFetchMore())
+        tSampCell->fetchMore();
 
     QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,1);
     tSampCell->setData(idx,m_sample->minorStrataId);//id_minor_strata
@@ -490,4 +444,21 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
 
     tSampCell->relationModel(4)->setFilter(strFilter);
+
+    cmbLS->setCurrentIndex(-1);
+}
+
+bool FrmCell::next()
+{
+    //retrieve selected index
+    if (!m_selectedIdx.isValid()){
+        emit showError(tr("You must select one Cell!"));
+        return false;
+    }
+
+    QModelIndex idx=viewCell->index(m_selectedIdx.row(),1);
+    if (!idx.isValid()) return false;
+
+    emit forward(lbHeader->text()+ tr("->") + idx.data().toString());
+    return true;
 }

@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Tue 3. May 11:12:58 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+** Created: Wed 4. May 18:28:37 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mainfrm.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.7.0. It"
+#error "This file was generated using the moc from 4.6.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,10 +20,10 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_MainFrm[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,21 +31,24 @@ static const uint qt_meta_data_MainFrm[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-       9,    8,    8,    8, 0x08,
-      30,   20,    8,    8, 0x08,
-     111,   60,    8,    8, 0x08,
-     205,    8,    8,    8, 0x08,
-     228,  224,    8,    8, 0x08,
-     248,  224,    8,    8, 0x08,
-     290,  269,    8,    8, 0x08,
-     317,    8,    8,    8, 0x08,
+      17,    9,    8,    8, 0x08,
+      46,   37,    8,    8, 0x08,
+      62,    8,    8,    8, 0x08,
+      83,   73,    8,    8, 0x08,
+     164,  113,    8,    8, 0x08,
+     258,    8,    8,    8, 0x08,
+     281,  277,    8,    8, 0x08,
+     301,  277,    8,    8, 0x08,
+     343,  322,    8,    8, 0x08,
+     370,    8,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainFrm[] = {
-    "MainFrm\0\0initTabs()\0bNext,idx\0"
-    "navigateThroughTabs(bool,int)\0"
+    "MainFrm\0\0idx,bOk\0enableTab(int,bool)\0"
+    "curIndex\0tabChanged(int)\0initTabs()\0"
+    "bNext,idx\0navigateThroughTabs(bool,int)\0"
     "mode,persistence,sample,blackList,bSupportNewItems\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,Sa"
     "mple*,QList<int>&,bool)\0"
@@ -85,17 +88,19 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: initTabs(); break;
-        case 1: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
-        case 2: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const bool(*)>(_a[5]))); break;
-        case 3: hideFrameDetails(); break;
-        case 4: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 5: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 6: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 7: cleanupMsgBoxes(); break;
+        case 0: enableTab((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 1: tabChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 2: initTabs(); break;
+        case 3: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
+        case 4: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const bool(*)>(_a[5]))); break;
+        case 5: hideFrameDetails(); break;
+        case 6: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 7: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 8: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 9: cleanupMsgBoxes(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 10;
     }
     return _id;
 }
