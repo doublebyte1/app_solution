@@ -108,7 +108,7 @@ class GenericTab : public QWidget
         virtual void            initModels()=0;
         virtual void            initMappers()=0;
         virtual void            initUI()=0;
-        void                    showEvent ( QShowEvent * event );
+//        void                    showEvent ( QShowEvent * event );
         bool                    getDtId(const int mapIdx, int& id);
         void                    resizeToVisibleColumns ( QTableView* table );
         int                     m_index;

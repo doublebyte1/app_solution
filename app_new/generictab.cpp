@@ -18,12 +18,13 @@ GenericTab::~GenericTab()
 {
     if (nullDellegate!=0) delete nullDellegate;
 }
-
+/*
 void GenericTab::showEvent ( QShowEvent * event ) 
 {
     (void) event;
     onShowForm();
 }
+*/
 
 bool GenericTab::getDtId(const int mapIdx, int& id)
 {

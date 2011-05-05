@@ -94,6 +94,9 @@ void MainFrm::initTabs()
         gridLayout->addWidget(pFrmFrameDetails);
         pFrmFrameDetails->hide();
 
+     connect(this->tabWidget, SIGNAL(currentChanged(int)),this,
+        SLOT(tabChanged(int)),Qt::UniqueConnection);
+
         // Connect all the signals
          for (int i = 0; i < vTabs.size(); ++i) {
 
@@ -115,6 +118,9 @@ void MainFrm::initTabs()
              if (i < vTabs.size()-1){
                  connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
                 SLOT(fillHeader(const QString)),Qt::UniqueConnection);
+
+                 connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+                SLOT(onShowForm()),Qt::UniqueConnection);
              }
 
              connect(vTabs.at(i), SIGNAL(submitted(int,bool)), this,
@@ -124,9 +130,6 @@ void MainFrm::initTabs()
                  tabWidget->setTabEnabled(i,false);
 
          }
-
-     connect(this->tabWidget, SIGNAL(currentChanged(int)),this,
-        SLOT(tabChanged(int)),Qt::UniqueConnection);
 
     statusShow(tr("Sampling Operation successfully initialized."));
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
