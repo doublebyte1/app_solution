@@ -33,13 +33,6 @@ void FrmVesselType::initUI()
 {
     setHeader();
 
-    if (tVesselType==0) return;
-
-    this->listTypes->setModel(tVesselType);
-    this->listTypes->setModelColumn(0);
-    this->listTypes->setAutoFillBackground(true);
-    this->listTypes->setAlternatingRowColors(true);
-
 }
 
 bool FrmVesselType::next()
@@ -93,7 +86,11 @@ void FrmVesselType::setViewQuery()
 
      tVesselType->setQuery(strQuery);
 
-     qDebug() << tVesselType->rowCount() << endl;
+    this->listTypes->setModel(tVesselType);
+    this->listTypes->setModelColumn(0);
+    this->listTypes->setAutoFillBackground(true);
+    this->listTypes->setAlternatingRowColors(true);
+
 }
 
 void FrmVesselType::initModels()

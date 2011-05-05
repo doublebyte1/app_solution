@@ -135,15 +135,7 @@ tr("ORDER BY dbo.Sampled_Cell.ID DESC")
 
 void FrmCell::initModels()
 {
-    tSampCell=new QSqlRelationalTableModel();
-    tSampCell->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Cell"),
-        QSqlDriver::TableName));
-    tSampCell->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
-    tSampCell->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tSampCell->select();
-
-    setPreviewModel(tSampCell);
-
+    if (viewCell!=0) delete viewCell;
     viewCell = new QSqlQueryModel;
     viewCell->setHeaderData(0, Qt::Horizontal, tr("Site"));
     viewCell->setHeaderData(1, Qt::Horizontal, tr("Date"));
@@ -196,13 +188,13 @@ void FrmCell::initUI()
     pushNext->setEnabled(false);
 }
 
-void FrmCell::initMappers()
+void FrmCell::initMapper1()
 {
     if (mapper1!=0) delete mapper1;
-
     mapper1= new QDataWidgetMapper(this);
-    mapper1->setModel(tSampCell);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+
+    mapper1->setModel(tSampCell);
 
     if (nullDellegate!=0) delete nullDellegate;
     QList<int> lOthers;
@@ -228,7 +220,10 @@ void FrmCell::initMappers()
     mapper1->addMapping(spinOC, 12);
 
     mapper1->addMapping(textComments,13);
+}
 
+void FrmCell::initMappers()
+{
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
 
@@ -243,14 +238,16 @@ void FrmCell::initMappers()
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
-
 }
 
-void FrmCell::onShowUi()
+void FrmCell::beforeShow()
 {
-    this->groupDetails->setVisible(false);
-    qDebug() << mapper1->mappedWidgetAt(4)->objectName() << endl;
+    //The dictionary of SQL relations does *not* respond to filter changes, and therefore
+    //we need to initialize a new cell model (and setup the relations) everytime. For this
+    //reason, dont bother to initialize it in the beginning.
 
+    initCellModel();
+    this->groupDetails->setVisible(false);
 }
 
 bool FrmCell::onButtonClick(QAbstractButton* button)
@@ -315,7 +312,6 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             }else bError=true;
 
             if (!bError){
-
                 if (mapper1->submit()){
                     bError=!
                         tSampCell->submitAll();
@@ -415,6 +411,22 @@ void FrmCell::createRecord()
     uI4NewRecord();//init UI
 }
 
+void FrmCell::initCellModel()
+{
+    if (tSampCell!=0) delete tSampCell;
+
+    tSampCell=new QSqlRelationalTableModel();
+    tSampCell->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Cell"),
+        QSqlDriver::TableName));
+    tSampCell->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
+    tSampCell->relationModel(4)->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tSampCell->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tSampCell->select();
+
+    setPreviewModel(tSampCell);
+
+}
+
 void FrmCell::filterModel4Combo()
 {
     QString strQuery =
@@ -444,8 +456,8 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
 
     tSampCell->relationModel(4)->setFilter(strFilter);
-
-    cmbLS->setCurrentIndex(-1);
+    //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
+    initMapper1();
 }
 
 bool FrmCell::next()

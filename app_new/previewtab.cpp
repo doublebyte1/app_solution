@@ -21,6 +21,8 @@ void PreviewTab::resizeEvent ( QResizeEvent * event )
 
 void PreviewTab::onShowForm()
 {
+    beforeShow();
+
     //Make sure all models are up to date, and without filters
     if (m_model==0) return;
     m_model->select();
@@ -39,7 +41,6 @@ void PreviewTab::onShowForm()
     if (m_selectedIdx.isValid())
         m_table->selectRow(m_selectedIdx.row());
 
-    onShowUi();
 
 }
 

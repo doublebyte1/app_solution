@@ -172,7 +172,7 @@ void FrmMinorStrata::filterModel4Combo()
     tRefMinorStrata->relationModel(4)->setFilter(strFilter);
 }
 
-void FrmMinorStrata::onShowUi()
+void FrmMinorStrata::beforeShow()
 {
     this->groupDetails->setVisible(false);
 }

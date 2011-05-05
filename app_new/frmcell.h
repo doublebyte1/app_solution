@@ -57,6 +57,10 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   uI4NewRecord();
+        //! Initializations before calling the onShow PreviewTab function
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   beforeShow();
 
         //! Set Header widget
         /*! Reimplemented from the genericTab base class
@@ -74,7 +78,8 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
-        void                                   onShowUi();
+        void                                   initCellModel();
+        void                                   initMapper1();
 
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;

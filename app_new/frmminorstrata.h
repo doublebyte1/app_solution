@@ -46,7 +46,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
-        void                                   onShowUi();
+        void                                   beforeShow();
 
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;

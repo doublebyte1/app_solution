@@ -53,10 +53,13 @@ class PreviewTab : public GenericTab
     */
         virtual void                          uI4NewRecord()=0;
     //! A pure virtual member.
-    /*! abstract create record;
+    /*! In this function we initialize some values (UI, models, etc) that need to be set before calling the onShowForm;
+      \sa onShowForm()
+    */
+        virtual void                          beforeShow()=0;
+    /*! generic create record;
       \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), setReadOnly(const bool bRO), filterModel4Combo(), uI4NewRecord()
     */
-        virtual void                          onShowUi()=0;
         void                                  genericCreateRecord();
         void                                  resizeEvent ( QResizeEvent * event );
         QList<QWidget*>                       m_lWidgets;
