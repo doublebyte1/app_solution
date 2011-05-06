@@ -29,7 +29,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
     public slots:
 
     private slots:
-        bool                                   next();
+        //bool                                   next();
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
         bool                                   onButtonClick(QAbstractButton * button);
@@ -47,6 +47,15 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   initMappers();
         void                                   initUI();
         void                                   beforeShow();
+
+        //! Get the title label of the next form
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   getNextLabel(QString& strLabel);
+        //! Update the sample structure
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   updateSample();
 
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;

@@ -71,6 +71,7 @@ class PreviewTab : public GenericTab
         void                                  onShowForm();
 
     private slots:
+        bool                                  next();
         //! A pure virtual member.
         /*! Slot that inititializes a new record
           \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button)
@@ -88,6 +89,16 @@ class PreviewTab : public GenericTab
         virtual bool                          onButtonClick(QAbstractButton * button)=0;
 
     private:
+        //! A pure virtual member.
+        /*! Helper function for the next slot, that updates the sample structure
+          \sa getNextLabel(QString& strLabel)
+        */
+        virtual bool                          updateSample()=0;
+        //! A pure virtual member.
+        /*! Helper function for the next slot, that gets the title label of the next form
+          \sa updateSample()
+        */
+        virtual bool                          getNextLabel(QString& strLabel)=0;
         QSqlRelationalTableModel*             m_model;/**< pointer for the main model in this form */
         QTableView*                           m_table;/**< pointer for the table in this form */
 };

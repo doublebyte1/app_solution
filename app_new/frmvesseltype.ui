@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="lbHeader">
      <property name="sizePolicy">
@@ -33,37 +33,60 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Select cell vessel type:</string>
+      <string>Choose cell vessel type:</string>
      </property>
      <property name="buddy">
-      <cstring>listTypes</cstring>
+      <cstring>tableView</cstring>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QListView" name="listTypes">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QTableView" name="tableView"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushNew">
+       <property name="toolTip">
+        <string>Create new record</string>
+       </property>
+       <property name="statusTip">
+        <string>Create new record</string>
+       </property>
+       <property name="whatsThis">
+        <string>Creates new record</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="app_new.qrc">
+         <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupTotals">
+    <widget class="QGroupBox" name="groupDetails">
      <property name="title">
-      <string>Totals</string>
+      <string>Details</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" rowspan="2" colspan="2">
-       <widget class="QLabel" name="label_11">
+      <item row="0" column="4">
+       <widget class="QLabel" name="label_3">
         <property name="text">
-         <string/>
+         <string>Vessel type</string>
+        </property>
+        <property name="buddy">
+         <cstring>cmbTypes</cstring>
         </property>
        </widget>
       </item>
-      <item row="0" column="2" rowspan="2">
+      <item row="0" column="5">
+       <widget class="QComboBox" name="cmbTypes"/>
+      </item>
+      <item row="1" column="1" colspan="2">
        <widget class="QLabel" name="label_4">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -79,7 +102,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3" rowspan="2">
+      <item row="1" column="3">
        <widget class="QLabel" name="label_5">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -95,17 +118,17 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
+      <item row="1" column="4">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Comments:</string>
         </property>
         <property name="buddy">
-         <cstring>plainTextEdit</cstring>
+         <cstring>textComments</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="1" rowspan="2">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>No of Vessels</string>
@@ -139,9 +162,9 @@
        </widget>
       </item>
       <item row="2" column="4" rowspan="4" colspan="2">
-       <widget class="QPlainTextEdit" name="plainTextEdit"/>
+       <widget class="QPlainTextEdit" name="textComments"/>
       </item>
-      <item row="3" column="1">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Active Vessels</string>
@@ -174,7 +197,7 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Inactive Vessels</string>
@@ -207,7 +230,7 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="5" column="0" colspan="2">
        <widget class="QLabel" name="label_10">
         <property name="text">
          <string>Vessels from Outside</string>
@@ -292,7 +315,9 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>listTypes</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>pushNew</tabstop>
+  <tabstop>cmbTypes</tabstop>
   <tabstop>spinNE</tabstop>
   <tabstop>spinNC</tabstop>
   <tabstop>spinAE</tabstop>
@@ -301,7 +326,7 @@
   <tabstop>spinIC</tabstop>
   <tabstop>spinOE</tabstop>
   <tabstop>spinOC</tabstop>
-  <tabstop>plainTextEdit</tabstop>
+  <tabstop>textComments</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>pushPrevious</tabstop>
   <tabstop>pushNext</tabstop>
@@ -309,5 +334,59 @@
  <resources>
   <include location="app_new.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushNew</sender>
+   <signal>clicked()</signal>
+   <receiver>FrmVesselType</receiver>
+   <slot>createRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>684</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>FrmVesselType</receiver>
+   <slot>onButtonClick(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>491</x>
+     <y>347</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>FrmVesselType</receiver>
+   <slot>previewRow(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>336</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>354</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>createRecord()</slot>
+  <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>previewRow(QModelIndex)</slot>
+ </slots>
 </ui>

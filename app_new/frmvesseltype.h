@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_frmvesseltype.h"
-#include "generictab.h"
+#include "previewtab.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -18,7 +18,7 @@ This class implements the widget that corresponds to the Sampled Vessel Type def
 applicable to logbook type frames;
 */
 
-class FrmVesselType : public GenericTab, public Ui::FrmVesselType
+class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
 {
     Q_OBJECT
 
@@ -27,8 +27,22 @@ class FrmVesselType : public GenericTab, public Ui::FrmVesselType
         ~FrmVesselType();
 
     public slots:
-        void                                  onShowForm();
-        bool                                  next();
+        //void                                  onShowForm();
+        //bool                                  next();
+
+    private slots:
+        //! Create Record
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   createRecord();
+        //! Preview Row
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   previewRow(QModelIndex index);
+        //! On Button Click
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   onButtonClick(QAbstractButton * button);
 
     private:
         //! Set Header widget
@@ -47,11 +61,38 @@ class FrmVesselType : public GenericTab, public Ui::FrmVesselType
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
-        void                                   setViewQuery();
-        QSqlQueryModel*                        tVesselType;
-        //QSqlQueryModel*                        viewVesselType;
-        //QDataWidgetMapper*                     mapper1;
-        //QDataWidgetMapper*                     mapperStartDt;
-        //QDataWidgetMapper*                     mapperEndDt;
+
+        //! Filter combo box
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   filterModel4Combo();
+        //! Set main model query
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   setPreviewQuery();
+        //! Initialize UI for new record
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   uI4NewRecord();
+        //! Initializations before calling the onShow PreviewTab function
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   beforeShow();
+        void                                   initMapper1();
+        void                                   initVesselTypeModel();
+
+        //! Get the title label of the next form
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   getNextLabel(QString& strLabel);
+        //! Update the sample structure
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   updateSample();
+
+        QSqlQueryModel*                        viewVesselTypes;
+        QSqlRelationalTableModel*              tSVesselTypes;
+        NullRelationalDelegate*                nullDellegate;
+        QDataWidgetMapper*                     mapper1;
 };
 #endif //FRMVESSELTYPE_H

@@ -340,7 +340,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             toolButton->setEnabled(true);
             QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
             if (!idx.isValid()) return false;
-            m_sample->cellId=idx.data().toInt();
+            m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
             mapper1->toLast();
         }
         return !bError;
@@ -460,17 +460,20 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
     initMapper1();
 }
 
-bool FrmCell::next()
+bool FrmCell::updateSample()
 {
-    //retrieve selected index
-    if (!m_selectedIdx.isValid()){
-        emit showError(tr("You must select one Cell!"));
-        return false;
-    }
+    //updating the sample structure
+    QModelIndex idx=viewCell->index(m_selectedIdx.row(),0);
+    if (!idx.isValid()) return false;
+    m_sample->cellId=idx.data().toInt();
+    return true;
+}
 
+bool FrmCell::getNextLabel(QString& strLabel)
+{
+    //sending the name
     QModelIndex idx=viewCell->index(m_selectedIdx.row(),1);
     if (!idx.isValid()) return false;
-
-    emit forward(lbHeader->text()+ tr("->") + idx.data().toString());
+    strLabel=idx.data().toString();
     return true;
 }

@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Thu 5. May 16:53:01 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Fri 6. May 12:19:56 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -14,17 +14,18 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
-#include <QtGui/QListView>
 #include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
+#include <QtGui/QTableView>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
@@ -33,20 +34,23 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmVesselType
 {
 public:
-    QVBoxLayout *verticalLayout_5;
+    QVBoxLayout *verticalLayout;
     QLabel *lbHeader;
     QLabel *label;
-    QListView *listTypes;
-    QGroupBox *groupTotals;
+    QHBoxLayout *horizontalLayout;
+    QTableView *tableView;
+    QPushButton *pushNew;
+    QGroupBox *groupDetails;
     QGridLayout *gridLayout;
-    QLabel *label_11;
+    QLabel *label_3;
+    QComboBox *cmbTypes;
     QLabel *label_4;
     QLabel *label_5;
     QLabel *label_2;
     QLabel *label_7;
     QSpinBox *spinNE;
     QSpinBox *spinNC;
-    QPlainTextEdit *plainTextEdit;
+    QPlainTextEdit *textComments;
     QLabel *label_8;
     QSpinBox *spinAE;
     QSpinBox *spinAC;
@@ -67,8 +71,8 @@ public:
         if (FrmVesselType->objectName().isEmpty())
             FrmVesselType->setObjectName(QString::fromUtf8("FrmVesselType"));
         FrmVesselType->resize(710, 413);
-        verticalLayout_5 = new QVBoxLayout(FrmVesselType);
-        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        verticalLayout = new QVBoxLayout(FrmVesselType);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         lbHeader = new QLabel(FrmVesselType);
         lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -78,61 +82,77 @@ public:
         lbHeader->setSizePolicy(sizePolicy);
         lbHeader->setStyleSheet(QString::fromUtf8("background-color:rgb(247, 247, 247)"));
 
-        verticalLayout_5->addWidget(lbHeader);
+        verticalLayout->addWidget(lbHeader);
 
         label = new QLabel(FrmVesselType);
         label->setObjectName(QString::fromUtf8("label"));
 
-        verticalLayout_5->addWidget(label);
+        verticalLayout->addWidget(label);
 
-        listTypes = new QListView(FrmVesselType);
-        listTypes->setObjectName(QString::fromUtf8("listTypes"));
-        listTypes->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        listTypes->setAlternatingRowColors(true);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        tableView = new QTableView(FrmVesselType);
+        tableView->setObjectName(QString::fromUtf8("tableView"));
 
-        verticalLayout_5->addWidget(listTypes);
+        horizontalLayout->addWidget(tableView);
 
-        groupTotals = new QGroupBox(FrmVesselType);
-        groupTotals->setObjectName(QString::fromUtf8("groupTotals"));
-        gridLayout = new QGridLayout(groupTotals);
+        pushNew = new QPushButton(FrmVesselType);
+        pushNew->setObjectName(QString::fromUtf8("pushNew"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNew->setIcon(icon);
+
+        horizontalLayout->addWidget(pushNew);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        groupDetails = new QGroupBox(FrmVesselType);
+        groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
+        gridLayout = new QGridLayout(groupDetails);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        label_11 = new QLabel(groupTotals);
-        label_11->setObjectName(QString::fromUtf8("label_11"));
+        label_3 = new QLabel(groupDetails);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
 
-        gridLayout->addWidget(label_11, 0, 0, 2, 2);
+        gridLayout->addWidget(label_3, 0, 4, 1, 1);
 
-        label_4 = new QLabel(groupTotals);
+        cmbTypes = new QComboBox(groupDetails);
+        cmbTypes->setObjectName(QString::fromUtf8("cmbTypes"));
+
+        gridLayout->addWidget(cmbTypes, 0, 5, 1, 1);
+
+        label_4 = new QLabel(groupDetails);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
         label_4->setSizePolicy(sizePolicy);
 
-        gridLayout->addWidget(label_4, 0, 2, 2, 1);
+        gridLayout->addWidget(label_4, 1, 1, 1, 2);
 
-        label_5 = new QLabel(groupTotals);
+        label_5 = new QLabel(groupDetails);
         label_5->setObjectName(QString::fromUtf8("label_5"));
         sizePolicy.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
         label_5->setSizePolicy(sizePolicy);
 
-        gridLayout->addWidget(label_5, 0, 3, 2, 1);
+        gridLayout->addWidget(label_5, 1, 3, 1, 1);
 
-        label_2 = new QLabel(groupTotals);
+        label_2 = new QLabel(groupDetails);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
-        gridLayout->addWidget(label_2, 0, 4, 1, 1);
+        gridLayout->addWidget(label_2, 1, 4, 1, 1);
 
-        label_7 = new QLabel(groupTotals);
+        label_7 = new QLabel(groupDetails);
         label_7->setObjectName(QString::fromUtf8("label_7"));
 
-        gridLayout->addWidget(label_7, 1, 1, 2, 1);
+        gridLayout->addWidget(label_7, 2, 0, 1, 1);
 
-        spinNE = new QSpinBox(groupTotals);
+        spinNE = new QSpinBox(groupDetails);
         spinNE->setObjectName(QString::fromUtf8("spinNE"));
         sizePolicy.setHeightForWidth(spinNE->sizePolicy().hasHeightForWidth());
         spinNE->setSizePolicy(sizePolicy);
 
         gridLayout->addWidget(spinNE, 2, 2, 1, 1);
 
-        spinNC = new QSpinBox(groupTotals);
+        spinNC = new QSpinBox(groupDetails);
         spinNC->setObjectName(QString::fromUtf8("spinNC"));
         spinNC->setEnabled(false);
         sizePolicy.setHeightForWidth(spinNC->sizePolicy().hasHeightForWidth());
@@ -140,24 +160,24 @@ public:
 
         gridLayout->addWidget(spinNC, 2, 3, 1, 1);
 
-        plainTextEdit = new QPlainTextEdit(groupTotals);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        textComments = new QPlainTextEdit(groupDetails);
+        textComments->setObjectName(QString::fromUtf8("textComments"));
 
-        gridLayout->addWidget(plainTextEdit, 2, 4, 4, 2);
+        gridLayout->addWidget(textComments, 2, 4, 4, 2);
 
-        label_8 = new QLabel(groupTotals);
+        label_8 = new QLabel(groupDetails);
         label_8->setObjectName(QString::fromUtf8("label_8"));
 
-        gridLayout->addWidget(label_8, 3, 1, 1, 1);
+        gridLayout->addWidget(label_8, 3, 0, 1, 1);
 
-        spinAE = new QSpinBox(groupTotals);
+        spinAE = new QSpinBox(groupDetails);
         spinAE->setObjectName(QString::fromUtf8("spinAE"));
         sizePolicy.setHeightForWidth(spinAE->sizePolicy().hasHeightForWidth());
         spinAE->setSizePolicy(sizePolicy);
 
         gridLayout->addWidget(spinAE, 3, 2, 1, 1);
 
-        spinAC = new QSpinBox(groupTotals);
+        spinAC = new QSpinBox(groupDetails);
         spinAC->setObjectName(QString::fromUtf8("spinAC"));
         spinAC->setEnabled(false);
         sizePolicy.setHeightForWidth(spinAC->sizePolicy().hasHeightForWidth());
@@ -165,19 +185,19 @@ public:
 
         gridLayout->addWidget(spinAC, 3, 3, 1, 1);
 
-        label_9 = new QLabel(groupTotals);
+        label_9 = new QLabel(groupDetails);
         label_9->setObjectName(QString::fromUtf8("label_9"));
 
-        gridLayout->addWidget(label_9, 4, 1, 1, 1);
+        gridLayout->addWidget(label_9, 4, 0, 1, 1);
 
-        spinIE = new QSpinBox(groupTotals);
+        spinIE = new QSpinBox(groupDetails);
         spinIE->setObjectName(QString::fromUtf8("spinIE"));
         sizePolicy.setHeightForWidth(spinIE->sizePolicy().hasHeightForWidth());
         spinIE->setSizePolicy(sizePolicy);
 
         gridLayout->addWidget(spinIE, 4, 2, 1, 1);
 
-        spinIC = new QSpinBox(groupTotals);
+        spinIC = new QSpinBox(groupDetails);
         spinIC->setObjectName(QString::fromUtf8("spinIC"));
         spinIC->setEnabled(false);
         sizePolicy.setHeightForWidth(spinIC->sizePolicy().hasHeightForWidth());
@@ -185,19 +205,19 @@ public:
 
         gridLayout->addWidget(spinIC, 4, 3, 1, 1);
 
-        label_10 = new QLabel(groupTotals);
+        label_10 = new QLabel(groupDetails);
         label_10->setObjectName(QString::fromUtf8("label_10"));
 
-        gridLayout->addWidget(label_10, 5, 1, 1, 1);
+        gridLayout->addWidget(label_10, 5, 0, 1, 2);
 
-        spinOE = new QSpinBox(groupTotals);
+        spinOE = new QSpinBox(groupDetails);
         spinOE->setObjectName(QString::fromUtf8("spinOE"));
         sizePolicy.setHeightForWidth(spinOE->sizePolicy().hasHeightForWidth());
         spinOE->setSizePolicy(sizePolicy);
 
         gridLayout->addWidget(spinOE, 5, 2, 1, 1);
 
-        spinOC = new QSpinBox(groupTotals);
+        spinOC = new QSpinBox(groupDetails);
         spinOC->setObjectName(QString::fromUtf8("spinOC"));
         spinOC->setEnabled(false);
         sizePolicy.setHeightForWidth(spinOC->sizePolicy().hasHeightForWidth());
@@ -205,14 +225,14 @@ public:
 
         gridLayout->addWidget(spinOC, 5, 3, 1, 1);
 
-        buttonBox = new QDialogButtonBox(groupTotals);
+        buttonBox = new QDialogButtonBox(groupDetails);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
 
         gridLayout->addWidget(buttonBox, 6, 5, 1, 1);
 
 
-        verticalLayout_5->addWidget(groupTotals);
+        verticalLayout->addWidget(groupDetails);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
@@ -222,34 +242,37 @@ public:
 
         pushPrevious = new QPushButton(FrmVesselType);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon1);
 
         horizontalLayout_6->addWidget(pushPrevious);
 
         pushNext = new QPushButton(FrmVesselType);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon2);
 
         horizontalLayout_6->addWidget(pushNext);
 
 
-        verticalLayout_5->addLayout(horizontalLayout_6);
+        verticalLayout->addLayout(horizontalLayout_6);
 
 #ifndef QT_NO_SHORTCUT
-        label->setBuddy(listTypes);
+        label->setBuddy(tableView);
+        label_3->setBuddy(cmbTypes);
         label_4->setBuddy(spinNE);
         label_5->setBuddy(spinNC);
-        label_2->setBuddy(plainTextEdit);
+        label_2->setBuddy(textComments);
         label_7->setBuddy(spinNE);
         label_8->setBuddy(spinAE);
         label_9->setBuddy(spinIE);
         label_10->setBuddy(spinOE);
 #endif // QT_NO_SHORTCUT
-        QWidget::setTabOrder(listTypes, spinNE);
+        QWidget::setTabOrder(tableView, pushNew);
+        QWidget::setTabOrder(pushNew, cmbTypes);
+        QWidget::setTabOrder(cmbTypes, spinNE);
         QWidget::setTabOrder(spinNE, spinNC);
         QWidget::setTabOrder(spinNC, spinAE);
         QWidget::setTabOrder(spinAE, spinAC);
@@ -257,12 +280,15 @@ public:
         QWidget::setTabOrder(spinIE, spinIC);
         QWidget::setTabOrder(spinIC, spinOE);
         QWidget::setTabOrder(spinOE, spinOC);
-        QWidget::setTabOrder(spinOC, plainTextEdit);
-        QWidget::setTabOrder(plainTextEdit, buttonBox);
+        QWidget::setTabOrder(spinOC, textComments);
+        QWidget::setTabOrder(textComments, buttonBox);
         QWidget::setTabOrder(buttonBox, pushPrevious);
         QWidget::setTabOrder(pushPrevious, pushNext);
 
         retranslateUi(FrmVesselType);
+        QObject::connect(pushNew, SIGNAL(clicked()), FrmVesselType, SLOT(createRecord()));
+        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), FrmVesselType, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), FrmVesselType, SLOT(previewRow(QModelIndex)));
 
         QMetaObject::connectSlotsByName(FrmVesselType);
     } // setupUi
@@ -271,9 +297,19 @@ public:
     {
         FrmVesselType->setWindowTitle(QApplication::translate("FrmVesselType", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("FrmVesselType", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("FrmVesselType", "Select cell vessel type:", 0, QApplication::UnicodeUTF8));
-        groupTotals->setTitle(QApplication::translate("FrmVesselType", "Totals", 0, QApplication::UnicodeUTF8));
-        label_11->setText(QString());
+        label->setText(QApplication::translate("FrmVesselType", "Choose cell vessel type:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushNew->setToolTip(QApplication::translate("FrmVesselType", "Create new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushNew->setStatusTip(QApplication::translate("FrmVesselType", "Create new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushNew->setWhatsThis(QApplication::translate("FrmVesselType", "Creates new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushNew->setText(QString());
+        groupDetails->setTitle(QApplication::translate("FrmVesselType", "Details", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("FrmVesselType", "Vessel type", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("FrmVesselType", "Estimated", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("FrmVesselType", "Calculated", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("FrmVesselType", "Comments:", 0, QApplication::UnicodeUTF8));

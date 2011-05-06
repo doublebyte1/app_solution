@@ -40,8 +40,22 @@ void PreviewTab::onShowForm()
 
     if (m_selectedIdx.isValid())
         m_table->selectRow(m_selectedIdx.row());
+}
 
+bool PreviewTab::next()
+{
+    //retrieve selected index
+    if (!m_selectedIdx.isValid()){
+        emit showError(tr("You must select one Cell!"));
+        return false;
+    }
 
+    if (!updateSample()) return false;
+    QString strLabel;
+    if (!getNextLabel(strLabel)) return false;
+
+    emit forward(lbHead->text()+ tr("-> ") + strLabel);
+    return true;
 }
 
 void PreviewTab::genericCreateRecord()

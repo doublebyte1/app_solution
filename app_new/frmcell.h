@@ -29,7 +29,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
     signals:
 
     private slots:
-        bool                                   next();
+        //bool                                   next();
         //! Create Record
         /*! Reimplemented from the PreviewTab base class
         */
@@ -78,6 +78,14 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the genericTab base class
         */
         void                                   initUI();
+        //! Get the title label of the next form
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   getNextLabel(QString& strLabel);
+        //! Update the sample structure
+        /*! Reimplemented from the PreviewTab base class
+        */
+        bool                                   updateSample();
         void                                   initCellModel();
         void                                   initMapper1();
 

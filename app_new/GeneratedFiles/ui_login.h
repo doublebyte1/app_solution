@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'login.ui'
 **
-** Created: Thu 5. May 09:17:37 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Fri 6. May 12:37:39 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -131,7 +131,7 @@ public:
         lbPasswd->setText(QApplication::translate("frmLogin", "Password", 0, QApplication::UnicodeUTF8));
         lbFiles->setText(QApplication::translate("frmLogin", "Database", 0, QApplication::UnicodeUTF8));
         pushLogin->setText(QApplication::translate("frmLogin", "Login", 0, QApplication::UnicodeUTF8));
-        pushLogin->setShortcut(QApplication::translate("frmLogin", "Ctrl+R", 0, QApplication::UnicodeUTF8));
+        pushLogin->setShortcut(QApplication::translate("frmLogin", "Ctrl+L", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

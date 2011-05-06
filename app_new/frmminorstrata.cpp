@@ -31,6 +31,25 @@ FrmMinorStrata::~FrmMinorStrata()
     if (viewMinorStrata!=0) delete viewMinorStrata;
 }
 
+bool FrmMinorStrata::updateSample()
+{
+    //updating the sample structure
+    QModelIndex idx=viewMinorStrata->index(m_selectedIdx.row(),0);
+    if (!idx.isValid()) return false;
+    m_sample->cellId=idx.data().toInt();
+    return true;
+}
+
+bool FrmMinorStrata::getNextLabel(QString& strLabel)
+{
+    //sending the name
+    QModelIndex idx=viewMinorStrata->index(m_selectedIdx.row(),1);
+    if (!idx.isValid()) return false;
+    strLabel=idx.data().toString();
+    return true;
+}
+
+/*
 bool FrmMinorStrata::next()
 {
     //TODO: retrieve the selection model properly
@@ -54,6 +73,8 @@ bool FrmMinorStrata::next()
     emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString());
     return true;
 }
+*/
+
 
 void FrmMinorStrata::disableReasonCombo()
 {

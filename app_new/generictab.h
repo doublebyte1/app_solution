@@ -22,6 +22,7 @@ struct Sample{
     int         frameTimeId;
     int         minorStrataId;
     int         cellId;
+    int         vesselTypeId;
 };
 
 #endif //SAMPLE_H
@@ -115,14 +116,13 @@ class GenericTab : public QWidget
         DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
         Sample*                 m_sample;
         NullRelationalDelegate* nullDellegate;
+        QLabel*                 lbHead;
 
     private slots:
         void                    goBack();
         void                    goForward();
         void                    onLockControls(bool bLock,QList<QWidget*>& lWidgets);
 
-    private:
-        QLabel*                 lbHead;
 };
 
 Q_DECLARE_METATYPE( QList<QWidget*>);
