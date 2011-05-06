@@ -30,10 +30,20 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="QTableView" name="tableView">
+       <property name="toolTip">
+        <string>Choose cell (or create a new one)</string>
+       </property>
+       <property name="statusTip">
+        <string>Choose cell (or create a new one)</string>
+       </property>
+       <property name="whatsThis">
+        <string>In this widget we can choose cell, or create a new one</string>
+       </property>
+      </widget>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -83,7 +93,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QGroupBox" name="groupDetails">
      <property name="title">
       <string>Details</string>
@@ -284,7 +294,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
       <spacer name="horizontalSpacer">
@@ -322,6 +332,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_13">
+     <property name="text">
+      <string>Choose cell:</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

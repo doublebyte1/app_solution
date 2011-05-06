@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>empty.png</file>
     <file>filenew.png</file>
     <file>pencil.png</file>
     <file>lsd.png</file>

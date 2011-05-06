@@ -24,10 +24,19 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
+    //stylesheet
     QFile qss(QObject::tr(":/app_new/stylesheet.qss"));
     qss.open(QFile::ReadOnly);
     a.setStyleSheet(qss.readAll());
     qss.close();
+
+    //TODO: language stuff
+
+    //app details
+    a.setApplicationName(QObject::tr("Medfisis"));
+    a.setOrganizationName(QObject::tr("FAO-FIRF"));
+    a.setOrganizationDomain(QObject::tr("http://www.fao.org/"));
+    a.setApplicationVersion(QObject::tr("2-a"));
 
     Login l;
     l.show();

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Fri 6. May 09:03:39 2011
+** Created: Fri 6. May 15:58:32 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -285,6 +285,15 @@ public:
         frmminorstrata->setWindowTitle(QApplication::translate("frmminorstrata", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmminorstrata", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmminorstrata", "Choose Minor Strata", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        tableView->setToolTip(QApplication::translate("frmminorstrata", "Choose minor strata (or create new one)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tableView->setStatusTip(QApplication::translate("frmminorstrata", "Choose minor strata (or create new one)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        tableView->setWhatsThis(QApplication::translate("frmminorstrata", "In this widget we can choose a minor strata, or create a new one", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_5->setText(QApplication::translate("frmminorstrata", "Create New", 0, QApplication::UnicodeUTF8));
         groupDetails->setTitle(QApplication::translate("frmminorstrata", "Details", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("frmminorstrata", "Group of Landing Sites", 0, QApplication::UnicodeUTF8));

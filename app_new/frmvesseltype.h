@@ -15,7 +15,7 @@
 //! Frm Vessel Type
 /*!
 This class implements the widget that corresponds to the Sampled Vessel Type definition tab; This tab is only
-applicable to logbook type frames;
+applicable to sampling type frames;
 */
 
 class FrmVesselType : public PreviewTab, public Ui::FrmVesselType

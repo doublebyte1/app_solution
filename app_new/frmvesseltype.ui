@@ -43,7 +43,17 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="QTableView" name="tableView">
+       <property name="toolTip">
+        <string>Choose cell (or create new one)</string>
+       </property>
+       <property name="statusTip">
+        <string>Choose cell (or create new one)</string>
+       </property>
+       <property name="whatsThis">
+        <string>In this widget we can choose a cell, or create a new one</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushNew">

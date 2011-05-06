@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Fri 6. May 09:03:39 2011
+** Created: Fri 6. May 15:58:32 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -81,6 +81,7 @@ public:
     QSpacerItem *horizontalSpacer;
     QPushButton *pushPrevious;
     QPushButton *pushNext;
+    QLabel *label_13;
 
     void setupUi(QWidget *frmCell)
     {
@@ -131,7 +132,7 @@ public:
         horizontalLayout_5->addLayout(verticalLayout_4);
 
 
-        gridLayout_2->addLayout(horizontalLayout_5, 1, 0, 1, 1);
+        gridLayout_2->addLayout(horizontalLayout_5, 2, 0, 1, 1);
 
         groupDetails = new QGroupBox(frmCell);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -307,7 +308,7 @@ public:
         gridLayout->addWidget(label_12, 4, 1, 1, 1);
 
 
-        gridLayout_2->addWidget(groupDetails, 2, 0, 1, 1);
+        gridLayout_2->addWidget(groupDetails, 3, 0, 1, 1);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
@@ -332,7 +333,12 @@ public:
         horizontalLayout_6->addWidget(pushNext);
 
 
-        gridLayout_2->addLayout(horizontalLayout_6, 3, 0, 1, 1);
+        gridLayout_2->addLayout(horizontalLayout_6, 4, 0, 1, 1);
+
+        label_13 = new QLabel(frmCell);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+
+        gridLayout_2->addWidget(label_13, 1, 0, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(cmbLS);
@@ -368,6 +374,15 @@ public:
         frmCell->setWindowTitle(QApplication::translate("frmCell", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmCell", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
+        tableView->setToolTip(QApplication::translate("frmCell", "Choose cell (or create a new one)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tableView->setStatusTip(QApplication::translate("frmCell", "Choose cell (or create a new one)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        tableView->setWhatsThis(QApplication::translate("frmCell", "In this widget we can choose cell, or create a new one", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("frmCell", "Create new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
@@ -402,6 +417,7 @@ public:
         label_12->setText(QApplication::translate("frmCell", "Comments", 0, QApplication::UnicodeUTF8));
         pushPrevious->setText(QApplication::translate("frmCell", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmCell", "Next", 0, QApplication::UnicodeUTF8));
+        label_13->setText(QApplication::translate("frmCell", "Choose cell:", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

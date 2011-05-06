@@ -7,6 +7,7 @@
 #include "frmminorstrata.h"
 #include "frmcell.h"
 #include "frmvesseltype.h"
+#include "frmvessel.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -38,15 +39,19 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
 
     private:
         void                    resetTabs();
+        void                    addPreviewTab(PreviewTab* tab);
+        void                    initUi();
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
         FrmFrameDetails         *pFrmFrameDetails;
         FrmCell                 *pFrmCell;
         FrmVesselType           *pFrmVesselType;
+        FrmVessel               *pFrmVessel;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
+        QToolBar*               toolbar;
 
     private slots:
         void                    enableTab(int idx, bool bOk);

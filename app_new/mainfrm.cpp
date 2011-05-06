@@ -11,8 +11,12 @@ QMainWindow(parent, flags){
     pFrmCell=0;
     sSample=0;
     pFrmVesselType=0;
+    pFrmVessel=0;
+    toolbar=0;
 
     setupUi(this);
+
+    initUi();
     //initTabs();
 }
 
@@ -27,6 +31,22 @@ MainFrm::~MainFrm()
     if (pFrmCell!=0) delete pFrmCell;
     if (sSample!=0) delete sSample;
     if (pFrmVesselType!=0) delete pFrmVesselType;
+    if (pFrmVessel!=0) delete pFrmVessel;
+    if (toolbar!=0) delete toolbar;
+}
+
+void MainFrm::initUi()
+{
+    //read this from the app settings
+    this->setWindowTitle(qApp->applicationName() + qApp->applicationVersion());
+
+     connect(actionAbout_Qt, SIGNAL(triggered()),qApp,
+        SLOT(aboutQt () ),Qt::UniqueConnection);
+
+    toolbar=addToolBar(tr("Main Toolbar"));
+    toolbar->setFloatable(true);
+    toolbar->setMovable(true);
+    toolbar->addAction(this->actionNew);
 }
 
 void MainFrm::resetTabs()
@@ -45,6 +65,7 @@ void MainFrm::resetTabs()
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
         if (sSample!=0) {delete sSample; sSample=0;}
         if (pFrmVesselType!=0) {delete pFrmVesselType; pFrmVesselType=0;}
+        if (pFrmVessel!=0) {delete pFrmVessel; pFrmVessel=0;}
 
         //Dates
         tDateTime= new DateModel();
@@ -58,6 +79,12 @@ void MainFrm::resetTabs()
         sSample=new Sample;
 }
 
+void MainFrm::addPreviewTab(PreviewTab* tab)
+{
+    vTabs.push_back(tab);
+    this->tabWidget->insertTab(tab->index(),tab, tab->title());
+}
+
 void MainFrm::initTabs()
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
@@ -67,19 +94,16 @@ void MainFrm::initTabs()
 
         pFrmFrame=new FrmFrame(sSample,tDateTime);
         vTabs.push_back(pFrmFrame);
-        this->tabWidget->insertTab(0,pFrmFrame, tr("Frame"));
+        this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
 
         pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
-        vTabs.push_back(pFrmMinorStrata);
-        this->tabWidget->insertTab(1,pFrmMinorStrata, tr("Minor Strata"));
-
+        addPreviewTab(pFrmMinorStrata);
         pFrmCell=new FrmCell(sSample,tDateTime);
-        vTabs.push_back(pFrmCell);
-        this->tabWidget->insertTab(2,pFrmCell, tr("Cell"));
-
+        addPreviewTab(pFrmCell);
         pFrmVesselType=new FrmVesselType(sSample,tDateTime);
-        vTabs.push_back(pFrmVesselType);
-        this->tabWidget->insertTab(3,pFrmVesselType, tr("Vessel Type"));
+        addPreviewTab(pFrmVesselType);
+        pFrmVessel=new FrmVessel(sSample,tDateTime);
+        addPreviewTab(pFrmVessel);
 
         pFrmFrameDetails=new FrmFrameDetails();
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,

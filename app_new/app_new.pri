@@ -23,7 +23,8 @@ HEADERS += ./buttongroup.h \
     ./previewtab.h \
     ./reportinghook.h \
     ./treeitem.h \
-    ./treemodel.h
+    ./treemodel.h \
+    ./frmvessel.h
 SOURCES += ./buttongroup.cpp \
     ./custommsgbox.cpp \
     ./datemodel.cpp \
@@ -44,7 +45,8 @@ SOURCES += ./buttongroup.cpp \
     ./previewtab.cpp \
     ./reportinghook.cpp \
     ./treeitem.cpp \
-    ./treemodel.cpp
+    ./treemodel.cpp \
+    ./frmvessel.cpp
 FORMS += ./frmcell.ui \
     ./frmchangereasons.ui \
     ./frmconnect.ui \
@@ -54,5 +56,6 @@ FORMS += ./frmcell.ui \
     ./frmvesseltype.ui \
     ./login.ui \
     ./mainfrm.ui \
-    ./msgbox.ui
+    ./msgbox.ui \
+    ./frmvessel.ui
 RESOURCES += ./app_new.qrc

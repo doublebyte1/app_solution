@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Fri 6. May 12:19:56 2011
+** Created: Fri 6. May 15:58:31 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -298,6 +298,15 @@ public:
         FrmVesselType->setWindowTitle(QApplication::translate("FrmVesselType", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("FrmVesselType", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("FrmVesselType", "Choose cell vessel type:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        tableView->setToolTip(QApplication::translate("FrmVesselType", "Choose cell (or create new one)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tableView->setStatusTip(QApplication::translate("FrmVesselType", "Choose cell (or create new one)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        tableView->setWhatsThis(QApplication::translate("FrmVesselType", "In this widget we can choose a cell, or create a new one", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
 #ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("FrmVesselType", "Create new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

@@ -80,11 +80,13 @@ class GenericTab : public QWidget
     Q_OBJECT
 
     public:
-        GenericTab(const int index, Sample* inSample, DateModel* inTDateTime,
+        GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, 
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
         void                    setLbHead(QLabel* inLbHeader){lbHead=inLbHeader;}
+        const int               index()const {return m_index;}
+        const QString           title()const {return m_title;}
 
     public slots:
         void                    fillHeader(const QString str){lbHead->setText(str);}
@@ -109,10 +111,10 @@ class GenericTab : public QWidget
         virtual void            initModels()=0;
         virtual void            initMappers()=0;
         virtual void            initUI()=0;
-//        void                    showEvent ( QShowEvent * event );
         bool                    getDtId(const int mapIdx, int& id);
         void                    resizeToVisibleColumns ( QTableView* table );
-        int                     m_index;
+        const int               m_index;
+        const QString           m_title;
         DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
         Sample*                 m_sample;
         NullRelationalDelegate* nullDellegate;

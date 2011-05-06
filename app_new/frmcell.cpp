@@ -3,7 +3,7 @@
 #include "frmcell.h"
 
 FrmCell::FrmCell(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(2,inSample,inTDateTime,parent, flags){
+PreviewTab(2,inSample,inTDateTime,tr("Cell"),parent, flags){
 
     setupUi(this);
 
@@ -35,7 +35,6 @@ FrmCell::~FrmCell()
 
 void FrmCell::onShowFrameDetails()
 {
-
     if (!m_selectedIdx.isValid()){
         emit showError(tr("You must select one cell!"));
         return;

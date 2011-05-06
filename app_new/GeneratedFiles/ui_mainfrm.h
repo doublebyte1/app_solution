@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Fri 6. May 09:03:39 2011
+** Created: Fri 6. May 17:23:34 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -33,6 +33,7 @@ public:
     QAction *actionExit;
     QAction *actionAbout;
     QAction *actionSave;
+    QAction *actionAbout_Qt;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -51,6 +52,9 @@ public:
         MainWindow->setWindowIcon(icon);
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName(QString::fromUtf8("actionNew"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/empty.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionNew->setIcon(icon1);
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
         actionExit = new QAction(MainWindow);
@@ -59,6 +63,8 @@ public:
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionSave = new QAction(MainWindow);
         actionSave->setObjectName(QString::fromUtf8("actionSave"));
+        actionAbout_Qt = new QAction(MainWindow);
+        actionAbout_Qt->setObjectName(QString::fromUtf8("actionAbout_Qt"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -89,6 +95,7 @@ public:
         menuSampling_Operation->addSeparator();
         menuSampling_Operation->addAction(actionExit);
         menuHelp->addAction(actionAbout);
+        menuHelp->addAction(actionAbout_Qt);
 
         retranslateUi(MainWindow);
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
@@ -99,7 +106,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Medfisis 2-a", 0, QApplication::UnicodeUTF8));
+        MainWindow->setWindowTitle(QString());
         actionNew->setText(QApplication::translate("MainWindow", "New", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_STATUSTIP
         actionNew->setStatusTip(QApplication::translate("MainWindow", "New sampling operation", 0, QApplication::UnicodeUTF8));
@@ -124,7 +131,8 @@ public:
         actionExit->setWhatsThis(QApplication::translate("MainWindow", "Exits application", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionExit->setShortcut(QApplication::translate("MainWindow", "Ctrl+X", 0, QApplication::UnicodeUTF8));
-        actionAbout->setText(QApplication::translate("MainWindow", "About", 0, QApplication::UnicodeUTF8));
+        actionAbout->setText(QApplication::translate("MainWindow", "About this application", 0, QApplication::UnicodeUTF8));
+        actionAbout->setShortcut(QApplication::translate("MainWindow", "Ctrl+A", 0, QApplication::UnicodeUTF8));
         actionSave->setText(QApplication::translate("MainWindow", "Save", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_STATUSTIP
         actionSave->setStatusTip(QApplication::translate("MainWindow", "Save sampling operation", 0, QApplication::UnicodeUTF8));
@@ -133,6 +141,8 @@ public:
         actionSave->setWhatsThis(QApplication::translate("MainWindow", "Saves this sampling operation", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
+        actionAbout_Qt->setText(QApplication::translate("MainWindow", "About Qt", 0, QApplication::UnicodeUTF8));
+        actionAbout_Qt->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

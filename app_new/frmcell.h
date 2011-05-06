@@ -15,7 +15,7 @@
 //! Frm Cell Class
 /*!
 This class implements the widget that corresponds to the Sampled Cell definition tab; This tab is only
-applicable to logbook type frames;
+applicable to sampling type frames;
 */
 
 class FrmCell : public PreviewTab, public Ui::frmCell

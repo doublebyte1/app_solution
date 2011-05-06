@@ -1,8 +1,8 @@
 #include <QTest>
 #include "generictab.h"
 
-GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample) {
+GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, QWidget *parent, Qt::WFlags flags):
+QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample), m_title(inStrTitle) {
 
     nullDellegate=0;
 

@@ -22,7 +22,7 @@ class PreviewTab : public GenericTab
     Q_OBJECT
 
     public:
-        PreviewTab(const int index, Sample* inSample, DateModel* inTDateTime,
+        PreviewTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, 
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~PreviewTab();
 

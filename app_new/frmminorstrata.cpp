@@ -3,7 +3,7 @@
 #include "frmminorstrata.h"
 
 FrmMinorStrata::FrmMinorStrata(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(1,inSample,inTDateTime,parent, flags){
+PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"),parent, flags){
 
     setupUi(this);
 

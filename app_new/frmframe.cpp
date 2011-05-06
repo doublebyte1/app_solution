@@ -2,8 +2,8 @@
 #include "frmframe.h"
 #include "ModelInterface.h"
 
-FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-GenericTab(0,inSample,inTDateTime,parent,flags){
+FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime,QWidget *parent, Qt::WFlags flags):
+GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
 
     setupUi(this);
 

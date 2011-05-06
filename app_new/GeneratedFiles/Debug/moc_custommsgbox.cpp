@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'custommsgbox.h'
 **
-** Created: Fri 6. May 09:03:54 2011
+** Created: Fri 6. May 15:58:47 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
