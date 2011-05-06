@@ -157,7 +157,6 @@ bool FrmVesselType::onButtonClick(QAbstractButton* button)
             tSVesselTypes->select();
             QModelIndex idx=tSVesselTypes->index(tSVesselTypes->rowCount()-1,0);
             if (!idx.isValid()) return false;
-            //m_sample->vesselTypeId=idx.data().toInt();//TODO: assign the id on click
             mapper1->toLast();
         }
         return !bError;
@@ -276,12 +275,6 @@ void FrmVesselType::initUI()
 
     pushNext->setEnabled(false);
 }
-
-/*bool FrmVesselType::next()
-{
-    return false;
-}
-*/
 
 bool FrmVesselType::updateSample()
 {

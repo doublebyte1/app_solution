@@ -29,7 +29,6 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
     public slots:
 
     private slots:
-        //bool                                   next();
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
         bool                                   onButtonClick(QAbstractButton * button);

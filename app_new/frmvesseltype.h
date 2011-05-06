@@ -26,10 +26,6 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         FrmVesselType(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmVesselType();
 
-    public slots:
-        //void                                  onShowForm();
-        //bool                                  next();
-
     private slots:
         //! Create Record
         /*! Reimplemented from the PreviewTab base class

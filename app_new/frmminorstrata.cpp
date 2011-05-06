@@ -36,7 +36,7 @@ bool FrmMinorStrata::updateSample()
     //updating the sample structure
     QModelIndex idx=viewMinorStrata->index(m_selectedIdx.row(),0);
     if (!idx.isValid()) return false;
-    m_sample->cellId=idx.data().toInt();
+    m_sample->minorStrataId=idx.data().toInt();
     return true;
 }
 
@@ -48,33 +48,6 @@ bool FrmMinorStrata::getNextLabel(QString& strLabel)
     strLabel=idx.data().toString();
     return true;
 }
-
-/*
-bool FrmMinorStrata::next()
-{
-    //TODO: retrieve the selection model properly
-
-    if (!m_selectedIdx.isValid()){
-        emit showError(tr("You must select one Minor Strata!"));
-        return false;
-    }
-
-    QModelIndex idx1=m_selectedIdx;
-    QModelIndex idx2=viewMinorStrata->index(idx1.row(),1);//name of selected index
-    QModelIndex idx3=viewMinorStrata->index(idx1.row(),0);//id of selected index
-
-    if (!idx1.isValid() || !idx2.isValid() || !idx3.isValid())
-    {
-        emit showError(tr("Unable to retrieve information about selected index!"));
-        return false;
-    }
-
-    m_sample->minorStrataId=idx3.data().toInt();
-    emit forward(lbHeader->text() + tr("-> ") + idx2.data().toString());
-    return true;
-}
-*/
-
 
 void FrmMinorStrata::disableReasonCombo()
 {

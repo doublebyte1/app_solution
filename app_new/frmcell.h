@@ -29,7 +29,6 @@ class FrmCell : public PreviewTab, public Ui::frmCell
     signals:
 
     private slots:
-        //bool                                   next();
         //! Create Record
         /*! Reimplemented from the PreviewTab base class
         */
