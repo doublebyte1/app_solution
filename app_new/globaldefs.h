@@ -28,4 +28,10 @@ static const char *strDragged =
 static const char *strRoot = 
      QT_TRANSLATE_NOOP("frame", "root");
 
+static const char *strLogbook = 
+     QT_TRANSLATE_NOOP("frame", "Logbook");
+
+static const char *strSampling = 
+     QT_TRANSLATE_NOOP("frame", "Sampling");
+
 #endif// GLOBALDEFS_H

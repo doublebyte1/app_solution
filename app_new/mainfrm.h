@@ -39,8 +39,10 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
 
     private:
         void                    resetTabs();
-        void                    addPreviewTab(PreviewTab* tab);
+        void                    initPreviewTab(PreviewTab* tab);
         void                    initUi();
+        void                    updateIndexes(const int from);
+
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
@@ -54,7 +56,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QToolBar*               toolbar;
 
     private slots:
-        void                    enableTab(int idx, bool bOk);
+        void                    addTab(int idx, bool bOk);
         void                    tabChanged(int curIndex);
         void                    initTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
@@ -66,5 +68,6 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    statusClean(QString str);
         void                    displayError(QString strError, const bool bShowMsgBox);
         void                    cleanupMsgBoxes();
+        void                    rearrangeTabs(bool bLogBook);
 };
 #endif //MAINFRM_H

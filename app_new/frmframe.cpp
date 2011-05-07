@@ -1,6 +1,7 @@
 #include <QTest>
 #include "frmframe.h"
 #include "ModelInterface.h"
+#include "globaldefs.h"
 
 FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime,QWidget *parent, Qt::WFlags flags):
 GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
@@ -312,6 +313,38 @@ bool FrmFrame::next()
             return false;
         }
         m_sample->frameId=idx.data().toInt();
+
+        //check which type of frame we have...
+        QString strQuery=
+        tr("SELECT     dbo.Ref_Source.Name") +
+        tr(" FROM         dbo.FR_Frame INNER JOIN") +
+        tr("                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID") +
+        tr(" WHERE     (dbo.FR_Frame.ID = ?)");
+
+        QSqlQuery query;
+        query.prepare(strQuery);
+        query.bindValue(0,m_sample->frameId);
+        if (!query.exec()){
+            emit showError(query.lastError().text());
+            return false;
+        }
+        if (query.numRowsAffected()<1){
+            emit showError(tr("Could not determine the type of this frame!"));
+            return false;
+        }
+
+        query.first();
+        QString strSource=query.value(0).toString();
+        if (strSource.compare(qApp->translate("frame", strLogbook),Qt::CaseInsensitive)==0)
+            m_sample->bLogBook=true;
+        else if (strSource.compare(qApp->translate("frame", strSampling),Qt::CaseInsensitive)==0)
+            m_sample->bLogBook=false;
+        else{
+            emit showError(tr("The type of this frame is not usable! (not logbook and not sampling)!"));
+            return false;
+        }
+
+        emit isLogBook(m_sample->bLogBook);
 
         //TODO: Check if there are GLS?
         emit forward(cmbPrexistent->currentText());

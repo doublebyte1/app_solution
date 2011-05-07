@@ -79,10 +79,9 @@ void MainFrm::resetTabs()
         sSample=new Sample;
 }
 
-void MainFrm::addPreviewTab(PreviewTab* tab)
+void MainFrm::initPreviewTab(PreviewTab* tab)
 {
     vTabs.push_back(tab);
-    this->tabWidget->insertTab(tab->index(),tab, tab->title());
 }
 
 void MainFrm::initTabs()
@@ -93,17 +92,21 @@ void MainFrm::initTabs()
         resetTabs();
 
         pFrmFrame=new FrmFrame(sSample,tDateTime);
+
+         connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
+        SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
+
         vTabs.push_back(pFrmFrame);
         this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
 
         pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
-        addPreviewTab(pFrmMinorStrata);
+        initPreviewTab(pFrmMinorStrata);
         pFrmCell=new FrmCell(sSample,tDateTime);
-        addPreviewTab(pFrmCell);
+        initPreviewTab(pFrmCell);
         pFrmVesselType=new FrmVesselType(sSample,tDateTime);
-        addPreviewTab(pFrmVesselType);
+        initPreviewTab(pFrmVesselType);
         pFrmVessel=new FrmVessel(sSample,tDateTime);
-        addPreviewTab(pFrmVessel);
+        initPreviewTab(pFrmVessel);
 
         pFrmFrameDetails=new FrmFrameDetails();
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,
@@ -148,7 +151,7 @@ void MainFrm::initTabs()
              }
 
              connect(vTabs.at(i), SIGNAL(submitted(int,bool)), this,
-                SLOT(enableTab(int,bool)),Qt::UniqueConnection);
+                SLOT(addTab(int,bool)),Qt::UniqueConnection);
 
              if (i>0)
                  tabWidget->setTabEnabled(i,false);
@@ -159,10 +162,29 @@ void MainFrm::initTabs()
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
-void MainFrm::enableTab(int idx, bool bOk)
+void MainFrm::rearrangeTabs(bool bLogBook)
 {
-    if (idx<tabWidget->count()-1)
-        tabWidget->setTabEnabled(idx+1,bOk);
+    if (bLogBook)
+    {
+        vTabs.remove(2,2);
+        updateIndexes(2);
+    }
+}
+
+
+void MainFrm::updateIndexes(const int from)
+{
+     for (int i = from; i < vTabs.size(); ++i) {
+         vTabs.at(i)->setIndex(i);
+     }
+}
+
+
+void MainFrm::addTab(int idx, bool bOk)
+{
+    if (bOk)
+        this->tabWidget->insertTab(vTabs.size()
+        ,vTabs.at(idx+1), vTabs.at(idx+1)->title());
 }
 
 void MainFrm::tabChanged(int curIndex)

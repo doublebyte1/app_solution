@@ -18,11 +18,14 @@ This structure encapsulates the data that we want to pass around forms
 */
 
 struct Sample{
+    Sample(): frameId(-1), frameTimeId(-1), minorStrataId(-1), cellId(-1), vesselTypeId(-1), vesselId(-1){;}
+    bool        bLogBook;
     int         frameId;
     int         frameTimeId;
     int         minorStrataId;
     int         cellId;
     int         vesselTypeId;
+    int         vesselId;
 };
 
 #endif //SAMPLE_H
@@ -85,6 +88,7 @@ class GenericTab : public QWidget
         ~GenericTab();
 
         void                    setLbHead(QLabel* inLbHeader){lbHead=inLbHeader;}
+        void                    setIndex(const int index){m_index=index;}
         const int               index()const {return m_index;}
         const QString           title()const {return m_title;}
 
@@ -113,7 +117,7 @@ class GenericTab : public QWidget
         virtual void            initUI()=0;
         bool                    getDtId(const int mapIdx, int& id);
         void                    resizeToVisibleColumns ( QTableView* table );
-        const int               m_index;
+        int                     m_index;
         const QString           m_title;
         DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
         Sample*                 m_sample;

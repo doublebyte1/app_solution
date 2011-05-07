@@ -8,7 +8,7 @@ PreviewTab(2,inSample,inTDateTime,tr("Cell"),parent, flags){
     setupUi(this);
 
     connect(pushNext, SIGNAL(clicked()), this,
-    SLOT(goForward()));
+    SLOT(next()));
 
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));

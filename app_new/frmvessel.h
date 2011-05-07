@@ -82,11 +82,12 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   updateSample();
-//        void                                   initCellModel();
-//        void                                   initMapper1();
+        void                                   initVesselModel();
+        void                                   initMapper1();
 
-//        QSqlRelationalTableModel*              tSampCell;
-//        QSqlQueryModel*                        viewCell;
+        NullRelationalDelegate*                nullDelegate;
+        QSqlRelationalTableModel*              tAVessel;
+        QSqlQueryModel*                        viewVessel;
         QDataWidgetMapper*                     mapper1;
 };
 #endif //FRMVESSEL_H

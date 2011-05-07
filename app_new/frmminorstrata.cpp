@@ -14,6 +14,9 @@ PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"),parent, flags){
     mapperStartDt=0;
     mapperEndDt=0;
 
+    connect(pushNext, SIGNAL(clicked()), this,
+    SLOT(next()));
+
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
@@ -371,7 +374,13 @@ void FrmMinorStrata::initModels()
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
     viewMinorStrata->setHeaderData(3, Qt::Horizontal, tr("Closed"));
 }
+/*
+void FrmMinorStrata::next()
+{
 
+    return PreviewTab::next();
+}
+*/
 void FrmMinorStrata::initMappers()
 {
     if (mapper1!=0) delete mapper1;

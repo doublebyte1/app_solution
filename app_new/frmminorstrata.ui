@@ -393,22 +393,6 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>pushNext</sender>
-   <signal>clicked()</signal>
-   <receiver>frmminorstrata</receiver>
-   <slot>next()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>652</x>
-     <y>580</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>355</x>
-     <y>307</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
   <slot>showDetails()</slot>

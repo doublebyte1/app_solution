@@ -398,5 +398,6 @@
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
   <slot>previewRow(QModelIndex)</slot>
+  <slot>next()</slot>
  </slots>
 </ui>

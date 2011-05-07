@@ -14,6 +14,7 @@ HEADERS += ./buttongroup.h \
     ./frmframe.h \
     ./frmframedetails.h \
     ./frmminorstrata.h \
+    ./frmvessel.h \
     ./frmvesseltype.h \
     ./generictab.h \
     ./globaldefs.h \
@@ -23,8 +24,7 @@ HEADERS += ./buttongroup.h \
     ./previewtab.h \
     ./reportinghook.h \
     ./treeitem.h \
-    ./treemodel.h \
-    ./frmvessel.h
+    ./treemodel.h
 SOURCES += ./buttongroup.cpp \
     ./custommsgbox.cpp \
     ./datemodel.cpp \
@@ -36,6 +36,7 @@ SOURCES += ./buttongroup.cpp \
     ./frmframe.cpp \
     ./frmframedetails.cpp \
     ./frmminorstrata.cpp \
+    ./frmvessel.cpp \
     ./frmvesseltype.cpp \
     ./generictab.cpp \
     ./login.cpp \
@@ -45,17 +46,16 @@ SOURCES += ./buttongroup.cpp \
     ./previewtab.cpp \
     ./reportinghook.cpp \
     ./treeitem.cpp \
-    ./treemodel.cpp \
-    ./frmvessel.cpp
+    ./treemodel.cpp
 FORMS += ./frmcell.ui \
     ./frmchangereasons.ui \
     ./frmconnect.ui \
     ./frmframe.ui \
     ./frmframedetails.ui \
     ./frmminorstrata.ui \
+    ./frmvessel.ui \
     ./frmvesseltype.ui \
     ./login.ui \
     ./mainfrm.ui \
-    ./msgbox.ui \
-    ./frmvessel.ui
+    ./msgbox.ui
 RESOURCES += ./app_new.qrc

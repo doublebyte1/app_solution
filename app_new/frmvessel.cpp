@@ -7,22 +7,17 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),parent, flags){
 
     setupUi(this);
 
-    connect(pushNext, SIGNAL(clicked()), this,
-    SLOT(goForward()));
-
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
     connect(toolButton, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));
 
-    /*
-    tSampCell=0;
-    viewCell=0;
+    tAVessel=0;
+    viewVessel=0;
     mapper1=0;
-    mapperStartDt=0;
-    mapperEndDt=0;
-*/
+    nullDelegate=0;
+
     initModels();
     initUI();
     initMappers();
@@ -30,10 +25,10 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),parent, flags){
 
 FrmVessel::~FrmVessel()
 {
-    /*
-    if (tSampCell!=0) delete tSampCell;
-    if (viewCell!=0) delete viewCell;
-    */
+    if (tAVessel!=0) delete tAVessel;
+    if (viewVessel!=0) delete viewVessel;
+    if (nullDelegate!=0) delete nullDelegate;
+    if (mapper1!=0) delete mapper1;
 }
 
 void FrmVessel::onShowFrameDetails()
@@ -137,16 +132,13 @@ tr("ORDER BY dbo.Sampled_Cell.ID DESC")
 }
 
 void FrmVessel::initModels()
-{/*
-    if (viewCell!=0) delete viewCell;
-    viewCell = new QSqlQueryModel;
-    viewCell->setHeaderData(0, Qt::Horizontal, tr("Site"));
-    viewCell->setHeaderData(1, Qt::Horizontal, tr("Date"));
-    viewCell->setHeaderData(2, Qt::Horizontal, tr("Time"));*/
+{
+    if (viewVessel!=0) delete viewVessel;
+    viewVessel = new QSqlQueryModel;
 }
 
 void FrmVessel::initUI()
-{/*
+{
     setHeader();
 
     connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
@@ -156,20 +148,8 @@ void FrmVessel::initUI()
 
     this->groupDetails->setVisible(false);
 
-    customDtStart->setIsUTC(false);
-    customDtStart->setIsAuto(false);
-
-    customDtEnd->setIsUTC(false);
-    customDtEnd->setIsAuto(false);
-
-    connect(customDtStart, SIGNAL(isDateTime(bool,int)), m_tDateTime,
-        SLOT(amendDateTimeType(bool,int)));
-
-    connect(customDtEnd, SIGNAL(isDateTime(bool,int)), m_tDateTime,
-        SLOT(amendDateTimeType(bool,int)));
-
     setPreviewTable(tableView);
-    tableView->setModel(viewCell);
+    tableView->setModel(viewVessel);
     tableView->setAlternatingRowColors(true);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView->verticalHeader()->hide();
@@ -179,56 +159,56 @@ void FrmVessel::initUI()
     tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
 
     //initializing the container for the readonly!S
-    m_lWidgets << cmbLS;
-    m_lWidgets << customDtStart;
-    m_lWidgets << customDtEnd;
+    m_lWidgets << cmbVessel;
+    m_lWidgets << cmbStatus;
+    m_lWidgets << cmbOrigin;
     m_lWidgets << textComments;
-    m_lWidgets << spinNE;
-    m_lWidgets << spinAE;
-    m_lWidgets << spinIE;
-    m_lWidgets << spinOE;
+    m_lWidgets << spinET;
+    m_lWidgets << spinCT;
 
-    pushNext->setEnabled(false);*/
+    pushNext->setEnabled(false);
 }
-/*
+
 void FrmVessel::initMapper1()
 {
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
-    mapper1->setModel(tSampCell);
+    mapper1->setModel(tAVessel);
 
     if (nullDellegate!=0) delete nullDellegate;
     QList<int> lOthers;
-    lOthers << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12;
+    lOthers << 2 << 3 << 4 << 5 << 6;
     QList<int> lText;
-    lText << 13;
+    lText << 7;
     nullDellegate=new NullRelationalDelegate(lOthers,lText);
     mapper1->setItemDelegate(nullDellegate);
 
-    cmbLS->setModel(tSampCell->relationModel(4));
-    cmbLS->setModelColumn(
-        tSampCell->relationModel(4)->fieldIndex(tr("Name")));
+    cmbVessel->setModel(tAVessel->relationModel(2));
+    cmbVessel->setModelColumn(
+        tAVessel->relationModel(2)->fieldIndex(tr("Name")));
 
-    mapper1->addMapping(cmbLS, 4);
+    cmbOrigin->setModel(tAVessel->relationModel(3));
+    cmbOrigin->setModelColumn(
+        tAVessel->relationModel(3)->fieldIndex(tr("Name")));
 
-    mapper1->addMapping(spinNE, 5);
-    mapper1->addMapping(spinNC, 6);
-    mapper1->addMapping(spinAE, 7);
-    mapper1->addMapping(spinAC, 8);
-    mapper1->addMapping(spinIE, 9);
-    mapper1->addMapping(spinIC, 10);
-    mapper1->addMapping(spinOE, 11);
-    mapper1->addMapping(spinOC, 12);
+    cmbStatus->setModel(tAVessel->relationModel(4));
+    cmbStatus->setModelColumn(
+        tAVessel->relationModel(4)->fieldIndex(tr("Name")));
 
-    mapper1->addMapping(textComments,13);
+    mapper1->addMapping(cmbVessel, 2);
+    mapper1->addMapping(cmbOrigin, 3);
+    mapper1->addMapping(cmbStatus, 4);
+
+    //mapper1->addMapping(spinET, 5);
+    //mapper1->addMapping(spinCT, 6);
+
+    mapper1->addMapping(textComments,7);
 }
-*/
+
 void FrmVessel::initMappers()
 {/*
-    if (mapperStartDt!=0) delete mapperStartDt;
-    if (mapperEndDt!=0) delete mapperEndDt;
 
     mapperStartDt= new QDataWidgetMapper(this);
     mapperStartDt->setModel(m_tDateTime);
@@ -244,9 +224,9 @@ void FrmVessel::initMappers()
 }
 
 void FrmVessel::beforeShow()
-{/*
-    initCellModel();
-    this->groupDetails->setVisible(false);*/
+{
+    this->groupDetails->setVisible(false);
+    initVesselModel();
 }
 
 bool FrmVessel::onButtonClick(QAbstractButton* button)
@@ -349,7 +329,7 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
 }
 
 void FrmVessel::uI4NewRecord()
-{/*
+{
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -358,56 +338,28 @@ void FrmVessel::uI4NewRecord()
 
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
-    customDtStart->setIsDateTime(true,true,true);
-    customDtStart->checkBox()->click();//the click is necessary to imit the relavant signal
-
-    customDtEnd->setIsDateTime(true,true,true);
-    customDtEnd->checkBox()->click();//the click is necessary to imit the relevant signal
-
     textComments->clear();
+    cmbOrigin->setCurrentIndex(-1);
+    cmbStatus->setCurrentIndex(-1);
+    cmbVessel->setCurrentIndex(-1);
 
-    toolButton->setEnabled(false);*/
+    toolButton->setEnabled(false);
 }
 
 void FrmVessel::createRecord()
-{/*
+{
     genericCreateRecord();
 
     mapper1->toLast();
 
-    if(!m_tDateTime) return;
-    m_tDateTime->select();
+    //TODO: insert the other models
+    /*
+    while(tAVessel->canFetchMore())
+        tAVessel->fetchMore();
 
-    bool bDate, bTime;
-    customDtStart->getIsDateTime(bDate,bTime);
-    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
-        emit showError(tr("Could not insert start date!"));
-        return;
-    }
-    customDtEnd->getIsDateTime(bDate,bTime);
-    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
-        emit showError(tr("Could not insert start date!"));
-        return;
-    }
-
-    customDtStart->setModelRow(m_tDateTime->rowCount()-2);
-    customDtEnd->setModelRow(m_tDateTime->rowCount()-1);
-
-    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
-    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
-
-    //IMPORTANT: do this after setting the model row!
-    connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtStart,
-        SLOT(adjustDateTime(QModelIndex,QVariant)),Qt::UniqueConnection);
-
-    connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtEnd,
-        SLOT(adjustDateTime(QModelIndex,QVariant)),Qt::UniqueConnection);
-
-    while(tSampCell->canFetchMore())
-        tSampCell->fetchMore();
-
-    QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,1);
-    tSampCell->setData(idx,m_sample->minorStrataId);//id_minor_strata
+    QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,1);
+    tAVessel->setData(idx,m_sample->minorStrataId);//id_minor_strata
+    */
 
     uI4NewRecord();//init UI*/
 }
@@ -427,37 +379,77 @@ void FrmVessel::initCellModel()
     setPreviewModel(tSampCell);
 }
 */
+
+void FrmVessel::initVesselModel()
+{
+    if (tAVessel!=0) delete tAVessel;
+
+    tAVessel=new QSqlRelationalTableModel();
+    tAVessel->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Abstract_Sampled_Vessels"),
+        QSqlDriver::TableName));
+    tAVessel->setRelation(2, QSqlRelation(tr("Ref_Vessels"), tr("VesselID"), tr("Name")));
+    tAVessel->setRelation(3, QSqlRelation(tr("Ref_Sample_Origin"), tr("id_sample_origin"), tr("Name")));
+    tAVessel->setRelation(4, QSqlRelation(tr("Ref_Sample_Status"), tr("id_sample_status"), tr("Name")));
+
+    tAVessel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tAVessel->select();
+
+    setPreviewModel(tAVessel);
+}
+
 void FrmVessel::filterModel4Combo()
-{/*
+{
     QString strQuery =
-tr("SELECT     dbo.FR_GLS2ALS.id_abstract_landingsite AS ls, dbo.Ref_Minor_Strata.id_gls, dbo.FR_GLS2ALS.id_gls AS Expr1") +
-tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
-tr("                      dbo.FR_Time ON dbo.Ref_Minor_Strata.id_frame_time = dbo.FR_Time.ID INNER JOIN") +
-tr("                      dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID INNER JOIN") +
-tr("                      dbo.FR_Sub_Frame ON dbo.FR_Frame.ID = dbo.FR_Sub_Frame.id_frame INNER JOIN") +
-tr("                      dbo.FR_GLS2ALS ON dbo.FR_Sub_Frame.ID = dbo.FR_GLS2ALS.id_sub_frame AND dbo.Ref_Minor_Strata.id_gls = dbo.FR_GLS2ALS.id_gls") +
-tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
-;
+tr("SELECT     dbo.Ref_Vessels.VesselID") +
+tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
+tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID") +
+tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
+tr("                          (SELECT     ID") +
+tr("                            FROM          dbo.FR_Sub_Frame") +
+tr("                            WHERE      (Type =") +
+tr("                                                       (SELECT     ID") +
+tr("                                                         FROM          dbo.Ref_Frame") +
+tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.id_abstract_landingsite =") +
+tr("                          (SELECT     id_abstract_LandingSite") +
+tr("                            FROM          dbo.Sampled_Cell") +
+tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
+tr("                          (SELECT     VesselID") +
+tr("                            FROM          dbo.Changes_Temp_Vessel") +
+tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
+tr("                                                       (SELECT     ID") +
+tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
+tr("                                                         WHERE      (Name = 'outside')))))") +
+tr(" UNION") +
+tr(" SELECT     Ref_Vessels_1.VesselID") +
+tr(" FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN")+
+tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
+tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
+tr("                          (SELECT     VesselID")+
+tr("                            FROM          dbo.Changes_Temp_Vessel AS Changes_Temp_Vessel_1")+
+tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
+tr("                                                       (SELECT     id_abstract_LandingSite")+
+tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+
+tr("                                                         WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr(")))))")
+    ;
 
     QSqlQuery query;
     query.prepare(strQuery);
-    query.bindValue(0,m_sample->minorStrataId);
     if (!query.exec()){
-        emit showError(tr("Could not obtain filter for Landing Sites!"));
+        emit showError(tr("Could not obtain filter for Vessels!"));
         return;
     }
 
     QString strFilter(tr(""));
      while (query.next()) {
-        strFilter.append(tr("ID=") + query.value(0).toString());
+        strFilter.append(tr("VesselID=") + query.value(0).toString());
         strFilter.append(tr(" OR "));
      }
      if (!strFilter.isEmpty())
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
 
-    tSampCell->relationModel(4)->setFilter(strFilter);
-    //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
-    initMapper1();*/
+    tAVessel->relationModel(2)->setFilter(strFilter);
+    //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;*/
+    initMapper1();
 }
 
 bool FrmVessel::updateSample()

@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Fri 6. May 15:58:41 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
+** Created: Sat 7. May 18:11:53 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'frmframe.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.6.3. It"
+#error "This file was generated using the moc from 4.7.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,28 +20,32 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_FrmFrame[] = {
 
  // content:
-       4,       // revision
+       5,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      19,   10,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      10,    9,    9,    9, 0x0a,
-      23,    9,    9,    9, 0x08,
-      44,    9,    9,    9, 0x08,
-      70,    9,   65,    9, 0x08,
-      77,    9,    9,    9, 0x08,
+      35,    9,    9,    9, 0x0a,
+      48,    9,    9,    9, 0x08,
+      69,    9,    9,    9, 0x08,
+      95,    9,   90,    9, 0x08,
+     102,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrame[] = {
-    "FrmFrame\0\0onShowForm()\0onHideFrameDetails()\0"
+    "FrmFrame\0\0bLogBook\0isLogBook(bool)\0"
+    "onShowForm()\0onHideFrameDetails()\0"
     "onShowFrameDetails()\0bool\0next()\0"
     "apply()\0"
 };
@@ -77,16 +81,24 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: onShowForm(); break;
-        case 1: onHideFrameDetails(); break;
-        case 2: onShowFrameDetails(); break;
-        case 3: { bool _r = next();
+        case 0: isLogBook((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: onShowForm(); break;
+        case 2: onHideFrameDetails(); break;
+        case 3: onShowFrameDetails(); break;
+        case 4: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: apply(); break;
+        case 5: apply(); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
+}
+
+// SIGNAL 0
+void FrmFrame::isLogBook(bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

@@ -7,7 +7,7 @@ PreviewTab(3,inSample,inTDateTime,tr("Vessel Type"),parent, flags){
     setupUi(this);
 
     connect(pushNext, SIGNAL(clicked()), this,
-    SLOT(goForward()));
+    SLOT(next()));
 
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));

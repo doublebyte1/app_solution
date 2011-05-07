@@ -35,6 +35,9 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         bool                                   next();
         void                                   apply();
 
+    signals:
+        void                                   isLogBook(bool bLogBook);
+
     private:
         void                                   setReadOnly(const bool bRO){(void)bRO;}//does nothing
         void                                   setHeader(){}//does nothing

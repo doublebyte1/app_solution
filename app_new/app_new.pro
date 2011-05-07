@@ -27,8 +27,6 @@ OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(app_new.pri)
-
-
 # The application version
 VERSION = 2.0
 
