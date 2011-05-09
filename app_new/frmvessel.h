@@ -84,10 +84,17 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         bool                                   updateSample();
         void                                   initVesselModel();
         void                                   initMapper1();
+        bool                                   comitNonAbstractVessels(const bool bLogbook,
+                                                        int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels);
+        bool                                   comitCellVessels(int& id);
+        bool                                   comitStrataVessels(int& id);
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tAVessel;
+        QSqlTableModel                         *tCellVessels;
+        QSqlTableModel                         *tStrataVessels;
         QSqlQueryModel*                        viewVessel;
         QDataWidgetMapper*                     mapper1;
+        QDataWidgetMapper*                     mapper2;
 };
 #endif //FRMVESSEL_H

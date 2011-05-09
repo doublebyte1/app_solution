@@ -14,8 +14,11 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),parent, flags){
         SLOT(onShowFrameDetails()));
 
     tAVessel=0;
+    tCellVessels=0;
+    tStrataVessels=0;
     viewVessel=0;
     mapper1=0;
+    mapper2=0;
     nullDelegate=0;
 
     initModels();
@@ -29,6 +32,9 @@ FrmVessel::~FrmVessel()
     if (viewVessel!=0) delete viewVessel;
     if (nullDelegate!=0) delete nullDelegate;
     if (mapper1!=0) delete mapper1;
+    if (mapper2!=0) delete mapper2;
+    if (tCellVessels!=0) delete tCellVessels;
+    if (tStrataVessels!=0) delete tStrataVessels;
 }
 
 void FrmVessel::onShowFrameDetails()
@@ -135,6 +141,21 @@ void FrmVessel::initModels()
 {
     if (viewVessel!=0) delete viewVessel;
     viewVessel = new QSqlQueryModel;
+
+    if (tCellVessels!=0) delete tCellVessels;
+
+     tCellVessels = new QSqlTableModel;
+     tCellVessels->setTable(tr("Sampled_Cell_Vessels"));
+     tCellVessels->setEditStrategy(QSqlTableModel::OnManualSubmit);
+     tCellVessels->select();
+
+    if (tStrataVessels!=0) delete tStrataVessels;
+
+     tStrataVessels = new QSqlTableModel;
+     tStrataVessels->setTable(tr("Sampled_Strata_Vessels"));
+     tStrataVessels->setEditStrategy(QSqlTableModel::OnManualSubmit);
+     tStrataVessels->select();
+
 }
 
 void FrmVessel::initUI()
@@ -175,6 +196,8 @@ void FrmVessel::initMapper1()
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
+    if (tAVessel==0) return;
+
     mapper1->setModel(tAVessel);
 
     if (nullDellegate!=0) delete nullDellegate;
@@ -200,109 +223,175 @@ void FrmVessel::initMapper1()
     mapper1->addMapping(cmbVessel, 2);
     mapper1->addMapping(cmbOrigin, 3);
     mapper1->addMapping(cmbStatus, 4);
-
-    //mapper1->addMapping(spinET, 5);
-    //mapper1->addMapping(spinCT, 6);
-
     mapper1->addMapping(textComments,7);
 }
 
 void FrmVessel::initMappers()
-{/*
+{
+    if (m_sample->bLogBook)
+    {
 
-    mapperStartDt= new QDataWidgetMapper(this);
-    mapperStartDt->setModel(m_tDateTime);
-    mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+        if (mapper2!=0) delete mapper2;
+        mapper2= new QDataWidgetMapper(this);
+        mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+        mapper2->setModel(tCellVessels);
+        mapper2->addMapping(spinET, 2);
+        mapper2->addMapping(spinCT, 3);
 
-    mapperEndDt= new QDataWidgetMapper(this);
-    mapperEndDt->setModel(m_tDateTime);
-    mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());*/
+    }
 }
 
 void FrmVessel::beforeShow()
 {
     this->groupDetails->setVisible(false);
+    this->groupFT->setVisible(!m_sample->bLogBook);
     initVesselModel();
 }
 
+bool FrmVessel::comitNonAbstractVessels(const bool bLogbook, int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels)
+{
+    QSqlQuery query;
+
+    if (bLogbook)
+    {
+        query.prepare( tr("SELECT     ID FROM Sampled_Cell_Vessels WHERE id_cell_vessel_types=") +
+                       tr(" (SELECT ID FROM         Ref_Vessel_Types") +
+                       tr(" WHERE     (Name = 'n/a'))") );
+
+        if (!query.exec() || query.numRowsAffected()!=1){
+            emit showError(tr("Could not create a non abstract record for this vessel (logbook)!"));
+            return false;
+        }
+        query.first();
+        id_Sampled_Cell_Vessels=query.value(0).toInt();
+        return comitStrataVessels(id_Sampled_Strata_Vessels);
+    }else{
+        query.prepare( tr("SELECT     ID FROM Sampled_Strata_Vessels WHERE id_minor_strata=") +
+                       tr("( SELECT ID FROM         Ref_Minor_Strata") +
+                       tr(" WHERE     (Name = 'n/a') )") );
+
+        if (!query.exec() || query.numRowsAffected()!=1){
+            emit showError(tr("Could not create a non abstract record for this vessel (sampled)!"));
+            return false;
+        }
+        query.first();
+        id_Sampled_Strata_Vessels=query.value(0).toInt();
+        return comitCellVessels(id_Sampled_Cell_Vessels);
+    }
+
+    return true;
+}
+
+bool FrmVessel::comitCellVessels(int& id)
+{
+    while(tCellVessels->canFetchMore())
+        tCellVessels->fetchMore();
+
+    //We dont need to introduce a record here, cause it has been done with the map
+    QModelIndex idx=tCellVessels->index(tCellVessels->rowCount()-1,1);
+    if (!idx.isValid()) return false;
+    tCellVessels->setData(idx,m_sample->vesselTypeId);
+
+    //submit
+    if (!mapper2->submit()) return false;
+    if (!tCellVessels->submitAll()) return false;
+
+    //and get the id
+    idx=tCellVessels->index(tCellVessels->rowCount()-1,0);
+    if (!idx.isValid()) return false;
+    id=idx.data().toInt();
+
+    return true;
+}
+
+bool FrmVessel::comitStrataVessels(int& id)
+{
+    insertRecordIntoModel(tStrataVessels);
+
+    //while(tStrataVessels->canFetchMore())
+        //tStrataVessels->fetchMore();
+
+    QModelIndex idx=tStrataVessels->index(tStrataVessels->rowCount()-1,1);
+    if (!idx.isValid()) return false;
+    tStrataVessels->setData(idx,m_sample->minorStrataId);
+
+    if (!tStrataVessels->submitAll()) return false;
+
+    idx=tStrataVessels->index(tStrataVessels->rowCount()-1,0);
+    id=idx.data().toInt();
+
+    return true;
+}
+
 bool FrmVessel::onButtonClick(QAbstractButton* button)
-{/*
+{
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
         this->groupDetails->hide();
-        this->tSampCell->revertAll();
+        this->tAVessel->revertAll();
+        if (tCellVessels!=0) tCellVessels->revertAll();
         return true;
 
     } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
 
         bool bError=false;
 
-        //First insert the dates...
-        if (!mapperStartDt->submit() 
-            || !mapperEndDt->submit()){
-            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                emit showError(m_tDateTime->lastError().text());
-            else
-                emit showError(tr("Could not submit mapper!"));
-            bError=true;
-        }
-        else{
-            if (!m_tDateTime->submitAll()){
-                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                    emit showError(m_tDateTime->lastError().text());
-                else
-                    emit showError(tr("Could not write DateTime in the database!"));
+        if (mapper1->submit()){
 
+            //setting the vessel source
+            QSqlQuery query;
+            query.prepare( tr("SELECT     ID") +
+                           tr(" FROM         dbo.Ref_Source") +
+                           tr(" WHERE     (Name = :name)") );
+            query.bindValue(0,qApp->translate("frame", (m_sample->bLogBook? strLogbook: strSampling) ));
+
+            if (!query.exec() || query.numRowsAffected()!=1){
+                emit showError(tr("Could not obtain filter for Vessels!"));
+                return false;
+            }
+            query.first();
+
+            while(tAVessel->canFetchMore())
+                tAVessel->fetchMore();
+
+            QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,1);
+            if (!idx.isValid()){
+                emit showError(tr("Could not create a record for this vessel!"));
+                return false;
+            }
+
+            tAVessel->setData(idx,query.value(0).toInt());
+
+            //TODO: comit the other mapper and the other two models
+            int id_cell, id_strata;
+            if (!comitNonAbstractVessels(m_sample->bLogBook,id_cell,id_strata))
+            {
+                if (tCellVessels->lastError().type()!=QSqlError::NoError)
+                    emit showError(tCellVessels->lastError().text());
+                else if (tStrataVessels->lastError().type()!=QSqlError::NoError)
+                    emit showError(tStrataVessels->lastError().text());
                 bError=true;
+            }else{
+
+                QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,5);
+                if (!idx.isValid()) return false;
+                tAVessel->setData(idx,id_cell);
+                idx=tAVessel->index(tAVessel->rowCount()-1,6);
+                if (!idx.isValid()) return false;
+                tAVessel->setData(idx,id_strata);
+
+                bError=!
+                    tAVessel->submitAll();
+                if (bError){
+                    if (tAVessel->lastError().type()!=QSqlError::NoError)
+                        emit showError(tAVessel->lastError().text());
+                    else
+                        emit showError(tr("Could not write cell in the database!"));
+                }mapper1->toLast();
+
             }
         }
 
-        while(m_tDateTime->canFetchMore())
-            m_tDateTime->fetchMore();
-
-        int startIdx=m_tDateTime->rowCount()-2;
-        int endIdx=m_tDateTime->rowCount()-1;
-
-        mapperStartDt->setCurrentIndex(startIdx);
-        mapperEndDt->setCurrentIndex(endIdx);
-
-        if (bError) {
-            emit showError(tr("Could not create dates in the database!"));
-        }else{
-
-            int idStart;
-            if (getDtId(startIdx,idStart)){
-                QModelIndex idxStart=tSampCell->index(tSampCell->rowCount()-1,2);
-                if (idxStart.isValid()){
-                    tSampCell->setData(idxStart,idStart);
-                }else bError=true;
-            }else bError=true;
-
-            int idEnd;
-            if (getDtId(endIdx,idEnd)){
-                QModelIndex idxEnd=tSampCell->index(tSampCell->rowCount()-1,3);
-                if (idxEnd.isValid()){
-                    tSampCell->setData(idxEnd,idEnd);
-                }else bError=true;
-            }else bError=true;
-
-            if (!bError){
-                if (mapper1->submit()){
-                    bError=!
-                        tSampCell->submitAll();
-                    if (bError){
-                        if (tSampCell->lastError().type()!=QSqlError::NoError)
-                            emit showError(tSampCell->lastError().text());
-                        else
-                            emit showError(tr("Could not write cell in the database!"));
-                    }mapper1->toLast();
-                }else bError=true;
-            }
-        }
         button->setEnabled(bError);
 
         emit lockControls(!bError,m_lWidgets);
@@ -315,15 +404,15 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
         if (!bError){
             setPreviewQuery();
             tableView->selectRow(0);
-            tSampCell->select();
+            tAVessel->select();
             toolButton->setEnabled(true);
-            QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
+            QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,0);
             if (!idx.isValid()) return false;
-            m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
+            //m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
             mapper1->toLast();
         }
         return !bError;
-    }else return false;*/
+    }else return false;
 
     return false;
 }
@@ -339,9 +428,9 @@ void FrmVessel::uI4NewRecord()
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     textComments->clear();
-    cmbOrigin->setCurrentIndex(-1);
-    cmbStatus->setCurrentIndex(-1);
-    cmbVessel->setCurrentIndex(-1);
+    //cmbOrigin->setCurrentIndex(-1);
+    //cmbStatus->setCurrentIndex(-1);
+    //cmbVessel->setCurrentIndex(-1);
 
     toolButton->setEnabled(false);
 }
@@ -349,36 +438,18 @@ void FrmVessel::uI4NewRecord()
 void FrmVessel::createRecord()
 {
     genericCreateRecord();
-
     mapper1->toLast();
 
-    //TODO: insert the other models
-    /*
-    while(tAVessel->canFetchMore())
-        tAVessel->fetchMore();
+    if (!m_sample->bLogBook){
+        if (tCellVessels==0) return;
+        if (mapper2==0) return;
 
-    QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,1);
-    tAVessel->setData(idx,m_sample->minorStrataId);//id_minor_strata
-    */
+        insertRecordIntoModel(tCellVessels);
+        mapper2->toLast();
+    }
 
     uI4NewRecord();//init UI*/
 }
-/*
-void FrmVessel::initCellModel()
-{
-    if (tSampCell!=0) delete tSampCell;
-
-    tSampCell=new QSqlRelationalTableModel();
-    tSampCell->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Cell"),
-        QSqlDriver::TableName));
-    tSampCell->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
-    tSampCell->relationModel(4)->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tSampCell->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tSampCell->select();
-
-    setPreviewModel(tSampCell);
-}
-*/
 
 void FrmVessel::initVesselModel()
 {
@@ -388,8 +459,8 @@ void FrmVessel::initVesselModel()
     tAVessel->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Abstract_Sampled_Vessels"),
         QSqlDriver::TableName));
     tAVessel->setRelation(2, QSqlRelation(tr("Ref_Vessels"), tr("VesselID"), tr("Name")));
-    tAVessel->setRelation(3, QSqlRelation(tr("Ref_Sample_Origin"), tr("id_sample_origin"), tr("Name")));
-    tAVessel->setRelation(4, QSqlRelation(tr("Ref_Sample_Status"), tr("id_sample_status"), tr("Name")));
+    tAVessel->setRelation(3, QSqlRelation(tr("Ref_Sample_Origin"), tr("ID"), tr("Name")));
+    tAVessel->setRelation(4, QSqlRelation(tr("Ref_Sample_Status"), tr("ID"), tr("Name")));
 
     tAVessel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tAVessel->select();
@@ -399,56 +470,59 @@ void FrmVessel::initVesselModel()
 
 void FrmVessel::filterModel4Combo()
 {
-    QString strQuery =
-tr("SELECT     dbo.Ref_Vessels.VesselID") +
-tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
-tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID") +
-tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
-tr("                          (SELECT     ID") +
-tr("                            FROM          dbo.FR_Sub_Frame") +
-tr("                            WHERE      (Type =") +
-tr("                                                       (SELECT     ID") +
-tr("                                                         FROM          dbo.Ref_Frame") +
-tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.id_abstract_landingsite =") +
-tr("                          (SELECT     id_abstract_LandingSite") +
-tr("                            FROM          dbo.Sampled_Cell") +
-tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
-tr("                          (SELECT     VesselID") +
-tr("                            FROM          dbo.Changes_Temp_Vessel") +
-tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
-tr("                                                       (SELECT     ID") +
-tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
-tr("                                                         WHERE      (Name = 'outside')))))") +
-tr(" UNION") +
-tr(" SELECT     Ref_Vessels_1.VesselID") +
-tr(" FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN")+
-tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
-tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
-tr("                          (SELECT     VesselID")+
-tr("                            FROM          dbo.Changes_Temp_Vessel AS Changes_Temp_Vessel_1")+
-tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
-tr("                                                       (SELECT     id_abstract_LandingSite")+
-tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+
-tr("                                                         WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr(")))))")
-    ;
+    if (!m_sample->bLogBook){
 
-    QSqlQuery query;
-    query.prepare(strQuery);
-    if (!query.exec()){
-        emit showError(tr("Could not obtain filter for Vessels!"));
-        return;
+            QString strQuery =
+        tr("SELECT     dbo.Ref_Vessels.VesselID") +
+        tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
+        tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID") +
+        tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
+        tr("                          (SELECT     ID") +
+        tr("                            FROM          dbo.FR_Sub_Frame") +
+        tr("                            WHERE      (Type =") +
+        tr("                                                       (SELECT     ID") +
+        tr("                                                         FROM          dbo.Ref_Frame") +
+        tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.id_abstract_landingsite =") +
+        tr("                          (SELECT     id_abstract_LandingSite") +
+        tr("                            FROM          dbo.Sampled_Cell") +
+        tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
+        tr("                          (SELECT     VesselID") +
+        tr("                            FROM          dbo.Changes_Temp_Vessel") +
+        tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
+        tr("                                                       (SELECT     ID") +
+        tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
+        tr("                                                         WHERE      (Name = 'outside')))))") +
+        tr(" UNION") +
+        tr(" SELECT     Ref_Vessels_1.VesselID") +
+        tr(" FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN")+
+        tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
+        tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
+        tr("                          (SELECT     VesselID")+
+        tr("                            FROM          dbo.Changes_Temp_Vessel AS Changes_Temp_Vessel_1")+
+        tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
+        tr("                                                       (SELECT     id_abstract_LandingSite")+
+        tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+
+        tr("                                                         WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr(")))))")
+            ;
+
+            QSqlQuery query;
+            query.prepare(strQuery);
+            if (!query.exec()){
+                emit showError(tr("Could not obtain filter for Vessels!"));
+                return;
+            }
+
+            QString strFilter(tr(""));
+             while (query.next()) {
+                strFilter.append(tr("VesselID=") + query.value(0).toString());
+                strFilter.append(tr(" OR "));
+             }
+             if (!strFilter.isEmpty())
+                 strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+
+            tAVessel->relationModel(2)->setFilter(strFilter);
     }
-
-    QString strFilter(tr(""));
-     while (query.next()) {
-        strFilter.append(tr("VesselID=") + query.value(0).toString());
-        strFilter.append(tr(" OR "));
-     }
-     if (!strFilter.isEmpty())
-         strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
-
-    tAVessel->relationModel(2)->setFilter(strFilter);
-    //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;*/
+        //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
     initMapper1();
 }
 

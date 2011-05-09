@@ -26,6 +26,8 @@ class PreviewTab : public GenericTab
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~PreviewTab();
 
+        void                                  insertRecordIntoModel(QSqlTableModel* m);
+
     protected:
     //! A pure virtual member.
     /*! In this function we set the query that displays the records on the preview container;

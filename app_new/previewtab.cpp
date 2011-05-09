@@ -66,7 +66,7 @@ void PreviewTab::genericCreateRecord()
 
     if (m_tDateTime==0) return ;
     if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
-
+/*
     while(m_model->canFetchMore())
         m_model->fetchMore();
 
@@ -78,4 +78,19 @@ void PreviewTab::genericCreateRecord()
         m_model->revertAll();
 
     m_model->insertRow(m_model->rowCount());
+*/
+    insertRecordIntoModel(m_model);
+}
+
+void PreviewTab::insertRecordIntoModel(QSqlTableModel* m)
+{
+    while(m->canFetchMore())
+        m->fetchMore();
+
+    //Check for uncomitted changes
+    QModelIndex idx=m->index(m->rowCount()-1,0);
+    if (idx.isValid() && m->isDirty(idx))
+        m->revertAll();
+
+    m->insertRow(m->rowCount());
 }

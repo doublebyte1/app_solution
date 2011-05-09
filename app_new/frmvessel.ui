@@ -333,8 +333,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>frmVessel</receiver>
+   <slot>onButtonClick(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
+  <slot>onButtonClick(QAbstractButton*)</slot>
  </slots>
 </ui>

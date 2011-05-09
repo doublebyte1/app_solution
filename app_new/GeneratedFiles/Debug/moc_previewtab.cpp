@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Sat 7. May 12:53:22 2011
+** Created: Mon 9. May 11:12:25 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

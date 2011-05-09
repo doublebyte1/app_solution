@@ -51,6 +51,8 @@ void MainFrm::initUi()
 
 void MainFrm::resetTabs()
 {
+        tabWidget->disconnect();
+
         while (tabWidget->count()>0){
             this->tabWidget->removeTab(tabWidget->count()-1);
         }
@@ -177,6 +179,15 @@ void MainFrm::updateIndexes(const int from)
      for (int i = from; i < vTabs.size(); ++i) {
          vTabs.at(i)->setIndex(i);
      }
+
+     for (int i = from-1; i < vTabs.size()-1; ++i) {
+         connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+        SLOT(fillHeader(const QString)),Qt::UniqueConnection);
+
+         connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+        SLOT(onShowForm()),Qt::UniqueConnection);
+     }
+
 }
 
 
