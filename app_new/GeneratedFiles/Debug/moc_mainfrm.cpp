@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Sat 7. May 18:45:04 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+** Created: Tue 10. May 16:56:32 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mainfrm.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.7.0. It"
+#error "This file was generated using the moc from 4.6.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,10 +20,10 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_MainFrm[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -42,6 +42,7 @@ static const uint qt_meta_data_MainFrm[] = {
      340,  319,    8,    8, 0x08,
      367,    8,    8,    8, 0x08,
      394,  385,    8,    8, 0x08,
+     414,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -57,6 +58,7 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "statusClean(QString)\0strError,bShowMsgBox\0"
     "displayError(QString,bool)\0cleanupMsgBoxes()\0"
     "bLogBook\0rearrangeTabs(bool)\0"
+    "aboutThisProject()\0"
 };
 
 const QMetaObject MainFrm::staticMetaObject = {
@@ -101,9 +103,10 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 8: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 9: cleanupMsgBoxes(); break;
         case 10: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 11: aboutThisProject(); break;
         default: ;
         }
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
 }

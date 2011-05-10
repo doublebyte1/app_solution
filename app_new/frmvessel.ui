@@ -349,9 +349,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>frmVessel</receiver>
+   <slot>previewRow(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>previewRow(QModelIndex)</slot>
  </slots>
 </ui>

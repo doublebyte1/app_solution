@@ -10,7 +10,7 @@ message("You are running qmake on a generated .pro file. This may not work!")
 TEMPLATE = app
 TARGET = app_new
 DESTDIR = ../Debug
-QT += core gui sql xml xmlpatterns qtmain
+QT += core gui sql xml xmlpatterns qtmain webkit
 CONFIG += qtestlib debug
 DEFINES += QT_LARGEFILE_SUPPORT QT_XML_LIB QT_SQL_LIB QT_XMLPATTERNS_LIB
 INCLUDEPATH += ./GeneratedFiles \
@@ -27,8 +27,3 @@ OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(app_new.pri)
-# The application version
-VERSION = 2.0
-
-# Define the preprocessor macro to get the application version in our application.
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"

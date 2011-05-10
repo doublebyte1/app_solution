@@ -54,5 +54,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         QDataWidgetMapper*                     mapperEndDt;
         FrmFrameDetails::Mode                  m_curMode;
         bool                                   m_submitted;
+        bool                                   m_tabsDefined;
 };
 #endif //FRMFRAME_H

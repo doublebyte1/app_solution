@@ -8,6 +8,7 @@
 #include "frmcell.h"
 #include "frmvesseltype.h"
 #include "frmvessel.h"
+#include "frmprjpage.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -50,10 +51,12 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmCell                 *pFrmCell;
         FrmVesselType           *pFrmVesselType;
         FrmVessel               *pFrmVessel;
+        FrmPrjPage              *pFrmPrjPage;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
         QToolBar*               toolbar;
+        //bool                    m_bTabsDefined;
 
     private slots:
         void                    addTab(int idx, bool bOk);
@@ -69,5 +72,6 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    displayError(QString strError, const bool bShowMsgBox);
         void                    cleanupMsgBoxes();
         void                    rearrangeTabs(bool bLogBook);
+        void                    aboutThisProject();
 };
 #endif //MAINFRM_H

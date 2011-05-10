@@ -10,6 +10,7 @@ GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
 
     tRefFrame=0;
     tFrameTime=0;
+    m_tabsDefined=false;
 
     customDtStart->setIsDateTime(true,false,false);
     customDtStart->setIsUTC(false);
@@ -294,7 +295,11 @@ void FrmFrame::apply()
 
 bool FrmFrame::next()
 {
-    //We force a submitted record on this session
+    //We force a submitted record on this session, unless its coming here later...
+
+    if (m_tabsDefined)
+        return true;
+
     if (m_submitted){
 
         while(tFrameTime->canFetchMore())
@@ -347,6 +352,7 @@ bool FrmFrame::next()
         emit isLogBook(m_sample->bLogBook);
 
         //TODO: Check if there are GLS?
+        m_tabsDefined=true;
         emit forward(cmbPrexistent->currentText());
         return true;
     }

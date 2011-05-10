@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Mon 9. May 18:33:12 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Tue 10. May 16:41:26 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -34,6 +34,7 @@ public:
     QAction *actionAbout;
     QAction *actionSave;
     QAction *actionAbout_Qt;
+    QAction *actionAbout_this_project;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -65,6 +66,8 @@ public:
         actionSave->setObjectName(QString::fromUtf8("actionSave"));
         actionAbout_Qt = new QAction(MainWindow);
         actionAbout_Qt->setObjectName(QString::fromUtf8("actionAbout_Qt"));
+        actionAbout_this_project = new QAction(MainWindow);
+        actionAbout_this_project->setObjectName(QString::fromUtf8("actionAbout_this_project"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -95,6 +98,8 @@ public:
         menuSampling_Operation->addSeparator();
         menuSampling_Operation->addAction(actionExit);
         menuHelp->addAction(actionAbout);
+        menuHelp->addAction(actionAbout_this_project);
+        menuHelp->addSeparator();
         menuHelp->addAction(actionAbout_Qt);
 
         retranslateUi(MainWindow);
@@ -143,6 +148,8 @@ public:
         actionSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
         actionAbout_Qt->setText(QApplication::translate("MainWindow", "About Qt", 0, QApplication::UnicodeUTF8));
         actionAbout_Qt->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
+        actionAbout_this_project->setText(QApplication::translate("MainWindow", "About this project", 0, QApplication::UnicodeUTF8));
+        actionAbout_this_project->setShortcut(QApplication::translate("MainWindow", "Ctrl+P", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

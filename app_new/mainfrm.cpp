@@ -12,7 +12,9 @@ QMainWindow(parent, flags){
     sSample=0;
     pFrmVesselType=0;
     pFrmVessel=0;
+    pFrmPrjPage=0;
     toolbar=0;
+    //m_bTabsDefined=false;
 
     setupUi(this);
 
@@ -32,6 +34,7 @@ MainFrm::~MainFrm()
     if (sSample!=0) delete sSample;
     if (pFrmVesselType!=0) delete pFrmVesselType;
     if (pFrmVessel!=0) delete pFrmVessel;
+    if (pFrmPrjPage!=0) delete pFrmPrjPage;
     if (toolbar!=0) delete toolbar;
 }
 
@@ -43,10 +46,23 @@ void MainFrm::initUi()
      connect(actionAbout_Qt, SIGNAL(triggered()),qApp,
         SLOT(aboutQt () ),Qt::UniqueConnection);
 
+     connect(actionAbout_this_project, SIGNAL(triggered()),this,
+        SLOT(aboutThisProject () ),Qt::UniqueConnection);
+
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
     toolbar->addAction(this->actionNew);
+}
+
+void MainFrm::aboutThisProject()
+{
+    if (pFrmPrjPage==0)
+    {
+        pFrmPrjPage=new FrmPrjPage;
+    }
+    if (pFrmPrjPage->isVisible()==false)
+            pFrmPrjPage->show();
 }
 
 void MainFrm::resetTabs()
@@ -166,10 +182,12 @@ void MainFrm::initTabs()
 
 void MainFrm::rearrangeTabs(bool bLogBook)
 {
-    if (bLogBook)
+    //We only want to do this (the first time we press next, and therefore using this flag...)
+    if (bLogBook /*&& !m_bTabsDefined*/)
     {
         vTabs.remove(2,2);
         updateIndexes(2);
+        //m_bTabsDefined=true;
     }
 }
 

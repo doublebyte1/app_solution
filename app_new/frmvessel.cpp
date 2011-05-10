@@ -58,9 +58,9 @@ void FrmVessel::onShowFrameDetails()
 }
 
 void FrmVessel::previewRow(QModelIndex index)
-{/*
+{
     m_selectedIdx=index;//stores the index
-    emit submitted(this->m_index,true);
+    //emit submitted(this->m_index,true);
 
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
@@ -68,73 +68,65 @@ void FrmVessel::previewRow(QModelIndex index)
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->hide();
 
-    QModelIndex idx=viewCell->index(index.row(),0);
+    QModelIndex idx=viewVessel->index(index.row(),0);
     if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
+        emit showError (tr("Could not preview this vessel!"));
         return;
     }
 
     QString id=idx.data().toString();
 
-    tSampCell->setFilter(tr("Sampled_Cell.ID=")+id);
-    if (tSampCell->rowCount()!=1)
+    tAVessel->setFilter(tr("Abstract_Sampled_Vessels.ID=")+id);
+    if (tAVessel->rowCount()!=1)
         return;
 
     mapper1->toLast();
-
-    //Now fix the dates
-    idx=tSampCell->index(0,1);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
-        return;
-    }
-    idx=tSampCell->index(0,2);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
-        return;
-    }
-    QString strStartDt=idx.data().toString();
-
-    idx=tSampCell->index(0,3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
-        return;
-    }
-    QString strEndDt=idx.data().toString();
-
-    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
-
-    if (m_tDateTime->rowCount()!=2)
-        return;
-
-    //adjusting the display format of the dates on preview
-    QModelIndex idxDType=m_tDateTime->index(0,4);
-    if (!idxDType.isValid()) return;
-    customDtStart->adjustDateTime(idxDType,idxDType.data());
-    idxDType=m_tDateTime->index(1,4);
-    if (!idxDType.isValid()) return;
-    customDtEnd->adjustDateTime(idxDType,idxDType.data());
-
-    mapperEndDt->toLast();
-    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-    pushNext->setEnabled(true);*/
+    pushNext->setEnabled(true);
 }
 
 void FrmVessel::setPreviewQuery()
-{/*
-    viewCell->setQuery(
-tr("SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
-tr("                      F2.Date_Local, 103) AS [End Date] ") +
-tr("FROM         dbo.Sampled_Cell INNER JOIN") +
-tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
-tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
-tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
-tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(") ") +
-tr("ORDER BY dbo.Sampled_Cell.ID DESC")
-);
+{
+    if (m_sample==0) return;
+    QString strQuery;
+    int id;
+    if (m_sample->bLogBook){//logbook
+
+        strQuery=
+        tr("                SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name, dbo.Ref_Sample_Status.name AS Status") +
+        tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
+        tr("                      dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +
+        tr("                      dbo.Sampled_Strata_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Strata_Vessels = dbo.Sampled_Strata_Vessels.ID INNER JOIN") +
+        tr("                      dbo.Ref_Sample_Status ON dbo.Abstract_Sampled_Vessels.id_sample_status = dbo.Ref_Sample_Status.ID") +
+        tr("                      WHERE     (dbo.Sampled_Strata_Vessels.id_minor_strata = :id)") +
+        tr("                      ORDER BY dbo.Abstract_Sampled_Vessels.ID DESC")
+        ;
+        id=m_sample->minorStrataId;
+
+    } else{//sampling
+        strQuery=
+         tr("            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name, dbo.Ref_Sample_Status.name AS Status") +
+         tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
+         tr("                     dbo.Sampled_Cell_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels = dbo.Sampled_Cell_Vessels.ID INNER JOIN") +
+         tr("                     dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +
+         tr("                     dbo.Ref_Sample_Status ON dbo.Abstract_Sampled_Vessels.id_sample_status = dbo.Ref_Sample_Status.ID") +
+         tr("             WHERE     (dbo.Sampled_Cell_Vessels.id_cell_vessel_types = :id)") +
+         tr("                      ORDER BY dbo.Abstract_Sampled_Vessels.ID DESC")
+         ;
+        id=m_sample->vesselTypeId;
+    }
+
+    QSqlQuery query;
+    query.prepare( strQuery );
+    query.bindValue(0,id);
+    if (!query.exec()){
+        emit showError(tr("Could not obtain filter for Vessels!"));
+        return;
+    }
+
+    viewVessel->setQuery(query);
 
     tableView->hideColumn(0);
-    resizeToVisibleColumns(tableView);*/
+    resizeToVisibleColumns(tableView);
 }
 
 void FrmVessel::initModels()
