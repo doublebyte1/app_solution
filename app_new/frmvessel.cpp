@@ -379,7 +379,7 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
                         emit showError(tAVessel->lastError().text());
                     else
                         emit showError(tr("Could not write cell in the database!"));
-                }mapper1->toLast();
+                }//mapper1->toLast();
 
             }
         }
@@ -394,14 +394,11 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
         }
 
         if (!bError){
-            setPreviewQuery();
-            tableView->selectRow(0);
-            tAVessel->select();
+            bError=afterApply();
             toolButton->setEnabled(true);
-            QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,0);
-            if (!idx.isValid()) return false;
+            //QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,0);
+            //if (!idx.isValid()) return false;
             //m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
-            mapper1->toLast();
         }
         return !bError;
     }else return false;
@@ -462,9 +459,12 @@ void FrmVessel::initVesselModel()
 
 void FrmVessel::filterModel4Combo()
 {
+    QSqlQuery query;
+    QString strQuery;
+
     if (!m_sample->bLogBook){
 
-            QString strQuery =
+        strQuery =
         tr("SELECT     dbo.Ref_Vessels.VesselID") +
         tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
         tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID") +
@@ -497,23 +497,44 @@ void FrmVessel::filterModel4Combo()
         tr("                                                         WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr(")))))")
             ;
 
-            QSqlQuery query;
-            query.prepare(strQuery);
-            if (!query.exec()){
-                emit showError(tr("Could not obtain filter for Vessels!"));
-                return;
-            }
+    }else{
 
-            QString strFilter(tr(""));
-             while (query.next()) {
-                strFilter.append(tr("VesselID=") + query.value(0).toString());
-                strFilter.append(tr(" OR "));
-             }
-             if (!strFilter.isEmpty())
-                 strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
-
-            tAVessel->relationModel(2)->setFilter(strFilter);
+        strQuery =
+        tr("SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls") +
+        tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
+        tr("                      dbo.FR_GLS2ALS ON dbo.FR_ALS2Vessel.ID = dbo.FR_GLS2ALS.ID INNER JOIN") +
+        tr("                      dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 ON dbo.FR_ALS2Vessel.ID = FR_ALS2Vessel_1.ID INNER JOIN") +
+        tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID AND FR_ALS2Vessel_1.vesselID = dbo.Ref_Vessels.VesselID") +
+        tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
+        tr("                          (SELECT     ID") +
+        tr("                            FROM          dbo.FR_Sub_Frame") +
+        tr("                            WHERE      (Type =") +
+        tr("                                                       (SELECT     ID") +
+        tr("                                                         FROM          dbo.Ref_Frame") +
+        tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND") +
+        tr(" (dbo.FR_GLS2ALS.id_gls=") +
+        tr(" (SELECT     id_gls") +
+        tr(" FROM         dbo.Ref_Minor_Strata") +
+        tr(" WHERE     (ID = ")+ QVariant(m_sample->minorStrataId).toString() + tr(")))")
+         ;
     }
+
+    query.prepare(strQuery);
+    if (!query.exec()){
+        emit showError(tr("Could not obtain filter for Vessels!"));
+        return;
+    }
+
+    QString strFilter(tr(""));
+     while (query.next()) {
+        strFilter.append(tr("VesselID=") + query.value(0).toString());
+        strFilter.append(tr(" OR "));
+     }
+     if (!strFilter.isEmpty())
+         strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+
+    tAVessel->relationModel(2)->setFilter(strFilter);
+
         //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
     initMapper1();
 }

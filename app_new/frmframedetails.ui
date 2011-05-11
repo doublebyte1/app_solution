@@ -375,6 +375,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmbCloned</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>isClonedFromPreviousFrame(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>592</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>cancel()</slot>
@@ -383,5 +399,6 @@
   <slot>back()</slot>
   <slot>undo()</slot>
   <slot>verify()</slot>
+  <slot>slot1()</slot>
  </slots>
 </ui>

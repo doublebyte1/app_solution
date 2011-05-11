@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Tue 10. May 16:41:27 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Wed 11. May 13:06:52 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -74,7 +74,6 @@ public:
     QSpinBox *spinAC;
     QSpinBox *spinIC;
     QSpinBox *spinOC;
-    QLabel *label_6;
     QPlainTextEdit *textComments;
     QLabel *label_12;
     QHBoxLayout *horizontalLayout_6;
@@ -292,11 +291,6 @@ public:
 
         gridLayout->addLayout(horizontalLayout, 1, 2, 1, 1);
 
-        label_6 = new QLabel(groupDetails);
-        label_6->setObjectName(QString::fromUtf8("label_6"));
-
-        gridLayout->addWidget(label_6, 3, 2, 1, 1);
-
         textComments = new QPlainTextEdit(groupDetails);
         textComments->setObjectName(QString::fromUtf8("textComments"));
 
@@ -342,7 +336,6 @@ public:
 
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(cmbLS);
-        label_6->setBuddy(toolButton);
         label_12->setBuddy(textComments);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
@@ -412,7 +405,6 @@ public:
         label_10->setText(QApplication::translate("frmCell", "Vessels from Outside", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmCell", "Estimated", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("frmCell", "Calculated", 0, QApplication::UnicodeUTF8));
-        label_6->setText(QApplication::translate("frmCell", "Input Details", 0, QApplication::UnicodeUTF8));
         label_12->setText(QApplication::translate("frmCell", "Comments", 0, QApplication::UnicodeUTF8));
         pushPrevious->setText(QApplication::translate("frmCell", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmCell", "Next", 0, QApplication::UnicodeUTF8));

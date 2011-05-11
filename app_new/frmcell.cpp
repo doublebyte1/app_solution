@@ -124,8 +124,8 @@ tr("FROM         dbo.Sampled_Cell INNER JOIN") +
 tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
 tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
 tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
-tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(") ") +
-tr("ORDER BY dbo.Sampled_Cell.ID DESC")
+tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(")") +
+tr(" ORDER BY dbo.Sampled_Cell.ID DESC")
 );
 
     tableView->hideColumn(0);
@@ -319,7 +319,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
                             emit showError(tSampCell->lastError().text());
                         else
                             emit showError(tr("Could not write cell in the database!"));
-                    }mapper1->toLast();
+                    }//mapper1->toLast();
                 }else bError=true;
             }
         }
@@ -333,14 +333,14 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
         }
 
         if (!bError){
-            setPreviewQuery();
-            tableView->selectRow(0);
-            tSampCell->select();
-            toolButton->setEnabled(true);
-            QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
-            if (!idx.isValid()) return false;
-            m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
-            mapper1->toLast();
+            if (!afterApply()) bError=false;
+            else{
+                toolButton->setEnabled(true);
+                QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
+                if (!idx.isValid()) bError=false;
+                else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
+                //mapper1->toLast();
+            }
         }
         return !bError;
     }else return false;

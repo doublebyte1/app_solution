@@ -16,6 +16,9 @@ static const char *strMissing =
 static const char *strOther = 
      QT_TRANSLATE_NOOP("null_replacements", "other");
 
+static const char *strUnknown = 
+     QT_TRANSLATE_NOOP("null_replacements", "unknown");
+
 static const char *strOutside = 
      QT_TRANSLATE_NOOP("bin", "outside");
 

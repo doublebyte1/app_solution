@@ -12,6 +12,24 @@ PreviewTab::~PreviewTab()
     //if (m_model!=0) delete m_model;//N.b.: dont delete model here: it does not belong to this class!
 }
 
+bool PreviewTab::afterApply()
+{
+    setPreviewQuery();
+    m_table->selectRow(0);
+    m_model->select();
+
+    while(m_model->canFetchMore())
+        m_model->fetchMore();
+
+    QModelIndex cIdx=m_model->index(m_model->rowCount()-1,0);
+    if (!cIdx.isValid()) return false;
+
+    //selects the last index
+    m_table->selectionModel()->setCurrentIndex(cIdx,QItemSelectionModel::Select | QItemSelectionModel::Rows);
+
+    return true;
+}
+
 void PreviewTab::resizeEvent ( QResizeEvent * event )
 {
     (void) event;

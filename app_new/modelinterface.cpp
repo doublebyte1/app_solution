@@ -28,6 +28,32 @@ QObject(parent),treeModel(aTreeModel)
     initModels();
 }
 
+bool ModelInterface::buildSourceFilter(QString& strFilter)
+{
+    QSqlQuery query;
+        query.prepare(
+
+    tr("SELECT     ID, Name") +
+    tr(" FROM         dbo.Ref_Source") +
+    tr(" WHERE     (Name NOT IN") +
+    tr("                          (SELECT     internal_name") +
+    tr("                            FROM          dbo.GL_Null_Replacements))")
+
+);
+    if (!query.exec()) return false;
+    if (query.numRowsAffected()<1) return false;//It must *always* find an id
+
+    int ct=0;
+    while (query.next())
+    {
+        if (ct>0) strFilter.append(tr(" OR "));
+        strFilter.append(tr("ID=") + query.value(0).toString());
+        ct++;
+    }
+
+    return !strFilter.isEmpty();
+}
+
 void ModelInterface::initModels()
 {
     if (tRefFrame!=0) delete tRefFrame;
@@ -35,6 +61,12 @@ void ModelInterface::initModels()
     tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Frame"),
         QSqlDriver::TableName));
     tRefFrame->setRelation(5, QSqlRelation(tr("Ref_Source"), tr("ID"), tr("Name")));
+
+    //QString strFilter;
+    //buildSourceFilter(strFilter);
+    //tRefFrame->relationModel(5)->setFilter(strFilter);
+    //tRefFrame->relationModel(5)->select();
+
     filterTable(tRefFrame->relationModel(5));
 
     tRefFrame->setRelation(4, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
@@ -1168,5 +1200,6 @@ void filterTable(QSqlTableModel* table)
             + QObject::tr("' AND Name<>'") + qApp->translate("bin", strOutside)
             + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strMissing)
             + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strOther)
+            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strUnknown)
             + QObject::tr("'"));
 }

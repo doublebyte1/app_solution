@@ -105,6 +105,9 @@ private:
     bool                                   writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample);
     bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
     bool                                   getOutsideALS(int& id);
+
+    bool                                   buildSourceFilter(QString& strFilter);
+
     QVector<QSqlTableModel*>               vTables;
 
 };

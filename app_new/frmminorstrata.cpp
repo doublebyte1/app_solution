@@ -275,7 +275,7 @@ bool FrmMinorStrata::onButtonClick(QAbstractButton* button)
                             emit showError(tRefMinorStrata->lastError().text());
                         else
                             emit showError(tr("Could not write Minor Strata in the database!"));
-                    }mapper1->toLast();
+                    }//mapper1->toLast();
                 }else bError=true;
             }
         }
@@ -285,9 +285,7 @@ bool FrmMinorStrata::onButtonClick(QAbstractButton* button)
         buttonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
 
         if (!bError){
-            setPreviewQuery();
-            tableView->selectRow(0);
-            tRefMinorStrata->select();
+            bError=afterApply();
         }
         return !bError;
     } else return false;

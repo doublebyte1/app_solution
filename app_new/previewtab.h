@@ -64,6 +64,7 @@ class PreviewTab : public GenericTab
     */
         void                                  genericCreateRecord();
         void                                  resizeEvent ( QResizeEvent * event );
+        bool                                  afterApply();
         QList<QWidget*>                       m_lWidgets;
         QModelIndex                           m_selectedIdx;
 

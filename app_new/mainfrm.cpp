@@ -26,16 +26,17 @@ MainFrm::~MainFrm()
 {
     tabWidget->disconnect();
     vTabs.clear();
-    if (tDateTime!=0) delete tDateTime;
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
     if (pFrmCell!=0) delete pFrmCell;
-    if (sSample!=0) delete sSample;
     if (pFrmVesselType!=0) delete pFrmVesselType;
     if (pFrmVessel!=0) delete pFrmVessel;
     if (pFrmPrjPage!=0) delete pFrmPrjPage;
     if (toolbar!=0) delete toolbar;
+    //n.b.: delete these in the end, as they are used by the forms!
+    if (tDateTime!=0) delete tDateTime;
+    if (sSample!=0) delete sSample;
 }
 
 void MainFrm::initUi()
@@ -80,10 +81,10 @@ void MainFrm::resetTabs()
         if (pFrmFrameDetails!=0) {delete pFrmFrameDetails; pFrmFrameDetails=0;}
         if (pFrmMinorStrata!=0) {delete pFrmMinorStrata; pFrmMinorStrata=0;}
         if (pFrmFrame!=0) {delete pFrmFrame; pFrmFrame=0;}
-        if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
-        if (sSample!=0) {delete sSample; sSample=0;}
         if (pFrmVesselType!=0) {delete pFrmVesselType; pFrmVesselType=0;}
         if (pFrmVessel!=0) {delete pFrmVessel; pFrmVessel=0;}
+        if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
+        if (sSample!=0) {delete sSample; sSample=0;}
 
         //Dates
         tDateTime= new DateModel();
@@ -183,11 +184,10 @@ void MainFrm::initTabs()
 void MainFrm::rearrangeTabs(bool bLogBook)
 {
     //We only want to do this (the first time we press next, and therefore using this flag...)
-    if (bLogBook /*&& !m_bTabsDefined*/)
+    if (bLogBook)
     {
         vTabs.remove(2,2);
         updateIndexes(2);
-        //m_bTabsDefined=true;
     }
 }
 

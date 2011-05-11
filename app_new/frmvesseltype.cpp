@@ -105,7 +105,8 @@ void FrmVesselType::setPreviewQuery()
         tr("SELECT     dbo.Sampled_Cell_Vessel_Types.ID, dbo.Ref_Vessel_Types.Name")+
         tr(" FROM         dbo.Sampled_Cell_Vessel_Types INNER JOIN")+
         tr("                      dbo.Ref_Vessel_Types ON dbo.Sampled_Cell_Vessel_Types.id_vessel_type = dbo.Ref_Vessel_Types.ID")+
-        tr(" WHERE     (dbo.Sampled_Cell_Vessel_Types.id_cell =")+ QVariant(m_sample->cellId).toString() + tr(")")
+        tr(" WHERE     (dbo.Sampled_Cell_Vessel_Types.id_cell =")+ QVariant(m_sample->cellId).toString() + tr(")") +
+        tr(" ORDER BY dbo.Sampled_Cell_Vessel_Types.ID DESC")
     );
 
     tableView->hideColumn(0);
@@ -139,7 +140,7 @@ bool FrmVesselType::onButtonClick(QAbstractButton* button)
                             emit showError(tSVesselTypes->lastError().text());
                         else
                             emit showError(tr("Could not write vessel type in the database!"));
-                    }mapper1->toLast();
+                    }//mapper1->toLast();
         }else bError=true;
 
         button->setEnabled(bError);
@@ -152,12 +153,7 @@ bool FrmVesselType::onButtonClick(QAbstractButton* button)
         }
 
         if (!bError){
-            setPreviewQuery();
-            tableView->selectRow(0);
-            tSVesselTypes->select();
-            QModelIndex idx=tSVesselTypes->index(tSVesselTypes->rowCount()-1,0);
-            if (!idx.isValid()) return false;
-            mapper1->toLast();
+            bError=afterApply();
         }
         return !bError;
     }else return false;

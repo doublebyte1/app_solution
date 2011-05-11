@@ -297,8 +297,10 @@ bool FrmFrame::next()
 {
     //We force a submitted record on this session, unless its coming here later...
 
-    if (m_tabsDefined)
+    if (m_tabsDefined){
+        emit forward(cmbPrexistent->currentText());
         return true;
+    }
 
     if (m_submitted){
 
