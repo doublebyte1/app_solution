@@ -362,6 +362,7 @@ void FrmMinorStrata::initModels()
     tRefMinorStrata->setRelation(4, QSqlRelation(tr("Ref_Group_of_LandingSites"), tr("ID"), tr("Name")));
     tRefMinorStrata->setRelation(6, QSqlRelation(tr("Ref_No_Recording_Activities"), tr("ID"), tr("Name")));
     tRefMinorStrata->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tRefMinorStrata->sort(0,Qt::AscendingOrder);
     tRefMinorStrata->select();
 
     setPreviewModel(tRefMinorStrata);

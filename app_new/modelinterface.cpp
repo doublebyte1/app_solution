@@ -71,6 +71,8 @@ void ModelInterface::initModels()
 
     tRefFrame->setRelation(4, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
     tRefFrame->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tRefFrame->sort(0,Qt::AscendingOrder);
+
     tRefFrame->select();
     vTables << tRefFrame;
 
@@ -125,8 +127,9 @@ bool ModelInterface::filterTables()
 bool ModelInterface::initModel(QSqlTableModel* model, const QString strTable)
 {
     model->setTable(strTable);
-    model->select();
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->sort(0,Qt::AscendingOrder);
+    model->select();
 
     vTables << model;
 

@@ -81,6 +81,22 @@ void FrmVessel::previewRow(QModelIndex index)
         return;
 
     mapper1->toLast();
+
+    //id_Sampled_Cell_Vessels
+    idx=viewVessel->index(index.row(),3);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this vessel!"));
+        return;
+    }
+
+    id=idx.data().toString();
+
+    tCellVessels->setFilter(tr("ID=")+id);
+    if (tCellVessels->rowCount()!=1)
+        return;
+
+    mapper2->toLast();
+
     pushNext->setEnabled(true);
 }
 
@@ -104,7 +120,7 @@ void FrmVessel::setPreviewQuery()
 
     } else{//sampling
         strQuery=
-         tr("            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name, dbo.Ref_Sample_Status.name AS Status") +
+         tr("            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name, dbo.Ref_Sample_Status.name AS Status, id_Sampled_Cell_Vessels") +
          tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
          tr("                     dbo.Sampled_Cell_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels = dbo.Sampled_Cell_Vessels.ID INNER JOIN") +
          tr("                     dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +
@@ -126,6 +142,7 @@ void FrmVessel::setPreviewQuery()
     viewVessel->setQuery(query);
 
     tableView->hideColumn(0);
+    tableView->hideColumn(3);
     resizeToVisibleColumns(tableView);
 }
 
@@ -139,6 +156,7 @@ void FrmVessel::initModels()
      tCellVessels = new QSqlTableModel;
      tCellVessels->setTable(tr("Sampled_Cell_Vessels"));
      tCellVessels->setEditStrategy(QSqlTableModel::OnManualSubmit);
+     tCellVessels->sort(0,Qt::AscendingOrder);
      tCellVessels->select();
 
     if (tStrataVessels!=0) delete tStrataVessels;
@@ -146,6 +164,7 @@ void FrmVessel::initModels()
      tStrataVessels = new QSqlTableModel;
      tStrataVessels->setTable(tr("Sampled_Strata_Vessels"));
      tStrataVessels->setEditStrategy(QSqlTableModel::OnManualSubmit);
+     tStrataVessels->sort(0,Qt::AscendingOrder);
      tStrataVessels->select();
 
 }
@@ -220,17 +239,18 @@ void FrmVessel::initMapper1()
 
 void FrmVessel::initMappers()
 {
-    if (m_sample->bLogBook)
-    {
+    //if (!m_sample->bLogBook)
+    //{
 
-        if (mapper2!=0) delete mapper2;
-        mapper2= new QDataWidgetMapper(this);
-        mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-        mapper2->setModel(tCellVessels);
-        mapper2->addMapping(spinET, 2);
-        mapper2->addMapping(spinCT, 3);
+    if (mapper2!=0) delete mapper2;
+    mapper2= new QDataWidgetMapper(this);
+    mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    mapper2->setModel(tCellVessels);
+    mapper2->addMapping(spinET, 2);
+    mapper2->addMapping(spinCT, 3);
+    mapper2->toLast();
 
-    }
+    //}
 }
 
 void FrmVessel::beforeShow()
@@ -354,7 +374,6 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
 
             tAVessel->setData(idx,query.value(0).toInt());
 
-            //TODO: comit the other mapper and the other two models
             int id_cell, id_strata;
             if (!comitNonAbstractVessels(m_sample->bLogBook,id_cell,id_strata))
             {
@@ -381,6 +400,18 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
                         emit showError(tr("Could not write cell in the database!"));
                 }//mapper1->toLast();
 
+                /*
+                if (mapper2->submit()){
+                    bError=!tCellVessels->submitAll();
+                    if (bError){
+                        if (tCellVessels->lastError().type()!=QSqlError::NoError)
+                            emit showError(tCellVessels->lastError().text());
+                        else
+                            emit showError(tr("Could not write totals in the database!"));
+                    }
+                }else bError=true;
+                //TODO: rollback the other transactions?
+                */
             }
         }
 
@@ -450,8 +481,8 @@ void FrmVessel::initVesselModel()
     tAVessel->setRelation(2, QSqlRelation(tr("Ref_Vessels"), tr("VesselID"), tr("Name")));
     tAVessel->setRelation(3, QSqlRelation(tr("Ref_Sample_Origin"), tr("ID"), tr("Name")));
     tAVessel->setRelation(4, QSqlRelation(tr("Ref_Sample_Status"), tr("ID"), tr("Name")));
-
     tAVessel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tAVessel->sort(0,Qt::AscendingOrder);
     tAVessel->select();
 
     setPreviewModel(tAVessel);

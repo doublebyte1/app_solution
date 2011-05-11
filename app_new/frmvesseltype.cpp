@@ -300,6 +300,7 @@ void FrmVesselType::initVesselTypeModel()
     tSVesselTypes->setRelation(2, QSqlRelation(tr("Ref_Vessel_Types"), tr("ID"), tr("Name")));
     tSVesselTypes->relationModel(2)->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSVesselTypes->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tSVesselTypes->sort(0,Qt::AscendingOrder);
     tSVesselTypes->select();
 
     setPreviewModel(tSVesselTypes);

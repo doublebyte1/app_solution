@@ -336,6 +336,11 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
             if (!afterApply()) bError=false;
             else{
                 toolButton->setEnabled(true);
+
+                while(tSampCell->canFetchMore())
+                    tSampCell->fetchMore();
+
+                tSampCell->select();
                 QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
                 if (!idx.isValid()) bError=false;
                 else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
@@ -420,6 +425,7 @@ void FrmCell::initCellModel()
     tSampCell->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
     tSampCell->relationModel(4)->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSampCell->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tSampCell->sort(0,Qt::AscendingOrder);
     tSampCell->select();
 
     setPreviewModel(tSampCell);

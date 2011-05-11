@@ -65,6 +65,7 @@ void FrmFrame::initModels()
     tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Frame"),
         QSqlDriver::TableName));
     tRefFrame->setRelation(0, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
+    tRefFrame->sort(0,Qt::AscendingOrder);
     tRefFrame->select();
     filterTable(tRefFrame->relationModel(0));
 
@@ -73,6 +74,7 @@ void FrmFrame::initModels()
     tFrameTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Time"),
         QSqlDriver::TableName));
     tFrameTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tFrameTime->sort(0,Qt::AscendingOrder);
     tFrameTime->select();
 }
 
