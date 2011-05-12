@@ -110,7 +110,7 @@ void ModelInterface::initModels()
     initModel(tLinkGLS2LS,tr("FR_GLS2ALS"));
     initModel(tLinkLS2Vessels,tr("FR_ALS2Vessel"));
     initModel(tChangesPermVessel,tr("Changes_Perm_Vessel"));
-    initModel(tChangesTempVessel,tr("Changes_Temp_Vessel"));
+    initModel(tChangesTempVessel,tr("Abstract_Changes_Temp_Vessel"));
     initModel(tChangesPermLS,tr("Changes_Perm_LS"));
     initModel(tChangesPermGLS,tr("Changes_Perm_GLS"));
 }
@@ -204,6 +204,53 @@ bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persist
     return true;
 }
 
+bool ModelInterface::getNonAbstractProperties(Sample* sample, int& id_source, int& id_cell, int& id_minor_strata)
+{
+    QSqlQuery query;
+    query.prepare( tr("SELECT     ID") +
+                   tr(" FROM         dbo.Ref_Source") +
+                   tr(" WHERE     (Name = :name)") );
+    query.bindValue(0,qApp->translate("frame", (sample->bLogBook? strLogbook: strSampling) ));
+
+    if (!query.exec() || query.numRowsAffected()!=1){
+        return false;
+    }
+    query.first();
+    id_source=query.value(0).toInt();
+
+    if (sample->bLogBook){
+        id_minor_strata=sample->minorStrataId;
+        //id_cell=1;
+
+        query.prepare(tr(" SELECT ID FROM         Sampled_Cell") +
+                       tr(" WHERE id_Minor_Strata=(SELECT ID from Ref_Minor_Strata") +
+                       tr(" WHERE     (Name = 'n/a') )") );
+
+        if (!query.exec() || query.numRowsAffected()!=1){
+            return false;
+        }
+        query.first();
+        id_cell=query.value(0).toInt();
+
+    }else{
+        id_cell=sample->cellId;
+        //id_minor_strata=3;
+
+        query.prepare(tr(" SELECT ID FROM         Ref_Minor_Strata") +
+                       tr(" WHERE     (Name = 'n/a') ") );
+
+        if (!query.exec() || query.numRowsAffected()!=1){
+            return false;
+        }
+        query.first();
+        id_minor_strata=query.value(0).toInt();
+
+    }
+
+    return true;
+}
+
+
 bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample)
 {
     if (vs->data(6)!=-1 ){
@@ -212,10 +259,24 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
         int outsideId;
         if (!getOutsideALS(outsideId)) return false;
 
+
+        int id_source,id_cell,id_minor_strata;
+        if (!getNonAbstractProperties(sample,id_source,id_cell,id_minor_strata)) return false;
+
         QModelIndex idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,1);//cell
         if (!idx.isValid())
             return false;
-        tChangesTempVessel->setData(idx,sample->cellId);
+        tChangesTempVessel->setData(idx,id_cell);
+
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,6);//source
+        if (!idx.isValid())
+            return false;
+        tChangesTempVessel->setData(idx,id_source);
+
+        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,7);//MS
+        if (!idx.isValid())
+            return false;
+        tChangesTempVessel->setData(idx,id_minor_strata);
 
         idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,2);//vessel
         if (!idx.isValid())
@@ -250,10 +311,11 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
 
         if (!getIdofReason(vs->data(5).toString(), reasonId)) return false;
         if (!tChangesTempVessel->setData(idx,reasonId)) return false;
-
+/*
         idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,6);//persistence
         if (!tChangesTempVessel->setData(
             idx,persistence==FrmFrameDetails::TEMPORARY_ALL? false: true)) return false;
+*/
 
         return tChangesTempVessel->submitAll();
     }

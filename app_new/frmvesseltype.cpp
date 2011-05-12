@@ -207,7 +207,7 @@ void FrmVesselType::filterModel4Combo()
     tr("                            FROM          dbo.Sampled_Cell")+
     tr("                            WHERE      (ID = ") + QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN")+
     tr("                          (SELECT     VesselID")+
-    tr("                            FROM          dbo.Changes_Temp_Vessel")+
+    tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel")+
     tr("                            WHERE      (id_cell = ") + QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
     tr("                                                       (SELECT     ID")+
     tr("                                                         FROM          dbo.Ref_Abstract_LandingSite")+
@@ -219,7 +219,7 @@ void FrmVesselType::filterModel4Combo()
     tr("                      dbo.Ref_Vessel_Types AS Ref_Vessel_Types_1 ON Ref_Vessels_1.VesselType = Ref_Vessel_Types_1.ID")+
     tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
     tr("                          (SELECT     VesselID")+
-    tr("                            FROM          dbo.Changes_Temp_Vessel AS Changes_Temp_Vessel_1")+
+    tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel AS Abstract_Changes_Temp_Vessel_1")+
     tr("                            WHERE      (id_cell = ") + QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
     tr("                                                       (SELECT     id_abstract_LandingSite")+
     tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+

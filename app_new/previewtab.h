@@ -62,9 +62,11 @@ class PreviewTab : public GenericTab
     /*! generic create record;
       \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), setReadOnly(const bool bRO), filterModel4Combo(), uI4NewRecord()
     */
+        virtual void                          setHeader()=0;
         void                                  genericCreateRecord();
         void                                  resizeEvent ( QResizeEvent * event );
         bool                                  afterApply();
+        void                                  setSourceText(QLabel* label);
         QList<QWidget*>                       m_lWidgets;
         QModelIndex                           m_selectedIdx;
 

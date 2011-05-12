@@ -247,6 +247,7 @@ void FrmCell::beforeShow()
 
     initCellModel();
     this->groupDetails->setVisible(false);
+    setSourceText(lbSource);
 }
 
 bool FrmCell::onButtonClick(QAbstractButton* button)

@@ -39,7 +39,7 @@ FrmVessel::~FrmVessel()
 
 void FrmVessel::onShowFrameDetails()
 {
-/*
+    /*
     if (!m_selectedIdx.isValid()){
         emit showError(tr("You must select one cell!"));
         return;
@@ -50,11 +50,14 @@ void FrmVessel::onShowFrameDetails()
         emit showError(tr("We only support changes in the last inserted cell!"));
         return;
     }
+*/
+
+    //TODO: overwrite changes?
 
     QList<int> blackList;
     blackList << 1 << 2;
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY_ALL,
-        m_sample, blackList, false);*/
+        m_sample, blackList, false);
 }
 
 void FrmVessel::previewRow(QModelIndex index)
@@ -82,20 +85,23 @@ void FrmVessel::previewRow(QModelIndex index)
 
     mapper1->toLast();
 
-    //id_Sampled_Cell_Vessels
-    idx=viewVessel->index(index.row(),3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this vessel!"));
-        return;
+    if (!m_sample->bLogBook){
+
+        //id_Sampled_Cell_Vessels
+        idx=viewVessel->index(index.row(),3);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this vessel!"));
+            return;
+        }
+
+        id=idx.data().toString();
+
+        tCellVessels->setFilter(tr("ID=")+id);
+        if (tCellVessels->rowCount()!=1)
+            return;
+
+        mapper2->toLast();
     }
-
-    id=idx.data().toString();
-
-    tCellVessels->setFilter(tr("ID=")+id);
-    if (tCellVessels->rowCount()!=1)
-        return;
-
-    mapper2->toLast();
 
     pushNext->setEnabled(true);
 }
@@ -173,10 +179,10 @@ void FrmVessel::initUI()
 {
     setHeader();
 
-    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
-        SLOT(setEnabled(bool)));
+    //connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
+        //SLOT(setEnabled(bool)));
 
-    toolButton->setEnabled(false);
+    //toolButton->setEnabled(false);
 
     this->groupDetails->setVisible(false);
 
@@ -426,7 +432,7 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
 
         if (!bError){
             bError=afterApply();
-            toolButton->setEnabled(true);
+            //toolButton->setEnabled(true);
             //QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,0);
             //if (!idx.isValid()) return false;
             //m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
@@ -452,7 +458,7 @@ void FrmVessel::uI4NewRecord()
     //cmbStatus->setCurrentIndex(-1);
     //cmbVessel->setCurrentIndex(-1);
 
-    toolButton->setEnabled(false);
+    //toolButton->setEnabled(false);
 }
 
 void FrmVessel::createRecord()
@@ -510,7 +516,7 @@ void FrmVessel::filterModel4Combo()
         tr("                            FROM          dbo.Sampled_Cell") +
         tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
         tr("                          (SELECT     VesselID") +
-        tr("                            FROM          dbo.Changes_Temp_Vessel") +
+        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel") +
         tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
         tr("                                                       (SELECT     ID") +
         tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
@@ -521,7 +527,7 @@ void FrmVessel::filterModel4Combo()
         tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
         tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
         tr("                          (SELECT     VesselID")+
-        tr("                            FROM          dbo.Changes_Temp_Vessel AS Changes_Temp_Vessel_1")+
+        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel AS Abstract_Changes_Temp_Vessel_1")+
         tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
         tr("                                                       (SELECT     id_abstract_LandingSite")+
         tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+

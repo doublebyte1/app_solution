@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Wed 11. May 18:11:03 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Thu 12. May 16:53:01 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -68,6 +68,7 @@ public:
     QPushButton *pushPrevious;
     QPushButton *pushNext;
     QPushButton *pushNew;
+    QLabel *lbSource;
     QButtonGroup *buttonGroup;
 
     void setupUi(QWidget *frmminorstrata)
@@ -262,6 +263,16 @@ public:
 
         gridLayout_2->addWidget(pushNew, 3, 2, 1, 1);
 
+        lbSource = new QLabel(frmminorstrata);
+        lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
+"font: 75 10pt \"Fixedsys\";"));
+        lbSource->setFrameShape(QFrame::StyledPanel);
+        lbSource->setFrameShadow(QFrame::Raised);
+        lbSource->setScaledContents(true);
+
+        gridLayout_2->addWidget(lbSource, 0, 2, 1, 1);
+
 #ifndef QT_NO_SHORTCUT
         label_6->setBuddy(tableView);
         label_5->setBuddy(lineNew);
@@ -315,6 +326,7 @@ public:
         pushNew->setWhatsThis(QApplication::translate("frmminorstrata", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
+        lbSource->setText(QApplication::translate("frmminorstrata", "[SOURCE]", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

@@ -30,6 +30,11 @@ bool PreviewTab::afterApply()
     return true;
 }
 
+void PreviewTab::setSourceText(QLabel* label)
+{
+    label->setText(m_sample->bLogBook? tr("Logbook"): tr("Sampling"));
+}
+
 void PreviewTab::resizeEvent ( QResizeEvent * event )
 {
     (void) event;

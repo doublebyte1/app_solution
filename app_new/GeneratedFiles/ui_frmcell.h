@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Wed 11. May 18:11:04 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Thu 12. May 17:05:20 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -38,6 +38,8 @@ class Ui_frmCell
 public:
     QGridLayout *gridLayout_2;
     QLabel *lbHeader;
+    QLabel *lbSource;
+    QLabel *label_13;
     QHBoxLayout *horizontalLayout_5;
     QTableView *tableView;
     QVBoxLayout *verticalLayout_4;
@@ -80,7 +82,6 @@ public:
     QSpacerItem *horizontalSpacer;
     QPushButton *pushPrevious;
     QPushButton *pushNext;
-    QLabel *label_13;
 
     void setupUi(QWidget *frmCell)
     {
@@ -99,6 +100,21 @@ public:
         lbHeader->setStyleSheet(QString::fromUtf8("background-color:rgb(247, 247, 247)"));
 
         gridLayout_2->addWidget(lbHeader, 0, 0, 1, 1);
+
+        lbSource = new QLabel(frmCell);
+        lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
+"font: 75 10pt \"Fixedsys\";"));
+        lbSource->setFrameShape(QFrame::StyledPanel);
+        lbSource->setFrameShadow(QFrame::Raised);
+        lbSource->setScaledContents(true);
+
+        gridLayout_2->addWidget(lbSource, 0, 1, 1, 1);
+
+        label_13 = new QLabel(frmCell);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+
+        gridLayout_2->addWidget(label_13, 1, 0, 1, 1);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
@@ -131,7 +147,7 @@ public:
         horizontalLayout_5->addLayout(verticalLayout_4);
 
 
-        gridLayout_2->addLayout(horizontalLayout_5, 2, 0, 1, 1);
+        gridLayout_2->addLayout(horizontalLayout_5, 2, 0, 1, 2);
 
         groupDetails = new QGroupBox(frmCell);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -302,7 +318,7 @@ public:
         gridLayout->addWidget(label_12, 4, 1, 1, 1);
 
 
-        gridLayout_2->addWidget(groupDetails, 3, 0, 1, 1);
+        gridLayout_2->addWidget(groupDetails, 3, 0, 1, 2);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
@@ -328,11 +344,6 @@ public:
 
 
         gridLayout_2->addLayout(horizontalLayout_6, 4, 0, 1, 1);
-
-        label_13 = new QLabel(frmCell);
-        label_13->setObjectName(QString::fromUtf8("label_13"));
-
-        gridLayout_2->addWidget(label_13, 1, 0, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(cmbLS);
@@ -365,6 +376,8 @@ public:
     {
         frmCell->setWindowTitle(QApplication::translate("frmCell", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmCell", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
+        lbSource->setText(QApplication::translate("frmCell", "[SOURCE]", 0, QApplication::UnicodeUTF8));
+        label_13->setText(QApplication::translate("frmCell", "Choose cell:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableView->setToolTip(QApplication::translate("frmCell", "Choose cell (or create a new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -408,7 +421,6 @@ public:
         label_12->setText(QApplication::translate("frmCell", "Comments", 0, QApplication::UnicodeUTF8));
         pushPrevious->setText(QApplication::translate("frmCell", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmCell", "Next", 0, QApplication::UnicodeUTF8));
-        label_13->setText(QApplication::translate("frmCell", "Choose cell:", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

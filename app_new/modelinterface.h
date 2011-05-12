@@ -107,6 +107,7 @@ private:
     bool                                   getOutsideALS(int& id);
 
     bool                                   buildSourceFilter(QString& strFilter);
+    bool                                   getNonAbstractProperties(Sample* sample, int& id_source, int& id_cell, int &id_minor_strata);
 
     QVector<QSqlTableModel*>               vTables;
 

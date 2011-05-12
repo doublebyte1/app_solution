@@ -63,7 +63,7 @@ void MainFrm::aboutThisProject()
         pFrmPrjPage=new FrmPrjPage;
     }
     if (pFrmPrjPage->isVisible()==false)
-            pFrmPrjPage->show();
+        pFrmPrjPage->showMaximized();
 }
 
 void MainFrm::resetTabs()
