@@ -37,7 +37,7 @@ public:
 
     void                                   setTree(TreeModel* aTreeModel){treeModel=aTreeModel;}
     bool                                   createModel();
-    bool                                   readModel(const int frameId);
+    bool                                   readModel(const Sample* sample,const FrmFrameDetails::Options options);
     QSqlRelationalTableModel*              tRefFrame;
     QSqlTableModel*                        tSubFrame;
     QSqlTableModel*                        tRefGLS;
@@ -102,6 +102,8 @@ private:
     bool                                   submitAll();
     bool                                   filterTables();
 
+    bool                                   readTempChangesVessel(const Sample* sample);
+    bool                                   moveVessel(const int vesselId, const int from, const int to);
     bool                                   writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample);
     bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
     bool                                   getOutsideALS(int& id);

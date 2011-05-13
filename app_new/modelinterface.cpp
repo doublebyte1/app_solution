@@ -311,11 +311,6 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
 
         if (!getIdofReason(vs->data(5).toString(), reasonId)) return false;
         if (!tChangesTempVessel->setData(idx,reasonId)) return false;
-/*
-        idx=tChangesTempVessel->index(tChangesTempVessel->rowCount()-1,6);//persistence
-        if (!tChangesTempVessel->setData(
-            idx,persistence==FrmFrameDetails::TEMPORARY_ALL? false: true)) return false;
-*/
 
         return tChangesTempVessel->submitAll();
     }
@@ -1058,7 +1053,7 @@ bool ModelInterface::readRefVS(const QModelIndex& parent, const bool bBin)
     return true;
 }
 
-bool ModelInterface::readModel(const int frameId)
+bool ModelInterface::readModel(const Sample* sample/*const int frameId*/, const FrmFrameDetails::Options options)
 {
     //Read all the reference tables and put them on the bin
     QModelIndex bin;
@@ -1066,6 +1061,7 @@ bool ModelInterface::readModel(const int frameId)
     if (!createRootElements(bin, root))
         return false;
 
+    int frameId=sample->frameId;
     tSubFrame->setFilter(tr("id_frame=") + QVariant(frameId).toString());
 
     if (tSubFrame->rowCount()!=2) return false;
@@ -1080,8 +1076,117 @@ bool ModelInterface::readModel(const int frameId)
     }
 
     tSubFrame->setFilter(tr(""));
+
+    if (options & FrmFrameDetails::READ_TMP) {
+        if (!readTempChangesVessel(sample)) return false;
+    }
+
     return true;
 }
+
+bool ModelInterface::readTempChangesVessel(const Sample* sample)
+{
+    //filter for cells that refer to the same frame, and that fall within the interval of this cell;
+    //TODO: also add the ones which the interval overlaps
+    // B'< A and B'< B
+    // A'< A AND A'< B
+
+    QSqlQuery query;
+
+    QString strQuery=
+tr("SELECT     dbo.Sampled_Cell.ID, dbo.Ref_Minor_Strata.id_frame_time, Dates1.Date_Local AS start_dt, Dates2.Date_Local AS end_dt") +
+tr(" FROM         dbo.Sampled_Cell INNER JOIN") +
+tr("                      dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN") +
+tr("                      dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN") +
+tr("                      dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID") +
+tr(" WHERE     (Dates1.Date_Local >=") +
+tr("                          (SELECT     Date_Local") +
+tr("                            FROM          dbo.GL_Dates") +
+tr("                            WHERE      (ID =") +
+tr("                                                       (SELECT     id_start_date") +
+tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1") +
+tr("                                                         WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND (Dates2.Date_Local <=") +
+tr("                          (SELECT     Date_Local") +
+tr("                            FROM          dbo.GL_Dates AS GL_Dates_1") +
+tr("                            WHERE      (ID =") +
+tr("                                                       (SELECT     id_end_date") +
+tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1") +
+tr("                                                         WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(")");
+
+    query.prepare(strQuery);
+    if (!query.exec()) return false;
+
+    QString strFilter;
+    int ct=0;
+    while (query.next())
+    {
+        if (ct>0) strFilter.append(tr(" OR "));
+        strFilter.append(tr("id_cell=") + query.value(0).toString());
+        ct++;
+    }
+
+    //found changes to use!!!
+    if (!strFilter.isEmpty()){
+        tChangesTempVessel->setFilter(strFilter);
+        QModelIndex idx;
+        for (int i=0; i < tChangesTempVessel->rowCount(); ++i)
+        {
+            int vesselId, from, to;
+            idx=tChangesTempVessel->index(i,2);
+            vesselId=idx.data().toInt();//vesselid
+            idx=tChangesTempVessel->index(i,3);
+            from=idx.data().toInt();//vesselid
+            idx=tChangesTempVessel->index(i,4);
+            to=idx.data().toInt();//vesselid
+            if (!moveVessel(vesselId, from, to)) return false;
+        }
+    }
+    return true;
+
+}
+
+bool ModelInterface::moveVessel(const int vesselId, const int from, const int to)
+{
+    //locate vessel
+    //move it
+    //flag it (in case its unmovable!)
+
+    //loop till LS until find to
+/*
+    QModelIndex root=treeModel->index(0,0,QModelIndex());
+    if (!root.isValid()) return false;
+
+    //Search inside the bin first
+    QModelIndex bin=treeModel->index(1,0,QModelIndex());
+    if (!bin.isValid()) return false;
+    TreeItem *pBin = static_cast<TreeItem*>
+        (bin.internalPointer());
+
+    for (int i=0; i < pBin->childCount(); ++i)
+    {
+            QModelIndex gls=treeModel->index(i,0,bin);
+            if (!gls.isValid()) return false;
+            TreeItem *pGls = static_cast<TreeItem*>
+                (gls.internalPointer());
+
+            if (pGls->data(4).toInt()==from){
+                    //FOUND (search for vessel)
+            }
+
+            //than dive into the ls level
+            for (int j=0; j < pGls->childCount(); ++j)
+            {
+                TreeItem *pLs = static_cast<TreeItem*>
+                (ls.internalPointer());
+                if (pLs->data(4).toInt()==from){
+                    //FOUND (search for vessel)
+                }
+            }
+    }
+*/
+    return true;
+}
+
 
 bool ModelInterface::readRoot(const int subFrameId, QModelIndex& root, const bool bBin)
 {

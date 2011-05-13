@@ -117,6 +117,7 @@ void FrmVesselType::setPreviewQuery()
 void FrmVesselType::beforeShow()
 {
     this->groupDetails->setVisible(false);
+    setSourceText(lbSource);
     initVesselTypeModel();
 }
 

@@ -42,14 +42,20 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         /*! Supported persistence modes are: permanent, temporary.
         */
         enum Persistence { PERMANENT, /*!< permanent changes on the frame. */
-                    TEMPORARY_ALL, TEMPORARY_ONE  /*!< Enum value for temporary changes on the frame. */
+                    TEMPORARY/*!< Enum value for temporary changes on the frame. */
+                    };
+
+        //! An enum for generic options in this form        */
+        enum Options { 
+              READ_TMP    = 0x01,/*!< Read also temporary changes on the frame. */
+              ALLOW_NEW   = 0x02/*!<Allow new items. */
                     };
 
         FrmFrameDetails(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrameDetails();
 
         void                    setFrameDetails(const Mode mode, const Persistence persistence,
-            Sample* sample, QList<int>& blackList, const bool bSupportNewItems);
+            Sample* sample, QList<int>& blackList, const Options options);
 
     public slots:
 
@@ -81,9 +87,9 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         QDataWidgetMapper       *mapper;
         NullRelationalDelegate  *nullDellegate;
 
-        bool                    setupItems(const Mode mode, const int frameId);
+        bool                    setupItems(const Mode mode, /*const int frameId*/const Sample* sample, const Options options);
         void                    setupModel();
-        bool                    initModel(const Mode mode, const int frameId);
+        bool                    initModel(const Mode mode, /*const int frameId*/const Sample* sample, const Options options);
         void                    initTree();
         void                    initMapper();
         bool                    readModel();

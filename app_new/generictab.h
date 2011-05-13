@@ -129,7 +129,7 @@ class GenericTab : public QWidget
         void                    hideFrameDetails(bool bNotSubmitted);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode,
                                     const FrmFrameDetails::Persistence persistence, Sample* sample, 
-                                    QList<int>& blackList=QList<int>(), const bool bSupportNewItems=true);
+                                    QList<int>& blackList=QList<int>(), const FrmFrameDetails::Options options=FrmFrameDetails::ALLOW_NEW);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
         void                   submitted(int idx, bool bOk);

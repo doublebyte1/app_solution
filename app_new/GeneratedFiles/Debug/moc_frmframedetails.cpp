@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframedetails.h'
 **
-** Created: Thu 12. May 14:28:36 2011
+** Created: Fri 13. May 14:38:23 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!

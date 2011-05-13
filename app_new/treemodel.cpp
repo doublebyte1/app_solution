@@ -14,7 +14,7 @@ TreeModel::TreeModel(QObject *parent)
 {
     QList<QVariant> rootData;
     rootData << tr("Name") << tr("Description") << tr("Level") << tr("Comments")
-        << tr("ID") << tr("Reasons") << tr("Origin") << tr("symbol");
+        << tr("ID") << tr("Reasons") << tr("Origin") << tr("symbol") << tr("HasRecords");
     rootItem = new TreeItem(rootData);
     //setupModelData(rootItem);
 }

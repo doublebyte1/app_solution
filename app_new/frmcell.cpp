@@ -46,10 +46,12 @@ void FrmCell::onShowFrameDetails()
         return;
     }
 
+    //TODO: check if there is overlap with the temporary frame to send a flag
     QList<int> blackList;
     blackList << 1 << 2;
-    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY_ALL,
-        m_sample, blackList, false);
+    FrmFrameDetails::Options options=FrmFrameDetails::READ_TMP;
+    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
+        m_sample, blackList, options);
 }
 
 void FrmCell::previewRow(QModelIndex index)

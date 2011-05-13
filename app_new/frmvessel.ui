@@ -15,20 +15,50 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
-    <widget class="QLabel" name="lbHeader">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color:rgb(247, 247, 247)</string>
-     </property>
-     <property name="text">
-      <string>WRITE SOMETHING HERE LATER &lt;---</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="lbHeader">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(247, 247, 247)</string>
+       </property>
+       <property name="text">
+        <string>WRITE SOMETHING HERE LATER &lt;---</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbSource">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));
+font: 75 10pt &quot;Fixedsys&quot;;</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <property name="text">
+        <string>[SOURCE]</string>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_5">
@@ -64,22 +94,6 @@
          <property name="icon">
           <iconset resource="app_new.qrc">
            <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="toolButton">
-         <property name="toolTip">
-          <string>Add vessel not present on this list</string>
-         </property>
-         <property name="statusTip">
-          <string>Add vessel not present on this list</string>
-         </property>
-         <property name="whatsThis">
-          <string>This tool allows to setup temporary frame changes concerning adding new vessels or importing them from another port</string>
-         </property>
-         <property name="text">
-          <string>...</string>
          </property>
         </widget>
        </item>
@@ -302,7 +316,6 @@
  <tabstops>
   <tabstop>tableView</tabstop>
   <tabstop>pushNew</tabstop>
-  <tabstop>toolButton</tabstop>
   <tabstop>cmbVessel</tabstop>
   <tabstop>cmbOrigin</tabstop>
   <tabstop>cmbStatus</tabstop>

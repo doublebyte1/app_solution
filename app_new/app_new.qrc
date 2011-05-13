@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>kontact.png</file>
+    <file>qt-logo.gif</file>
+    <file>qt-logo.jpg</file>
     <file>empty.png</file>
     <file>filenew.png</file>
     <file>pencil.png</file>

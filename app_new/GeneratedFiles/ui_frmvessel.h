@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvessel.ui'
 **
-** Created: Thu 12. May 09:30:07 2011
+** Created: Fri 13. May 17:18:39 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -26,7 +26,6 @@
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
 #include <QtGui/QTableView>
-#include <QtGui/QToolButton>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
@@ -36,13 +35,14 @@ class Ui_frmVessel
 {
 public:
     QVBoxLayout *verticalLayout_5;
+    QHBoxLayout *horizontalLayout_7;
     QLabel *lbHeader;
+    QLabel *lbSource;
     QLabel *label_5;
     QHBoxLayout *horizontalLayout;
     QTableView *tableView;
     QVBoxLayout *verticalLayout;
     QPushButton *pushNew;
-    QToolButton *toolButton;
     QGroupBox *groupDetails;
     QHBoxLayout *horizontalLayout_6;
     QVBoxLayout *verticalLayout_4;
@@ -79,16 +79,36 @@ public:
         frmVessel->resize(703, 565);
         verticalLayout_5 = new QVBoxLayout(frmVessel);
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
         lbHeader = new QLabel(frmVessel);
         lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(lbHeader->sizePolicy().hasHeightForWidth());
         lbHeader->setSizePolicy(sizePolicy);
         lbHeader->setStyleSheet(QString::fromUtf8("background-color:rgb(247, 247, 247)"));
 
-        verticalLayout_5->addWidget(lbHeader);
+        horizontalLayout_7->addWidget(lbHeader);
+
+        lbSource = new QLabel(frmVessel);
+        lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lbSource->sizePolicy().hasHeightForWidth());
+        lbSource->setSizePolicy(sizePolicy1);
+        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
+"font: 75 10pt \"Fixedsys\";"));
+        lbSource->setFrameShape(QFrame::StyledPanel);
+        lbSource->setFrameShadow(QFrame::Raised);
+        lbSource->setScaledContents(true);
+
+        horizontalLayout_7->addWidget(lbSource);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_7);
 
         label_5 = new QLabel(frmVessel);
         label_5->setObjectName(QString::fromUtf8("label_5"));
@@ -111,11 +131,6 @@ public:
         pushNew->setIcon(icon);
 
         verticalLayout->addWidget(pushNew);
-
-        toolButton = new QToolButton(frmVessel);
-        toolButton->setObjectName(QString::fromUtf8("toolButton"));
-
-        verticalLayout->addWidget(toolButton);
 
 
         horizontalLayout->addLayout(verticalLayout);
@@ -181,22 +196,25 @@ public:
 
         groupFT = new QGroupBox(groupDetails);
         groupFT->setObjectName(QString::fromUtf8("groupFT"));
-        sizePolicy.setHeightForWidth(groupFT->sizePolicy().hasHeightForWidth());
-        groupFT->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(groupFT->sizePolicy().hasHeightForWidth());
+        groupFT->setSizePolicy(sizePolicy2);
         groupFT->setFlat(true);
         gridLayout = new QGridLayout(groupFT);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label_3 = new QLabel(groupFT);
         label_3->setObjectName(QString::fromUtf8("label_3"));
-        sizePolicy.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
-        label_3->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
+        label_3->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(label_3, 0, 1, 1, 1);
 
         label_4 = new QLabel(groupFT);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
-        label_4->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
+        label_4->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(label_4, 0, 2, 1, 1);
 
@@ -225,21 +243,21 @@ public:
         verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         label_8 = new QLabel(groupDetails);
         label_8->setObjectName(QString::fromUtf8("label_8"));
-        QSizePolicy sizePolicy1(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
-        label_8->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy3(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
+        label_8->setSizePolicy(sizePolicy3);
 
         verticalLayout_3->addWidget(label_8);
 
         textComments = new QPlainTextEdit(groupDetails);
         textComments->setObjectName(QString::fromUtf8("textComments"));
-        QSizePolicy sizePolicy2(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
-        textComments->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy4(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
+        textComments->setSizePolicy(sizePolicy4);
 
         verticalLayout_3->addWidget(textComments);
 
@@ -291,8 +309,7 @@ public:
         label_8->setBuddy(textComments);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
-        QWidget::setTabOrder(pushNew, toolButton);
-        QWidget::setTabOrder(toolButton, cmbVessel);
+        QWidget::setTabOrder(pushNew, cmbVessel);
         QWidget::setTabOrder(cmbVessel, cmbOrigin);
         QWidget::setTabOrder(cmbOrigin, cmbStatus);
         QWidget::setTabOrder(cmbStatus, textComments);
@@ -314,6 +331,7 @@ public:
     {
         frmVessel->setWindowTitle(QApplication::translate("frmVessel", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmVessel", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
+        lbSource->setText(QApplication::translate("frmVessel", "[SOURCE]", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("frmVessel", "Select sampled vessel:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("frmVessel", "Create new record", 0, QApplication::UnicodeUTF8));
@@ -325,16 +343,6 @@ public:
         pushNew->setWhatsThis(QApplication::translate("frmVessel", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
-#ifndef QT_NO_TOOLTIP
-        toolButton->setToolTip(QApplication::translate("frmVessel", "Add vessel not present on this list", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        toolButton->setStatusTip(QApplication::translate("frmVessel", "Add vessel not present on this list", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        toolButton->setWhatsThis(QApplication::translate("frmVessel", "This tool allows to setup temporary frame changes concerning adding new vessels or importing them from another port", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        toolButton->setText(QApplication::translate("frmVessel", "...", 0, QApplication::UnicodeUTF8));
         groupDetails->setTitle(QApplication::translate("frmVessel", "Details", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmVessel", "Vessel:", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmVessel", "Sample Origin:", 0, QApplication::UnicodeUTF8));

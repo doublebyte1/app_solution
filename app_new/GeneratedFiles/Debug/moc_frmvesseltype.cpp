@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmvesseltype.h'
 **
-** Created: Thu 12. May 09:30:27 2011
+** Created: Fri 13. May 17:41:31 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!

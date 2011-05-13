@@ -38,7 +38,7 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   onButtonClick(QAbstractButton * button);
-        void                                   onShowFrameDetails();
+        //void                                   onShowFrameDetails();
 
     private:
         //! Filter combo box
