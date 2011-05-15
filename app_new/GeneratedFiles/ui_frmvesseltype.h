@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Wed 11. May 18:11:03 2011
+** Created: Sun 15. May 18:49:17 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -35,7 +35,9 @@ class Ui_FrmVesselType
 {
 public:
     QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_2;
     QLabel *lbHeader;
+    QLabel *lbSource;
     QLabel *label;
     QHBoxLayout *horizontalLayout;
     QTableView *tableView;
@@ -73,16 +75,36 @@ public:
         FrmVesselType->resize(710, 413);
         verticalLayout = new QVBoxLayout(FrmVesselType);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         lbHeader = new QLabel(FrmVesselType);
         lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(lbHeader->sizePolicy().hasHeightForWidth());
         lbHeader->setSizePolicy(sizePolicy);
         lbHeader->setStyleSheet(QString::fromUtf8("background-color:rgb(247, 247, 247)"));
 
-        verticalLayout->addWidget(lbHeader);
+        horizontalLayout_2->addWidget(lbHeader);
+
+        lbSource = new QLabel(FrmVesselType);
+        lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lbSource->sizePolicy().hasHeightForWidth());
+        lbSource->setSizePolicy(sizePolicy1);
+        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
+"font: 75 10pt \"Fixedsys\";"));
+        lbSource->setFrameShape(QFrame::StyledPanel);
+        lbSource->setFrameShadow(QFrame::Raised);
+        lbSource->setScaledContents(true);
+
+        horizontalLayout_2->addWidget(lbSource);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
 
         label = new QLabel(FrmVesselType);
         label->setObjectName(QString::fromUtf8("label"));
@@ -123,15 +145,18 @@ public:
 
         label_4 = new QLabel(groupDetails);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        sizePolicy.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
-        label_4->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(label_4->sizePolicy().hasHeightForWidth());
+        label_4->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(label_4, 1, 1, 1, 2);
 
         label_5 = new QLabel(groupDetails);
         label_5->setObjectName(QString::fromUtf8("label_5"));
-        sizePolicy.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
-        label_5->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
+        label_5->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(label_5, 1, 3, 1, 1);
 
@@ -147,16 +172,16 @@ public:
 
         spinNE = new QSpinBox(groupDetails);
         spinNE->setObjectName(QString::fromUtf8("spinNE"));
-        sizePolicy.setHeightForWidth(spinNE->sizePolicy().hasHeightForWidth());
-        spinNE->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinNE->sizePolicy().hasHeightForWidth());
+        spinNE->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinNE, 2, 2, 1, 1);
 
         spinNC = new QSpinBox(groupDetails);
         spinNC->setObjectName(QString::fromUtf8("spinNC"));
         spinNC->setEnabled(false);
-        sizePolicy.setHeightForWidth(spinNC->sizePolicy().hasHeightForWidth());
-        spinNC->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinNC->sizePolicy().hasHeightForWidth());
+        spinNC->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinNC, 2, 3, 1, 1);
 
@@ -172,16 +197,16 @@ public:
 
         spinAE = new QSpinBox(groupDetails);
         spinAE->setObjectName(QString::fromUtf8("spinAE"));
-        sizePolicy.setHeightForWidth(spinAE->sizePolicy().hasHeightForWidth());
-        spinAE->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinAE->sizePolicy().hasHeightForWidth());
+        spinAE->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinAE, 3, 2, 1, 1);
 
         spinAC = new QSpinBox(groupDetails);
         spinAC->setObjectName(QString::fromUtf8("spinAC"));
         spinAC->setEnabled(false);
-        sizePolicy.setHeightForWidth(spinAC->sizePolicy().hasHeightForWidth());
-        spinAC->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinAC->sizePolicy().hasHeightForWidth());
+        spinAC->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinAC, 3, 3, 1, 1);
 
@@ -192,16 +217,16 @@ public:
 
         spinIE = new QSpinBox(groupDetails);
         spinIE->setObjectName(QString::fromUtf8("spinIE"));
-        sizePolicy.setHeightForWidth(spinIE->sizePolicy().hasHeightForWidth());
-        spinIE->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinIE->sizePolicy().hasHeightForWidth());
+        spinIE->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinIE, 4, 2, 1, 1);
 
         spinIC = new QSpinBox(groupDetails);
         spinIC->setObjectName(QString::fromUtf8("spinIC"));
         spinIC->setEnabled(false);
-        sizePolicy.setHeightForWidth(spinIC->sizePolicy().hasHeightForWidth());
-        spinIC->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinIC->sizePolicy().hasHeightForWidth());
+        spinIC->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinIC, 4, 3, 1, 1);
 
@@ -212,16 +237,16 @@ public:
 
         spinOE = new QSpinBox(groupDetails);
         spinOE->setObjectName(QString::fromUtf8("spinOE"));
-        sizePolicy.setHeightForWidth(spinOE->sizePolicy().hasHeightForWidth());
-        spinOE->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinOE->sizePolicy().hasHeightForWidth());
+        spinOE->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinOE, 5, 2, 1, 1);
 
         spinOC = new QSpinBox(groupDetails);
         spinOC->setObjectName(QString::fromUtf8("spinOC"));
         spinOC->setEnabled(false);
-        sizePolicy.setHeightForWidth(spinOC->sizePolicy().hasHeightForWidth());
-        spinOC->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(spinOC->sizePolicy().hasHeightForWidth());
+        spinOC->setSizePolicy(sizePolicy2);
 
         gridLayout->addWidget(spinOC, 5, 3, 1, 1);
 
@@ -297,6 +322,7 @@ public:
     {
         FrmVesselType->setWindowTitle(QApplication::translate("FrmVesselType", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("FrmVesselType", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
+        lbSource->setText(QApplication::translate("FrmVesselType", "[SOURCE]", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("FrmVesselType", "Choose cell vessel type:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableView->setToolTip(QApplication::translate("FrmVesselType", "Choose cell (or create new one)", 0, QApplication::UnicodeUTF8));

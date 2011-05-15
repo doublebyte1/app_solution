@@ -10,9 +10,6 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),parent, flags){
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
-    connect(toolButton, SIGNAL(clicked()), this,
-        SLOT(onShowFrameDetails()));
-
     tAVessel=0;
     tCellVessels=0;
     tStrataVessels=0;
@@ -35,26 +32,6 @@ FrmVessel::~FrmVessel()
     if (mapper2!=0) delete mapper2;
     if (tCellVessels!=0) delete tCellVessels;
     if (tStrataVessels!=0) delete tStrataVessels;
-}
-
-void FrmVessel::onShowFrameDetails()
-{
-/*
-    if (!m_selectedIdx.isValid()){
-        emit showError(tr("You must select one cell!"));
-        return;
-    }
-
-    QModelIndex idx=viewCell->index(m_selectedIdx.row(),0);
-    if (m_sample->cellId!=idx.data().toInt()){
-        emit showError(tr("We only support changes in the last inserted cell!"));
-        return;
-    }
-
-    QList<int> blackList;
-    blackList << 1 << 2;
-    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY_ALL,
-        m_sample, blackList, false);*/
 }
 
 void FrmVessel::previewRow(QModelIndex index)
@@ -82,20 +59,23 @@ void FrmVessel::previewRow(QModelIndex index)
 
     mapper1->toLast();
 
-    //id_Sampled_Cell_Vessels
-    idx=viewVessel->index(index.row(),3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this vessel!"));
-        return;
+    if (!m_sample->bLogBook){
+
+        //id_Sampled_Cell_Vessels
+        idx=viewVessel->index(index.row(),3);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this vessel!"));
+            return;
+        }
+
+        id=idx.data().toString();
+
+        tCellVessels->setFilter(tr("ID=")+id);
+        if (tCellVessels->rowCount()!=1)
+            return;
+
+        mapper2->toLast();
     }
-
-    id=idx.data().toString();
-
-    tCellVessels->setFilter(tr("ID=")+id);
-    if (tCellVessels->rowCount()!=1)
-        return;
-
-    mapper2->toLast();
 
     pushNext->setEnabled(true);
 }
@@ -173,11 +153,6 @@ void FrmVessel::initUI()
 {
     setHeader();
 
-    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
-        SLOT(setEnabled(bool)));
-
-    toolButton->setEnabled(false);
-
     this->groupDetails->setVisible(false);
 
     setPreviewTable(tableView);
@@ -239,9 +214,6 @@ void FrmVessel::initMapper1()
 
 void FrmVessel::initMappers()
 {
-    //if (!m_sample->bLogBook)
-    //{
-
     if (mapper2!=0) delete mapper2;
     mapper2= new QDataWidgetMapper(this);
     mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -249,14 +221,13 @@ void FrmVessel::initMappers()
     mapper2->addMapping(spinET, 2);
     mapper2->addMapping(spinCT, 3);
     mapper2->toLast();
-
-    //}
 }
 
 void FrmVessel::beforeShow()
 {
     this->groupDetails->setVisible(false);
     this->groupFT->setVisible(!m_sample->bLogBook);
+    setSourceText(lbSource);
     initVesselModel();
 }
 
@@ -320,8 +291,8 @@ bool FrmVessel::comitStrataVessels(int& id)
 {
     insertRecordIntoModel(tStrataVessels);
 
-    //while(tStrataVessels->canFetchMore())
-        //tStrataVessels->fetchMore();
+    while(tStrataVessels->canFetchMore())
+        tStrataVessels->fetchMore();
 
     QModelIndex idx=tStrataVessels->index(tStrataVessels->rowCount()-1,1);
     if (!idx.isValid()) return false;
@@ -398,20 +369,7 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
                         emit showError(tAVessel->lastError().text());
                     else
                         emit showError(tr("Could not write cell in the database!"));
-                }//mapper1->toLast();
-
-                /*
-                if (mapper2->submit()){
-                    bError=!tCellVessels->submitAll();
-                    if (bError){
-                        if (tCellVessels->lastError().type()!=QSqlError::NoError)
-                            emit showError(tCellVessels->lastError().text());
-                        else
-                            emit showError(tr("Could not write totals in the database!"));
-                    }
-                }else bError=true;
-                //TODO: rollback the other transactions?
-                */
+                }
             }
         }
 
@@ -424,14 +382,9 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
             buttonBox->button(QDialogButtonBox::Apply)->show();
         }
 
-        if (!bError){
-            bError=afterApply();
-            toolButton->setEnabled(true);
-            //QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,0);
-            //if (!idx.isValid()) return false;
-            //m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
-        }
-        return !bError;
+        if (!bError)
+            return afterApply();
+
     }else return false;
 
     return false;
@@ -448,11 +401,6 @@ void FrmVessel::uI4NewRecord()
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     textComments->clear();
-    //cmbOrigin->setCurrentIndex(-1);
-    //cmbStatus->setCurrentIndex(-1);
-    //cmbVessel->setCurrentIndex(-1);
-
-    toolButton->setEnabled(false);
 }
 
 void FrmVessel::createRecord()
@@ -510,7 +458,7 @@ void FrmVessel::filterModel4Combo()
         tr("                            FROM          dbo.Sampled_Cell") +
         tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
         tr("                          (SELECT     VesselID") +
-        tr("                            FROM          dbo.Changes_Temp_Vessel") +
+        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel") +
         tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
         tr("                                                       (SELECT     ID") +
         tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
@@ -521,7 +469,7 @@ void FrmVessel::filterModel4Combo()
         tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
         tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
         tr("                          (SELECT     VesselID")+
-        tr("                            FROM          dbo.Changes_Temp_Vessel AS Changes_Temp_Vessel_1")+
+        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel AS Abstract_Changes_Temp_Vessel_1")+
         tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
         tr("                                                       (SELECT     id_abstract_LandingSite")+
         tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+
@@ -529,7 +477,7 @@ void FrmVessel::filterModel4Combo()
             ;
 
     }else{
-
+        //TODO: update from temporary frame
         strQuery =
         tr("SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls") +
         tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +

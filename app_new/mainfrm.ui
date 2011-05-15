@@ -125,6 +125,10 @@
    </property>
   </action>
   <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/qt-logo.gif</normaloff>:/app_new/qt-logo.gif</iconset>
+   </property>
    <property name="text">
     <string>About Qt</string>
    </property>
@@ -133,6 +137,10 @@
    </property>
   </action>
   <action name="actionAbout_this_project">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/kontact.png</normaloff>:/app_new/kontact.png</iconset>
+   </property>
    <property name="text">
     <string>About this project</string>
    </property>

@@ -67,7 +67,31 @@ class NullRelationalDelegate : public QSqlRelationalDelegate
 };
 
 #endif //NULLRELATIONALDELEGATE_H
+/*
+//////////////////////////////////////////////////////////////////////
 
+#ifndef VIEWDELEGATE_H
+#define VIEWDELEGATE_H
+
+class ViewDelegate : public QItemDelegate
+{
+public:
+  ViewDelegate() : QItemDelegate()
+  {
+  }
+ 
+    void ViewDelegate::paint(QPainter *painter,
+                              const QStyleOptionViewItem &option,
+                              const QModelIndex &index) const
+    {
+      QPixmap pix(22, 22);
+      pix.fill(Qt::red);
+      
+        }
+};
+
+#endif //VIEWDELEGATE_H
+*/
 //////////////////////////////////////////////////////////////////////
 #ifndef GENERICTAB_H
 #define GENERICTAB_H
@@ -105,13 +129,13 @@ class GenericTab : public QWidget
         void                    hideFrameDetails(bool bNotSubmitted);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode,
                                     const FrmFrameDetails::Persistence persistence, Sample* sample, 
-                                    QList<int>& blackList=QList<int>(), const bool bSupportNewItems=true);
+                                    QList<int>& blackList=QList<int>(), const FrmFrameDetails::Options options=FrmFrameDetails::ALLOW_NEW);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
         void                   submitted(int idx, bool bOk);
 
     protected:
-        virtual void            setHeader()=0;
+        //virtual void            setHeader()=0;
         virtual void            initModels()=0;
         virtual void            initMappers()=0;
         virtual void            initUI()=0;

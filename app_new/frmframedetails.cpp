@@ -183,7 +183,7 @@ bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
 }
 
 void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, Sample* sample, 
-                                      QList<int>& blackList, const bool bSupportNewItems)
+                                      QList<int>& blackList, const Options options)
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
@@ -192,7 +192,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     if (blackList.size()>0)
         treeView->setBlackList(blackList);
 
-    treeView->setSupportNewItems(bSupportNewItems);
+    treeView->setSupportNewItems(options & FrmFrameDetails::ALLOW_NEW);
 
     m_sample=sample;
     m_mode=mode;
@@ -208,16 +208,16 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     pushApply->setEnabled(!pushVerify->isEnabled());
     pushUndo->setEnabled(!pushVerify->isEnabled());
 
-    pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY_ALL || persistence==FrmFrameDetails::TEMPORARY_ONE);
-    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY_ALL || persistence==FrmFrameDetails::TEMPORARY_ONE);
-    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY_ALL || persistence==FrmFrameDetails::TEMPORARY_ONE);
+    pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
+    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
+    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
     pushBack->setVisible(true);
 
     lineName->clear();
     textComments->clear();
     textDesc->clear();
 
-    if (!initModel(mode,sample->frameId)){
+    if (!initModel(mode,sample,options)){
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         emit showError(tr("Could not create frame view!"));
         return;
@@ -334,7 +334,7 @@ void FrmFrameDetails::initTree()
     treeView->setSortingEnabled(true);
 }
 
-bool FrmFrameDetails::initModel(const Mode mode, const int frameId)
+bool FrmFrameDetails::initModel(const Mode mode, /*const int frameId*/const Sample* sample, const Options options)
 {
     if (model!=0) delete model;
     model = new DragDropModel(this);
@@ -350,7 +350,7 @@ bool FrmFrameDetails::initModel(const Mode mode, const int frameId)
                      modelInterface, SLOT(removeFilters()));
 
     //fills the actual model
-    if (!setupItems(mode,frameId)) return false;
+    if (!setupItems(mode,sample,/*frameId,*/options)) return false;
 
     //Using a proxy model for filtering purposes!
     QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
@@ -376,13 +376,13 @@ bool FrmFrameDetails::initModel(const Mode mode, const int frameId)
     return true;
 }
 
-bool FrmFrameDetails::setupItems(const Mode mode, const int frameId)
+bool FrmFrameDetails::setupItems(const Mode mode, /*const int frameId*/const Sample* sample, const Options options)
 {
     switch (mode) {
     case FrmFrameDetails::VIEW:
-        return modelInterface->readModel(frameId);
+        return modelInterface->readModel(/*frameId,*/sample,options);
     case FrmFrameDetails::EDIT:
-        return modelInterface->readModel(frameId);
+        return modelInterface->readModel(/*frameId,*/sample,options);
     case FrmFrameDetails::CREATE:
         return modelInterface->createModel();
     default:

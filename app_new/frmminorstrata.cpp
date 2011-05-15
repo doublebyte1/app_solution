@@ -172,6 +172,7 @@ void FrmMinorStrata::filterModel4Combo()
 void FrmMinorStrata::beforeShow()
 {
     this->groupDetails->setVisible(false);
+    setSourceText(lbSource);
 }
 
 void FrmMinorStrata::createRecord()
@@ -316,6 +317,7 @@ void FrmMinorStrata::initUI()
         QAbstractItemView::SingleSelection);
     tableView->horizontalHeader()->setClickable(false);
     tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+    //tableView->setItemDelegate(new ViewDelegate());
 
     setPreviewTable(tableView);
 

@@ -54,6 +54,9 @@ void MainFrm::initUi()
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
     toolbar->addAction(this->actionNew);
+    toolbar->addSeparator();
+    toolbar->addAction(this->actionAbout_this_project);
+    toolbar->addAction(this->actionAbout_Qt);
 }
 
 void MainFrm::aboutThisProject()
@@ -63,7 +66,7 @@ void MainFrm::aboutThisProject()
         pFrmPrjPage=new FrmPrjPage;
     }
     if (pFrmPrjPage->isVisible()==false)
-            pFrmPrjPage->show();
+        pFrmPrjPage->showMaximized();
 }
 
 void MainFrm::resetTabs()
@@ -149,8 +152,8 @@ void MainFrm::initTabs()
              connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
             SLOT(navigateThroughTabs(const bool, const int)),Qt::UniqueConnection);
 
-             connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const bool)), this,
-            SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&,const bool)),Qt::UniqueConnection);
+             connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)), this,
+            SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)),Qt::UniqueConnection);
 
              connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), vTabs.at(i),
             SIGNAL(hideFrameDetails(bool)),Qt::UniqueConnection);
@@ -253,8 +256,8 @@ void MainFrm::hideFrameDetails()
 
 void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,
                                const FrmFrameDetails::Persistence persistence,Sample* sample,
-                               QList<int>& blackList, const bool bSupportNewItems){
-    pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList,bSupportNewItems);
+                               QList<int>& blackList, const FrmFrameDetails::Options options){
+    pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList, options);
     tabWidget->hide();
     pFrmFrameDetails->show();
 }

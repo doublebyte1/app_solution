@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Wed 11. May 18:11:02 2011
+** Created: Sun 15. May 18:49:16 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -66,8 +66,14 @@ public:
         actionSave->setObjectName(QString::fromUtf8("actionSave"));
         actionAbout_Qt = new QAction(MainWindow);
         actionAbout_Qt->setObjectName(QString::fromUtf8("actionAbout_Qt"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/qt-logo.gif"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAbout_Qt->setIcon(icon2);
         actionAbout_this_project = new QAction(MainWindow);
         actionAbout_this_project->setObjectName(QString::fromUtf8("actionAbout_this_project"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/kontact.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAbout_this_project->setIcon(icon3);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);

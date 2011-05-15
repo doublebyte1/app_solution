@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>About this project</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="app_new.qrc">
+    <normaloff>:/app_new/medfisis.ico</normaloff>:/app_new/medfisis.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWebView" name="webView">
@@ -59,7 +63,9 @@
    <header>QtWebKit/QWebView</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="app_new.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushClose</sender>

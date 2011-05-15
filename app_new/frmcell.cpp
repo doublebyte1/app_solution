@@ -46,10 +46,12 @@ void FrmCell::onShowFrameDetails()
         return;
     }
 
+    //TODO: check if there is overlap with the temporary frame to send a flag
     QList<int> blackList;
     blackList << 1 << 2;
-    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY_ALL,
-        m_sample, blackList, false);
+    FrmFrameDetails::Options options=FrmFrameDetails::READ_TMP;
+    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
+        m_sample, blackList, options);
 }
 
 void FrmCell::previewRow(QModelIndex index)
@@ -247,6 +249,7 @@ void FrmCell::beforeShow()
 
     initCellModel();
     this->groupDetails->setVisible(false);
+    setSourceText(lbSource);
 }
 
 bool FrmCell::onButtonClick(QAbstractButton* button)
@@ -340,7 +343,7 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
                 while(tSampCell->canFetchMore())
                     tSampCell->fetchMore();
 
-                tSampCell->select();
+                //tSampCell->select();
                 QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
                 if (!idx.isValid()) bError=false;
                 else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
