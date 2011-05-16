@@ -75,6 +75,10 @@
    </property>
   </action>
   <action name="actionLoad">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/editcopy.png</normaloff>:/app_new/editcopy.png</iconset>
+   </property>
    <property name="text">
     <string>Load</string>
    </property>
@@ -111,6 +115,10 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/3floppy_unmount.png</normaloff>:/app_new/3floppy_unmount.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>

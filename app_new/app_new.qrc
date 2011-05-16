@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>3floppy_unmount.png</file>
+    <file>editcopy.png</file>
     <file>unmovable.png</file>
     <file>kontact.png</file>
     <file>qt-logo.gif</file>

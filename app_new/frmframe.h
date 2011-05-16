@@ -55,5 +55,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrameDetails::Mode                  m_curMode;
         bool                                   m_submitted;
         bool                                   m_tabsDefined;
+        int                                    m_curFrameTime;
 };
 #endif //FRMFRAME_H

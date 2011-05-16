@@ -50,13 +50,66 @@ void MainFrm::initUi()
      connect(actionAbout_this_project, SIGNAL(triggered()),this,
         SLOT(aboutThisProject () ),Qt::UniqueConnection);
 
+     connect(actionLoad, SIGNAL(triggered()),this,
+        SLOT(loadFile () ),Qt::UniqueConnection);
+
+     connect(actionSave, SIGNAL(triggered()),this,
+        SLOT(writeFile () ),Qt::UniqueConnection);
+
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
     toolbar->addAction(this->actionNew);
+    toolbar->addAction(this->actionLoad);
+    toolbar->addAction(this->actionSave);
     toolbar->addSeparator();
     toolbar->addAction(this->actionAbout_this_project);
     toolbar->addAction(this->actionAbout_Qt);
+}
+
+void MainFrm::loadFile()
+{
+    //TODO: open file
+}
+
+void MainFrm::writeFile()
+{
+    //TODO: check if a project is open or new
+    QString fileName = QFileDialog::getSaveFileName(this,
+     tr("Save Project"), "", tr("Project Files (*.xml)"));
+
+    if (!fileName.isEmpty())
+        CreateXMLFile(fileName);
+}
+
+void MainFrm::CreateXMLFile(const QString strFileName)
+{
+	QFile file(strFileName);
+ 
+	/*open a file */
+	if (!file.open(QIODevice::WriteOnly))
+	{
+	/* show wrror message if not able to open file */
+	QMessageBox::warning(0, "Read only", "The file is in read only mode");
+	}	
+	else
+	{
+		/*if file is successfully opened then create XML*/
+		QXmlStreamWriter* xmlWriter = new QXmlStreamWriter();
+		/* set device (here file)to streamwriter */
+		xmlWriter->setDevice(&file);
+		/* Writes a document start with the XML version number version. */
+		xmlWriter->writeStartDocument();
+		/* Writes a start element with name,
+		* Subsequent calls to writeAttribute() will add attributes to this element.
+		 here we creating a tag <persons>*/
+		xmlWriter->writeStartElement("persons");
+ 	    /*end tag persons*/
+		xmlWriter->writeEndElement();
+		/*end document */
+		xmlWriter->writeEndDocument();
+               delete xmlWriter;
+	}
 }
 
 void MainFrm::aboutThisProject()

@@ -43,6 +43,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    initPreviewTab(PreviewTab* tab);
         void                    initUi();
         void                    updateIndexes(const int from);
+        void                    CreateXMLFile(const QString strFileName);
 
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
@@ -73,5 +74,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    cleanupMsgBoxes();
         void                    rearrangeTabs(bool bLogBook);
         void                    aboutThisProject();
+        void                    loadFile();
+        void                    writeFile();
 };
 #endif //MAINFRM_H

@@ -11,6 +11,7 @@ GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
     tRefFrame=0;
     tFrameTime=0;
     m_tabsDefined=false;
+    m_curFrameTime=-1;
 
     customDtStart->setIsDateTime(true,false,false);
     customDtStart->setIsUTC(false);
@@ -292,12 +293,19 @@ void FrmFrame::apply()
         emit showStatus(tr("Record successfully inserted in the database!"));
         m_submitted=true;
         emit submitted(m_index,m_submitted);
+
+        while(tFrameTime->canFetchMore())
+            tFrameTime->fetchMore();
+
+        m_curFrameTime=tFrameTime->rowCount()-1;
     }
 }
 
 bool FrmFrame::next()
 {
     //We force a submitted record on this session, unless its coming here later...
+
+    if (m_curFrameTime==-1) return false;
 
     if (m_tabsDefined){
         emit forward(cmbPrexistent->currentText());
@@ -309,14 +317,14 @@ bool FrmFrame::next()
         while(tFrameTime->canFetchMore())
         tFrameTime->fetchMore();
 
-        QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
+        QModelIndex idx=tFrameTime->index(m_curFrameTime,0);
         if (!idx.isValid()){
             emit showError(tr("Could not retrieve index of the last inserted frame!"));
             return false;
         }
         m_sample->frameTimeId=idx.data().toInt();
 
-        idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
+        idx=tFrameTime->index(m_curFrameTime,1);
         if (!idx.isValid()){
             emit showError(tr("Could not retrieve index of the last inserted frame!"));
             return false;

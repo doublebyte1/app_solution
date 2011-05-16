@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Mon 16. May 10:14:31 2011
+** Created: Mon 16. May 17:32:42 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -58,22 +58,28 @@ public:
         actionNew->setIcon(icon1);
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/editcopy.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionLoad->setIcon(icon2);
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName(QString::fromUtf8("actionExit"));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionSave = new QAction(MainWindow);
         actionSave->setObjectName(QString::fromUtf8("actionSave"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/3floppy_unmount.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionSave->setIcon(icon3);
         actionAbout_Qt = new QAction(MainWindow);
         actionAbout_Qt->setObjectName(QString::fromUtf8("actionAbout_Qt"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/qt-logo.gif"), QSize(), QIcon::Normal, QIcon::Off);
-        actionAbout_Qt->setIcon(icon2);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app_new/qt-logo.gif"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAbout_Qt->setIcon(icon4);
         actionAbout_this_project = new QAction(MainWindow);
         actionAbout_this_project->setObjectName(QString::fromUtf8("actionAbout_this_project"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/app_new/kontact.png"), QSize(), QIcon::Normal, QIcon::Off);
-        actionAbout_this_project->setIcon(icon3);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app_new/kontact.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAbout_this_project->setIcon(icon5);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
