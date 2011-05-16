@@ -569,34 +569,39 @@ bool FrameView::verifyChanges()
     foreach (QModelIndex index, mil)
     {
         QModelIndex mapIdx=pModel->mapToSource(index);
-        if (mapIdx.isValid()){
-            if (mapIdx.data()!=-1){//item moved
+        if (mapIdx.column()==6){
 
-                    //Item did not effectively *moved*!
-                    if (mapIdx.data()==mapIdx.parent().internalId()){
+            if (mapIdx.isValid()){
+                if (mapIdx.data()!=-1){//item moved
 
-                    QModelIndex rIdx=pModel->sourceModel()->index(
-                    mapIdx.row(),5,mapIdx.parent());
+                        //Item did not effectively *moved*!
+                        if (mapIdx.data()==mapIdx.parent().internalId()){
 
-                    if (rIdx.isValid()){
-                        if (!rIdx.data().toString().isEmpty())
-                            pModel->sourceModel()->setData(rIdx,tr(""),Qt::DisplayRole);
-                            pModel->sourceModel()->setData(rIdx,tr(""),Qt::EditRole);
-                            pModel->sourceModel()->setData(mapIdx,-1);// (also remove origin)
-                    }
+                        QModelIndex rIdx=pModel->sourceModel()->index(
+                        mapIdx.row(),5,mapIdx.parent());
 
-                    }
+                        if (rIdx.isValid()){
+                            if (!rIdx.data().toString().isEmpty())
+                                pModel->sourceModel()->setData(rIdx,tr(""),Qt::DisplayRole);
+                                pModel->sourceModel()->setData(rIdx,tr(""),Qt::EditRole);
+                                pModel->sourceModel()->setData(mapIdx,-1);// (also remove origin)
+                        }
 
-            }else{//clear reasons for items that did not move!
+                        }
 
-                    QModelIndex rIdx=pModel->sourceModel()->index(
-                    mapIdx.row(),5,mapIdx.parent());
+                }else{//clear reasons for items that did not move!
 
-                    if (rIdx.isValid()){
-                        if (!rIdx.data().toString().isEmpty())
-                            pModel->sourceModel()->setData(rIdx,tr(""));
-                    }
+                        //qDebug() << mapIdx.parent().column() << endl;
 
+                        QModelIndex rIdx=pModel->sourceModel()->index(
+                        mapIdx.row(),5,mapIdx.parent());
+
+                        if (rIdx.isValid()){
+                            if (!rIdx.data().toString().isEmpty())
+                                pModel->sourceModel()->setData(rIdx,tr(""));
+                        }
+
+                }
             }
         }
     }

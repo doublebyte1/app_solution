@@ -57,6 +57,11 @@ TreeItem *TreeItem::parent()
     return parentItem;
 }
 
+void TreeItem::setParent(TreeItem *p)
+{
+    parentItem=p;
+}
+
 bool TreeItem::removeChild(int row)
 {
     if (row < 0 || row >= childItems.count())

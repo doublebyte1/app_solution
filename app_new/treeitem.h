@@ -28,6 +28,7 @@ public:
     QVariant data(int column) const;
     bool insertChild(int row, TreeItem *item);
     TreeItem *parent();
+    void setParent(TreeItem *p);
     bool removeChild(int row);
     int row() const;
     bool setData(int column, const QVariant &data);

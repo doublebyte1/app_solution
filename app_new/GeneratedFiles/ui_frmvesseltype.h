@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Sun 15. May 18:49:17 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Mon 16. May 10:14:31 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

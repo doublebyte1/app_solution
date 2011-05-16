@@ -27,6 +27,8 @@ QWidget(parent, flags){
 
 FrmFrameDetails::~FrmFrameDetails()
 {
+    emit hideFrameDetails(true);
+
     if (treeView!=0) delete treeView;
     if (model!=0) delete model;
     if (modelInterface!=0) delete modelInterface;
@@ -96,7 +98,6 @@ void FrmFrameDetails::apply()
         mapper->toLast();
 
     }else{
-        //TODO: write temp changes
             int ct;
             if (!modelInterface->writeTempChanges(m_persistence,m_sample,ct)){
                 QString strErrors;

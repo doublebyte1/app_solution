@@ -176,6 +176,7 @@ bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persist
             }
 
         }else{//bin
+            //On the bin, vessels can be stored at any level!
 
             TreeItem* frameBin=root->child(i);
 
@@ -183,15 +184,19 @@ bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persist
 
                 TreeItem* gls=frameBin->child(j);
 
-                if (writeTempChangesVessel(persistence,true,gls,sample))
+                if (writeTempChangesVessel(persistence,true,gls,sample))//root
                             ct++;
 
                 for (int k=0; k < gls->childCount(); ++k){
                     TreeItem* ls=gls->child(k);
+
+                    if (writeTempChangesVessel(persistence,true,ls,sample))//gls
+                        ct++;
+
                     for (int l=0; l < ls->childCount(); ++l){
                         TreeItem* vs=ls->child(l);
 
-                        if (writeTempChangesVessel(persistence,true,vs,sample))
+                        if (writeTempChangesVessel(persistence,true,vs,sample))//ls
                             ct++;
                     }
                 }
@@ -295,10 +300,11 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
         if (!idx.isValid())
             return false;
 
+        //n.b.: the root structure is flattened!
         QVariant to;
-        if (bBin)
-            to=QVariant(outsideId);
-        else
+        //if (bBin)
+            //to=QVariant(outsideId);
+        //else
             to=vs->parent()->data(4);
 
         if (!tChangesTempVessel->setData(idx,to)) return false;
@@ -332,7 +338,8 @@ bool ModelInterface::findOrigin(TreeItem* vs, const int outsideId, int& lsId)
     //n.b.: IMPORTANT - check on the root bin too!
     if (bin.internalId()==internalId)
     {
-        lsId=outsideId;
+        //lsId=outsideId;
+        lsId=pBin->data(4).toInt();
         return true;
     }
 
@@ -346,7 +353,8 @@ bool ModelInterface::findOrigin(TreeItem* vs, const int outsideId, int& lsId)
                 //n.b.: search in the root first!
                 if (gls.internalId()==internalId)
                 {
-                    lsId=outsideId;
+                    //lsId=outsideId;
+                    lsId=pGls->data(4).toInt();
                     return true;
                 }
                 //than dive into the ls level
@@ -354,11 +362,13 @@ bool ModelInterface::findOrigin(TreeItem* vs, const int outsideId, int& lsId)
                 {
                     QModelIndex ls=treeModel->index(j,0,gls);
                     if (!ls.isValid()) return false;
+                    TreeItem *pLs = static_cast<TreeItem*>
                         (ls.internalPointer());
 
                     if (ls.internalId()==internalId)
                     {
-                        lsId=outsideId;
+                        //lsId=outsideId;
+                        lsId=pLs->data(4).toInt();
                         return true;
                     }
                 }
@@ -1184,6 +1194,10 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
             TreeItem *pGls = static_cast<TreeItem*>
                 (gls.internalPointer());
 
+            if (pGls->data(4).toInt()==from){
+                return search4Vessel(pGls,vesselId,to,bHasRecords);
+            }
+
             //than dive into the ls level
             for (int j=0; j < pGls->childCount(); ++j)
             {
@@ -1198,6 +1212,31 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
                 }
             }
     }
+
+    //Now search the root
+    TreeItem *pRoot = static_cast<TreeItem*>
+        (root.internalPointer());
+
+    for (int i=0; i < pRoot->childCount(); ++i)
+    {
+            QModelIndex gls=treeModel->index(i,0,root);
+            if (!gls.isValid()) return false;
+            TreeItem *pGls = static_cast<TreeItem*>
+                (gls.internalPointer());
+            for (int j=0; j < pGls->childCount(); ++j)
+            {
+                QModelIndex ls=treeModel->index(j,0,gls);
+                if (!ls.isValid()) return false;
+                TreeItem *pLs = static_cast<TreeItem*>
+                    (ls.internalPointer());
+
+                if (pLs->data(4).toInt()==from){
+                    return search4Vessel(pLs,vesselId,to,bHasRecords);
+                }
+            }
+
+    }
+
 
     return false;
 }
@@ -1234,7 +1273,52 @@ bool ModelInterface::moveVessel(const int to, TreeItem* item)
     QModelIndex root=treeModel->index(0,0,QModelIndex());
     if (!root.isValid()) return false;
 
-    //TODO: search bin
+    //Search inside the bin first
+    QModelIndex bin=treeModel->index(1,0,QModelIndex());
+    if (!bin.isValid()) return false;
+    TreeItem *pBin = static_cast<TreeItem*>
+        (bin.internalPointer());
+
+    if (pBin->data(4)==to)
+    {
+        pBin->appendChild(item);
+        item->setParent(pBin);
+        return true;
+    }
+
+    for (int i=0; i < pBin->childCount(); ++i)
+    {
+            QModelIndex gls=treeModel->index(i,0,bin);
+            if (!gls.isValid()) return false;
+            TreeItem *pGls = static_cast<TreeItem*>
+                (gls.internalPointer());
+
+            if (pGls->data(4)==to)
+            {
+                pGls->appendChild(item);
+                item->setParent(pGls);
+                return true;
+            }
+
+            //than dive into the ls level
+            for (int j=0; j < pGls->childCount(); ++j)
+            {
+                QModelIndex ls=treeModel->index(j,0,gls);
+                if (!ls.isValid()) return false;
+                    (ls.internalPointer());
+
+                TreeItem *pLs = static_cast<TreeItem*>
+                (ls.internalPointer());
+
+                if (pLs->data(4)==to)
+                {
+                    pLs->appendChild(item);
+                    item->setParent(pLs);
+                    return true;
+                }
+
+            }
+    }
 
     //Now search the root
     TreeItem *pRoot = static_cast<TreeItem*>
@@ -1256,7 +1340,7 @@ bool ModelInterface::moveVessel(const int to, TreeItem* item)
                 if (pLs->data(4)==to)
                 {
                     pLs->appendChild(item);
-                    //delete item;
+                    item->setParent(pLs);
                     return true;
                 }
             }
@@ -1415,6 +1499,8 @@ bool ModelInterface::createRootElements(QModelIndex& bin, QModelIndex& root)
     treeModel->setData(tId, QVariant(tr("Frame Root")));
     tId = treeModel->index(0, 2, _root);
     treeModel->setData(tId, QVariant(TreeModel::ROOT));
+    tId = treeModel->index(0, 6, _root);
+    treeModel->setData(tId, -1);
     tId = treeModel->index(0, 7, _root);
     treeModel->setData(tId, tr(":/app_new/exec.png"));
 
@@ -1429,6 +1515,9 @@ bool ModelInterface::createRootElements(QModelIndex& bin, QModelIndex& root)
     if (!getOutsideALS(outsideId)) return false;
     tId = treeModel->index(1, 4, _root);
     treeModel->setData(tId, outsideId);
+
+    tId = treeModel->index(1, 6, _root);
+    treeModel->setData(tId, -1);
 
     tId = treeModel->index(1, 7, _root);
     treeModel->setData(tId, tr(":/app_new/trashcan.png"));
