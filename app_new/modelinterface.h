@@ -62,17 +62,17 @@ public slots:
     void                                   removeFilters();
 
 private:
-    bool                                   mapData(const int inRow, const int outRow, const int cIn, const int cOut, const QModelIndex& parent, QSqlTableModel* tModel);
+    bool                                   mapData(const int inRow, const int outRow, const int cIn, const int cOut, const QModelIndex& parent, QSqlTableModel* tModel, QVariant& result);
     bool                                   createRootElements(QModelIndex& bin, QModelIndex& root);
     bool                                   readOneGLS(const int inRow, const int outRow, const QModelIndex& parent, const bool bBin, QModelIndex& cIndex);
     bool                                   readRefGLS(const QModelIndex& index, const bool bBin=true);
     bool                                   readOneLS(const int inRow, const int outRow, const QModelIndex& parent,const bool bBin, QModelIndex& cIndex);
     bool                                   readRefLS(const QModelIndex& parent, const bool bBin=true);
-    bool                                   readOneVS(const int inRow, const int outRow, const bool bBin, const QModelIndex& parent);
-    bool                                   readRefVS(const QModelIndex& parent, const bool bBin=true);
-    bool                                   readRoot(const int subFrameId, QModelIndex& root, const bool bBin);
-    bool                                   readBin(const int subFrameId, QModelIndex& bin, const bool bBin);
-    bool                                   readGenericStructure(const int subFrameId, QModelIndex& root, const bool bBin);
+    bool                                   readOneVS(const int inRow, const int outRow, const bool bBin, const QModelIndex& parent,const QVector<int>& vVesselsBlackList);
+    bool                                   readRefVS(const QModelIndex& parent, const QVector<int>& vVesselsBlackList, const bool bBin=true);
+    bool                                   readRoot(const int subFrameId, QModelIndex& root, const bool bBin, const QVector<int>& vVesselsBlackList);
+    bool                                   readBin(const int subFrameId, QModelIndex& bin, const bool bBin, const QVector<int>& vVesselsBlackList);
+    bool                                   readGenericStructure(const int subFrameId, QModelIndex& root, const bool bBin, const QVector<int>& vVesselsBlackList);
     void                                   initModels();
     bool                                   initModel
                                                 (QSqlTableModel* model, const QString strTable);
@@ -109,6 +109,8 @@ private:
     bool                                   writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample);
     bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
     bool                                   getOutsideALS(int& id);
+    bool                                   hasRecords(const int vesselId, const Sample* sample, bool& bHasRecords);
+    bool                                   getVesselsBlackList(const Sample* sample, QVector<int>& vVesselsBlackList);
 
     bool                                   buildSourceFilter(QString& strFilter);
     bool                                   getNonAbstractProperties(Sample* sample, int& id_source, int& id_cell, int &id_minor_strata);

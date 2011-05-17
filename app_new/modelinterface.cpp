@@ -955,16 +955,17 @@ bool ModelInterface::readOneGLS(const int inRow, const int outRow, const QModelI
 {
     treeModel->insertRow(outRow,parent);
 
-    if (!mapData(inRow,outRow,1,0,parent,tRefGLS))
+    QVariant var;
+    if (!mapData(inRow,outRow,1,0,parent,tRefGLS,var))
         return false;//Name
 
-    if (!mapData(inRow,outRow,3,1,parent,tRefGLS))
+    if (!mapData(inRow,outRow,3,1,parent,tRefGLS,var))
         return false;//Description
 
-    if (!mapData(inRow,outRow,4,3,parent,tRefGLS))
+    if (!mapData(inRow,outRow,4,3,parent,tRefGLS,var))
         return false;//Comments
 
-    if (!mapData(inRow,outRow,0,4,parent,tRefGLS))
+    if (!mapData(inRow,outRow,0,4,parent,tRefGLS,var))
         return false;//ID
 
     QModelIndex gls = treeModel->index(outRow, 2, parent);
@@ -996,16 +997,17 @@ bool ModelInterface::readOneLS(const int inRow, const int outRow, const QModelIn
 {
     treeModel->insertRow(outRow,parent);
 
-    if (!mapData(inRow,outRow,4,0,parent,tRefLS))
+    QVariant var;
+    if (!mapData(inRow,outRow,4,0,parent,tRefLS,var))
         return false;//Name
 
-    if (!mapData(inRow,outRow,6,1,parent,tRefLS))
+    if (!mapData(inRow,outRow,6,1,parent,tRefLS,var))
         return false;//Description
 
-    if (!mapData(inRow,outRow,7,3,parent,tRefLS))
+    if (!mapData(inRow,outRow,7,3,parent,tRefLS,var))
         return false;//Comments
 
-    if (!mapData(inRow,outRow,0,4,parent,tRefLS))
+    if (!mapData(inRow,outRow,0,4,parent,tRefLS,var))
         return false;//ID
 
     QModelIndex ls = treeModel->index(outRow, 2, parent);
@@ -1033,17 +1035,18 @@ bool ModelInterface::readRefLS(const QModelIndex& parent,const bool bBin)
     return true;
 }
 
-bool ModelInterface::readOneVS(const int inRow, const int outRow, const bool bBin, const QModelIndex& parent)
+bool ModelInterface::readOneVS(const int inRow, const int outRow, const bool bBin, const QModelIndex& parent, const QVector<int>& vVesselsBlackList)
 {
     treeModel->insertRow(outRow,parent);
 
-    if (!mapData(inRow,outRow,10,0,parent,tRefVessels))
+    QVariant var;
+    if (!mapData(inRow,outRow,10,0,parent,tRefVessels,var))
         return false;//Name
 
-    if (!mapData(inRow,outRow,7,3,parent,tRefVessels))
+    if (!mapData(inRow,outRow,7,3,parent,tRefVessels,var))
         return false;//Comments
 
-    if (!mapData(inRow,outRow,0,4,parent,tRefVessels))
+    if (!mapData(inRow,outRow,0,4,parent,tRefVessels,var))
         return false;//VesselID
 
     QModelIndex vs = treeModel->index(outRow, 2, parent);
@@ -1056,21 +1059,34 @@ bool ModelInterface::readOneVS(const int inRow, const int outRow, const bool bBi
     treeModel->setData(vs, bBin?tr(":/app_new/vesseld.png"):
         tr(":/app_new/vessel.png"));//symb
 
+    vs = treeModel->index(outRow, 8, parent);
+    treeModel->setData(vs, vVesselsBlackList.contains(var.toInt())?true: false);
+
     return true;
 }
 
-bool ModelInterface::readRefVS(const QModelIndex& parent, const bool bBin)
+bool ModelInterface::readRefVS(const QModelIndex& parent, const QVector<int>& vVesselsBlackList, const bool bBin)
 {
     for (int i=0; i < tRefVessels->rowCount(); ++i)
     {
-        if (!readOneVS(i,i,bBin,parent)) return false;
+        if (!readOneVS(i,i,bBin,parent,vVesselsBlackList)) return false;
     }
 
     return true;
 }
 
-bool ModelInterface::readModel(const Sample* sample/*const int frameId*/, const FrmFrameDetails::Options options)
+bool ModelInterface::readModel(const Sample* sample, const FrmFrameDetails::Options options)
 {
+    //TODO: if tmp, initialize query to have the vessel list: pass the list to the vessels -> if they re in, they re unmovable
+
+    QVector<int> vVesselsBlackList;
+    if (options & FrmFrameDetails::READ_TMP)
+    {
+        if (!getVesselsBlackList(sample,vVesselsBlackList))
+            return false;
+    }
+    //TODO: pass this to the vessels
+
     //Read all the reference tables and put them on the bin
     QModelIndex bin;
     QModelIndex root;
@@ -1085,9 +1101,9 @@ bool ModelInterface::readModel(const Sample* sample/*const int frameId*/, const 
     for (int i=0; i < tSubFrame->rowCount(); ++i)
     {
         if (tSubFrame->index(i,1).data()==1){
-            if (!readRoot(tSubFrame->index(i,0).data().toInt(),root,false)) return false;
+            if (!readRoot(tSubFrame->index(i,0).data().toInt(),root,false,vVesselsBlackList)) return false;
         }else{
-            if (!readBin(tSubFrame->index(i,0).data().toInt(),bin,true)) return false;
+            if (!readBin(tSubFrame->index(i,0).data().toInt(),bin,true,vVesselsBlackList)) return false;
         }
     }
 
@@ -1100,12 +1116,57 @@ bool ModelInterface::readModel(const Sample* sample/*const int frameId*/, const 
     return true;
 }
 
+
+bool ModelInterface::getVesselsBlackList(const Sample* sample, QVector<int>& vVesselsBlackList)
+{
+    QSqlQuery query;
+    QString strQuery=
+
+    tr("SELECT     TOP (100) PERCENT dbo.Abstract_Sampled_Vessels.VesselID, dbo.Sampled_Cell_Vessel_Types.id_cell") +
+    tr(" FROM         dbo.Sampled_Cell_Vessel_Types INNER JOIN") +
+    tr("                      dbo.Sampled_Cell_Vessels ON dbo.Sampled_Cell_Vessel_Types.ID = dbo.Sampled_Cell_Vessels.id_cell_vessel_types INNER JOIN") +
+    tr("                      dbo.Abstract_Sampled_Vessels ON dbo.Sampled_Cell_Vessels.ID = dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels") +
+    tr(" WHERE dbo.Sampled_Cell_Vessel_Types.id_cell IN (") +
+    tr("SELECT     ")+
+    tr("  dbo.Sampled_Cell.ID FROM       ")+
+    tr("  dbo.Sampled_Cell INNER JOIN                     ") +
+    tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
+    tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
+    tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
+    tr("( (Dates1.Date_Local <=      ")+
+    tr("  (SELECT     Date_Local")+
+    tr("  FROM          dbo.GL_Dates         ") +
+    tr("  WHERE      (ID =                        ")+
+    tr("  (SELECT     id_end_date                ")+
+    tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
+    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
+    tr(" (Dates2.Date_Local >=         ")+
+    tr("  (SELECT     Date_Local                ")+
+    tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
+    tr("  WHERE      (ID =                                ")+
+    tr("  (SELECT     id_start_date                       ")+
+    tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
+    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
+    tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")") +
+    tr(")");
+
+//    tr(" ORDER BY dbo.Abstract_Sampled_Vessels.VesselID DESC")
+    ;
+    //qDebug() << strQuery << endl;
+
+    query.prepare(strQuery);
+    if (!query.exec()) return false;
+    while (query.next()){
+        vVesselsBlackList.push_back(query.value(0).toInt());
+    }
+
+    return true;
+}
+
 bool ModelInterface::readTempChangesVessel(const Sample* sample)
 {
     //filter for cells that refer to the same frame, and that fall within the interval of this cell;
-    //TODO: also add the ones which the interval overlaps
-    // B'< A and B'< B
-    // A'< A AND A'< B
+    // A< B' and A'< B
 
     QSqlQuery query;
 
@@ -1115,19 +1176,23 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
     tr("  dbo.Sampled_Cell INNER JOIN                     ") +
     tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
     tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
-    tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (Dates1.Date_Local <=      ")+
+    tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
+    tr("( (Dates1.Date_Local <=      ")+
     tr("  (SELECT     Date_Local")+
     tr("  FROM          dbo.GL_Dates         ") +
     tr("  WHERE      (ID =                        ")+
-    tr("  (SELECT     id_start_date                ")+
+    tr("  (SELECT     id_end_date                ")+
     tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
-    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND (Dates2.Date_Local >=         ")+
+    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
+    tr(" (Dates2.Date_Local >=         ")+
     tr("  (SELECT     Date_Local                ")+
     tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
     tr("  WHERE      (ID =                                ")+
-    tr("  (SELECT     id_end_date                       ")+
+    tr("  (SELECT     id_start_date                       ")+
     tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
-    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")")
+    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
+    tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")")
+
     ;
 
     //qDebug() << strQuery << endl;
@@ -1156,14 +1221,28 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
             from=idx.data().toInt();//from
             idx=tChangesTempVessel->index(i,4);
             to=idx.data().toInt();//to
-            idx=tChangesTempVessel->index(i,8);
-            bool bHasRecords=idx.data().toInt();//hasRecords
+
+
+            //TODO: WE DONT NEED TO PASS THE HASRECORDS HERE!
+            //idx=tChangesTempVessel->index(i,8);
+            //bool bHasRecords=idx.data().toInt();//hasRecords
+
+            bool bHasRecords;
+            if (!hasRecords(vesselId, sample, bHasRecords))
+                return false;
+
             if (!search4VesselParent(vesselId, from, to, bHasRecords))
                 return false;
         }
     }
     return true;
 
+}
+
+bool ModelInterface::hasRecords(const int vesselId, const Sample* sample, bool& bHasRecords){
+
+    bHasRecords=false;
+    return true;
 }
 
 bool ModelInterface::search4VesselParent(const int vesselId, const int from, const int to, const bool bHasRecords)
@@ -1249,10 +1328,10 @@ bool ModelInterface::search4Vessel(TreeItem* item,const int vesselId, const int 
             QList<QVariant> lData;
             for (int j=0; j <= item->child(i)->columnCount();++j)
             {
-                if (j==7 && bHasRecords){
+                if (j==7 /*&& bHasRecords*/){
                     lData << tr(":/app_new/unmovable.png");
-                }else if (j==8 && bHasRecords){
-                    lData << true;
+                /*}else if (j==8 && bHasRecords){
+                    lData << true;*/
                 }else{
                     lData << item->child(i)->data(j);
                 }
@@ -1351,12 +1430,12 @@ bool ModelInterface::moveVessel(const int to, TreeItem* item)
 }
 
 
-bool ModelInterface::readRoot(const int subFrameId, QModelIndex& root, const bool bBin)
+bool ModelInterface::readRoot(const int subFrameId, QModelIndex& root, const bool bBin, const QVector<int>& vVesselsBlackList)
 {
-    return readGenericStructure(subFrameId,root,bBin);
+    return readGenericStructure(subFrameId,root,bBin, vVesselsBlackList);
 }
 
-bool ModelInterface::readGenericStructure(const int subFrameId, QModelIndex& root, const bool bBin)
+bool ModelInterface::readGenericStructure(const int subFrameId, QModelIndex& root, const bool bBin, const QVector<int>& vVesselsBlackList)
 {
     tLinkFr2GLS->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString());
 
@@ -1400,7 +1479,7 @@ bool ModelInterface::readGenericStructure(const int subFrameId, QModelIndex& roo
             for (int k=0; k < tLinkLS2Vessels->rowCount(); ++k)
             {
                 tRefVessels->setFilter(tr("VesselId=") + tLinkLS2Vessels->index(k,3).data().toString());
-                if (!readOneVS(0,k,bBin,ls)) return false;
+                if (!readOneVS(0,k,bBin,ls,vVesselsBlackList)) return false;
             }
         }
     }
@@ -1415,9 +1494,9 @@ bool ModelInterface::readGenericStructure(const int subFrameId, QModelIndex& roo
     return true;
 }
 
-bool ModelInterface::readBin(const int subFrameId, QModelIndex& bin, const bool bBin)
+bool ModelInterface::readBin(const int subFrameId, QModelIndex& bin, const bool bBin, const QVector<int>& vVesselsBlackList)
 {
-    if (!readGenericStructure(subFrameId,bin,true)) return false;
+    if (!readGenericStructure(subFrameId,bin,true,vVesselsBlackList)) return false;
 
     tLinkGLS2LS->setFilter(tr("id_sub_frame=") + QVariant(subFrameId).toString());
 
@@ -1441,7 +1520,7 @@ bool ModelInterface::readBin(const int subFrameId, QModelIndex& bin, const bool 
             for (int k=0; k < tLinkLS2Vessels->rowCount(); ++k)
             {
                 tRefVessels->setFilter(tr("VesselId=") + tLinkLS2Vessels->index(k,3).data().toString());
-                if (!readOneVS(0,k,bBin,ls)) return false;
+                if (!readOneVS(0,k,bBin,ls,vVesselsBlackList)) return false;
             }
         }
     }
@@ -1455,7 +1534,7 @@ bool ModelInterface::readBin(const int subFrameId, QModelIndex& bin, const bool 
         if (index.data()==34){//TODO: get this value programatically
 
         tRefVessels->setFilter(tr("VesselId=") + tLinkLS2Vessels->index(k,3).data().toString());
-        if (!readOneVS(0,k,bBin,bin)) return false;
+        if (!readOneVS(0,k,bBin,bin,vVesselsBlackList)) return false;
 
         }
     }
@@ -1480,7 +1559,7 @@ bool ModelInterface::createModel()
         return false;
     if (!readRefLS(bin))
         return false;
-    if (!readRefVS(bin))
+    if (!readRefVS(bin,QVector<int>()))
         return false;
 
     return true;
@@ -1526,13 +1605,14 @@ bool ModelInterface::createRootElements(QModelIndex& bin, QModelIndex& root)
 }
 
 bool ModelInterface::mapData(const int inRow, const int outRow, const int cIn, const int cOut, const QModelIndex& parent,
-                              QSqlTableModel* tModel)
+                              QSqlTableModel* tModel, QVariant& result)
 {
     QModelIndex mIdx = treeModel->index(outRow, cOut, parent);
     if (!mIdx.isValid()) return false;
     QModelIndex tIdx = tModel->index(inRow, cIn);
     if (!tIdx.isValid()) return false;
     treeModel->setData(mIdx, tIdx.data());
+    result=tIdx.data();
 
     return true;
 }

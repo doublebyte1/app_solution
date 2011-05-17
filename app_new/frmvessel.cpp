@@ -383,11 +383,50 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
         }
 
         if (!bError)
-            return afterApply();
+            return afterApply() /*&& lockLastVessel()*/;
 
     }else return false;
 
     return false;
+}
+
+bool FrmVessel::lockLastVessel()
+{
+    QSqlQuery query;
+    QString strQuery=
+    tr(" SELECT     TOP (1) VesselID") +
+    tr(" FROM         dbo.Abstract_Sampled_Vessels") +
+    tr(" ORDER BY ID DESC");
+
+    query.prepare(strQuery);
+    if (!query.exec() || query.numRowsAffected()!=1){
+        emit showError(tr("Could not obtain the last inserted vessel!"));
+        return false;
+    }
+    query.first();
+
+    return lockVessel(query.value(0).toInt());
+}
+
+bool FrmVessel::lockVessel(const int vesselId)
+{
+    QSqlQuery query;
+    QString strQuery=
+
+    tr("UPDATE Abstract_Changes_Temp_Vessel") +
+    tr(" SET hasRecords=1") +
+    tr(" WHERE (id_cell=:cellId) and (VesselId=:vesselId)")
+    ;
+
+    query.prepare(strQuery);
+    query.bindValue(0,m_sample->cellId);
+    query.bindValue(1,vesselId);
+    if (!query.exec()){
+        emit showError(tr("Could not lock vessels!!"));
+        return false;
+    }
+
+    return true;
 }
 
 void FrmVessel::uI4NewRecord()
