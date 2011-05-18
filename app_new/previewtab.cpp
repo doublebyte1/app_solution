@@ -92,19 +92,7 @@ void PreviewTab::genericCreateRecord()
 
     if (m_tDateTime==0) return ;
     if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
-/*
-    while(m_model->canFetchMore())
-        m_model->fetchMore();
 
-    //Check for uncomitted changes
-    QModelIndex idx=m_model->index(m_model->rowCount()-1,0);
-    if (!idx.isValid()) return;
-
-    if (m_model->isDirty(idx))
-        m_model->revertAll();
-
-    m_model->insertRow(m_model->rowCount());
-*/
     insertRecordIntoModel(m_model);
 }
 

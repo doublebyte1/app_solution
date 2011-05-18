@@ -267,9 +267,10 @@ void MainFrm::updateIndexes(const int from)
 
 void MainFrm::addTab(int idx, bool bOk)
 {
-    if (bOk)
+    if (bOk && tabWidget->count()==(idx+1)){
         this->tabWidget->insertTab(vTabs.size()
         ,vTabs.at(idx+1), vTabs.at(idx+1)->title());
+    }
 }
 
 void MainFrm::tabChanged(int curIndex)
@@ -278,8 +279,10 @@ void MainFrm::tabChanged(int curIndex)
     //it tries to pass from the previous form to this one; if it fails, it goes to the previous, till its ok
 
     if (curIndex>0 && curIndex < tabWidget->count()){
-        if (!vTabs.at(curIndex-1)->next())
+        if (!vTabs.at(curIndex-1)->next()){
+            displayError(tr("Error attempting to change to tab ") + (curIndex-1),true);
             tabWidget->setCurrentIndex(curIndex-1);
+        }
     }
 }
 

@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Tue 17. May 17:16:00 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Wed 18. May 11:33:05 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -63,8 +63,10 @@ public:
     QSpinBox *spinOE;
     QSpinBox *spinOC;
     QDialogButtonBox *buttonBox;
-    QHBoxLayout *horizontalLayout_6;
+    QHBoxLayout *horizontalLayout_4;
     QSpacerItem *horizontalSpacer;
+    QGroupBox *groupBox;
+    QHBoxLayout *horizontalLayout_3;
     QPushButton *pushPrevious;
     QPushButton *pushNext;
 
@@ -72,7 +74,7 @@ public:
     {
         if (FrmVesselType->objectName().isEmpty())
             FrmVesselType->setObjectName(QString::fromUtf8("FrmVesselType"));
-        FrmVesselType->resize(710, 413);
+        FrmVesselType->resize(710, 438);
         verticalLayout = new QVBoxLayout(FrmVesselType);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         horizontalLayout_2 = new QHBoxLayout();
@@ -259,30 +261,37 @@ public:
 
         verticalLayout->addWidget(groupDetails);
 
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_6->addItem(horizontalSpacer);
+        horizontalLayout_4->addItem(horizontalSpacer);
 
-        pushPrevious = new QPushButton(FrmVesselType);
+        groupBox = new QGroupBox(FrmVesselType);
+        groupBox->setObjectName(QString::fromUtf8("groupBox"));
+        horizontalLayout_3 = new QHBoxLayout(groupBox);
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        pushPrevious = new QPushButton(groupBox);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushPrevious->setIcon(icon1);
 
-        horizontalLayout_6->addWidget(pushPrevious);
+        horizontalLayout_3->addWidget(pushPrevious);
 
-        pushNext = new QPushButton(FrmVesselType);
+        pushNext = new QPushButton(groupBox);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNext->setIcon(icon2);
 
-        horizontalLayout_6->addWidget(pushNext);
+        horizontalLayout_3->addWidget(pushNext);
 
 
-        verticalLayout->addLayout(horizontalLayout_6);
+        horizontalLayout_4->addWidget(groupBox);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
 
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(tableView);
@@ -352,6 +361,7 @@ public:
         label_8->setText(QApplication::translate("FrmVesselType", "Active Vessels", 0, QApplication::UnicodeUTF8));
         label_9->setText(QApplication::translate("FrmVesselType", "Inactive Vessels", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("FrmVesselType", "Vessels from Outside", 0, QApplication::UnicodeUTF8));
+        groupBox->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmVesselType", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmVesselType", "Next", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

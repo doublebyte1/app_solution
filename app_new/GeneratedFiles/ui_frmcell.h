@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Tue 17. May 17:16:01 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Wed 18. May 11:27:12 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -36,7 +36,8 @@ QT_BEGIN_NAMESPACE
 class Ui_frmCell
 {
 public:
-    QGridLayout *gridLayout_2;
+    QVBoxLayout *verticalLayout_5;
+    QHBoxLayout *horizontalLayout_7;
     QLabel *lbHeader;
     QLabel *lbSource;
     QLabel *label_13;
@@ -78,8 +79,10 @@ public:
     QSpinBox *spinOC;
     QPlainTextEdit *textComments;
     QLabel *label_12;
-    QHBoxLayout *horizontalLayout_6;
+    QHBoxLayout *horizontalLayout_8;
     QSpacerItem *horizontalSpacer;
+    QGroupBox *groupBox;
+    QHBoxLayout *horizontalLayout_6;
     QPushButton *pushPrevious;
     QPushButton *pushNext;
 
@@ -87,9 +90,11 @@ public:
     {
         if (frmCell->objectName().isEmpty())
             frmCell->setObjectName(QString::fromUtf8("frmCell"));
-        frmCell->resize(712, 583);
-        gridLayout_2 = new QGridLayout(frmCell);
-        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        frmCell->resize(712, 589);
+        verticalLayout_5 = new QVBoxLayout(frmCell);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
         lbHeader = new QLabel(frmCell);
         lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -99,22 +104,30 @@ public:
         lbHeader->setSizePolicy(sizePolicy);
         lbHeader->setStyleSheet(QString::fromUtf8("background-color:rgb(247, 247, 247)"));
 
-        gridLayout_2->addWidget(lbHeader, 0, 0, 1, 1);
+        horizontalLayout_7->addWidget(lbHeader);
 
         lbSource = new QLabel(frmCell);
         lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lbSource->sizePolicy().hasHeightForWidth());
+        lbSource->setSizePolicy(sizePolicy1);
         lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
 "font: 75 10pt \"Fixedsys\";"));
         lbSource->setFrameShape(QFrame::StyledPanel);
         lbSource->setFrameShadow(QFrame::Raised);
         lbSource->setScaledContents(true);
 
-        gridLayout_2->addWidget(lbSource, 0, 1, 1, 1);
+        horizontalLayout_7->addWidget(lbSource);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_7);
 
         label_13 = new QLabel(frmCell);
         label_13->setObjectName(QString::fromUtf8("label_13"));
 
-        gridLayout_2->addWidget(label_13, 1, 0, 1, 1);
+        verticalLayout_5->addWidget(label_13);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
@@ -135,11 +148,11 @@ public:
 
         toolButton = new QToolButton(frmCell);
         toolButton->setObjectName(QString::fromUtf8("toolButton"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(toolButton->sizePolicy().hasHeightForWidth());
-        toolButton->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(toolButton->sizePolicy().hasHeightForWidth());
+        toolButton->setSizePolicy(sizePolicy2);
 
         verticalLayout_4->addWidget(toolButton);
 
@@ -147,7 +160,7 @@ public:
         horizontalLayout_5->addLayout(verticalLayout_4);
 
 
-        gridLayout_2->addLayout(horizontalLayout_5, 2, 0, 1, 2);
+        verticalLayout_5->addLayout(horizontalLayout_5);
 
         groupDetails = new QGroupBox(frmCell);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -318,15 +331,19 @@ public:
         gridLayout->addWidget(label_12, 4, 1, 1, 1);
 
 
-        gridLayout_2->addWidget(groupDetails, 3, 0, 1, 2);
+        verticalLayout_5->addWidget(groupDetails);
 
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_6->addItem(horizontalSpacer);
+        horizontalLayout_8->addItem(horizontalSpacer);
 
-        pushPrevious = new QPushButton(frmCell);
+        groupBox = new QGroupBox(frmCell);
+        groupBox->setObjectName(QString::fromUtf8("groupBox"));
+        horizontalLayout_6 = new QHBoxLayout(groupBox);
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        pushPrevious = new QPushButton(groupBox);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -334,7 +351,7 @@ public:
 
         horizontalLayout_6->addWidget(pushPrevious);
 
-        pushNext = new QPushButton(frmCell);
+        pushNext = new QPushButton(groupBox);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -343,7 +360,10 @@ public:
         horizontalLayout_6->addWidget(pushNext);
 
 
-        gridLayout_2->addLayout(horizontalLayout_6, 4, 0, 1, 1);
+        horizontalLayout_8->addWidget(groupBox);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_8);
 
 #ifndef QT_NO_SHORTCUT
         label->setBuddy(cmbLS);
@@ -419,6 +439,7 @@ public:
         label_4->setText(QApplication::translate("frmCell", "Estimated", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("frmCell", "Calculated", 0, QApplication::UnicodeUTF8));
         label_12->setText(QApplication::translate("frmCell", "Comments", 0, QApplication::UnicodeUTF8));
+        groupBox->setTitle(QString());
         pushPrevious->setText(QApplication::translate("frmCell", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmCell", "Next", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

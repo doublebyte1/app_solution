@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>703</width>
-    <height>565</height>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -225,7 +225,11 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             <widget class="QSpinBox" name="spinET"/>
            </item>
            <item row="1" column="2">
-            <widget class="QSpinBox" name="spinCT"/>
+            <widget class="QSpinBox" name="spinCT">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -273,7 +277,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -288,25 +292,34 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushPrevious">
-       <property name="text">
-        <string>Previous</string>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string/>
        </property>
-       <property name="icon">
-        <iconset resource="app_new.qrc">
-         <normaloff>:/app_new/back.png</normaloff>:/app_new/back.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushNext">
-       <property name="text">
-        <string>Next</string>
-       </property>
-       <property name="icon">
-        <iconset resource="app_new.qrc">
-         <normaloff>:/app_new/forward.png</normaloff>:/app_new/forward.png</iconset>
-       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="pushPrevious">
+          <property name="text">
+           <string>Previous</string>
+          </property>
+          <property name="icon">
+           <iconset resource="app_new.qrc">
+            <normaloff>:/app_new/back.png</normaloff>:/app_new/back.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushNext">
+          <property name="text">
+           <string>Next</string>
+          </property>
+          <property name="icon">
+           <iconset resource="app_new.qrc">
+            <normaloff>:/app_new/forward.png</normaloff>:/app_new/forward.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

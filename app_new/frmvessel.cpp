@@ -385,8 +385,10 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
         if (!bError)
             return afterApply() /*&& lockLastVessel()*/;
 
-    }else return false;
+    }//else return false;
 
+    mapper1->toLast();
+    mapper2->toLast();
     return false;
 }
 

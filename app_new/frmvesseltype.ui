@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>710</width>
-    <height>413</height>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -314,7 +314,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -329,25 +329,34 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushPrevious">
-       <property name="text">
-        <string>Previous</string>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
+        <string/>
        </property>
-       <property name="icon">
-        <iconset resource="app_new.qrc">
-         <normaloff>:/app_new/back.png</normaloff>:/app_new/back.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushNext">
-       <property name="text">
-        <string>Next</string>
-       </property>
-       <property name="icon">
-        <iconset resource="app_new.qrc">
-         <normaloff>:/app_new/forward.png</normaloff>:/app_new/forward.png</iconset>
-       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="pushPrevious">
+          <property name="text">
+           <string>Previous</string>
+          </property>
+          <property name="icon">
+           <iconset resource="app_new.qrc">
+            <normaloff>:/app_new/back.png</normaloff>:/app_new/back.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushNext">
+          <property name="text">
+           <string>Next</string>
+          </property>
+          <property name="icon">
+           <iconset resource="app_new.qrc">
+            <normaloff>:/app_new/forward.png</normaloff>:/app_new/forward.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>

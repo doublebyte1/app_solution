@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Tue 17. May 17:16:01 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Wed 18. May 10:30:37 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
