@@ -30,6 +30,11 @@ FrmVesselType::~FrmVesselType()
     if (viewVesselTypes!=0) delete viewVesselTypes;
 }
 
+void FrmVesselType::onItemSelection()
+{
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+}
+
 void FrmVesselType::initMappers()
 {
     //NOTHING
@@ -71,9 +76,6 @@ void FrmVesselType::initMapper1()
 
 void FrmVesselType::previewRow(QModelIndex index)
 {
-    m_selectedIdx=index;//stores the index
-    emit submitted(this->m_index,true);
-
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -250,17 +252,7 @@ void FrmVesselType::filterModel4Combo()
 void FrmVesselType::initUI()
 {
     setHeader();
-
-    setPreviewTable(tableView);
-    tableView->setModel(viewVesselTypes);
-    tableView->setAlternatingRowColors(true);
-    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableView->verticalHeader()->hide();
-    tableView->horizontalHeader()->hide();
-    tableView->setSelectionMode(
-        QAbstractItemView::SingleSelection);
-    tableView->horizontalHeader()->setClickable(false);
-    tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+    initPreviewTable(tableView,viewVesselTypes);
 
     //initializing the container for the readonly!
     m_lWidgets << cmbTypes;
@@ -275,8 +267,12 @@ void FrmVesselType::initUI()
 
 bool FrmVesselType::updateSample()
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //updating the sample structure
-    QModelIndex idx=viewVesselTypes->index(m_selectedIdx.row(),0);
+    QModelIndex idx=viewVesselTypes->index(tableView->selectionModel()->currentIndex().row(),0);
+
     if (!idx.isValid()) return false;
     m_sample->vesselTypeId=idx.data().toInt();
     return true;
@@ -284,8 +280,12 @@ bool FrmVesselType::updateSample()
 
 bool FrmVesselType::getNextLabel(QString& strLabel)
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //sending the name
-    QModelIndex idx=viewVesselTypes->index(m_selectedIdx.row(),1);
+    QModelIndex idx=viewVesselTypes->index(tableView->selectionModel()->currentIndex().row(),1);
+
     if (!idx.isValid()) return false;
     strLabel=idx.data().toString();
     return true;

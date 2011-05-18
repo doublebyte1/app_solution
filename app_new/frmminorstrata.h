@@ -35,6 +35,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
 
         void                                   setActiveReason(bool bActive);
         void                                   disableReasonCombo();
+        void                                   onItemSelection();
 
     private:
         void                                   setPreviewQuery();

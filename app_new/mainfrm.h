@@ -57,11 +57,9 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
         QToolBar*               toolbar;
-        //bool                    m_bTabsDefined;
 
     private slots:
         void                    addTab(int idx, bool bOk);
-        void                    tabChanged(int curIndex);
         void                    initTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 

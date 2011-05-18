@@ -34,10 +34,13 @@ FrmVessel::~FrmVessel()
     if (tStrataVessels!=0) delete tStrataVessels;
 }
 
+void FrmVessel::onItemSelection()
+{
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+}
+
 void FrmVessel::previewRow(QModelIndex index)
 {
-    m_selectedIdx=index;//stores the index
-    //emit submitted(this->m_index,true);
 
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
@@ -78,6 +81,7 @@ void FrmVessel::previewRow(QModelIndex index)
     }
 
     pushNext->setEnabled(true);
+
 }
 
 void FrmVessel::setPreviewQuery()
@@ -154,16 +158,7 @@ void FrmVessel::initUI()
     setHeader();
 
     this->groupDetails->setVisible(false);
-
-    setPreviewTable(tableView);
-    tableView->setModel(viewVessel);
-    tableView->setAlternatingRowColors(true);
-    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableView->verticalHeader()->hide();
-    tableView->setSelectionMode(
-        QAbstractItemView::SingleSelection);
-    tableView->horizontalHeader()->setClickable(false);
-    tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+    initPreviewTable(tableView,viewVessel);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbVessel;
@@ -383,52 +378,13 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
         }
 
         if (!bError)
-            return afterApply() /*&& lockLastVessel()*/;
+            return afterApply();
 
-    }//else return false;
+    }
 
     mapper1->toLast();
     mapper2->toLast();
     return false;
-}
-
-bool FrmVessel::lockLastVessel()
-{
-    QSqlQuery query;
-    QString strQuery=
-    tr(" SELECT     TOP (1) VesselID") +
-    tr(" FROM         dbo.Abstract_Sampled_Vessels") +
-    tr(" ORDER BY ID DESC");
-
-    query.prepare(strQuery);
-    if (!query.exec() || query.numRowsAffected()!=1){
-        emit showError(tr("Could not obtain the last inserted vessel!"));
-        return false;
-    }
-    query.first();
-
-    return lockVessel(query.value(0).toInt());
-}
-
-bool FrmVessel::lockVessel(const int vesselId)
-{
-    QSqlQuery query;
-    QString strQuery=
-
-    tr("UPDATE Abstract_Changes_Temp_Vessel") +
-    tr(" SET hasRecords=1") +
-    tr(" WHERE (id_cell=:cellId) and (VesselId=:vesselId)")
-    ;
-
-    query.prepare(strQuery);
-    query.bindValue(0,m_sample->cellId);
-    query.bindValue(1,vesselId);
-    if (!query.exec()){
-        emit showError(tr("Could not lock vessels!!"));
-        return false;
-    }
-
-    return true;
 }
 
 void FrmVessel::uI4NewRecord()
@@ -560,19 +516,25 @@ void FrmVessel::filterModel4Combo()
 }
 
 bool FrmVessel::updateSample()
-{/*
+{
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //updating the sample structure
-    QModelIndex idx=viewCell->index(m_selectedIdx.row(),0);
-    if (!idx.isValid()) return false;
-    m_sample->cellId=idx.data().toInt();*/
+    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),0);
+
+    //TODO: update the vessel here
+    //m_sample->cellId=idx.data().toInt();
     return true;
 }
 
 bool FrmVessel::getNextLabel(QString& strLabel)
-{/*
+{
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //sending the name
-    QModelIndex idx=viewCell->index(m_selectedIdx.row(),1);
-    if (!idx.isValid()) return false;
-    strLabel=idx.data().toString();*/
+    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),1);
+    strLabel=idx.data().toString();
     return true;
 }

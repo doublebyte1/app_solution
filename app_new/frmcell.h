@@ -42,6 +42,8 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         */
         bool                                   onButtonClick(QAbstractButton * button);
         void                                   onShowFrameDetails();
+        void                                   onItemSelection();
+
 
     private:
         //! Filter combo box

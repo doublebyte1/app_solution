@@ -292,7 +292,6 @@ void FrmFrame::apply()
     {
         emit showStatus(tr("Record successfully inserted in the database!"));
         m_submitted=true;
-        emit submitted(m_index,m_submitted);
 
         while(tFrameTime->canFetchMore())
             tFrameTime->fetchMore();
@@ -313,6 +312,8 @@ bool FrmFrame::next()
     }
 
     if (m_submitted){
+
+        emit submitted(m_index,true);
 
         while(tFrameTime->canFetchMore())
         tFrameTime->fetchMore();
@@ -363,7 +364,6 @@ bool FrmFrame::next()
 
         emit isLogBook(m_sample->bLogBook);
 
-        //TODO: Check if there are GLS?
         m_tabsDefined=true;
         emit forward(cmbPrexistent->currentText());
         return true;

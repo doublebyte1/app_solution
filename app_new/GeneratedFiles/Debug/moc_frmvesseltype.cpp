@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmvesseltype.h'
 **
-** Created: Wed 18. May 10:30:44 2011
+** Created: Wed 18. May 16:08:28 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmVesselType[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -34,6 +34,7 @@ static const uint qt_meta_data_FrmVesselType[] = {
       15,   14,   14,   14, 0x08,
       36,   30,   14,   14, 0x08,
       72,   65,   60,   14, 0x08,
+     104,   14,   14,   14, 0x08,
 
        0        // eod
 };
@@ -42,6 +43,7 @@ static const char qt_meta_stringdata_FrmVesselType[] = {
     "FrmVesselType\0\0createRecord()\0index\0"
     "previewRow(QModelIndex)\0bool\0button\0"
     "onButtonClick(QAbstractButton*)\0"
+    "onItemSelection()\0"
 };
 
 const QMetaObject FrmVesselType::staticMetaObject = {
@@ -79,9 +81,10 @@ int FrmVesselType::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
         case 2: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 3: onItemSelection(); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

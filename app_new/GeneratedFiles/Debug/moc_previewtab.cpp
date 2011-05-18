@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Wed 18. May 10:30:36 2011
+** Created: Wed 18. May 18:00:38 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_PreviewTab[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,6 +36,7 @@ static const uint qt_meta_data_PreviewTab[] = {
       37,   11,   11,   11, 0x08,
       58,   52,   11,   11, 0x08,
       89,   82,   25,   11, 0x08,
+     121,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -44,6 +45,7 @@ static const char qt_meta_stringdata_PreviewTab[] = {
     "PreviewTab\0\0onShowForm()\0bool\0next()\0"
     "createRecord()\0index\0previewRow(QModelIndex)\0"
     "button\0onButtonClick(QAbstractButton*)\0"
+    "onItemSelection()\0"
 };
 
 const QMetaObject PreviewTab::staticMetaObject = {
@@ -82,9 +84,10 @@ int PreviewTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
         case 4: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 5: onItemSelection(); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }

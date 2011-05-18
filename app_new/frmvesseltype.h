@@ -39,6 +39,7 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   onButtonClick(QAbstractButton * button);
+        void                                   onItemSelection();
 
     private:
         //! Set Header widget

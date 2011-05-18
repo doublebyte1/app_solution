@@ -36,8 +36,12 @@ FrmMinorStrata::~FrmMinorStrata()
 
 bool FrmMinorStrata::updateSample()
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //updating the sample structure
-    QModelIndex idx=viewMinorStrata->index(m_selectedIdx.row(),0);
+    QModelIndex idx=viewMinorStrata->index(tableView->selectionModel()->currentIndex().row(),0);
+
     if (!idx.isValid()) return false;
     m_sample->minorStrataId=idx.data().toInt();
     return true;
@@ -45,8 +49,11 @@ bool FrmMinorStrata::updateSample()
 
 bool FrmMinorStrata::getNextLabel(QString& strLabel)
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //sending the name
-    QModelIndex idx=viewMinorStrata->index(m_selectedIdx.row(),1);
+    QModelIndex idx=viewMinorStrata->index(tableView->selectionModel()->currentIndex().row(),1);
     if (!idx.isValid()) return false;
     strLabel=idx.data().toString();
     return true;
@@ -68,9 +75,6 @@ void FrmMinorStrata::setActiveReason(bool bActive)
 
 void FrmMinorStrata::previewRow(QModelIndex index)
 {
-    emit submitted(this->m_index,true);
-    m_selectedIdx=index;//stores the index
-
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -295,7 +299,6 @@ bool FrmMinorStrata::onButtonClick(QAbstractButton* button)
 void FrmMinorStrata::initUI()
 {
     setHeader();
-    //this->groupDetails->setVisible(false);
 
     customDtStart->setIsDateTime(true,false,false);
     customDtStart->setIsUTC(false);
@@ -309,24 +312,13 @@ void FrmMinorStrata::initUI()
     buttonGroup->addButton(radioActive,0);
     buttonGroup->addButton(radioInactive,1);
 
-    tableView->setModel(viewMinorStrata);
-    tableView->setAlternatingRowColors(true);
-    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableView->verticalHeader()->hide();
-    tableView->setSelectionMode(
-        QAbstractItemView::SingleSelection);
-    tableView->horizontalHeader()->setClickable(false);
-    tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
-    //tableView->setItemDelegate(new ViewDelegate());
-
-    setPreviewTable(tableView);
+    initPreviewTable(tableView,viewMinorStrata);
 
     m_lWidgets << lineNew;
     m_lWidgets << label_3;
     m_lWidgets << cmbGLS;
     m_lWidgets << groupActivity;
     m_lWidgets << radioActive;
-    //m_lWidgets << horizontalLayout;
     m_lWidgets << radioInactive;
     m_lWidgets << cmbReasons;
     m_lWidgets << label_4;
@@ -336,7 +328,11 @@ void FrmMinorStrata::initUI()
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
 
-    pushNext->setEnabled(m_selectedIdx.isValid());
+}
+
+void FrmMinorStrata::onItemSelection()
+{
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmMinorStrata::setPreviewQuery()
@@ -375,13 +371,7 @@ void FrmMinorStrata::initModels()
     viewMinorStrata->setHeaderData(2, Qt::Horizontal, tr("End"));
     viewMinorStrata->setHeaderData(3, Qt::Horizontal, tr("Closed"));
 }
-/*
-void FrmMinorStrata::next()
-{
 
-    return PreviewTab::next();
-}
-*/
 void FrmMinorStrata::initMappers()
 {
     if (mapper1!=0) delete mapper1;

@@ -33,14 +33,20 @@ FrmCell::~FrmCell()
     if (viewCell!=0) delete viewCell;
 }
 
+
+void FrmCell::onItemSelection()
+{
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+}
+
 void FrmCell::onShowFrameDetails()
 {
-    if (!m_selectedIdx.isValid()){
+    if (!tableView->selectionModel()->hasSelection()){
         emit showError(tr("You must select one cell!"));
         return;
     }
 
-    QModelIndex idx=viewCell->index(m_selectedIdx.row(),0);
+    QModelIndex idx=viewCell->index(tableView->selectionModel()->currentIndex().row(),0);
     if (m_sample->cellId!=idx.data().toInt()){
         emit showError(tr("We only support changes in the last inserted cell!"));
         return;
@@ -56,8 +62,6 @@ void FrmCell::onShowFrameDetails()
 
 void FrmCell::previewRow(QModelIndex index)
 {
-    m_selectedIdx=index;//stores the index
-    emit submitted(this->m_index,true);
 
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
@@ -120,15 +124,15 @@ void FrmCell::previewRow(QModelIndex index)
 void FrmCell::setPreviewQuery()
 {
     viewCell->setQuery(
-tr("SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
-tr("                      F2.Date_Local, 103) AS [End Date] ") +
-tr("FROM         dbo.Sampled_Cell INNER JOIN") +
-tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
-tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
-tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
-tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(")") +
-tr(" ORDER BY dbo.Sampled_Cell.ID DESC")
-);
+    tr("SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
+    tr("                      F2.Date_Local, 103) AS [End Date] ") +
+    tr("FROM         dbo.Sampled_Cell INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
+    tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
+    tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(")") +
+    tr(" ORDER BY dbo.Sampled_Cell.ID DESC")
+    );
 
     tableView->hideColumn(0);
     resizeToVisibleColumns(tableView);
@@ -166,15 +170,7 @@ void FrmCell::initUI()
     connect(customDtEnd, SIGNAL(isDateTime(bool,int)), m_tDateTime,
         SLOT(amendDateTimeType(bool,int)));
 
-    setPreviewTable(tableView);
-    tableView->setModel(viewCell);
-    tableView->setAlternatingRowColors(true);
-    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    tableView->verticalHeader()->hide();
-    tableView->setSelectionMode(
-        QAbstractItemView::SingleSelection);
-    tableView->horizontalHeader()->setClickable(false);
-    tableView->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+    initPreviewTable(tableView,viewCell);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbLS;
@@ -470,8 +466,12 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
 
 bool FrmCell::updateSample()
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //updating the sample structure
-    QModelIndex idx=viewCell->index(m_selectedIdx.row(),0);
+    QModelIndex idx=viewCell->index(tableView->selectionModel()->currentIndex().row(),0);
+
     if (!idx.isValid()) return false;
     m_sample->cellId=idx.data().toInt();
     return true;
@@ -479,8 +479,11 @@ bool FrmCell::updateSample()
 
 bool FrmCell::getNextLabel(QString& strLabel)
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
     //sending the name
-    QModelIndex idx=viewCell->index(m_selectedIdx.row(),1);
+    QModelIndex idx=viewCell->index(tableView->selectionModel()->currentIndex().row(),1);
     if (!idx.isValid()) return false;
     strLabel=idx.data().toString();
     return true;

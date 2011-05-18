@@ -38,6 +38,8 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   onButtonClick(QAbstractButton * button);
+        void                                   onItemSelection();
+
         //void                                   onShowFrameDetails();
 
     private:
@@ -88,8 +90,6 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
                                                         int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels);
         bool                                   comitCellVessels(int& id);
         bool                                   comitStrataVessels(int& id);
-        bool                                   lockLastVessel();
-        bool                                   lockVessel(const int vesselId);
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tAVessel;

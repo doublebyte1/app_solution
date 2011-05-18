@@ -37,10 +37,10 @@ class FrmFrame : public GenericTab, public Ui::frmframe
 
     signals:
         void                                   isLogBook(bool bLogBook);
+        void                                   submitted(int index, bool bOk);
 
     private:
         void                                   setReadOnly(const bool bRO){(void)bRO;}//does nothing
-        //void                                   setHeader(){}//does nothing
 
         bool                                   getCurrentFrame(int& id);
         void                                   initModels();

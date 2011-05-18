@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>711</width>
-    <height>615</height>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -250,6 +250,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="pushNext">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Next</string>
           </property>

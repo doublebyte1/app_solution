@@ -132,10 +132,8 @@ class GenericTab : public QWidget
                                     QList<int>& blackList=QList<int>(), const FrmFrameDetails::Options options=FrmFrameDetails::ALLOW_NEW);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
-        void                   submitted(int idx, bool bOk);
 
     protected:
-        //virtual void            setHeader()=0;
         virtual void            initModels()=0;
         virtual void            initMappers()=0;
         virtual void            initUI()=0;

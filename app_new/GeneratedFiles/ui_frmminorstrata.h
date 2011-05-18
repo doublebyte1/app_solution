@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Wed 18. May 10:30:37 2011
+** Created: Wed 18. May 16:08:23 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -75,7 +75,7 @@ public:
     {
         if (frmminorstrata->objectName().isEmpty())
             frmminorstrata->setObjectName(QString::fromUtf8("frmminorstrata"));
-        frmminorstrata->resize(711, 615);
+        frmminorstrata->resize(711, 621);
         gridLayout_2 = new QGridLayout(frmminorstrata);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         lbHeader = new QLabel(frmminorstrata);
@@ -243,6 +243,7 @@ public:
 
         pushNext = new QPushButton(groupBackNext);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
+        pushNext->setEnabled(false);
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNext->setIcon(icon1);

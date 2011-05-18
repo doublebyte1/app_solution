@@ -355,6 +355,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
         </item>
         <item>
          <widget class="QPushButton" name="pushNext">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Next</string>
           </property>

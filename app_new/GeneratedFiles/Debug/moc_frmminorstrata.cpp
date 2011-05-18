@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Wed 18. May 10:30:47 2011
+** Created: Wed 18. May 16:08:32 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,6 +36,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
       73,   66,   61,   15, 0x08,
      113,  105,   15,   15, 0x08,
      135,   15,   15,   15, 0x08,
+     156,   15,   15,   15, 0x08,
 
        0        // eod
 };
@@ -45,6 +46,7 @@ static const char qt_meta_stringdata_FrmMinorStrata[] = {
     "previewRow(QModelIndex)\0bool\0button\0"
     "onButtonClick(QAbstractButton*)\0bActive\0"
     "setActiveReason(bool)\0disableReasonCombo()\0"
+    "onItemSelection()\0"
 };
 
 const QMetaObject FrmMinorStrata::staticMetaObject = {
@@ -84,9 +86,10 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 3: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 4: disableReasonCombo(); break;
+        case 5: onItemSelection(); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }

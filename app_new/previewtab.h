@@ -38,7 +38,8 @@ class PreviewTab : public GenericTab
     /*! In this function we set the table that displays the records;
       \sa setPreviewModel(QSqlRelationalTableModel* aModel), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
     */
-        void                                  setPreviewTable(QTableView* aTable){m_table=aTable;}
+        void                                  initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
+
     //! A pure virtual member.
     /*! In this function we set the query that displays the records on the preview container;
       \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
@@ -63,12 +64,12 @@ class PreviewTab : public GenericTab
       \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), setReadOnly(const bool bRO), filterModel4Combo(), uI4NewRecord()
     */
         virtual void                          setHeader()=0;
+
         void                                  genericCreateRecord();
         void                                  resizeEvent ( QResizeEvent * event );
         bool                                  afterApply();
         void                                  setSourceText(QLabel* label);
         QList<QWidget*>                       m_lWidgets;
-        QModelIndex                           m_selectedIdx;
 
     signals:
 
@@ -76,22 +77,34 @@ class PreviewTab : public GenericTab
         void                                  onShowForm();
 
     private slots:
+        //! Go to the next step
+        /*! The next is the slot that actually passes the information to the next tab (and adds it
+        if it is not visible), and therefore is crucial to the sampling process;
+        if we just change tabs, we do not pass any information around: we must 
+        press next to effectively navigate in the tree;
+        */
         bool                                  next();
         //! A pure virtual member.
         /*! Slot that inititializes a new record
-          \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button)
+          \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button), onItemSelection()
         */
         virtual void                          createRecord()=0;
         //! A pure virtual member.
         /*! Slot that previews a selected row
-          \sa createRecord(), onButtonClick(QAbstractButton * button)
+          \sa createRecord(), onButtonClick(QAbstractButton * button), onItemSelection()
         */
         virtual void                          previewRow(QModelIndex index)=0;
         //! A pure virtual member.
         /*! Slot that implements the two buttons on the preview/edit dialog: close and apply
-          \sa createRecord(), previewRow(QModelIndex index)
+          \sa createRecord(), previewRow(QModelIndex index), onItemSelection()
         */
         virtual bool                          onButtonClick(QAbstractButton * button)=0;
+        //! A pure virtual member.
+        /*! Slot that implements the behaviour corresponding to select an item on the table
+        (most of the times, it enables the pushNext button);
+          \sa createRecord(), previewRow(QModelIndex index), onButtonClick(QAbstractButton * button)
+          */
+        virtual void                          onItemSelection()=0;
 
     private:
         //! A pure virtual member.
@@ -104,6 +117,7 @@ class PreviewTab : public GenericTab
           \sa updateSample()
         */
         virtual bool                          getNextLabel(QString& strLabel)=0;
+
         QSqlRelationalTableModel*             m_model;/**< pointer for the main model in this form */
         QTableView*                           m_table;/**< pointer for the table in this form */
 };

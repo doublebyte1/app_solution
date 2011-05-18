@@ -171,6 +171,9 @@ void MainFrm::initTabs()
          connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
         SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
 
+         connect(pFrmFrame, SIGNAL(submitted(int,bool)), this,
+        SLOT(addTab(int,bool)),Qt::UniqueConnection);
+
         vTabs.push_back(pFrmFrame);
         this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
 
@@ -195,9 +198,6 @@ void MainFrm::initTabs()
 
         gridLayout->addWidget(pFrmFrameDetails);
         pFrmFrameDetails->hide();
-
-     connect(this->tabWidget, SIGNAL(currentChanged(int)),this,
-        SLOT(tabChanged(int)),Qt::UniqueConnection);
 
         // Connect all the signals
          for (int i = 0; i < vTabs.size(); ++i) {
@@ -224,9 +224,6 @@ void MainFrm::initTabs()
                  connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
                 SLOT(onShowForm()),Qt::UniqueConnection);
              }
-
-             connect(vTabs.at(i), SIGNAL(submitted(int,bool)), this,
-                SLOT(addTab(int,bool)),Qt::UniqueConnection);
 
              if (i>0)
                  tabWidget->setTabEnabled(i,false);
@@ -267,22 +264,9 @@ void MainFrm::updateIndexes(const int from)
 
 void MainFrm::addTab(int idx, bool bOk)
 {
-    if (bOk && tabWidget->count()==(idx+1)){
+    if (bOk && tabWidget->count()==(idx+1) && idx< vTabs.size()-1){
         this->tabWidget->insertTab(vTabs.size()
         ,vTabs.at(idx+1), vTabs.at(idx+1)->title());
-    }
-}
-
-void MainFrm::tabChanged(int curIndex)
-{
-    //Is this the behaviour we want?
-    //it tries to pass from the previous form to this one; if it fails, it goes to the previous, till its ok
-
-    if (curIndex>0 && curIndex < tabWidget->count()){
-        if (!vTabs.at(curIndex-1)->next()){
-            displayError(tr("Error attempting to change to tab ") + (curIndex-1),true);
-            tabWidget->setCurrentIndex(curIndex-1);
-        }
     }
 }
 
@@ -292,6 +276,7 @@ void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
 
     if (bNext){
         if (idx<tabWidget->count()){
+            addTab(idx,true);
             tabWidget->setCurrentIndex(idx+1);
         }
     }else{

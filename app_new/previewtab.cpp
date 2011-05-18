@@ -5,6 +5,7 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,parent,flags){
 
     m_model=0;
     m_table=0;
+
 }
 
 PreviewTab::~PreviewTab()
@@ -12,10 +13,31 @@ PreviewTab::~PreviewTab()
     //if (m_model!=0) delete m_model;//N.b.: dont delete model here: it does not belong to this class!
 }
 
+
+void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
+{
+    m_table=aTable;
+    m_table->setModel(view);
+
+    connect(m_table->selectionModel(), SIGNAL(selectionChanged 
+        (const QItemSelection &, const QItemSelection &)), this,
+            SLOT(onItemSelection()));
+
+    m_table->setAlternatingRowColors(true);
+    m_table->verticalHeader()->hide();
+    m_table->setSelectionMode(
+        QAbstractItemView::SingleSelection);
+    m_table->setSelectionBehavior( QAbstractItemView::SelectRows );
+    m_table->horizontalHeader()->setClickable(false);
+    m_table->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+}
+
 bool PreviewTab::afterApply()
 {
+    if (m_table==0 || m_model==0)
+        return false;
+
     setPreviewQuery();
-    m_table->selectRow(0);
     m_model->select();
 
     while(m_model->canFetchMore())
@@ -24,8 +46,7 @@ bool PreviewTab::afterApply()
     QModelIndex cIdx=m_model->index(m_model->rowCount()-1,0);
     if (!cIdx.isValid()) return false;
 
-    //selects the last index
-    m_table->selectionModel()->setCurrentIndex(cIdx,QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    m_table->selectRow(0);
 
     return true;
 }
@@ -64,15 +85,16 @@ void PreviewTab::onShowForm()
     //filter the relational model
     filterModel4Combo();
 
-    if (m_selectedIdx.isValid())
-        m_table->selectRow(m_selectedIdx.row());
+    if (m_table->model()->rowCount()>0){
+        m_table->selectRow(0);
+    }
 }
 
 bool PreviewTab::next()
 {
     //retrieve selected index
-    if (!m_selectedIdx.isValid()){
-        emit showError(tr("You must select one Cell!"));
+    if (!m_table->selectionModel()->currentIndex().isValid()){
+        emit showError(tr("You must select one item!"));
         return false;
     }
 
