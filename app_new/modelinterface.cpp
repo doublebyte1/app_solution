@@ -1121,40 +1121,72 @@ bool ModelInterface::readModel(const Sample* sample, const FrmFrameDetails::Opti
 bool ModelInterface::getVesselsBlackList(const Sample* sample, QVector<int>& vVesselsBlackList)
 {
     QSqlQuery query;
-    QString strQuery=
+    QString strQuery;
 
-    tr("SELECT     TOP (100) PERCENT dbo.Abstract_Sampled_Vessels.VesselID, dbo.Sampled_Cell_Vessel_Types.id_cell") +
-    tr(" FROM         dbo.Sampled_Cell_Vessel_Types INNER JOIN") +
-    tr("                      dbo.Sampled_Cell_Vessels ON dbo.Sampled_Cell_Vessel_Types.ID = dbo.Sampled_Cell_Vessels.id_cell_vessel_types INNER JOIN") +
-    tr("                      dbo.Abstract_Sampled_Vessels ON dbo.Sampled_Cell_Vessels.ID = dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels") +
-    tr(" WHERE dbo.Sampled_Cell_Vessel_Types.id_cell IN (") +
-    tr("SELECT     ")+
-    tr("  dbo.Sampled_Cell.ID FROM       ")+
-    tr("  dbo.Sampled_Cell INNER JOIN                     ") +
-    tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
-    tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
-    tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
-    tr("( (Dates1.Date_Local <=      ")+
-    tr("  (SELECT     Date_Local")+
-    tr("  FROM          dbo.GL_Dates         ") +
-    tr("  WHERE      (ID =                        ")+
-    tr("  (SELECT     id_end_date                ")+
-    tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
-    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
-    tr(" (Dates2.Date_Local >=         ")+
-    tr("  (SELECT     Date_Local                ")+
-    tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
-    tr("  WHERE      (ID =                                ")+
-    tr("  (SELECT     id_start_date                       ")+
-    tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
-    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
-    tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")") +
-    tr(")");
+    if (!sample->bLogBook){
+        strQuery=
+            tr("SELECT     TOP (100) PERCENT dbo.Abstract_Sampled_Vessels.VesselID, dbo.Sampled_Cell_Vessel_Types.id_cell") +
+            tr(" FROM         dbo.Sampled_Cell_Vessel_Types INNER JOIN") +
+            tr("                      dbo.Sampled_Cell_Vessels ON dbo.Sampled_Cell_Vessel_Types.ID = dbo.Sampled_Cell_Vessels.id_cell_vessel_types INNER JOIN") +
+            tr("                      dbo.Abstract_Sampled_Vessels ON dbo.Sampled_Cell_Vessels.ID = dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels") +
+            tr(" WHERE dbo.Sampled_Cell_Vessel_Types.id_cell IN (") +
+            tr("SELECT     ")+
+            tr("  dbo.Sampled_Cell.ID FROM       ")+
+            tr("  dbo.Sampled_Cell INNER JOIN                     ") +
+            tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
+            tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
+            tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
+            tr("( (Dates1.Date_Local <=      ")+
+            tr("  (SELECT     Date_Local")+
+            tr("  FROM          dbo.GL_Dates         ") +
+            tr("  WHERE      (ID =                        ")+
+            tr("  (SELECT     id_end_date                ")+
+            tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
+            tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
+            tr(" (Dates2.Date_Local >=         ")+
+            tr("  (SELECT     Date_Local                ")+
+            tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
+            tr("  WHERE      (ID =                                ")+
+            tr("  (SELECT     id_start_date                       ")+
+            tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
+            tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
+            tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")") +
+            tr(")");
+            //    tr(" ORDER BY dbo.Abstract_Sampled_Vessels.VesselID DESC")
+            ;
+    }else{
+        strQuery=
+            tr("SELECT     dbo.Abstract_Sampled_Vessels.VesselID, dbo.Sampled_Strata_Vessels.id_minor_strata") +
+            tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
+            tr("                      dbo.Sampled_Strata_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Strata_Vessels = dbo.Sampled_Strata_Vessels.ID")+
+            tr("            WHERE dbo.Sampled_Strata_Vessels.id_minor_strata IN ")+
+            tr(" (") +
+            tr(" SELECT     Ref_Minor_Strata.ID")+
+            tr(" FROM         dbo.Ref_Minor_Strata")+
+            tr(" INNER JOIN             ")+
+            tr(" dbo.GL_Dates AS Dates2 ON dbo.Ref_Minor_Strata.id_end_dt = Dates2.ID INNER JOIN                    ")+
+            tr(" dbo.GL_Dates AS Dates1 ON dbo.Ref_Minor_Strata.id_start_dt = Dates1.ID ")+
+            tr(" WHERE  ")+
+            tr(" (Dates1.Date_Local <=      ")+
+            tr(" (SELECT     Date_Local")+
+            tr(" FROM          dbo.GL_Dates         ")+
+            tr("WHERE      (ID =                        ")+
+            tr(" (SELECT     id_end_dt                ")+
+            tr(" FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1 ")+
+            tr(" WHERE      (ID = ") + QVariant(sample->minorStrataId).toString() +tr(")))) AND ")+
+            tr(" (Dates2.Date_Local >=         ")+
+            tr(" (SELECT     Date_Local                ")+
+            tr(" FROM          dbo.GL_Dates AS GL_Dates_1        ")+
+            tr(" WHERE      (ID =                                ")+
+            tr(" (SELECT     id_start_dt                       ")+
+            tr(" FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1   ")+
+            tr(" WHERE      (ID = ") + QVariant(sample->minorStrataId).toString() +tr(")) ) ) ) AND")+
+            tr(" (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (Ref_Minor_Strata.ID <>") + QVariant(sample->minorStrataId).toString() +tr(")")+
+            tr("  ) )");
 
-//    tr(" ORDER BY dbo.Abstract_Sampled_Vessels.VesselID DESC")
-    ;
+    }
+
     //qDebug() << strQuery << endl;
-
     query.prepare(strQuery);
     if (!query.exec()) return false;
     while (query.next()){
@@ -1170,31 +1202,59 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
     // A< B' and A'< B
 
     QSqlQuery query;
+    QString strQuery, strUnit;
 
-    QString strQuery=
-    tr("SELECT     ")+
-    tr("  dbo.Sampled_Cell.ID, dbo.Ref_Minor_Strata.id_frame_time, Dates1.Date_Local AS start_dt, Dates2.Date_Local AS end_dt FROM       ")+
-    tr("  dbo.Sampled_Cell INNER JOIN                     ") +
-    tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
-    tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
-    tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
-    tr("( (Dates1.Date_Local <=      ")+
-    tr("  (SELECT     Date_Local")+
-    tr("  FROM          dbo.GL_Dates         ") +
-    tr("  WHERE      (ID =                        ")+
-    tr("  (SELECT     id_end_date                ")+
-    tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
-    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
-    tr(" (Dates2.Date_Local >=         ")+
-    tr("  (SELECT     Date_Local                ")+
-    tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
-    tr("  WHERE      (ID =                                ")+
-    tr("  (SELECT     id_start_date                       ")+
-    tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
-    tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
-    tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")")
+    if (!sample->bLogBook){
+        strQuery=
+            tr("SELECT     ")+
+            tr("  dbo.Sampled_Cell.ID, dbo.Ref_Minor_Strata.id_frame_time, Dates1.Date_Local AS start_dt, Dates2.Date_Local AS end_dt FROM       ")+
+            tr("  dbo.Sampled_Cell INNER JOIN                     ") +
+            tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
+            tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
+            tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
+            tr("( (Dates1.Date_Local <=      ")+
+            tr("  (SELECT     Date_Local")+
+            tr("  FROM          dbo.GL_Dates         ") +
+            tr("  WHERE      (ID =                        ")+
+            tr("  (SELECT     id_end_date                ")+
+            tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
+            tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
+            tr(" (Dates2.Date_Local >=         ")+
+            tr("  (SELECT     Date_Local                ")+
+            tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
+            tr("  WHERE      (ID =                                ")+
+            tr("  (SELECT     id_start_date                       ")+
+            tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
+            tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
+            tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")")
+            ;
+            strUnit=("id_cell");
+    }else{
+        strQuery=
+        tr("SELECT     Ref_Minor_Strata.ID, id_start_dt, id_end_dt, id_frame_time, Dates1.Date_Local AS start_dt, Dates2.Date_Local AS end_dt") +
+        tr(" FROM         dbo.Ref_Minor_Strata") +
+        tr(" INNER JOIN             ") +
+        tr(" dbo.GL_Dates AS Dates2 ON dbo.Ref_Minor_Strata.id_end_dt = Dates2.ID INNER JOIN                    ") +
+        tr(" dbo.GL_Dates AS Dates1 ON dbo.Ref_Minor_Strata.id_start_dt = Dates1.ID ") +
+        tr(" WHERE  ")+
+        tr(" (Dates1.Date_Local <=      ")+
+        tr(" (SELECT     Date_Local")+
+        tr(" FROM          dbo.GL_Dates         ")+
+        tr(" WHERE      (ID =                        ")+
+        tr(" (SELECT     id_end_dt                ")+
+        tr(" FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1 ")+
+        tr(" WHERE      (ID = ") + QVariant(sample->minorStrataId).toString() +tr("))))) AND ")+
+        tr(" (Dates2.Date_Local >=         ")+
+        tr(" (SELECT     Date_Local                ")+
+        tr(" FROM          dbo.GL_Dates AS GL_Dates_1        ")+
+        tr(" WHERE      (ID =                                ")+
+        tr(" (SELECT     id_start_dt                       ")+
+        tr(" FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1   ")+
+        tr(" WHERE      (ID = ") + QVariant(sample->minorStrataId).toString() +tr(")) ) ) ) AND") +
+        tr(" (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (Ref_Minor_Strata.ID <>") + QVariant(sample->minorStrataId).toString() +tr(")");
 
-    ;
+        strUnit=("id_minor_strata");
+    }
 
     //qDebug() << strQuery << endl;
     query.prepare(strQuery);
@@ -1205,7 +1265,7 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
     while (query.next())
     {
         if (ct>0) strFilter.append(tr(" OR "));
-        strFilter.append(tr("id_cell=") + query.value(0).toString());
+        strFilter.append(strUnit + tr("=") + query.value(0).toString());
         ct++;
     }
 
@@ -1223,7 +1283,7 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
             idx=tChangesTempVessel->index(i,4);
             to=idx.data().toInt();//to
 
-            if (!search4VesselParent(vesselId, from, to/*, false*/))
+            if (!search4VesselParent(vesselId, from, to))
                 return false;
         }
     }
