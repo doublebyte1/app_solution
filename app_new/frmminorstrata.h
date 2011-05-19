@@ -37,6 +37,8 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   disableReasonCombo();
         void                                   onItemSelection();
 
+        void                                   onShowFrameDetails();
+
     private:
         void                                   setPreviewQuery();
         void                                   filterModel4Combo();

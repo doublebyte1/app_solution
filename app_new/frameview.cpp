@@ -213,24 +213,32 @@ void FrameView::dragMoveEvent(QDragMoveEvent * event )
                     int dropLevel=pItem->data(2).toInt();
                     QString strParentName=pItem->data(0).toString();
 
-                    QList<ComplexItem>::const_iterator i;
-                    for (i = mimeData->itemList()->begin(); i != mimeData->itemList()->end(); ++i){
+                    QSortFilterProxyModel *pModel=static_cast<QSortFilterProxyModel*>(model());
+                    if (pModel!=0){
 
-                        foreach (QPersistentModelIndex pIdx, (*i).m_indexList) {
+                        QList<ComplexItem>::const_iterator i;
+                        for (i = mimeData->itemList()->begin(); i != mimeData->itemList()->end(); ++i){
 
-                            if (pIdx.column()==2){
+                            foreach (QPersistentModelIndex pIdx, (*i).m_indexList) {
 
-                                int dragLevel=pIdx.data().toInt();
-                                if ( m_blackList.contains(dragLevel) ||
-                                    (dropLevel!=dragLevel-1 &&
-                                    strParentName.compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)!=0
-                                    ) || index==pIdx.parent()){
-                                    event->ignore();
-                                    return;
+                                if (pIdx.column()==2){
+
+                                    QModelIndex idHasRecords=pModel->sourceModel()->index(pIdx.row(),8,pIdx.parent());
+                                    bool bHasRecords=idHasRecords.data().toBool();
+
+                                    int dragLevel=pIdx.data().toInt();
+                                    if ( bHasRecords || m_blackList.contains(dragLevel) ||
+                                        (dropLevel!=dragLevel-1 &&
+                                        strParentName.compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)!=0
+                                        ) || index==pIdx.parent()){
+                                        event->ignore();
+                                        return;
+                                    }
                                 }
                             }
                         }
-                    }
+                    }//if proxymodel
+
                     return QTreeView::dragMoveEvent(event);
                 }
             }
@@ -382,23 +390,16 @@ void FrameView::dropEvent ( QDropEvent * event )
 
                             foreach (QPersistentModelIndex pIdx, (*i).m_indexList) {
 
-                                //if (index!=pIdx.parent()){
                                     if (pIdx.column()==2){
 
                                         int dragLevel=pIdx.data().toInt();
 
                                         QModelIndex idName=pModel->sourceModel()->index(pIdx.row(),0,pIdx.parent());
 
-                                        //check if its dropping on itself!
-                                        /*
-                                        TreeItem *curItem = static_cast<TreeItem*>
-                                            (idName.internalPointer());
-                                        if (curItem!=0){*/
-
                                             if (m_blackList.contains(dragLevel) ||
                                                 (dropLevel==dragLevel-1 || strParentName
                                                 .compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)==0
-                                                ) /*&& curItem!=pItem*/ && index!=pIdx.parent()){
+                                                ) && index!=pIdx.parent()){
 
                                                     //Set the origin
                                                     QModelIndex idx=pModel->sourceModel()->index(pIdx.row(),6,pIdx.parent());
@@ -412,9 +413,7 @@ void FrameView::dropEvent ( QDropEvent * event )
                                                         bOk=false;
 
                                         }else bOk=false;
-                                    //}else bOk=false;
                                 }
-                            //}else bOk=false;
 
                         }//foreach
                     }//for

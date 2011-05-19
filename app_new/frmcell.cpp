@@ -52,7 +52,6 @@ void FrmCell::onShowFrameDetails()
         return;
     }
 
-    //TODO: check if there is overlap with the temporary frame to send a flag
     QList<int> blackList;
     blackList << 1 << 2;
     FrmFrameDetails::Options options=FrmFrameDetails::READ_TMP;
@@ -339,11 +338,9 @@ bool FrmCell::onButtonClick(QAbstractButton* button)
                 while(tSampCell->canFetchMore())
                     tSampCell->fetchMore();
 
-                //tSampCell->select();
                 QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
                 if (!idx.isValid()) bError=false;
                 else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
-                //mapper1->toLast();
             }
         }
         return !bError;

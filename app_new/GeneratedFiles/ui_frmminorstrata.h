@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Wed 18. May 16:08:23 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 19. May 14:44:32 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -27,6 +27,8 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QTableView>
+#include <QtGui/QToolButton>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 #include "customtimectrl.h"
 
@@ -37,8 +39,12 @@ class Ui_frmminorstrata
 public:
     QGridLayout *gridLayout_2;
     QLabel *lbHeader;
+    QLabel *lbSource;
     QLabel *label_6;
     QTableView *tableView;
+    QVBoxLayout *verticalLayout_4;
+    QToolButton *toolButton;
+    QPushButton *pushNew;
     QLabel *label_5;
     QLineEdit *lineNew;
     QGroupBox *groupDetails;
@@ -67,8 +73,6 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QPushButton *pushPrevious;
     QPushButton *pushNext;
-    QPushButton *pushNew;
-    QLabel *lbSource;
     QButtonGroup *buttonGroup;
 
     void setupUi(QWidget *frmminorstrata)
@@ -89,6 +93,16 @@ public:
 
         gridLayout_2->addWidget(lbHeader, 0, 0, 1, 2);
 
+        lbSource = new QLabel(frmminorstrata);
+        lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
+"font: 75 10pt \"Fixedsys\";"));
+        lbSource->setFrameShape(QFrame::StyledPanel);
+        lbSource->setFrameShadow(QFrame::Raised);
+        lbSource->setScaledContents(true);
+
+        gridLayout_2->addWidget(lbSource, 0, 2, 1, 1);
+
         label_6 = new QLabel(frmminorstrata);
         label_6->setObjectName(QString::fromUtf8("label_6"));
 
@@ -99,6 +113,30 @@ public:
         tableView->setShowGrid(false);
 
         gridLayout_2->addWidget(tableView, 1, 1, 2, 1);
+
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        toolButton = new QToolButton(frmminorstrata);
+        toolButton->setObjectName(QString::fromUtf8("toolButton"));
+        toolButton->setEnabled(false);
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(toolButton->sizePolicy().hasHeightForWidth());
+        toolButton->setSizePolicy(sizePolicy1);
+
+        verticalLayout_4->addWidget(toolButton);
+
+        pushNew = new QPushButton(frmminorstrata);
+        pushNew->setObjectName(QString::fromUtf8("pushNew"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNew->setIcon(icon);
+
+        verticalLayout_4->addWidget(pushNew);
+
+
+        gridLayout_2->addLayout(verticalLayout_4, 2, 2, 2, 1);
 
         label_5 = new QLabel(frmminorstrata);
         label_5->setObjectName(QString::fromUtf8("label_5"));
@@ -131,11 +169,11 @@ public:
 
         groupActivity = new QGroupBox(groupDetails);
         groupActivity->setObjectName(QString::fromUtf8("groupActivity"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(groupActivity->sizePolicy().hasHeightForWidth());
-        groupActivity->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(groupActivity->sizePolicy().hasHeightForWidth());
+        groupActivity->setSizePolicy(sizePolicy2);
         gridLayout_3 = new QGridLayout(groupActivity);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         radioActive = new QRadioButton(groupActivity);
@@ -180,11 +218,11 @@ public:
 
         textComments = new QPlainTextEdit(groupDetails);
         textComments->setObjectName(QString::fromUtf8("textComments"));
-        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
-        textComments->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
+        textComments->setSizePolicy(sizePolicy3);
 
         gridLayout->addWidget(textComments, 1, 1, 1, 1);
 
@@ -219,34 +257,34 @@ public:
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        horizontalSpacer = new QSpacerItem(488, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_4->addItem(horizontalSpacer);
 
         groupBackNext = new QGroupBox(frmminorstrata);
         groupBackNext->setObjectName(QString::fromUtf8("groupBackNext"));
-        QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
-        groupBackNext->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy4(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
+        groupBackNext->setSizePolicy(sizePolicy4);
         horizontalLayout_3 = new QHBoxLayout(groupBackNext);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         pushPrevious = new QPushButton(groupBackNext);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
         pushPrevious->setEnabled(true);
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon1);
 
         horizontalLayout_3->addWidget(pushPrevious);
 
         pushNext = new QPushButton(groupBackNext);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
         pushNext->setEnabled(false);
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon2);
 
         horizontalLayout_3->addWidget(pushNext);
 
@@ -256,24 +294,6 @@ public:
 
         gridLayout_2->addLayout(horizontalLayout_4, 5, 0, 1, 3);
 
-        pushNew = new QPushButton(frmminorstrata);
-        pushNew->setObjectName(QString::fromUtf8("pushNew"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNew->setIcon(icon2);
-
-        gridLayout_2->addWidget(pushNew, 3, 2, 1, 1);
-
-        lbSource = new QLabel(frmminorstrata);
-        lbSource->setObjectName(QString::fromUtf8("lbSource"));
-        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
-"font: 75 10pt \"Fixedsys\";"));
-        lbSource->setFrameShape(QFrame::StyledPanel);
-        lbSource->setFrameShadow(QFrame::Raised);
-        lbSource->setScaledContents(true);
-
-        gridLayout_2->addWidget(lbSource, 0, 2, 1, 1);
-
 #ifndef QT_NO_SHORTCUT
         label_6->setBuddy(tableView);
         label_5->setBuddy(lineNew);
@@ -281,12 +301,12 @@ public:
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(frmminorstrata);
-        QObject::connect(pushNew, SIGNAL(clicked()), frmminorstrata, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmminorstrata, SLOT(onButtonClick(QAbstractButton*)));
         QObject::connect(radioActive, SIGNAL(clicked(bool)), frmminorstrata, SLOT(setActiveReason(bool)));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmminorstrata, SLOT(previewRow(QModelIndex)));
         QObject::connect(radioActive, SIGNAL(clicked(bool)), frmminorstrata, SLOT(disableReasonCombo()));
         QObject::connect(radioInactive, SIGNAL(clicked()), frmminorstrata, SLOT(disableReasonCombo()));
+        QObject::connect(pushNew, SIGNAL(clicked()), frmminorstrata, SLOT(createRecord()));
 
         QMetaObject::connectSlotsByName(frmminorstrata);
     } // setupUi
@@ -295,6 +315,7 @@ public:
     {
         frmminorstrata->setWindowTitle(QApplication::translate("frmminorstrata", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmminorstrata", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
+        lbSource->setText(QApplication::translate("frmminorstrata", "[SOURCE]", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmminorstrata", "Choose Minor Strata", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableView->setToolTip(QApplication::translate("frmminorstrata", "Choose minor strata (or create new one)", 0, QApplication::UnicodeUTF8));
@@ -305,6 +326,26 @@ public:
 #ifndef QT_NO_WHATSTHIS
         tableView->setWhatsThis(QApplication::translate("frmminorstrata", "In this widget we can choose a minor strata, or create a new one", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        toolButton->setToolTip(QApplication::translate("frmminorstrata", "Setup temporary frame changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        toolButton->setStatusTip(QApplication::translate("frmminorstrata", "Setup temporary frame changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        toolButton->setWhatsThis(QApplication::translate("frmminorstrata", "Setups temporary frame changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        toolButton->setText(QApplication::translate("frmminorstrata", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushNew->setToolTip(QApplication::translate("frmminorstrata", "Create new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushNew->setStatusTip(QApplication::translate("frmminorstrata", "Create new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushNew->setWhatsThis(QApplication::translate("frmminorstrata", "Creates new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushNew->setText(QString());
         label_5->setText(QApplication::translate("frmminorstrata", "Create New", 0, QApplication::UnicodeUTF8));
         groupDetails->setTitle(QApplication::translate("frmminorstrata", "Details", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("frmminorstrata", "Group of Landing Sites", 0, QApplication::UnicodeUTF8));
@@ -317,17 +358,6 @@ public:
         groupBackNext->setTitle(QString());
         pushPrevious->setText(QApplication::translate("frmminorstrata", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmminorstrata", "Next", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        pushNew->setToolTip(QApplication::translate("frmminorstrata", "Create new record", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        pushNew->setStatusTip(QApplication::translate("frmminorstrata", "Create new record", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        pushNew->setWhatsThis(QApplication::translate("frmminorstrata", "Creates new record", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        pushNew->setText(QString());
-        lbSource->setText(QApplication::translate("frmminorstrata", "[SOURCE]", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

@@ -300,12 +300,8 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
         if (!idx.isValid())
             return false;
 
-        //n.b.: the root structure is flattened!
         QVariant to;
-        //if (bBin)
-            //to=QVariant(outsideId);
-        //else
-            to=vs->parent()->data(4);
+        to=vs->parent()->data(4);
 
         if (!tChangesTempVessel->setData(idx,to)) return false;
 
@@ -1056,11 +1052,16 @@ bool ModelInterface::readOneVS(const int inRow, const int outRow, const bool bBi
     treeModel->setData(vs, -1);//origin
 
     vs = treeModel->index(outRow, 7, parent);
-    treeModel->setData(vs, bBin?tr(":/app_new/vesseld.png"):
-        tr(":/app_new/vessel.png"));//symb
+    if (vVesselsBlackList.contains(var.toInt())){
+        treeModel->setData(vs, tr(":/app_new/vesself.png"));
+    }else{
+        treeModel->setData(vs, bBin?tr(":/app_new/vesseld.png"):
+            tr(":/app_new/vessel.png"));//symb
+    }
 
     vs = treeModel->index(outRow, 8, parent);
-    treeModel->setData(vs, vVesselsBlackList.contains(var.toInt())?true: false);
+
+      treeModel->setData(vs, vVesselsBlackList.contains(var.toInt())?true: false);
 
     return true;
 }
@@ -1222,16 +1223,7 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
             idx=tChangesTempVessel->index(i,4);
             to=idx.data().toInt();//to
 
-
-            //TODO: WE DONT NEED TO PASS THE HASRECORDS HERE!
-            //idx=tChangesTempVessel->index(i,8);
-            //bool bHasRecords=idx.data().toInt();//hasRecords
-
-            bool bHasRecords;
-            if (!hasRecords(vesselId, sample, bHasRecords))
-                return false;
-
-            if (!search4VesselParent(vesselId, from, to, bHasRecords))
+            if (!search4VesselParent(vesselId, from, to/*, false*/))
                 return false;
         }
     }
@@ -1239,18 +1231,8 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
 
 }
 
-bool ModelInterface::hasRecords(const int vesselId, const Sample* sample, bool& bHasRecords){
-
-    bHasRecords=false;
-    return true;
-}
-
-bool ModelInterface::search4VesselParent(const int vesselId, const int from, const int to, const bool bHasRecords)
+bool ModelInterface::search4VesselParent(const int vesselId, const int from, const int to/*, const bool bHasRecords*/)
 {
-    //locate vessel
-    //move it
-    //flag it (in case its unmovable!)
-
     //loop till LS until find to
 
     QModelIndex root=treeModel->index(0,0,QModelIndex());
@@ -1263,7 +1245,7 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
         (bin.internalPointer());
 
     if (pBin->data(4).toInt()==from){
-        return search4Vessel(pBin,vesselId,to,bHasRecords);
+        return search4Vessel(pBin,vesselId,to);
     }
 
     for (int i=0; i < pBin->childCount(); ++i)
@@ -1273,8 +1255,8 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
             TreeItem *pGls = static_cast<TreeItem*>
                 (gls.internalPointer());
 
-            if (pGls->data(4).toInt()==from){
-                return search4Vessel(pGls,vesselId,to,bHasRecords);
+            if (pGls->data(2).toInt()==1 && pGls->data(4).toInt()==from){
+                return search4Vessel(pGls,vesselId,to);
             }
 
             //than dive into the ls level
@@ -1286,8 +1268,8 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
 
                 TreeItem *pLs = static_cast<TreeItem*>
                 (ls.internalPointer());
-                if (pLs->data(4).toInt()==from){
-                    return search4Vessel(pLs,vesselId,to,bHasRecords);
+                if (pLs->data(2).toInt()==1 && pLs->data(4).toInt()==from){
+                    return search4Vessel(pLs,vesselId,to);
                 }
             }
     }
@@ -1310,7 +1292,7 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
                     (ls.internalPointer());
 
                 if (pLs->data(4).toInt()==from){
-                    return search4Vessel(pLs,vesselId,to,bHasRecords);
+                    return search4Vessel(pLs,vesselId,to/*,bHasRecords*/);
                 }
             }
 
@@ -1320,7 +1302,7 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
     return false;
 }
 
-bool ModelInterface::search4Vessel(TreeItem* item,const int vesselId, const int to, const bool bHasRecords)
+bool ModelInterface::search4Vessel(TreeItem* item,const int vesselId, const int to)
 {
     for (int i=0; i < item->childCount(); ++i)
     {
@@ -1328,10 +1310,8 @@ bool ModelInterface::search4Vessel(TreeItem* item,const int vesselId, const int 
             QList<QVariant> lData;
             for (int j=0; j <= item->child(i)->columnCount();++j)
             {
-                if (j==7 /*&& bHasRecords*/){
+                if (j==7){
                     lData << tr(":/app_new/unmovable.png");
-                /*}else if (j==8 && bHasRecords){
-                    lData << true;*/
                 }else{
                     lData << item->child(i)->data(j);
                 }

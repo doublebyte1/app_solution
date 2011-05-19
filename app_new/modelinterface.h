@@ -103,13 +103,12 @@ private:
     bool                                   filterTables();
 
     bool                                   readTempChangesVessel(const Sample* sample);
-    bool                                   search4VesselParent(const int vesselId, const int from, const int to, const bool bHasRecords);
-    bool                                   search4Vessel(TreeItem* item,const int vesselId, const int to, const bool bHasRecords);
+    bool                                   search4VesselParent(const int vesselId, const int from, const int to/*, const bool bHasRecords*/);
+    bool                                   search4Vessel(TreeItem* item,const int vesselId, const int to/*, const bool bHasRecords*/);
     bool                                   moveVessel(const int to, TreeItem* item);
     bool                                   writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample);
     bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
     bool                                   getOutsideALS(int& id);
-    bool                                   hasRecords(const int vesselId, const Sample* sample, bool& bHasRecords);
     bool                                   getVesselsBlackList(const Sample* sample, QVector<int>& vVesselsBlackList);
 
     bool                                   buildSourceFilter(QString& strFilter);

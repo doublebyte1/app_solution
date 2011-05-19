@@ -20,6 +20,9 @@ PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"),parent, flags){
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
+    connect(toolButton, SIGNAL(clicked()), this,
+        SLOT(onShowFrameDetails()));
+
     initModels();
     initUI();
     initMappers();
@@ -32,6 +35,27 @@ FrmMinorStrata::~FrmMinorStrata()
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
     if (viewMinorStrata!=0) delete viewMinorStrata;
+}
+
+
+void FrmMinorStrata::onShowFrameDetails()
+{
+    if (!tableView->selectionModel()->hasSelection()){
+        emit showError(tr("You must select one minor strata!"));
+        return;
+    }
+
+    QModelIndex idx=viewMinorStrata->index(tableView->selectionModel()->currentIndex().row(),0);
+    if (m_sample->minorStrataId!=idx.data().toInt()){
+        emit showError(tr("We only support changes in the last inserted minor strata!"));
+        return;
+    }
+
+    QList<int> blackList;
+    blackList << 1 << 2;
+    FrmFrameDetails::Options options=FrmFrameDetails::READ_TMP;
+    emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
+        m_sample, blackList, options);
 }
 
 bool FrmMinorStrata::updateSample()
@@ -132,6 +156,8 @@ void FrmMinorStrata::uI4NewRecord()
     lineNew->clear();
     radioActive->click();
     textComments->clear();
+
+    toolButton->setEnabled(false);
 }
 
 void FrmMinorStrata::filterModel4Combo()
@@ -165,7 +191,6 @@ void FrmMinorStrata::filterModel4Combo()
      if (!strFilter.isEmpty())
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
      else{
-         qDebug() << query.numRowsAffected() << endl;
         emit showError(tr("Could not obtain a filter for Group of Landing Sites!"));
         return;
      }
@@ -177,6 +202,7 @@ void FrmMinorStrata::beforeShow()
 {
     this->groupDetails->setVisible(false);
     setSourceText(lbSource);
+    toolButton->setVisible(m_sample->bLogBook);
 }
 
 void FrmMinorStrata::createRecord()
@@ -290,7 +316,18 @@ bool FrmMinorStrata::onButtonClick(QAbstractButton* button)
         buttonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
 
         if (!bError){
-            bError=afterApply();
+            if (!afterApply()){
+                bError=false;
+            }else{
+                toolButton->setEnabled(true);
+
+                while(tRefMinorStrata->canFetchMore())
+                    tRefMinorStrata->fetchMore();
+
+                QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
+                if (!idx.isValid()) bError=false;
+                else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details
+            }
         }
         return !bError;
     } else return false;
@@ -328,6 +365,10 @@ void FrmMinorStrata::initUI()
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
 
+    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
+        SLOT(setEnabled(bool)));
+
+    toolButton->setEnabled(false);
 }
 
 void FrmMinorStrata::onItemSelection()

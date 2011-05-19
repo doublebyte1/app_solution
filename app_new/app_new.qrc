@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>vesself.png</file>
     <file>3floppy_unmount.png</file>
     <file>editcopy.png</file>
     <file>unmovable.png</file>
