@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmlegend.ui'
 **
-** Created: Fri 20. May 16:02:59 2011
+** Created: Fri 20. May 17:50:38 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -37,7 +37,7 @@ public:
     {
         if (FrmLegend->objectName().isEmpty())
             FrmLegend->setObjectName(QString::fromUtf8("FrmLegend"));
-        FrmLegend->resize(621, 300);
+        FrmLegend->resize(650, 300);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/kcoloredit.png"), QSize(), QIcon::Normal, QIcon::Off);
         FrmLegend->setWindowIcon(icon);
@@ -52,11 +52,14 @@ public:
         treeWidget->setFrameShape(QFrame::StyledPanel);
         treeWidget->setFrameShadow(QFrame::Sunken);
         treeWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        treeWidget->setProperty("showDropIndicator", QVariant(true));
         treeWidget->setAlternatingRowColors(true);
         treeWidget->setSelectionMode(QAbstractItemView::NoSelection);
         treeWidget->setIconSize(QSize(32, 37));
         treeWidget->setAutoExpandDelay(1);
         treeWidget->setRootIsDecorated(false);
+        treeWidget->setWordWrap(true);
+        treeWidget->setExpandsOnDoubleClick(false);
         treeWidget->setColumnCount(2);
         treeWidget->header()->setVisible(false);
 

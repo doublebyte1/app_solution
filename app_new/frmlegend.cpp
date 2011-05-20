@@ -19,7 +19,7 @@ QDialog(parent, flags){
 
     setupUi(this);
 
-    //init();
+    init();
 }
 
 FrmLegend::~FrmLegend()
@@ -133,9 +133,10 @@ void FrmLegend::init()
 
     treeWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
+    treeWidget->expandAll();
+
     for (int col=0; col < treeWidget->model()->columnCount(); ++col) {
         treeWidget->header()->setResizeMode(col,QHeaderView::ResizeToContents);
     }
 
-    treeWidget->expandAll();
 }
