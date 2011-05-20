@@ -19,10 +19,12 @@ QWidget(parent, flags){
     mapper=0;
     groupBox=0;
     nullDellegate=0;
+    //pFrmLegend=0;
 
     setupUi(this);
 
     initTree();
+    pFrmLegend=new FrmLegend();
 }
 
 FrmFrameDetails::~FrmFrameDetails()
@@ -34,6 +36,13 @@ FrmFrameDetails::~FrmFrameDetails()
     if (modelInterface!=0) delete modelInterface;
     if (mapper!=0) delete mapper;
     if (nullDellegate!=0) delete nullDellegate;
+    if (pFrmLegend!=0) delete pFrmLegend;
+}
+
+void FrmFrameDetails::showLegend()
+{
+    if (!pFrmLegend->isVisible())
+        pFrmLegend->show();
 }
 
 void FrmFrameDetails::cancel()
@@ -99,7 +108,7 @@ void FrmFrameDetails::apply()
 
     }else{
             int ct;
-            if (!modelInterface->writeTempChanges(m_persistence,m_sample,ct)){
+            if (!modelInterface->writeTempChanges(m_sample,ct)){
                 QString strErrors;
                 if (modelInterface->getErrors(strErrors))
                     emit showError(strErrors);
@@ -133,26 +142,19 @@ void FrmFrameDetails::undo()
 {
     bool bError=false;
 
-    //if (m_persistence==FrmFrameDetails::PERMANENT)
-    //{
+    if (!modelInterface->rollback(m_submitted,m_persistence)){
+        QString strErrors;
+        if (modelInterface->getErrors(strErrors))
+            emit showError(strErrors);
+        else
+            emit showError(tr("Could not rollback!"));
+        bError=true;
+    }else{
+        emit showStatus(tr("Successfully rollback!"));
+        bError=true;
+        emit hideFrameDetails(bError);
+    }
 
-        if (!modelInterface->rollback(m_submitted,m_persistence)){
-            QString strErrors;
-            if (modelInterface->getErrors(strErrors))
-                emit showError(strErrors);
-            else
-                emit showError(tr("Could not rollback!"));
-            bError=true;
-        }else{
-            emit showStatus(tr("Successfully rollback!"));
-            bError=true;
-            emit hideFrameDetails(bError);
-        }
-
-    //}else{
-        //TODO: undo temp changes
-
-    //}
     pushApply->setEnabled(bError);
     pushUndo->setEnabled(!bError);
     m_submitted=!bError;
@@ -325,8 +327,6 @@ void FrmFrameDetails::initTree()
     treeView->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     treeView->setAnimated(true);
-    //treeView->setSelectionMode(
-    //QAbstractItemView::SingleSelection);
     treeView->setAcceptDrops(true);
     treeView->setDropIndicatorShown(true);
     treeView->setAlternatingRowColors(true);

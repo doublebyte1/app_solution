@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframedetails.h'
 **
-** Created: Thu 19. May 08:40:03 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+** Created: Fri 20. May 16:15:31 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'frmframedetails.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.7.0. It"
+#error "This file was generated using the moc from 4.6.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,10 +20,10 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_FrmFrameDetails[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -44,6 +44,7 @@ static const uint qt_meta_data_FrmFrameDetails[] = {
      170,   16,   16,   16, 0x08,
      177,   54,   16,   16, 0x08,
      212,   16,   16,   16, 0x08,
+     227,   16,   16,   16, 0x08,
 
        0        // eod
 };
@@ -55,7 +56,7 @@ static const char qt_meta_stringdata_FrmFrameDetails[] = {
     "showError(QString,bool)\0showError(QString)\0"
     "back()\0cancel()\0apply()\0verify()\0"
     "undo()\0isClonedFromPreviousFrame(QString)\0"
-    "enableVerify()\0"
+    "enableVerify()\0showLegend()\0"
 };
 
 const QMetaObject FrmFrameDetails::staticMetaObject = {
@@ -100,9 +101,10 @@ int FrmFrameDetails::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 8: undo(); break;
         case 9: isClonedFromPreviousFrame((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 10: enableVerify(); break;
+        case 11: showLegend(); break;
         default: ;
         }
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
 }

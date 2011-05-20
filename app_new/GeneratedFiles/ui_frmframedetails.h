@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframedetails.ui'
 **
-** Created: Thu 19. May 16:34:55 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Fri 20. May 16:02:59 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -58,6 +58,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *pushExpand;
     QPushButton *pushCollapse;
+    QPushButton *pushLegend;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushBack;
     QPushButton *pushVerify;
@@ -210,6 +211,14 @@ public:
 
         horizontalLayout->addWidget(pushCollapse);
 
+        pushLegend = new QPushButton(frmframedetails);
+        pushLegend->setObjectName(QString::fromUtf8("pushLegend"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app_new/kcoloredit.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushLegend->setIcon(icon);
+
+        horizontalLayout->addWidget(pushLegend);
+
         horizontalSpacer = new QSpacerItem(37, 17, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
@@ -254,6 +263,7 @@ public:
         QObject::connect(pushUndo, SIGNAL(clicked()), frmframedetails, SLOT(undo()));
         QObject::connect(pushVerify, SIGNAL(clicked()), frmframedetails, SLOT(verify()));
         QObject::connect(cmbCloned, SIGNAL(currentIndexChanged(QString)), frmframedetails, SLOT(isClonedFromPreviousFrame(QString)));
+        QObject::connect(pushLegend, SIGNAL(clicked()), frmframedetails, SLOT(showLegend()));
 
         QMetaObject::connectSlotsByName(frmframedetails);
     } // setupUi
@@ -275,6 +285,16 @@ public:
 #endif // QT_NO_TOOLTIP
         pushExpand->setText(QApplication::translate("frmframedetails", "Expand All", 0, QApplication::UnicodeUTF8));
         pushCollapse->setText(QApplication::translate("frmframedetails", "Collapse All", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushLegend->setToolTip(QApplication::translate("frmframedetails", "View legend", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushLegend->setStatusTip(QApplication::translate("frmframedetails", "View legend", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushLegend->setWhatsThis(QApplication::translate("frmframedetails", "View legend", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushLegend->setText(QApplication::translate("frmframedetails", "Legend", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushBack->setToolTip(QApplication::translate("frmframedetails", "Go back", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

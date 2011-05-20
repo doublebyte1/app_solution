@@ -2,11 +2,14 @@
 #include <QtSql>
 #include "frmframedetails.h"
 #include "datemodel.h"
+#include "globaldefs.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
      #define new DEBUG_NEW
   #endif
+
+void filterTable(QSqlTableModel* table);
 
 //////////////////////////////////////////////////////////////////
 #ifndef SAMPLE_H
@@ -67,31 +70,7 @@ class NullRelationalDelegate : public QSqlRelationalDelegate
 };
 
 #endif //NULLRELATIONALDELEGATE_H
-/*
-//////////////////////////////////////////////////////////////////////
 
-#ifndef VIEWDELEGATE_H
-#define VIEWDELEGATE_H
-
-class ViewDelegate : public QItemDelegate
-{
-public:
-  ViewDelegate() : QItemDelegate()
-  {
-  }
- 
-    void ViewDelegate::paint(QPainter *painter,
-                              const QStyleOptionViewItem &option,
-                              const QModelIndex &index) const
-    {
-      QPixmap pix(22, 22);
-      pix.fill(Qt::red);
-      
-        }
-};
-
-#endif //VIEWDELEGATE_H
-*/
 //////////////////////////////////////////////////////////////////////
 #ifndef GENERICTAB_H
 #define GENERICTAB_H

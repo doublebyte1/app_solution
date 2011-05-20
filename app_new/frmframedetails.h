@@ -3,7 +3,7 @@
 #include "ui_frmframedetails.h"
 #include "dragdropmodel.h"
 #include "frameview.h"
-//#include "modelinterface.h"
+#include "frmlegend.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -74,6 +74,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         void                    undo();
         void                    isClonedFromPreviousFrame(QString str);
         void                    enableVerify();
+        void                    showLegend();
 
     private:
         Sample*                 m_sample;
@@ -86,10 +87,11 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         ModelInterface          *modelInterface;
         QDataWidgetMapper       *mapper;
         NullRelationalDelegate  *nullDellegate;
+        FrmLegend               *pFrmLegend;
 
-        bool                    setupItems(const Mode mode, /*const int frameId*/const Sample* sample, const Options options);
+        bool                    setupItems(const Mode mode, const Sample* sample, const Options options);
         void                    setupModel();
-        bool                    initModel(const Mode mode, /*const int frameId*/const Sample* sample, const Options options);
+        bool                    initModel(const Mode mode, const Sample* sample, const Options options);
         void                    initTree();
         void                    initMapper();
         bool                    readModel();

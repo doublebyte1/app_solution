@@ -218,6 +218,26 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushLegend">
+       <property name="toolTip">
+        <string>View legend</string>
+       </property>
+       <property name="statusTip">
+        <string>View legend</string>
+       </property>
+       <property name="whatsThis">
+        <string>View legend</string>
+       </property>
+       <property name="text">
+        <string>Legend</string>
+       </property>
+       <property name="icon">
+        <iconset resource="app_new.qrc">
+         <normaloff>:/app_new/kcoloredit.png</normaloff>:/app_new/kcoloredit.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -391,6 +411,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushLegend</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframedetails</receiver>
+   <slot>showLegend()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>567</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>362</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>cancel()</slot>
@@ -399,6 +435,6 @@
   <slot>back()</slot>
   <slot>undo()</slot>
   <slot>verify()</slot>
-  <slot>slot1()</slot>
+  <slot>showLegend()</slot>
  </slots>
 </ui>

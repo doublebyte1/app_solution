@@ -14,9 +14,6 @@
 
 struct Sample;
 
-void filterTable(QSqlTableModel* table);
-//////////////////////////////////////////////////
-
 //! Model Interface Class
 /*!
 This class provides an interface between the set of tables that compose the frame
@@ -53,7 +50,7 @@ public:
     TreeModel*                             treeModel;
 
     bool                                   writeModel();
-    bool                                   writeTempChanges(const FrmFrameDetails::Persistence persistence, Sample* sample, int& ct);
+    bool                                   writeTempChanges(Sample* sample, int& ct);
     bool                                   rollback(const bool bSubmitted, const FrmFrameDetails::Persistence persistence);
     bool                                   insertNewRecord(QSqlTableModel* model);
     bool                                   getErrors(QString& strError);
@@ -103,11 +100,11 @@ private:
     bool                                   filterTables();
 
     bool                                   readTempChangesVessel(const Sample* sample);
-    bool                                   search4VesselParent(const int vesselId, const int from, const int to/*, const bool bHasRecords*/);
-    bool                                   search4Vessel(TreeItem* item,const int vesselId, const int to/*, const bool bHasRecords*/);
+    bool                                   search4VesselParent(const int vesselId, const int from, const int to);
+    bool                                   search4Vessel(TreeItem* item,const int vesselId, const int to);
     bool                                   moveVessel(const int to, TreeItem* item);
-    bool                                   writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample);
-    bool                                   findOrigin(TreeItem* vs, const int outsideId, int& lsId);
+    bool                                   writeTempChangesVessel(TreeItem* vs, Sample* sample);
+    bool                                   findOrigin(TreeItem* vs, int& lsId);
     bool                                   getOutsideALS(int& id);
     bool                                   getVesselsBlackList(const Sample* sample, QVector<int>& vVesselsBlackList);
 

@@ -18,13 +18,6 @@ GenericTab::~GenericTab()
 {
     if (nullDellegate!=0) delete nullDellegate;
 }
-/*
-void GenericTab::showEvent ( QShowEvent * event ) 
-{
-    (void) event;
-    onShowForm();
-}
-*/
 
 bool GenericTab::getDtId(const int mapIdx, int& id)
 {
@@ -98,4 +91,16 @@ void NullRelationalDelegate::setEditorData(QWidget *editor, const QModelIndex &i
             editor->setProperty("text", index.data());
         }
     }
+}
+
+////////////////////////////////////////// static
+
+void filterTable(QSqlTableModel* table)
+{
+    table->setFilter(QObject::tr("Name<>'") + qApp->translate("null_replacements", strNa)
+            + QObject::tr("' AND Name<>'") + qApp->translate("bin", strOutside)
+            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strMissing)
+            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strOther)
+            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strUnknown)
+            + QObject::tr("'"));
 }

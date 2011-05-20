@@ -1,7 +1,6 @@
 #include <QDebug>
 #include <QtSql>
 #include "modelinterface.h"
-#include "globaldefs.h"
 #include "generictab.h"
 
 ModelInterface::ModelInterface (QObject *parent):
@@ -61,11 +60,6 @@ void ModelInterface::initModels()
     tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Frame"),
         QSqlDriver::TableName));
     tRefFrame->setRelation(5, QSqlRelation(tr("Ref_Source"), tr("ID"), tr("Name")));
-
-    //QString strFilter;
-    //buildSourceFilter(strFilter);
-    //tRefFrame->relationModel(5)->setFilter(strFilter);
-    //tRefFrame->relationModel(5)->select();
 
     filterTable(tRefFrame->relationModel(5));
 
@@ -149,7 +143,7 @@ bool ModelInterface::writeModel()
     return writeTables();
 }
 
-bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persistence, Sample* sample, int& ct)
+bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
 {
     ct=0;
 
@@ -169,7 +163,7 @@ bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persist
                     for (int l=0; l < ls->childCount(); ++l){
                         TreeItem* vs=ls->child(l);
 
-                        if (writeTempChangesVessel(persistence,false,vs,sample))
+                        if (writeTempChangesVessel(vs,sample))
                             ct++;
                     }
                 }
@@ -184,19 +178,19 @@ bool ModelInterface::writeTempChanges(const FrmFrameDetails::Persistence persist
 
                 TreeItem* gls=frameBin->child(j);
 
-                if (writeTempChangesVessel(persistence,true,gls,sample))//root
+                if (writeTempChangesVessel(gls,sample))//root
                             ct++;
 
                 for (int k=0; k < gls->childCount(); ++k){
                     TreeItem* ls=gls->child(k);
 
-                    if (writeTempChangesVessel(persistence,true,ls,sample))//gls
+                    if (writeTempChangesVessel(ls,sample))//gls
                         ct++;
 
                     for (int l=0; l < ls->childCount(); ++l){
                         TreeItem* vs=ls->child(l);
 
-                        if (writeTempChangesVessel(persistence,true,vs,sample))//ls
+                        if (writeTempChangesVessel(vs,sample))//ls
                             ct++;
                     }
                 }
@@ -256,7 +250,7 @@ bool ModelInterface::getNonAbstractProperties(Sample* sample, int& id_source, in
 }
 
 
-bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence persistence, const bool bBin, TreeItem* vs, Sample* sample)
+bool ModelInterface::writeTempChangesVessel(TreeItem* vs, Sample* sample)
 {
     if (vs->data(6)!=-1 ){
         if (!insertNewRecord(tChangesTempVessel)) return false;
@@ -291,7 +285,7 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
         if (!idx.isValid())
             return false;
         int from;
-        if (!findOrigin(vs,outsideId,from))
+        if (!findOrigin(vs,/*outsideId,*/from))
             return false;
 
         if (!tChangesTempVessel->setData(idx,from)) return false;//origin
@@ -318,7 +312,7 @@ bool ModelInterface::writeTempChangesVessel(const FrmFrameDetails::Persistence p
     return false;
 }
 
-bool ModelInterface::findOrigin(TreeItem* vs, const int outsideId, int& lsId)
+bool ModelInterface::findOrigin(TreeItem* vs, int& lsId)
 {
     int internalId=vs->data(6).toInt();
 
@@ -1291,7 +1285,7 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
 
 }
 
-bool ModelInterface::search4VesselParent(const int vesselId, const int from, const int to/*, const bool bHasRecords*/)
+bool ModelInterface::search4VesselParent(const int vesselId, const int from, const int to)
 {
     //loop till LS until find to
 
@@ -1352,7 +1346,7 @@ bool ModelInterface::search4VesselParent(const int vesselId, const int from, con
                     (ls.internalPointer());
 
                 if (pLs->data(4).toInt()==from){
-                    return search4Vessel(pLs,vesselId,to/*,bHasRecords*/);
+                    return search4Vessel(pLs,vesselId,to);
                 }
             }
 
@@ -1656,14 +1650,4 @@ bool ModelInterface::mapData(const int inRow, const int outRow, const int cIn, c
 
     return true;
 }
-////////////////////////////////////////// static
 
-void filterTable(QSqlTableModel* table)
-{
-    table->setFilter(QObject::tr("Name<>'") + qApp->translate("null_replacements", strNa)
-            + QObject::tr("' AND Name<>'") + qApp->translate("bin", strOutside)
-            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strMissing)
-            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strOther)
-            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strUnknown)
-            + QObject::tr("'"));
-}
