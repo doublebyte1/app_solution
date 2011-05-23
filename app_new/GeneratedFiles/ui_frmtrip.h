@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Mon 23. May 12:37:43 2011
+** Created: Mon 23. May 19:24:38 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -36,7 +36,7 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmTrip
 {
 public:
-    QVBoxLayout *verticalLayout_7;
+    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_9;
     QLabel *lbHeader;
     QLabel *lbSource;
@@ -46,7 +46,7 @@ public:
     QVBoxLayout *verticalLayout_5;
     QPushButton *pushNew;
     QGroupBox *groupDetails;
-    QGridLayout *gridLayout_3;
+    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_11;
     QLabel *label_2;
     QComboBox *cmbSite;
@@ -56,11 +56,13 @@ public:
     QSpinBox *spinProf;
     QLabel *label_24;
     QSpinBox *spinPart;
-    QVBoxLayout *verticalLayout_6;
+    QHBoxLayout *horizontalLayout;
+    QVBoxLayout *verticalLayout;
     QLabel *label_14;
     CustomTimeCtrl *customDtStart;
     QLabel *label_25;
     CustomTimeCtrl *customDtEnd;
+    QVBoxLayout *verticalLayout_2;
     QGroupBox *groupTotals;
     QGridLayout *gridLayout_2;
     QLabel *label_20;
@@ -80,10 +82,10 @@ public:
     QComboBox *cmbBoxes;
     QSpinBox *spinNOC;
     QSpinBox *spinNOE;
+    QLabel *label_13;
+    QPlainTextEdit *textComments;
     QHBoxLayout *horizontalLayout_12;
     QDialogButtonBox *buttonBox;
-    QPlainTextEdit *textComments;
-    QLabel *label_13;
     QHBoxLayout *horizontalLayout_16;
     QSpacerItem *horizontalSpacer_2;
     QGroupBox *groupBox_2;
@@ -95,9 +97,9 @@ public:
     {
         if (FrmTrip->objectName().isEmpty())
             FrmTrip->setObjectName(QString::fromUtf8("FrmTrip"));
-        FrmTrip->resize(750, 594);
-        verticalLayout_7 = new QVBoxLayout(FrmTrip);
-        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
+        FrmTrip->resize(750, 668);
+        gridLayout = new QGridLayout(FrmTrip);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
         lbHeader = new QLabel(FrmTrip);
@@ -127,17 +129,22 @@ public:
         horizontalLayout_9->addWidget(lbSource);
 
 
-        verticalLayout_7->addLayout(horizontalLayout_9);
+        gridLayout->addLayout(horizontalLayout_9, 0, 0, 1, 1);
 
         label_23 = new QLabel(FrmTrip);
         label_23->setObjectName(QString::fromUtf8("label_23"));
 
-        verticalLayout_7->addWidget(label_23);
+        gridLayout->addWidget(label_23, 1, 0, 1, 1);
 
         horizontalLayout_15 = new QHBoxLayout();
         horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
         tableView = new QTableView(FrmTrip);
         tableView->setObjectName(QString::fromUtf8("tableView"));
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
+        tableView->setSizePolicy(sizePolicy2);
 
         horizontalLayout_15->addWidget(tableView);
 
@@ -155,12 +162,17 @@ public:
         horizontalLayout_15->addLayout(verticalLayout_5);
 
 
-        verticalLayout_7->addLayout(horizontalLayout_15);
+        gridLayout->addLayout(horizontalLayout_15, 2, 0, 1, 1);
 
         groupDetails = new QGroupBox(FrmTrip);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
-        gridLayout_3 = new QGridLayout(groupDetails);
-        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
+        groupDetails->setSizePolicy(sizePolicy3);
+        verticalLayout_3 = new QVBoxLayout(groupDetails);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         horizontalLayout_11 = new QHBoxLayout();
         horizontalLayout_11->setObjectName(QString::fromUtf8("horizontalLayout_11"));
         label_2 = new QLabel(groupDetails);
@@ -193,11 +205,11 @@ public:
 
         spinProf = new QSpinBox(groupDetails);
         spinProf->setObjectName(QString::fromUtf8("spinProf"));
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(spinProf->sizePolicy().hasHeightForWidth());
-        spinProf->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy4(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(spinProf->sizePolicy().hasHeightForWidth());
+        spinProf->setSizePolicy(sizePolicy4);
 
         horizontalLayout_11->addWidget(spinProf);
 
@@ -209,54 +221,54 @@ public:
 
         spinPart = new QSpinBox(groupDetails);
         spinPart->setObjectName(QString::fromUtf8("spinPart"));
-        sizePolicy2.setHeightForWidth(spinPart->sizePolicy().hasHeightForWidth());
-        spinPart->setSizePolicy(sizePolicy2);
+        sizePolicy4.setHeightForWidth(spinPart->sizePolicy().hasHeightForWidth());
+        spinPart->setSizePolicy(sizePolicy4);
 
         horizontalLayout_11->addWidget(spinPart);
 
 
-        gridLayout_3->addLayout(horizontalLayout_11, 0, 0, 1, 2);
+        verticalLayout_3->addLayout(horizontalLayout_11);
 
-        verticalLayout_6 = new QVBoxLayout();
-        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         label_14 = new QLabel(groupDetails);
         label_14->setObjectName(QString::fromUtf8("label_14"));
         sizePolicy.setHeightForWidth(label_14->sizePolicy().hasHeightForWidth());
         label_14->setSizePolicy(sizePolicy);
 
-        verticalLayout_6->addWidget(label_14);
+        verticalLayout->addWidget(label_14);
 
         customDtStart = new CustomTimeCtrl(groupDetails);
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Minimum);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
-        customDtStart->setSizePolicy(sizePolicy3);
 
-        verticalLayout_6->addWidget(customDtStart);
+        verticalLayout->addWidget(customDtStart);
 
         label_25 = new QLabel(groupDetails);
         label_25->setObjectName(QString::fromUtf8("label_25"));
         sizePolicy.setHeightForWidth(label_25->sizePolicy().hasHeightForWidth());
         label_25->setSizePolicy(sizePolicy);
 
-        verticalLayout_6->addWidget(label_25);
+        verticalLayout->addWidget(label_25);
 
         customDtEnd = new CustomTimeCtrl(groupDetails);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
-        sizePolicy3.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
-        customDtEnd->setSizePolicy(sizePolicy3);
 
-        verticalLayout_6->addWidget(customDtEnd);
+        verticalLayout->addWidget(customDtEnd);
 
 
-        gridLayout_3->addLayout(verticalLayout_6, 1, 0, 5, 1);
+        horizontalLayout->addLayout(verticalLayout);
 
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         groupTotals = new QGroupBox(groupDetails);
         groupTotals->setObjectName(QString::fromUtf8("groupTotals"));
-        sizePolicy.setHeightForWidth(groupTotals->sizePolicy().hasHeightForWidth());
-        groupTotals->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(groupTotals->sizePolicy().hasHeightForWidth());
+        groupTotals->setSizePolicy(sizePolicy5);
         gridLayout_2 = new QGridLayout(groupTotals);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         label_20 = new QLabel(groupTotals);
@@ -290,19 +302,19 @@ public:
 
         spinCE = new QDoubleSpinBox(groupTotals);
         spinCE->setObjectName(QString::fromUtf8("spinCE"));
-        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(spinCE->sizePolicy().hasHeightForWidth());
-        spinCE->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy6(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(spinCE->sizePolicy().hasHeightForWidth());
+        spinCE->setSizePolicy(sizePolicy6);
 
         gridLayout_2->addWidget(spinCE, 3, 1, 1, 2);
 
         spinCC = new QDoubleSpinBox(groupTotals);
         spinCC->setObjectName(QString::fromUtf8("spinCC"));
         spinCC->setEnabled(false);
-        sizePolicy4.setHeightForWidth(spinCC->sizePolicy().hasHeightForWidth());
-        spinCC->setSizePolicy(sizePolicy4);
+        sizePolicy6.setHeightForWidth(spinCC->sizePolicy().hasHeightForWidth());
+        spinCC->setSizePolicy(sizePolicy6);
 
         gridLayout_2->addWidget(spinCC, 3, 3, 1, 1);
 
@@ -329,8 +341,8 @@ public:
 
         spinCBE = new QDoubleSpinBox(groupTotals);
         spinCBE->setObjectName(QString::fromUtf8("spinCBE"));
-        sizePolicy4.setHeightForWidth(spinCBE->sizePolicy().hasHeightForWidth());
-        spinCBE->setSizePolicy(sizePolicy4);
+        sizePolicy6.setHeightForWidth(spinCBE->sizePolicy().hasHeightForWidth());
+        spinCBE->setSizePolicy(sizePolicy6);
 
         gridLayout_2->addWidget(spinCBE, 5, 1, 1, 2);
 
@@ -342,8 +354,8 @@ public:
 
         spinWeight = new QDoubleSpinBox(groupTotals);
         spinWeight->setObjectName(QString::fromUtf8("spinWeight"));
-        sizePolicy4.setHeightForWidth(spinWeight->sizePolicy().hasHeightForWidth());
-        spinWeight->setSizePolicy(sizePolicy4);
+        sizePolicy6.setHeightForWidth(spinWeight->sizePolicy().hasHeightForWidth());
+        spinWeight->setSizePolicy(sizePolicy6);
 
         gridLayout_2->addWidget(spinWeight, 5, 4, 1, 1);
 
@@ -355,20 +367,37 @@ public:
         spinNOC = new QSpinBox(groupTotals);
         spinNOC->setObjectName(QString::fromUtf8("spinNOC"));
         spinNOC->setEnabled(false);
-        sizePolicy4.setHeightForWidth(spinNOC->sizePolicy().hasHeightForWidth());
-        spinNOC->setSizePolicy(sizePolicy4);
+        sizePolicy6.setHeightForWidth(spinNOC->sizePolicy().hasHeightForWidth());
+        spinNOC->setSizePolicy(sizePolicy6);
 
         gridLayout_2->addWidget(spinNOC, 1, 3, 1, 1);
 
         spinNOE = new QSpinBox(groupTotals);
         spinNOE->setObjectName(QString::fromUtf8("spinNOE"));
-        sizePolicy4.setHeightForWidth(spinNOE->sizePolicy().hasHeightForWidth());
-        spinNOE->setSizePolicy(sizePolicy4);
+        sizePolicy6.setHeightForWidth(spinNOE->sizePolicy().hasHeightForWidth());
+        spinNOE->setSizePolicy(sizePolicy6);
 
         gridLayout_2->addWidget(spinNOE, 1, 1, 1, 2);
 
 
-        gridLayout_3->addWidget(groupTotals, 1, 1, 1, 1);
+        verticalLayout_2->addWidget(groupTotals);
+
+        label_13 = new QLabel(groupDetails);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+        sizePolicy.setHeightForWidth(label_13->sizePolicy().hasHeightForWidth());
+        label_13->setSizePolicy(sizePolicy);
+
+        verticalLayout_2->addWidget(label_13);
+
+        textComments = new QPlainTextEdit(groupDetails);
+        textComments->setObjectName(QString::fromUtf8("textComments"));
+        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
+        textComments->setSizePolicy(sizePolicy7);
+
+        verticalLayout_2->addWidget(textComments);
 
         horizontalLayout_12 = new QHBoxLayout();
         horizontalLayout_12->setObjectName(QString::fromUtf8("horizontalLayout_12"));
@@ -379,22 +408,16 @@ public:
         horizontalLayout_12->addWidget(buttonBox);
 
 
-        gridLayout_3->addLayout(horizontalLayout_12, 5, 1, 1, 1);
-
-        textComments = new QPlainTextEdit(groupDetails);
-        textComments->setObjectName(QString::fromUtf8("textComments"));
-
-        gridLayout_3->addWidget(textComments, 3, 1, 1, 1);
-
-        label_13 = new QLabel(groupDetails);
-        label_13->setObjectName(QString::fromUtf8("label_13"));
-        sizePolicy.setHeightForWidth(label_13->sizePolicy().hasHeightForWidth());
-        label_13->setSizePolicy(sizePolicy);
-
-        gridLayout_3->addWidget(label_13, 2, 1, 1, 1);
+        verticalLayout_2->addLayout(horizontalLayout_12);
 
 
-        verticalLayout_7->addWidget(groupDetails);
+        horizontalLayout->addLayout(verticalLayout_2);
+
+
+        verticalLayout_3->addLayout(horizontalLayout);
+
+
+        gridLayout->addWidget(groupDetails, 3, 0, 1, 1);
 
         horizontalLayout_16 = new QHBoxLayout();
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
@@ -427,7 +450,7 @@ public:
         horizontalLayout_16->addWidget(groupBox_2);
 
 
-        verticalLayout_7->addLayout(horizontalLayout_16);
+        gridLayout->addLayout(horizontalLayout_16, 4, 0, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
@@ -442,6 +465,8 @@ public:
 
         retranslateUi(FrmTrip);
         QObject::connect(pushNew, SIGNAL(clicked()), FrmTrip, SLOT(createRecord()));
+        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), FrmTrip, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), FrmTrip, SLOT(previewRow(QModelIndex)));
 
         QMetaObject::connectSlotsByName(FrmTrip);
     } // setupUi

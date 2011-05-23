@@ -476,7 +476,6 @@ void FrmVessel::filterModel4Combo()
             ;
 
     }else{
-        //TODO: update from temporary frame
         strQuery =
         tr("SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls") +
         tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +

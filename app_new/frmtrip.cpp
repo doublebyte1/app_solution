@@ -46,8 +46,7 @@ void FrmTrip::previewRow(QModelIndex index)
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->hide();
 
-/*
-    QModelIndex idx=viewVessel->index(index.row(),0);
+    QModelIndex idx=viewTrips->index(index.row(),0);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this vessel!"));
         return;
@@ -55,32 +54,43 @@ void FrmTrip::previewRow(QModelIndex index)
 
     QString id=idx.data().toString();
 
-    tAVessel->setFilter(tr("Abstract_Sampled_Vessels.ID=")+id);
-    if (tAVessel->rowCount()!=1)
+    tTrips->setFilter(tr("Sampled_Fishing_Trips.ID=")+id);
+    if (tTrips->rowCount()!=1)
         return;
 
     mapper1->toLast();
 
-    if (!m_sample->bLogBook){
-
-        //id_Sampled_Cell_Vessels
-        idx=viewVessel->index(index.row(),3);
-        if (!idx.isValid()){
-            emit showError (tr("Could not preview this vessel!"));
-            return;
-        }
-
-        id=idx.data().toString();
-
-        tCellVessels->setFilter(tr("ID=")+id);
-        if (tCellVessels->rowCount()!=1)
-            return;
-
-        mapper2->toLast();
+    //Now fix the dates
+    idx=tTrips->index(0,2);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this trip!"));
+        return;
     }
+    QString strStartDt=idx.data().toString();
+    idx=tTrips->index(0,3);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this trip!"));
+        return;
+    }
+    QString strEndDt=idx.data().toString();
+
+    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+    if (m_tDateTime->rowCount()!=2)
+        return;
+
+    //adjusting the display format of the dates on preview
+    QModelIndex idxDType=m_tDateTime->index(0,4);
+    if (!idxDType.isValid()) return;
+    customDtStart->adjustDateTime(idxDType,idxDType.data());
+    idxDType=m_tDateTime->index(1,4);
+    if (!idxDType.isValid()) return;
+    customDtEnd->adjustDateTime(idxDType,idxDType.data());
+
+    mapperEndDt->toLast();
+    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 
     pushNext->setEnabled(true);
-*/
 }
 
 void FrmTrip::setPreviewQuery()
@@ -94,12 +104,12 @@ void FrmTrip::setPreviewQuery()
     tr("                      dbo.Ref_Samplers ON dbo.Sampled_Fishing_Trips.id_sampler = dbo.Ref_Samplers.ID INNER JOIN") +
     tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Trips.id_start_dt = F1.ID INNER JOIN") +
     tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Trips.id_end_dt = F2.ID") +
-    tr(" WHERE     (dbo.Sampled_Fishing_Trips.id_abstract_sampled_vessels = 1)")
+    tr(" WHERE     (dbo.Sampled_Fishing_Trips.id_abstract_sampled_vessels = :id) ORDER BY ID DESC")
     ;
 
     QSqlQuery query;
     query.prepare( strQuery );
-    query.bindValue(0,1);
+    query.bindValue(0,m_sample->sampVesselId);
     if (!query.exec()){
         emit showError(tr("Could not obtain filter for Sampled Fishing Trips!"));
         return;
@@ -121,7 +131,6 @@ void FrmTrip::initModels()
     viewTrips->setHeaderData(2, Qt::Horizontal, tr("Start Time"));
     viewTrips->setHeaderData(3, Qt::Horizontal, tr("End Date"));
     viewTrips->setHeaderData(4, Qt::Horizontal, tr("End Time"));
-
 }
 
 void FrmTrip::initUI()
@@ -132,19 +141,15 @@ void FrmTrip::initUI()
     initPreviewTable(tableView,viewTrips);
 
     //initializing the container for the readonly!S
-    m_lWidgets << cmbSite;
     m_lWidgets << cmbSampler;
     m_lWidgets << spinProf;
     m_lWidgets << spinPart;
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
     m_lWidgets << spinNOE;
-    m_lWidgets << spinNOC;
     m_lWidgets << spinCE;
-    m_lWidgets << spinCC;
     m_lWidgets << cmbWeight;
     m_lWidgets << spinCBE;
-    m_lWidgets << spinCBC;
     m_lWidgets << spinWeight;
     m_lWidgets << cmbBoxes;
     m_lWidgets << textComments;
@@ -179,6 +184,7 @@ void FrmTrip::initMapper1()
     for (int i=4; i < 16; ++i){
         lOthers << i;
     }
+    lOthers << 17;
     QList<int> lText;
     lText << 16;
     nullDellegate=new NullRelationalDelegate(lOthers,lText);
@@ -208,12 +214,15 @@ void FrmTrip::initMapper1()
     mapper1->addMapping(spinNOC, 9);
     mapper1->addMapping(spinCE, 10);
     mapper1->addMapping(spinCC, 11);
+
     mapper1->addMapping(cmbWeight, 12);
+
     mapper1->addMapping(spinCBE, 13);
     mapper1->addMapping(spinCBC, 14);
     mapper1->addMapping(cmbBoxes, 15);
     mapper1->addMapping(textComments,16);
-    mapper1->addMapping(cmbBoxes, 17);
+
+    mapper1->addMapping(spinWeight, 17);
 }
 
 void FrmTrip::initMappers()
@@ -237,75 +246,83 @@ void FrmTrip::initMappers()
 void FrmTrip::beforeShow()
 {
     this->groupDetails->setVisible(false);
+    if (m_sample->bLogBook)
+        m_lWidgets << cmbSite;
+
     setSourceText(lbSource);
     initTripModel();
 }
 
 bool FrmTrip::onButtonClick(QAbstractButton* button)
-{/*
+{
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
         this->groupDetails->hide();
-        this->tAVessel->revertAll();
-        if (tCellVessels!=0) tCellVessels->revertAll();
+        this->tTrips->revertAll();
         return true;
 
     } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
 
         bool bError=false;
+        //First insert the dates...
+        if (!mapperStartDt->submit() 
+            || !mapperEndDt->submit()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
+            else
+                emit showError(tr("Could not submit mapper!"));
+            bError=true;
+        }
+        else{
+            if (!m_tDateTime->submitAll()){
+                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_tDateTime->lastError().text());
+                else
+                    emit showError(tr("Could not write DateTime in the database!"));
+
+                bError=true;
+            }
+        }
+
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
+
+        int startIdx=m_tDateTime->rowCount()-2;
+        int endIdx=m_tDateTime->rowCount()-1;
+
+        mapperStartDt->setCurrentIndex(startIdx);
+        mapperEndDt->setCurrentIndex(endIdx);
+
+        if (bError) {
+            emit showError(tr("Could not create dates in the database!"));
+        }else{
+
+            int idStart;
+            if (getDtId(startIdx,idStart)){
+                QModelIndex idxStart=tTrips->index(tTrips->rowCount()-1,2);
+                if (idxStart.isValid()){
+                    tTrips->setData(idxStart,idStart);
+                }else bError=true;
+            }else bError=true;
+
+            int idEnd;
+            if (getDtId(endIdx,idEnd)){
+                QModelIndex idxEnd=tTrips->index(tTrips->rowCount()-1,3);
+                if (idxEnd.isValid()){
+                    tTrips->setData(idxEnd,idEnd);
+                }else bError=true;
+            }else bError=true;
 
         if (mapper1->submit()){
-
-            //setting the vessel source
-            QSqlQuery query;
-            query.prepare( tr("SELECT     ID") +
-                           tr(" FROM         dbo.Ref_Source") +
-                           tr(" WHERE     (Name = :name)") );
-            query.bindValue(0,qApp->translate("frame", (m_sample->bLogBook? strLogbook: strSampling) ));
-
-            if (!query.exec() || query.numRowsAffected()!=1){
-                emit showError(tr("Could not obtain filter for Vessels!"));
-                return false;
-            }
-            query.first();
-
-            while(tAVessel->canFetchMore())
-                tAVessel->fetchMore();
-
-            QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,1);
-            if (!idx.isValid()){
-                emit showError(tr("Could not create a record for this vessel!"));
-                return false;
-            }
-
-            tAVessel->setData(idx,query.value(0).toInt());
-
-            int id_cell, id_strata;
-            if (!comitNonAbstractVessels(m_sample->bLogBook,id_cell,id_strata))
-            {
-                if (tCellVessels->lastError().type()!=QSqlError::NoError)
-                    emit showError(tCellVessels->lastError().text());
-                else if (tStrataVessels->lastError().type()!=QSqlError::NoError)
-                    emit showError(tStrataVessels->lastError().text());
-                bError=true;
-            }else{
-
-                QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,5);
-                if (!idx.isValid()) return false;
-                tAVessel->setData(idx,id_cell);
-                idx=tAVessel->index(tAVessel->rowCount()-1,6);
-                if (!idx.isValid()) return false;
-                tAVessel->setData(idx,id_strata);
-
-                bError=!
-                    tAVessel->submitAll();
+            bError=!
+                    tTrips->submitAll();
                 if (bError){
-                    if (tAVessel->lastError().type()!=QSqlError::NoError)
-                        emit showError(tAVessel->lastError().text());
+                    if (tTrips->lastError().type()!=QSqlError::NoError)
+                        emit showError(tTrips->lastError().text());
                     else
                         emit showError(tr("Could not write cell in the database!"));
                 }
-            }
+        }
         }
 
         button->setEnabled(bError);
@@ -322,8 +339,6 @@ bool FrmTrip::onButtonClick(QAbstractButton* button)
 
     }
 
-    mapper1->toLast();
-    mapper2->toLast();*/
     return false;
 }
 
@@ -385,6 +400,10 @@ void FrmTrip::createRecord()
     tTrips->setData(idx,m_sample->sampVesselId);//id_abstract_sampled_vessels
 
     //TODO: on sample fill the abstract landing site
+    if (!m_sample->bLogBook){
+        cmbSite->setCurrentIndex(0);
+        cmbSite->setEnabled(false);
+    }
 
     uI4NewRecord();//init UI
 }
@@ -409,84 +428,70 @@ void FrmTrip::initTripModel()
 
 void FrmTrip::filterModel4Combo()
 {
-    /*
+    if (!m_sample) return;
+
     QSqlQuery query;
-    QString strQuery;
+    QString strQuery, strFilter;
 
-    if (!m_sample->bLogBook){
+    //TODO: filter MS for Logbook 
+    if (m_sample->bLogBook){
 
-        strQuery =
-        tr("SELECT     dbo.Ref_Vessels.VesselID") +
-        tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
-        tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID") +
-        tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
-        tr("                          (SELECT     ID") +
-        tr("                            FROM          dbo.FR_Sub_Frame") +
-        tr("                            WHERE      (Type =") +
-        tr("                                                       (SELECT     ID") +
-        tr("                                                         FROM          dbo.Ref_Frame") +
-        tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.id_abstract_landingsite =") +
-        tr("                          (SELECT     id_abstract_LandingSite") +
-        tr("                            FROM          dbo.Sampled_Cell") +
-        tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
-        tr("                          (SELECT     VesselID") +
-        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel") +
-        tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
-        tr("                                                       (SELECT     ID") +
-        tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
-        tr("                                                         WHERE      (Name = 'outside')))))") +
-        tr(" UNION") +
-        tr(" SELECT     Ref_Vessels_1.VesselID") +
-        tr(" FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN")+
-        tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
-        tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
-        tr("                          (SELECT     VesselID")+
-        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel AS Abstract_Changes_Temp_Vessel_1")+
-        tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
-        tr("                                                       (SELECT     id_abstract_LandingSite")+
-        tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+
-        tr("                                                         WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr(")))))")
-            ;
+        //DUVIDA: filtro para o LS?
+        /*
+        strQuery;// =
 
-    }else{
-        //TODO: update from temporary frame
-        strQuery =
-        tr("SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls") +
-        tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
-        tr("                      dbo.FR_GLS2ALS ON dbo.FR_ALS2Vessel.ID = dbo.FR_GLS2ALS.ID INNER JOIN") +
-        tr("                      dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 ON dbo.FR_ALS2Vessel.ID = FR_ALS2Vessel_1.ID INNER JOIN") +
-        tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID AND FR_ALS2Vessel_1.vesselID = dbo.Ref_Vessels.VesselID") +
-        tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
-        tr("                          (SELECT     ID") +
-        tr("                            FROM          dbo.FR_Sub_Frame") +
-        tr("                            WHERE      (Type =") +
-        tr("                                                       (SELECT     ID") +
-        tr("                                                         FROM          dbo.Ref_Frame") +
-        tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND") +
-        tr(" (dbo.FR_GLS2ALS.id_gls=") +
-        tr(" (SELECT     id_gls") +
-        tr(" FROM         dbo.Ref_Minor_Strata") +
-        tr(" WHERE     (ID = ")+ QVariant(m_sample->minorStrataId).toString() + tr(")))")
-         ;
-    }
-
-    query.prepare(strQuery);
-    if (!query.exec()){
+        query.prepare(strQuery);
+        if (!query.exec()){
         emit showError(tr("Could not obtain filter for Vessels!"));
         return;
-    }
+        }
 
-    QString strFilter(tr(""));
-     while (query.next()) {
+        QString strFilter(tr(""));
+        while (query.next()) {
         strFilter.append(tr("VesselID=") + query.value(0).toString());
         strFilter.append(tr(" OR "));
-     }
-     if (!strFilter.isEmpty())
+        }
+        if (!strFilter.isEmpty())
          strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
 
-    tAVessel->relationModel(2)->setFilter(strFilter);
-*/
+        tTrips->relationModel(2)->setFilter(strFilter);
+
         //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
+    */
+
+    }else{
+        //TODO:
+        //carry value forward for sampling
+
+        strQuery=
+        tr("SELECT     id_abstract_LandingSite") +
+        tr(" FROM         dbo.Sampled_Cell") +
+        tr(" WHERE     (ID = :id)")
+        ;
+
+        query.prepare(strQuery);
+
+        if (m_sample->cellId==-1){
+            emit showError(tr("There is a problem with the type of this frame!"));
+            return;
+        }
+
+        query.bindValue(0,m_sample->cellId);
+
+        if (!query.exec() || query.numRowsAffected()!=1){
+            emit showError(tr("Could not obtain filter for landing sites!"));
+            return;
+        }
+
+        query.first();
+        strFilter.append(tr("ID=") + query.value(0).toString());
+
+        if (!strFilter.isEmpty()){
+            tTrips->relationModel(4)->setFilter(strFilter);
+        }
+
+    }
+
     initMapper1();
 }
 
