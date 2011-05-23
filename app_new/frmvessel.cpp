@@ -7,6 +7,9 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),parent, flags){
 
     setupUi(this);
 
+    connect(pushNext, SIGNAL(clicked()), this,
+    SLOT(next()));
+
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
@@ -41,7 +44,6 @@ void FrmVessel::onItemSelection()
 
 void FrmVessel::previewRow(QModelIndex index)
 {
-
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -233,8 +235,8 @@ bool FrmVessel::comitNonAbstractVessels(const bool bLogbook, int& id_Sampled_Cel
     if (bLogbook)
     {
         query.prepare( tr("SELECT     ID FROM Sampled_Cell_Vessels WHERE id_cell_vessel_types=") +
-                       tr(" (SELECT ID FROM         Ref_Vessel_Types") +
-                       tr(" WHERE     (Name = 'n/a'))") );
+                       tr(" (SELECT ID FROM         Sampled_Cell_Vessel_Types") +
+                       tr(" WHERE     (comments = 'n/a'))") );//n.b.: when there are no names, we rely on the comment..
 
         if (!query.exec() || query.numRowsAffected()!=1){
             emit showError(tr("Could not create a non abstract record for this vessel (logbook)!"));
@@ -524,7 +526,7 @@ bool FrmVessel::updateSample()
     QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),0);
 
     //TODO: update the vessel here
-    //m_sample->cellId=idx.data().toInt();
+    m_sample->sampVesselId=idx.data().toInt();
     return true;
 }
 

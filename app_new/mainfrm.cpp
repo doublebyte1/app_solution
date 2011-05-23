@@ -12,6 +12,7 @@ QMainWindow(parent, flags){
     sSample=0;
     pFrmVesselType=0;
     pFrmVessel=0;
+    pFrmTrip=0;
     pFrmPrjPage=0;
     toolbar=0;
     //m_bTabsDefined=false;
@@ -32,6 +33,7 @@ MainFrm::~MainFrm()
     if (pFrmCell!=0) delete pFrmCell;
     if (pFrmVesselType!=0) delete pFrmVesselType;
     if (pFrmVessel!=0) delete pFrmVessel;
+    if (pFrmTrip!=0) delete pFrmTrip;
     if (pFrmPrjPage!=0) delete pFrmPrjPage;
     if (toolbar!=0) delete toolbar;
     //n.b.: delete these in the end, as they are used by the forms!
@@ -139,6 +141,7 @@ void MainFrm::resetTabs()
         if (pFrmFrame!=0) {delete pFrmFrame; pFrmFrame=0;}
         if (pFrmVesselType!=0) {delete pFrmVesselType; pFrmVesselType=0;}
         if (pFrmVessel!=0) {delete pFrmVessel; pFrmVessel=0;}
+        if (pFrmTrip!=0) {delete pFrmTrip; pFrmTrip=0;}
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
         if (sSample!=0) {delete sSample; sSample=0;}
 
@@ -185,6 +188,8 @@ void MainFrm::initTabs()
         initPreviewTab(pFrmVesselType);
         pFrmVessel=new FrmVessel(sSample,tDateTime);
         initPreviewTab(pFrmVessel);
+        pFrmTrip=new FrmTrip(sSample,tDateTime);
+        initPreviewTab(pFrmTrip);
 
         pFrmFrameDetails=new FrmFrameDetails();
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,
