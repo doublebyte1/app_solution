@@ -297,7 +297,60 @@ void FrmFrame::apply()
             tFrameTime->fetchMore();
 
         m_curFrameTime=tFrameTime->rowCount()-1;
+        updateSample();//update sample here, because of the save
     }
+}
+
+bool FrmFrame::updateSample()
+{
+    while(tFrameTime->canFetchMore())
+    tFrameTime->fetchMore();
+
+    QModelIndex idx=tFrameTime->index(m_curFrameTime,0);
+    if (!idx.isValid()){
+        emit showError(tr("Could not retrieve index of the last inserted frame!"));
+        return false;
+    }
+    m_sample->frameTimeId=idx.data().toInt();
+
+    idx=tFrameTime->index(m_curFrameTime,1);
+    if (!idx.isValid()){
+        emit showError(tr("Could not retrieve index of the last inserted frame!"));
+        return false;
+    }
+    m_sample->frameId=idx.data().toInt();
+
+    //check which type of frame we have...
+    QString strQuery=
+    tr("SELECT     dbo.Ref_Source.Name") +
+    tr(" FROM         dbo.FR_Frame INNER JOIN") +
+    tr("                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID") +
+    tr(" WHERE     (dbo.FR_Frame.ID = ?)");
+
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.bindValue(0,m_sample->frameId);
+    if (!query.exec()){
+        emit showError(query.lastError().text());
+        return false;
+    }
+    if (query.numRowsAffected()<1){
+        emit showError(tr("Could not determine the type of this frame!"));
+        return false;
+    }
+
+    query.first();
+    QString strSource=query.value(0).toString();
+    if (strSource.compare(qApp->translate("frame", strLogbook),Qt::CaseInsensitive)==0)
+        m_sample->bLogBook=true;
+    else if (strSource.compare(qApp->translate("frame", strSampling),Qt::CaseInsensitive)==0)
+        m_sample->bLogBook=false;
+    else{
+        emit showError(tr("The type of this frame is not usable! (not logbook and not sampling)!"));
+        return false;
+    }
+
+    return true;
 }
 
 bool FrmFrame::next()
@@ -314,54 +367,6 @@ bool FrmFrame::next()
     if (m_submitted){
 
         emit submitted(m_index,true);
-
-        while(tFrameTime->canFetchMore())
-        tFrameTime->fetchMore();
-
-        QModelIndex idx=tFrameTime->index(m_curFrameTime,0);
-        if (!idx.isValid()){
-            emit showError(tr("Could not retrieve index of the last inserted frame!"));
-            return false;
-        }
-        m_sample->frameTimeId=idx.data().toInt();
-
-        idx=tFrameTime->index(m_curFrameTime,1);
-        if (!idx.isValid()){
-            emit showError(tr("Could not retrieve index of the last inserted frame!"));
-            return false;
-        }
-        m_sample->frameId=idx.data().toInt();
-
-        //check which type of frame we have...
-        QString strQuery=
-        tr("SELECT     dbo.Ref_Source.Name") +
-        tr(" FROM         dbo.FR_Frame INNER JOIN") +
-        tr("                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID") +
-        tr(" WHERE     (dbo.FR_Frame.ID = ?)");
-
-        QSqlQuery query;
-        query.prepare(strQuery);
-        query.bindValue(0,m_sample->frameId);
-        if (!query.exec()){
-            emit showError(query.lastError().text());
-            return false;
-        }
-        if (query.numRowsAffected()<1){
-            emit showError(tr("Could not determine the type of this frame!"));
-            return false;
-        }
-
-        query.first();
-        QString strSource=query.value(0).toString();
-        if (strSource.compare(qApp->translate("frame", strLogbook),Qt::CaseInsensitive)==0)
-            m_sample->bLogBook=true;
-        else if (strSource.compare(qApp->translate("frame", strSampling),Qt::CaseInsensitive)==0)
-            m_sample->bLogBook=false;
-        else{
-            emit showError(tr("The type of this frame is not usable! (not logbook and not sampling)!"));
-            return false;
-        }
-
         emit isLogBook(m_sample->bLogBook);
 
         m_tabsDefined=true;

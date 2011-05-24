@@ -16,6 +16,7 @@ HEADERS += ./buttongroup.h \
     ./frmlegend.h \
     ./frmminorstrata.h \
     ./frmprjpage.h \
+    ./frmtrip.h \
     ./frmvessel.h \
     ./frmvesseltype.h \
     ./generictab.h \
@@ -40,6 +41,7 @@ SOURCES += ./buttongroup.cpp \
     ./frmlegend.cpp \
     ./frmminorstrata.cpp \
     ./frmprjpage.cpp \
+    ./frmtrip.cpp \
     ./frmvessel.cpp \
     ./frmvesseltype.cpp \
     ./generictab.cpp \
@@ -59,6 +61,7 @@ FORMS += ./frmcell.ui \
     ./frmlegend.ui \
     ./frmminorstrata.ui \
     ./frmprjpage.ui \
+    ./frmtrip.ui \
     ./frmvessel.ui \
     ./frmvesseltype.ui \
     ./login.ui \

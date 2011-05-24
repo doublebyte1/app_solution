@@ -19,6 +19,11 @@ GenericTab::~GenericTab()
     if (nullDellegate!=0) delete nullDellegate;
 }
 
+void GenericTab::setLbHead(QLabel* inLbHeader)
+{
+    lbHead=inLbHeader;
+}
+
 bool GenericTab::getDtId(const int mapIdx, int& id)
 {
     QModelIndex idx= m_tDateTime->index(mapIdx,0,QModelIndex());

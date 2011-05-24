@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmconnect.ui'
 **
-** Created: Mon 23. May 19:24:39 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Tue 24. May 08:57:59 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

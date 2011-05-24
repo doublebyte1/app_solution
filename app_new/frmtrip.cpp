@@ -7,6 +7,9 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"),parent, flags){
 
     setupUi(this);
 
+    connect(pushNext, SIGNAL(clicked()), this,
+    SLOT(next()));
+
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
@@ -98,8 +101,12 @@ void FrmTrip::setPreviewQuery()
     if (m_sample==0) return;
     QString strQuery=
 
-    tr("SELECT     dbo.Sampled_Fishing_Trips.ID, dbo.Ref_Samplers.Name, CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(VARCHAR(8), F1.Date_Local, ") +
-    tr("                      108) AS [Start Time], CONVERT(CHAR(10), F2.Date_Local, 103) AS [End Date], CONVERT(VARCHAR(8), F2.Date_Local, 108) AS [End Time] ") +
+    tr("SELECT     dbo.Sampled_Fishing_Trips.ID, dbo.Ref_Samplers.Name, CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], ") +
+    tr(" CASE WHEN F1.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE") +
+    tr(" CONVERT(VARCHAR(8), F1.Date_Local, 108) END [Start Time]") +
+    tr(" , CONVERT(CHAR(10), F2.Date_Local, 103) AS [End Date], ") +
+    tr(" CASE WHEN F2.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE") +
+    tr(" CONVERT(VARCHAR(8), F2.Date_Local, 108) END [End Time] ") +
     tr(" FROM         dbo.Sampled_Fishing_Trips INNER JOIN") +
     tr("                      dbo.Ref_Samplers ON dbo.Sampled_Fishing_Trips.id_sampler = dbo.Ref_Samplers.ID INNER JOIN") +
     tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Trips.id_start_dt = F1.ID INNER JOIN") +
@@ -437,31 +444,42 @@ void FrmTrip::filterModel4Combo()
     if (m_sample->bLogBook){
 
         //DUVIDA: filtro para o LS?
-        /*
-        strQuery;// =
+        if (m_sample->minorStrataId==-1){
+            emit showError(tr("Could not identify the minor strata of this frame!"));
+            return;
+        }
+
+        strQuery=
+        tr("SELECT     TOP (100) PERCENT dbo.Ref_Abstract_LandingSite.ID") +
+        tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
+        tr("                      dbo.FR_Time ON dbo.Ref_Minor_Strata.id_frame_time = dbo.FR_Time.ID INNER JOIN") +
+        tr("                      dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID INNER JOIN") +
+        tr("                      dbo.FR_Sub_Frame ON dbo.FR_Frame.ID = dbo.FR_Sub_Frame.id_frame INNER JOIN") +
+        tr("                      dbo.FR_GLS2ALS ON dbo.FR_Sub_Frame.ID = dbo.FR_GLS2ALS.id_sub_frame INNER JOIN") +
+        tr("                      dbo.Ref_Abstract_LandingSite ON dbo.FR_GLS2ALS.id_abstract_landingsite = dbo.Ref_Abstract_LandingSite.ID") +
+        tr(" WHERE     (dbo.Ref_Minor_Strata.ID = ") + QVariant(m_sample->minorStrataId).toString() + (" ) AND (dbo.FR_GLS2ALS.id_gls =") +
+        tr("                  (SELECT     id_gls") +
+        tr("                    FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1") +
+        tr("                    WHERE      (ID = ") + QVariant(m_sample->minorStrataId).toString() + (")))")
+        ;//for getting all the boats on the frame, just remove the last condition
 
         query.prepare(strQuery);
         if (!query.exec()){
-        emit showError(tr("Could not obtain filter for Vessels!"));
+            emit showError(tr("Could not obtain filter for Landing Sites!"));
         return;
         }
 
         QString strFilter(tr(""));
         while (query.next()) {
-        strFilter.append(tr("VesselID=") + query.value(0).toString());
-        strFilter.append(tr(" OR "));
+            strFilter.append(tr("ID=") + query.value(0).toString());
+            strFilter.append(tr(" OR "));
         }
         if (!strFilter.isEmpty())
-         strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+            strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
 
-        tTrips->relationModel(2)->setFilter(strFilter);
-
-        //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
-    */
+        tTrips->relationModel(4)->setFilter(strFilter);
 
     }else{
-        //TODO:
-        //carry value forward for sampling
 
         strQuery=
         tr("SELECT     id_abstract_LandingSite") +
@@ -475,7 +493,6 @@ void FrmTrip::filterModel4Combo()
             emit showError(tr("There is a problem with the type of this frame!"));
             return;
         }
-
         query.bindValue(0,m_sample->cellId);
 
         if (!query.exec() || query.numRowsAffected()!=1){
@@ -496,25 +513,25 @@ void FrmTrip::filterModel4Combo()
 }
 
 bool FrmTrip::updateSample()
-{/*
+{
     if (!tableView->selectionModel()->hasSelection())
         return false;
 
     //updating the sample structure
-    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),0);
+    QModelIndex idx=viewTrips->index(tableView->selectionModel()->currentIndex().row(),0);
 
     //TODO: update the vessel here
-    //m_sample->cellId=idx.data().toInt();*/
+    m_sample->tripId=idx.data().toInt();
     return true;
 }
 
 bool FrmTrip::getNextLabel(QString& strLabel)
-{/*
+{
     if (!tableView->selectionModel()->hasSelection())
         return false;
 
     //sending the name
-    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),1);
-    strLabel=idx.data().toString();*/
+    QModelIndex idx=viewTrips->index(tableView->selectionModel()->currentIndex().row(),2);//startdate
+    strLabel=idx.data().toString();
     return true;
 }

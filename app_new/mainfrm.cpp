@@ -13,9 +13,11 @@ QMainWindow(parent, flags){
     pFrmVesselType=0;
     pFrmVessel=0;
     pFrmTrip=0;
+    pFrmOperation=0;
     pFrmPrjPage=0;
     toolbar=0;
-    //m_bTabsDefined=false;
+
+    setAttribute( Qt::WA_AlwaysShowToolTips);
 
     setupUi(this);
 
@@ -34,6 +36,7 @@ MainFrm::~MainFrm()
     if (pFrmVesselType!=0) delete pFrmVesselType;
     if (pFrmVessel!=0) delete pFrmVessel;
     if (pFrmTrip!=0) delete pFrmTrip;
+    if (pFrmOperation!=0) delete pFrmOperation;
     if (pFrmPrjPage!=0) delete pFrmPrjPage;
     if (toolbar!=0) delete toolbar;
     //n.b.: delete these in the end, as they are used by the forms!
@@ -76,7 +79,13 @@ void MainFrm::loadFile()
 
 void MainFrm::writeFile()
 {
-    //TODO: check if a project is open or new
+    if ( tabWidget->count() <1 || sSample->frameId==-1 || sSample->frameTimeId==-1){
+        QMessageBox::information(this, tr("Medfisis"),
+                                        tr("There is nothing to save."),
+                                        QMessageBox::Ok);
+         return;
+    }
+
     QString fileName = QFileDialog::getSaveFileName(this,
      tr("Save Project"), "", tr("Project Files (*.xml)"));
 
@@ -86,33 +95,34 @@ void MainFrm::writeFile()
 
 void MainFrm::CreateXMLFile(const QString strFileName)
 {
-	QFile file(strFileName);
- 
-	/*open a file */
-	if (!file.open(QIODevice::WriteOnly))
-	{
-	/* show wrror message if not able to open file */
-	QMessageBox::warning(0, "Read only", "The file is in read only mode");
-	}	
-	else
-	{
-		/*if file is successfully opened then create XML*/
-		QXmlStreamWriter* xmlWriter = new QXmlStreamWriter();
-		/* set device (here file)to streamwriter */
-		xmlWriter->setDevice(&file);
-		/* Writes a document start with the XML version number version. */
-		xmlWriter->writeStartDocument();
-		/* Writes a start element with name,
-		* Subsequent calls to writeAttribute() will add attributes to this element.
-		 here we creating a tag <persons>*/
-		xmlWriter->writeStartElement("persons");
- 	    /*end tag persons*/
-		xmlWriter->writeEndElement();
-		/*end document */
-		xmlWriter->writeEndDocument();
+    QFile file(strFileName);
+
+    /*open a file */
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        /* show wrror message if not able to open file */
+        QMessageBox::warning(0, tr("Read only"), tr("The file is in read only mode"));
+    }
+    else
+    {
+        /*if file is successfully opened then create XML*/
+        QXmlStreamWriter* xmlWriter = new QXmlStreamWriter();
+        xmlWriter->setDevice(&file);
+        /* Writes a document start with the XML version number version. */
+        xmlWriter->writeStartDocument();
+        /* Writes a start element with name,
+        * Subsequent calls to writeAttribute() will add attributes to this element.*/
+        xmlWriter->writeStartElement(tr("frame"));
+        xmlWriter->writeAttribute(tr("id"), QVariant(sSample->frameId).toString());
+        xmlWriter->writeEndElement();
+        xmlWriter->writeStartElement(tr("frametime"));
+        xmlWriter->writeAttribute(tr("id"), QVariant(sSample->frameTimeId).toString());
+        xmlWriter->writeEndElement();
+        /*end document */
+        xmlWriter->writeEndDocument();
                delete xmlWriter;
-	}
-}
+        }
+    }
 
 void MainFrm::aboutThisProject()
 {
@@ -142,6 +152,7 @@ void MainFrm::resetTabs()
         if (pFrmVesselType!=0) {delete pFrmVesselType; pFrmVesselType=0;}
         if (pFrmVessel!=0) {delete pFrmVessel; pFrmVessel=0;}
         if (pFrmTrip!=0) {delete pFrmTrip; pFrmTrip=0;}
+        if (pFrmOperation!=0) {delete pFrmOperation; pFrmOperation=0;}
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
         if (sSample!=0) {delete sSample; sSample=0;}
 
@@ -190,6 +201,8 @@ void MainFrm::initTabs()
         initPreviewTab(pFrmVessel);
         pFrmTrip=new FrmTrip(sSample,tDateTime);
         initPreviewTab(pFrmTrip);
+        pFrmOperation=new FrmOperation(sSample,tDateTime);
+        initPreviewTab(pFrmOperation);
 
         pFrmFrameDetails=new FrmFrameDetails();
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,
@@ -263,7 +276,6 @@ void MainFrm::updateIndexes(const int from)
          connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
         SLOT(onShowForm()),Qt::UniqueConnection);
      }
-
 }
 
 

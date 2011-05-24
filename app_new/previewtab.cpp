@@ -6,6 +6,12 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,parent,flags){
     m_model=0;
     m_table=0;
 
+    setAttribute( Qt::WA_AlwaysShowToolTips);
+
+    connect(this, SIGNAL(isLogBook 
+        (const bool)), this,
+            SLOT(setTips(const bool)));
+
 }
 
 PreviewTab::~PreviewTab()
@@ -13,6 +19,12 @@ PreviewTab::~PreviewTab()
     //if (m_model!=0) delete m_model;//N.b.: dont delete model here: it does not belong to this class!
 }
 
+void PreviewTab::setTips(const bool bLogbook)
+{
+    lbHead->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbHead->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+}
 
 void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
 {
@@ -88,6 +100,10 @@ void PreviewTab::onShowForm()
     if (m_table->model()->rowCount()>0){
         m_table->selectRow(0);
     }
+
+    if (m_sample==0 || lbHead==0) return;
+
+     emit isLogBook(m_sample->bLogBook);
 }
 
 bool PreviewTab::next()

@@ -72,11 +72,13 @@ class PreviewTab : public GenericTab
         QList<QWidget*>                       m_lWidgets;
 
     signals:
+        void                                  isLogBook(const bool bIsLogbook);
 
     public slots:
         void                                  onShowForm();
 
     private slots:
+        void                                  setTips(const bool bLogbook);
         //! Go to the next step
         /*! The next is the slot that actually passes the information to the next tab (and adds it
         if it is not visible), and therefore is crucial to the sampling process;

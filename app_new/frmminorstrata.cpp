@@ -203,6 +203,7 @@ void FrmMinorStrata::beforeShow()
     this->groupDetails->setVisible(false);
     setSourceText(lbSource);
     toolButton->setVisible(m_sample->bLogBook);
+
 }
 
 void FrmMinorStrata::createRecord()

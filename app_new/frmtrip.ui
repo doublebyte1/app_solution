@@ -81,13 +81,13 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Choose cell (or create a new one)</string>
+        <string>Choose sampled fishing trip (or create a new one)</string>
        </property>
        <property name="statusTip">
-        <string>Choose cell (or create a new one)</string>
+        <string>Choose sampled fishing trip (or create a new one)</string>
        </property>
        <property name="whatsThis">
-        <string>In this widget we can choose cell, or create a new one</string>
+        <string>In this widget we can choose sampled fishing trip, or create a new one</string>
        </property>
       </widget>
      </item>
@@ -142,7 +142,17 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="cmbSite"/>
+         <widget class="QComboBox" name="cmbSite">
+          <property name="toolTip">
+           <string>Choose Landing Site</string>
+          </property>
+          <property name="statusTip">
+           <string>Choose Landing Site</string>
+          </property>
+          <property name="whatsThis">
+           <string>In this widget we can select a landing site</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_6">
@@ -155,7 +165,17 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="cmbSampler"/>
+         <widget class="QComboBox" name="cmbSampler">
+          <property name="toolTip">
+           <string>Choose sampler</string>
+          </property>
+          <property name="statusTip">
+           <string>Choose sampler</string>
+          </property>
+          <property name="whatsThis">
+           <string>In this widget we can choose a sampler</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_22">
@@ -177,6 +197,15 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Number of professional fishermen</string>
+          </property>
+          <property name="statusTip">
+           <string>Number of professional fishermen</string>
+          </property>
+          <property name="whatsThis">
+           <string>Input the number of professional fishermen</string>
           </property>
          </widget>
         </item>
@@ -201,6 +230,15 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>Part-time fishermen</string>
+          </property>
+          <property name="statusTip">
+           <string>Part-time fishermen</string>
+          </property>
+          <property name="whatsThis">
+           <string>Input the number of part-time fishermen</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -223,7 +261,14 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
            </widget>
           </item>
           <item>
-           <widget class="CustomTimeCtrl" name="customDtStart"/>
+           <widget class="CustomTimeCtrl" name="customDtStart">
+            <property name="toolTip">
+             <string>Start datetime</string>
+            </property>
+            <property name="whatsThis">
+             <string>Input the starting datetime of the fishing trip</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_25">
@@ -239,7 +284,14 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
            </widget>
           </item>
           <item>
-           <widget class="CustomTimeCtrl" name="customDtEnd"/>
+           <widget class="CustomTimeCtrl" name="customDtEnd">
+            <property name="toolTip">
+             <string>End datetime</string>
+            </property>
+            <property name="whatsThis">
+             <string>Input the finishing datetime of the fishing trip</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -321,6 +373,15 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>Estimated catch (weight)</string>
+               </property>
+               <property name="statusTip">
+                <string>Estimated catch (weight)</string>
+               </property>
+               <property name="whatsThis">
+                <string>Input the estimated catch (weight)</string>
+               </property>
               </widget>
              </item>
              <item row="3" column="3">
@@ -334,10 +395,29 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>Calculated catch (weight)</string>
+               </property>
+               <property name="statusTip">
+                <string>Calculated catch (weight)</string>
+               </property>
+               <property name="whatsThis">
+                <string>Input the calculated catch (weight)</string>
+               </property>
               </widget>
              </item>
              <item row="3" column="4" colspan="2">
-              <widget class="QComboBox" name="cmbWeight"/>
+              <widget class="QComboBox" name="cmbWeight">
+               <property name="toolTip">
+                <string>Weight units for the catch</string>
+               </property>
+               <property name="statusTip">
+                <string>Weight units for the catch</string>
+               </property>
+               <property name="whatsThis">
+                <string>Weight units for the catch</string>
+               </property>
+              </widget>
              </item>
              <item row="4" column="4">
               <widget class="QLabel" name="label">
@@ -377,12 +457,30 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>Estimated catch (number of boxes)</string>
+               </property>
+               <property name="statusTip">
+                <string>Estimated catch (number of boxes)</string>
+               </property>
+               <property name="whatsThis">
+                <string>Estimated catch (number of boxes)</string>
+               </property>
               </widget>
              </item>
              <item row="5" column="3">
               <widget class="QDoubleSpinBox" name="spinCBC">
                <property name="enabled">
                 <bool>false</bool>
+               </property>
+               <property name="toolTip">
+                <string>Calculated catch (number of boxes)</string>
+               </property>
+               <property name="statusTip">
+                <string>Calculated catch (number of boxes)</string>
+               </property>
+               <property name="whatsThis">
+                <string>Calculated catch (number of boxes)</string>
                </property>
               </widget>
              </item>
@@ -394,10 +492,29 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>Weight/ box</string>
+               </property>
+               <property name="statusTip">
+                <string>Weight/ box</string>
+               </property>
+               <property name="whatsThis">
+                <string>Weight per box</string>
+               </property>
               </widget>
              </item>
              <item row="5" column="5">
-              <widget class="QComboBox" name="cmbBoxes"/>
+              <widget class="QComboBox" name="cmbBoxes">
+               <property name="toolTip">
+                <string>Weight units for the catch/box</string>
+               </property>
+               <property name="statusTip">
+                <string>Weight units for the catch/box</string>
+               </property>
+               <property name="whatsThis">
+                <string>Weight units for the catch/box</string>
+               </property>
+              </widget>
              </item>
              <item row="1" column="3">
               <widget class="QSpinBox" name="spinNOC">
@@ -410,6 +527,15 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>Calculated number of operations</string>
+               </property>
+               <property name="statusTip">
+                <string>Calculated number of operations</string>
+               </property>
+               <property name="whatsThis">
+                <string>Input the calculated number of operations</string>
+               </property>
               </widget>
              </item>
              <item row="1" column="1" colspan="2">
@@ -419,6 +545,15 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Estimated number of operations</string>
+               </property>
+               <property name="statusTip">
+                <string>Estimated number of operations</string>
+               </property>
+               <property name="whatsThis">
+                <string>Input the estimated number of operations</string>
                </property>
               </widget>
              </item>
@@ -445,6 +580,15 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Comments</string>
+            </property>
+            <property name="statusTip">
+             <string>Comments</string>
+            </property>
+            <property name="whatsThis">
+             <string>Input comments</string>
             </property>
            </widget>
           </item>
@@ -526,6 +670,27 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <header>customtimectrl.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tableView</tabstop>
+  <tabstop>pushNew</tabstop>
+  <tabstop>cmbSite</tabstop>
+  <tabstop>cmbSampler</tabstop>
+  <tabstop>spinProf</tabstop>
+  <tabstop>spinPart</tabstop>
+  <tabstop>spinNOE</tabstop>
+  <tabstop>spinNOC</tabstop>
+  <tabstop>spinCE</tabstop>
+  <tabstop>spinCC</tabstop>
+  <tabstop>cmbWeight</tabstop>
+  <tabstop>spinCBE</tabstop>
+  <tabstop>spinCBC</tabstop>
+  <tabstop>spinWeight</tabstop>
+  <tabstop>cmbBoxes</tabstop>
+  <tabstop>textComments</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>pushPrevious</tabstop>
+  <tabstop>pushNext</tabstop>
+ </tabstops>
  <resources>
   <include location="app_new.qrc"/>
  </resources>

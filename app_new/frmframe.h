@@ -41,6 +41,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     private:
         void                                   setReadOnly(const bool bRO){(void)bRO;}//does nothing
 
+        bool                                   updateSample();
         bool                                   getCurrentFrame(int& id);
         void                                   initModels();
         void                                   initMappers();

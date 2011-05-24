@@ -9,6 +9,7 @@
 #include "frmvesseltype.h"
 #include "frmvessel.h"
 #include "frmtrip.h"
+#include "frmoperation.h"
 #include "frmprjpage.h"
 
   #if defined(WIN32) && defined(_DEBUG)
@@ -54,6 +55,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmVesselType           *pFrmVesselType;
         FrmVessel               *pFrmVessel;
         FrmTrip                 *pFrmTrip;
+        FrmOperation            *pFrmOperation;
         FrmPrjPage              *pFrmPrjPage;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;

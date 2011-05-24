@@ -29,6 +29,7 @@ struct Sample{
     int         cellId;
     int         vesselTypeId;
     int         sampVesselId;
+    int         tripId;
 };
 
 #endif //SAMPLE_H
@@ -90,7 +91,7 @@ class GenericTab : public QWidget
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
-        void                    setLbHead(QLabel* inLbHeader){lbHead=inLbHeader;}
+        void                    setLbHead(QLabel* inLbHeader);
         void                    setIndex(const int index){m_index=index;}
         const int               index()const {return m_index;}
         const QString           title()const {return m_title;}

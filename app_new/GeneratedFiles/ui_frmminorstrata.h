@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Mon 23. May 19:24:39 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Tue 24. May 14:37:09 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -40,7 +40,6 @@ public:
     QGridLayout *gridLayout_2;
     QLabel *lbHeader;
     QLabel *lbSource;
-    QLabel *label_6;
     QTableView *tableView;
     QVBoxLayout *verticalLayout_4;
     QToolButton *toolButton;
@@ -73,13 +72,14 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QPushButton *pushPrevious;
     QPushButton *pushNext;
+    QLabel *label_6;
     QButtonGroup *buttonGroup;
 
     void setupUi(QWidget *frmminorstrata)
     {
         if (frmminorstrata->objectName().isEmpty())
             frmminorstrata->setObjectName(QString::fromUtf8("frmminorstrata"));
-        frmminorstrata->resize(711, 621);
+        frmminorstrata->resize(711, 634);
         gridLayout_2 = new QGridLayout(frmminorstrata);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         lbHeader = new QLabel(frmminorstrata);
@@ -103,16 +103,11 @@ public:
 
         gridLayout_2->addWidget(lbSource, 0, 2, 1, 1);
 
-        label_6 = new QLabel(frmminorstrata);
-        label_6->setObjectName(QString::fromUtf8("label_6"));
-
-        gridLayout_2->addWidget(label_6, 1, 0, 1, 1);
-
         tableView = new QTableView(frmminorstrata);
         tableView->setObjectName(QString::fromUtf8("tableView"));
         tableView->setShowGrid(false);
 
-        gridLayout_2->addWidget(tableView, 1, 1, 2, 1);
+        gridLayout_2->addWidget(tableView, 2, 0, 2, 2);
 
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
@@ -136,17 +131,17 @@ public:
         verticalLayout_4->addWidget(pushNew);
 
 
-        gridLayout_2->addLayout(verticalLayout_4, 2, 2, 2, 1);
+        gridLayout_2->addLayout(verticalLayout_4, 3, 2, 2, 1);
 
         label_5 = new QLabel(frmminorstrata);
         label_5->setObjectName(QString::fromUtf8("label_5"));
 
-        gridLayout_2->addWidget(label_5, 3, 0, 1, 1);
+        gridLayout_2->addWidget(label_5, 4, 0, 1, 1);
 
         lineNew = new QLineEdit(frmminorstrata);
         lineNew->setObjectName(QString::fromUtf8("lineNew"));
 
-        gridLayout_2->addWidget(lineNew, 3, 1, 1, 1);
+        gridLayout_2->addWidget(lineNew, 4, 1, 1, 1);
 
         groupDetails = new QGroupBox(frmminorstrata);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -253,7 +248,7 @@ public:
         gridLayout->addWidget(buttonBox, 4, 4, 1, 1);
 
 
-        gridLayout_2->addWidget(groupDetails, 4, 0, 1, 3);
+        gridLayout_2->addWidget(groupDetails, 5, 0, 1, 3);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
@@ -292,12 +287,19 @@ public:
         horizontalLayout_4->addWidget(groupBackNext);
 
 
-        gridLayout_2->addLayout(horizontalLayout_4, 5, 0, 1, 3);
+        gridLayout_2->addLayout(horizontalLayout_4, 6, 0, 1, 3);
+
+        label_6 = new QLabel(frmminorstrata);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        sizePolicy.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
+        label_6->setSizePolicy(sizePolicy);
+
+        gridLayout_2->addWidget(label_6, 1, 0, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
-        label_6->setBuddy(tableView);
         label_5->setBuddy(lineNew);
         label_3->setBuddy(cmbGLS);
+        label_6->setBuddy(tableView);
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(frmminorstrata);
@@ -316,7 +318,6 @@ public:
         frmminorstrata->setWindowTitle(QApplication::translate("frmminorstrata", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmminorstrata", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
         lbSource->setText(QApplication::translate("frmminorstrata", "[SOURCE]", 0, QApplication::UnicodeUTF8));
-        label_6->setText(QApplication::translate("frmminorstrata", "Choose Minor Strata", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableView->setToolTip(QApplication::translate("frmminorstrata", "Choose minor strata (or create new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -358,6 +359,7 @@ public:
         groupBackNext->setTitle(QString());
         pushPrevious->setText(QApplication::translate("frmminorstrata", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmminorstrata", "Next", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("frmminorstrata", "Choose Minor Strata", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

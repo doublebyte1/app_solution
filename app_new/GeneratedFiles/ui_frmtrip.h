@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Mon 23. May 19:24:38 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Tue 24. May 10:25:01 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -462,6 +462,24 @@ public:
         label_19->setBuddy(cmbBoxes);
         label_18->setBuddy(spinCBE);
 #endif // QT_NO_SHORTCUT
+        QWidget::setTabOrder(tableView, pushNew);
+        QWidget::setTabOrder(pushNew, cmbSite);
+        QWidget::setTabOrder(cmbSite, cmbSampler);
+        QWidget::setTabOrder(cmbSampler, spinProf);
+        QWidget::setTabOrder(spinProf, spinPart);
+        QWidget::setTabOrder(spinPart, spinNOE);
+        QWidget::setTabOrder(spinNOE, spinNOC);
+        QWidget::setTabOrder(spinNOC, spinCE);
+        QWidget::setTabOrder(spinCE, spinCC);
+        QWidget::setTabOrder(spinCC, cmbWeight);
+        QWidget::setTabOrder(cmbWeight, spinCBE);
+        QWidget::setTabOrder(spinCBE, spinCBC);
+        QWidget::setTabOrder(spinCBC, spinWeight);
+        QWidget::setTabOrder(spinWeight, cmbBoxes);
+        QWidget::setTabOrder(cmbBoxes, textComments);
+        QWidget::setTabOrder(textComments, buttonBox);
+        QWidget::setTabOrder(buttonBox, pushPrevious);
+        QWidget::setTabOrder(pushPrevious, pushNext);
 
         retranslateUi(FrmTrip);
         QObject::connect(pushNew, SIGNAL(clicked()), FrmTrip, SLOT(createRecord()));
@@ -478,13 +496,13 @@ public:
         lbSource->setText(QApplication::translate("FrmTrip", "[SOURCE]", 0, QApplication::UnicodeUTF8));
         label_23->setText(QApplication::translate("FrmTrip", "Choose Fishing Trip:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        tableView->setToolTip(QApplication::translate("FrmTrip", "Choose cell (or create a new one)", 0, QApplication::UnicodeUTF8));
+        tableView->setToolTip(QApplication::translate("FrmTrip", "Choose sampled fishing trip (or create a new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        tableView->setStatusTip(QApplication::translate("FrmTrip", "Choose cell (or create a new one)", 0, QApplication::UnicodeUTF8));
+        tableView->setStatusTip(QApplication::translate("FrmTrip", "Choose sampled fishing trip (or create a new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        tableView->setWhatsThis(QApplication::translate("FrmTrip", "In this widget we can choose cell, or create a new one", 0, QApplication::UnicodeUTF8));
+        tableView->setWhatsThis(QApplication::translate("FrmTrip", "In this widget we can choose sampled fishing trip, or create a new one", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
 #ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("FrmTrip", "Create new record", 0, QApplication::UnicodeUTF8));
@@ -498,21 +516,159 @@ public:
         pushNew->setText(QString());
         groupDetails->setTitle(QApplication::translate("FrmTrip", "Details", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("FrmTrip", "Landing Site", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        cmbSite->setToolTip(QApplication::translate("FrmTrip", "Choose Landing Site", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        cmbSite->setStatusTip(QApplication::translate("FrmTrip", "Choose Landing Site", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        cmbSite->setWhatsThis(QApplication::translate("FrmTrip", "In this widget we can select a landing site", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_6->setText(QApplication::translate("FrmTrip", "Sampler", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        cmbSampler->setToolTip(QApplication::translate("FrmTrip", "Choose sampler", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        cmbSampler->setStatusTip(QApplication::translate("FrmTrip", "Choose sampler", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        cmbSampler->setWhatsThis(QApplication::translate("FrmTrip", "In this widget we can choose a sampler", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_22->setText(QApplication::translate("FrmTrip", "Number of professional fishermen", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        spinProf->setToolTip(QApplication::translate("FrmTrip", "Number of professional fishermen", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinProf->setStatusTip(QApplication::translate("FrmTrip", "Number of professional fishermen", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinProf->setWhatsThis(QApplication::translate("FrmTrip", "Input the number of professional fishermen", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_24->setText(QApplication::translate("FrmTrip", "No part-time fishermen", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        spinPart->setToolTip(QApplication::translate("FrmTrip", "Part-time fishermen", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinPart->setStatusTip(QApplication::translate("FrmTrip", "Part-time fishermen", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinPart->setWhatsThis(QApplication::translate("FrmTrip", "Input the number of part-time fishermen", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_14->setText(QApplication::translate("FrmTrip", "Start", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        customDtStart->setToolTip(QApplication::translate("FrmTrip", "Start datetime", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_WHATSTHIS
+        customDtStart->setWhatsThis(QApplication::translate("FrmTrip", "Input the starting datetime of the fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_25->setText(QApplication::translate("FrmTrip", "End", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        customDtEnd->setToolTip(QApplication::translate("FrmTrip", "End datetime", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_WHATSTHIS
+        customDtEnd->setWhatsThis(QApplication::translate("FrmTrip", "Input the finishing datetime of the fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupTotals->setTitle(QApplication::translate("FrmTrip", "Totals", 0, QApplication::UnicodeUTF8));
         label_20->setText(QApplication::translate("FrmTrip", "Estimated", 0, QApplication::UnicodeUTF8));
         label_21->setText(QApplication::translate("FrmTrip", "Calculated", 0, QApplication::UnicodeUTF8));
         label_16->setText(QApplication::translate("FrmTrip", "No of operations", 0, QApplication::UnicodeUTF8));
         label_15->setText(QApplication::translate("FrmTrip", "Units", 0, QApplication::UnicodeUTF8));
         label_17->setText(QApplication::translate("FrmTrip", "Catch (weight)", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        spinCE->setToolTip(QApplication::translate("FrmTrip", "Estimated catch (weight)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinCE->setStatusTip(QApplication::translate("FrmTrip", "Estimated catch (weight)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinCE->setWhatsThis(QApplication::translate("FrmTrip", "Input the estimated catch (weight)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        spinCC->setToolTip(QApplication::translate("FrmTrip", "Calculated catch (weight)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinCC->setStatusTip(QApplication::translate("FrmTrip", "Calculated catch (weight)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinCC->setWhatsThis(QApplication::translate("FrmTrip", "Input the calculated catch (weight)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        cmbWeight->setToolTip(QApplication::translate("FrmTrip", "Weight units for the catch", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        cmbWeight->setStatusTip(QApplication::translate("FrmTrip", "Weight units for the catch", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        cmbWeight->setWhatsThis(QApplication::translate("FrmTrip", "Weight units for the catch", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label->setText(QApplication::translate("FrmTrip", "Weight/box", 0, QApplication::UnicodeUTF8));
         label_19->setText(QApplication::translate("FrmTrip", "Units", 0, QApplication::UnicodeUTF8));
         label_18->setText(QApplication::translate("FrmTrip", "Catch (no boxes)", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        spinCBE->setToolTip(QApplication::translate("FrmTrip", "Estimated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinCBE->setStatusTip(QApplication::translate("FrmTrip", "Estimated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinCBE->setWhatsThis(QApplication::translate("FrmTrip", "Estimated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        spinCBC->setToolTip(QApplication::translate("FrmTrip", "Calculated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinCBC->setStatusTip(QApplication::translate("FrmTrip", "Calculated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinCBC->setWhatsThis(QApplication::translate("FrmTrip", "Calculated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        spinWeight->setToolTip(QApplication::translate("FrmTrip", "Weight/ box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinWeight->setStatusTip(QApplication::translate("FrmTrip", "Weight/ box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinWeight->setWhatsThis(QApplication::translate("FrmTrip", "Weight per box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        cmbBoxes->setToolTip(QApplication::translate("FrmTrip", "Weight units for the catch/box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        cmbBoxes->setStatusTip(QApplication::translate("FrmTrip", "Weight units for the catch/box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        cmbBoxes->setWhatsThis(QApplication::translate("FrmTrip", "Weight units for the catch/box", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        spinNOC->setToolTip(QApplication::translate("FrmTrip", "Calculated number of operations", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinNOC->setStatusTip(QApplication::translate("FrmTrip", "Calculated number of operations", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinNOC->setWhatsThis(QApplication::translate("FrmTrip", "Input the calculated number of operations", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        spinNOE->setToolTip(QApplication::translate("FrmTrip", "Estimated number of operations", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        spinNOE->setStatusTip(QApplication::translate("FrmTrip", "Estimated number of operations", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        spinNOE->setWhatsThis(QApplication::translate("FrmTrip", "Input the estimated number of operations", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         label_13->setText(QApplication::translate("FrmTrip", "Comments:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        textComments->setToolTip(QApplication::translate("FrmTrip", "Comments", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        textComments->setStatusTip(QApplication::translate("FrmTrip", "Comments", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        textComments->setWhatsThis(QApplication::translate("FrmTrip", "Input comments", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupBox_2->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmTrip", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmTrip", "Next", 0, QApplication::UnicodeUTF8));
