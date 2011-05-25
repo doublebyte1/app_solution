@@ -15,6 +15,7 @@ HEADERS += ./buttongroup.h \
     ./frmframedetails.h \
     ./frmlegend.h \
     ./frmminorstrata.h \
+    ./frmoperation.h \
     ./frmprjpage.h \
     ./frmtrip.h \
     ./frmvessel.h \
@@ -40,6 +41,7 @@ SOURCES += ./buttongroup.cpp \
     ./frmframedetails.cpp \
     ./frmlegend.cpp \
     ./frmminorstrata.cpp \
+    ./frmoperation.cpp \
     ./frmprjpage.cpp \
     ./frmtrip.cpp \
     ./frmvessel.cpp \
@@ -60,6 +62,7 @@ FORMS += ./frmcell.ui \
     ./frmframedetails.ui \
     ./frmlegend.ui \
     ./frmminorstrata.ui \
+    ./frmoperation.ui \
     ./frmprjpage.ui \
     ./frmtrip.ui \
     ./frmvessel.ui \

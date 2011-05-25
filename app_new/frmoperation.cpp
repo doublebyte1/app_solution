@@ -362,12 +362,13 @@ void FrmOperation::uI4NewRecord()
 
 void FrmOperation::createRecord()
 {
+    /*
     genericCreateRecord();
     mapper1->toLast();
 
     if(!m_tDateTime) return;
     m_tDateTime->select();
-/*
+
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
     if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){

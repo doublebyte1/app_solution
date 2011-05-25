@@ -49,7 +49,7 @@ class SessionFileParser : public QXmlDefaultHandler
           \\Reimplementation of the virtual function on the base class
           \sa characters ( const QString & ch );
         */
-        bool              startElement( const QString& ns, const QString& localName, const QString &name, const QXmlAttributes &attrs );
+        bool              startElement( const QString&, const QString&, const QString &name, const QXmlAttributes &);
         /*! Characters
           \\Reimplementation of the virtual function on the base class
           \sa startElement( const QString& ns, const QString& localName, const QString &name, const QXmlAttributes &attrs );

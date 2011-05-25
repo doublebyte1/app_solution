@@ -428,7 +428,7 @@ SessionFileParser::~SessionFileParser()
     //if (m_sample!=0) delete m_sample;
 }
 
-bool SessionFileParser::startElement( const QString& ns, const QString& localName, const QString &name, const QXmlAttributes &attrs )
+bool SessionFileParser::startElement( const QString& , const QString& , const QString &name, const QXmlAttributes &)
   {
       if( name == QObject::tr("frameId") )
         m_bReadingFrameId=true;

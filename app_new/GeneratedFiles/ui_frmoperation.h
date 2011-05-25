@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Tue 24. May 13:24:37 2011
+** Created: Wed 25. May 15:29:22 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,6 +14,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QColumnView>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
@@ -30,7 +31,7 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmOperation
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_9;
     QLabel *lbHeader;
     QLabel *lbSource;
@@ -40,6 +41,13 @@ public:
     QVBoxLayout *verticalLayout_5;
     QPushButton *pushNew;
     QGroupBox *groupDetails;
+    QVBoxLayout *verticalLayout;
+    QColumnView *columnView;
+    QHBoxLayout *horizontalLayout_2;
+    QTableView *tableDetails;
+    QPushButton *pushOk;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer;
     QDialogButtonBox *buttonBox;
     QHBoxLayout *horizontalLayout_16;
     QSpacerItem *horizontalSpacer_2;
@@ -52,9 +60,9 @@ public:
     {
         if (FrmOperation->objectName().isEmpty())
             FrmOperation->setObjectName(QString::fromUtf8("FrmOperation"));
-        FrmOperation->resize(683, 585);
-        verticalLayout = new QVBoxLayout(FrmOperation);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        FrmOperation->resize(683, 589);
+        verticalLayout_2 = new QVBoxLayout(FrmOperation);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
         lbHeader = new QLabel(FrmOperation);
@@ -84,12 +92,12 @@ public:
         horizontalLayout_9->addWidget(lbSource);
 
 
-        verticalLayout->addLayout(horizontalLayout_9);
+        verticalLayout_2->addLayout(horizontalLayout_9);
 
         label_23 = new QLabel(FrmOperation);
         label_23->setObjectName(QString::fromUtf8("label_23"));
 
-        verticalLayout->addWidget(label_23);
+        verticalLayout_2->addWidget(label_23);
 
         horizontalLayout_15 = new QHBoxLayout();
         horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
@@ -117,7 +125,7 @@ public:
         horizontalLayout_15->addLayout(verticalLayout_5);
 
 
-        verticalLayout->addLayout(horizontalLayout_15);
+        verticalLayout_2->addLayout(horizontalLayout_15);
 
         groupDetails = new QGroupBox(FrmOperation);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -126,12 +134,45 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
         groupDetails->setSizePolicy(sizePolicy3);
+        verticalLayout = new QVBoxLayout(groupDetails);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        columnView = new QColumnView(groupDetails);
+        columnView->setObjectName(QString::fromUtf8("columnView"));
+
+        verticalLayout->addWidget(columnView);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        tableDetails = new QTableView(groupDetails);
+        tableDetails->setObjectName(QString::fromUtf8("tableDetails"));
+
+        horizontalLayout_2->addWidget(tableDetails);
+
+        pushOk = new QPushButton(groupDetails);
+        pushOk->setObjectName(QString::fromUtf8("pushOk"));
+
+        horizontalLayout_2->addWidget(pushOk);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
         buttonBox = new QDialogButtonBox(groupDetails);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
-        buttonBox->setGeometry(QRect(290, 220, 363, 23));
         buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
 
-        verticalLayout->addWidget(groupDetails);
+        horizontalLayout->addWidget(buttonBox);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+
+        verticalLayout_2->addWidget(groupDetails);
 
         horizontalLayout_16 = new QHBoxLayout();
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
@@ -164,13 +205,15 @@ public:
         horizontalLayout_16->addWidget(groupBox_2);
 
 
-        verticalLayout->addLayout(horizontalLayout_16);
+        verticalLayout_2->addLayout(horizontalLayout_16);
 
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(FrmOperation);
+        QObject::connect(pushNew, SIGNAL(clicked()), FrmOperation, SLOT(createRecord()));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), FrmOperation, SLOT(previewRow(QModelIndex)));
 
         QMetaObject::connectSlotsByName(FrmOperation);
     } // setupUi
@@ -201,6 +244,7 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
         groupDetails->setTitle(QApplication::translate("FrmOperation", "Details", 0, QApplication::UnicodeUTF8));
+        pushOk->setText(QApplication::translate("FrmOperation", "Ok", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmOperation", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmOperation", "Next", 0, QApplication::UnicodeUTF8));
