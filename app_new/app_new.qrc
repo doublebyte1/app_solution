@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>folder.png</file>
     <file>kcoloredit.png</file>
     <file>vesself.png</file>
     <file>3floppy_unmount.png</file>

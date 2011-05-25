@@ -77,7 +77,7 @@
   <action name="actionLoad">
    <property name="icon">
     <iconset resource="app_new.qrc">
-     <normaloff>:/app_new/editcopy.png</normaloff>:/app_new/editcopy.png</iconset>
+     <normaloff>:/app_new/folder.png</normaloff>:/app_new/folder.png</iconset>
    </property>
    <property name="text">
     <string>Load</string>

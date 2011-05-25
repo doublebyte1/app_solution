@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Tue 24. May 08:58:00 2011
+** Created: Wed 25. May 12:11:56 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -59,7 +59,7 @@ public:
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QString::fromUtf8("actionLoad"));
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/editcopy.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QString::fromUtf8(":/app_new/folder.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionLoad->setIcon(icon2);
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName(QString::fromUtf8("actionExit"));

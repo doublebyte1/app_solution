@@ -9,7 +9,7 @@ QMainWindow(parent, flags){
     pFrmMinorStrata=0;
     pFrmFrameDetails=0;
     pFrmCell=0;
-    sSample=0;
+    sSample=new Sample;
     pFrmVesselType=0;
     pFrmVessel=0;
     pFrmTrip=0;
@@ -72,9 +72,37 @@ void MainFrm::initUi()
     toolbar->addAction(this->actionAbout_Qt);
 }
 
+bool MainFrm::readXMLFile(const QString strFileName)
+{
+    //TODO: add some XML semantic  validation?
+
+    SessionFileParser *handler=new SessionFileParser(sSample);
+
+    QFile file( strFileName );
+    QXmlInputSource source( &file );
+
+    QXmlSimpleReader reader;
+    reader.setContentHandler( handler );
+    reader.setErrorHandler(handler);
+
+    if (!reader.parse( source )){
+        delete handler; handler=0;
+        return false;
+    }
+
+    delete handler; handler=0;
+    return true;
+}
+
 void MainFrm::loadFile()
 {
-    //TODO: open file
+    QString fileName = QFileDialog::getOpenFileName(this,
+     tr("Open Project"), tr(""), tr("Project Files (*.xml)"));
+
+    if (!fileName.isEmpty()){
+        if (!readXMLFile(fileName))
+            this->displayError(tr("Could not parse XML file! Are you sure this is a valid project file?"),true);
+    }
 }
 
 void MainFrm::writeFile()
@@ -89,40 +117,52 @@ void MainFrm::writeFile()
     QString fileName = QFileDialog::getSaveFileName(this,
      tr("Save Project"), "", tr("Project Files (*.xml)"));
 
-    if (!fileName.isEmpty())
-        CreateXMLFile(fileName);
+    if (!fileName.isEmpty()){
+        if (!CreateXMLFile(fileName))
+            this->displayError(tr("Could not write XML file!"),true);
+    }
 }
 
-void MainFrm::CreateXMLFile(const QString strFileName)
+bool MainFrm::CreateXMLFile(const QString strFileName)
 {
     QFile file(strFileName);
 
     /*open a file */
     if (!file.open(QIODevice::WriteOnly))
     {
-        /* show wrror message if not able to open file */
+        /* show error message if not able to open file */
         QMessageBox::warning(0, tr("Read only"), tr("The file is in read only mode"));
     }
     else
     {
-        /*if file is successfully opened then create XML*/
-        QXmlStreamWriter* xmlWriter = new QXmlStreamWriter();
-        xmlWriter->setDevice(&file);
-        /* Writes a document start with the XML version number version. */
-        xmlWriter->writeStartDocument();
-        /* Writes a start element with name,
-        * Subsequent calls to writeAttribute() will add attributes to this element.*/
-        xmlWriter->writeStartElement(tr("frame"));
-        xmlWriter->writeAttribute(tr("id"), QVariant(sSample->frameId).toString());
-        xmlWriter->writeEndElement();
-        xmlWriter->writeStartElement(tr("frametime"));
-        xmlWriter->writeAttribute(tr("id"), QVariant(sSample->frameTimeId).toString());
-        xmlWriter->writeEndElement();
-        /*end document */
-        xmlWriter->writeEndDocument();
-               delete xmlWriter;
-        }
+        if (sSample==0) return false;
+
+        QXmlStreamWriter stream(&file);
+        stream.setAutoFormatting(true);
+        stream.writeStartDocument();//top
+            stream.writeStartElement(tr("session"));
+                stream.writeTextElement(tr("title"), tr("Session File"));
+                stream.writeTextElement(tr("description"), 
+                    tr("This is a session file, which stores the point of the application where the user was.\n Please do *NOT* edit it, unless you know what you are doing!"));
+                stream.writeStartElement(tr("connection"));
+                stream.writeAttribute(tr("alias"), QSqlDatabase::database().connectionName());
+                    stream.writeTextElement(tr("database"), QSqlDatabase::database().databaseName());
+                    stream.writeTextElement(tr("driver"), QSqlDatabase::database().driverName());
+                    stream.writeTextElement(tr("host"), QSqlDatabase::database().hostName());
+                    stream.writeTextElement(tr("user"), QSqlDatabase::database().userName());
+                stream.writeEndElement();//connection
+                stream.writeStartElement(tr("indexes"));
+                    stream.writeTextElement(tr("frameId"), QVariant(sSample->frameId).toString());
+                    stream.writeTextElement(tr("frameTimeId"), QVariant(sSample->frameTimeId).toString());
+                stream.writeEndElement();//indexes
+            stream.writeEndElement();//top
+        stream.writeEndDocument();
+
+        return true;
     }
+
+    return false;
+}
 
 void MainFrm::aboutThisProject()
 {
@@ -371,4 +411,57 @@ void MainFrm::statusClean(QString str)
     if (str.isEmpty() || str.isNull()){
         statusBar()->setStyleSheet(tr(""));
     }
+}
+
+/////////////////////////////////////////////
+
+SessionFileParser::SessionFileParser(Sample* sample)
+{
+    m_sample=sample;
+    m_bReadingFrameId=false;
+    m_bReadingFrameTimeId=false;
+    m_ct=0;
+}
+
+SessionFileParser::~SessionFileParser()
+{
+    //if (m_sample!=0) delete m_sample;
+}
+
+bool SessionFileParser::startElement( const QString& ns, const QString& localName, const QString &name, const QXmlAttributes &attrs )
+  {
+      if( name == QObject::tr("frameId") )
+        m_bReadingFrameId=true;
+      else if( name == QObject::tr("frameTimeId") )
+        m_bReadingFrameTimeId=true;
+
+    return true;
+  }
+
+bool SessionFileParser::characters ( const QString & ch )
+{
+    if (m_bReadingFrameId){
+        m_sample->frameId=QVariant(ch).toInt();
+        m_bReadingFrameId=false;
+        m_ct++;
+    }else if (m_bReadingFrameTimeId){
+        m_sample->frameTimeId=QVariant(ch).toInt();
+        m_bReadingFrameTimeId=false;
+        m_ct++;
+    }
+    return m_bReadingFrameId==false || m_bReadingFrameTimeId==false;
+}
+
+ bool SessionFileParser::fatalError (const QXmlParseException & exception)
+ {
+     qWarning() << QObject::tr("Fatal error on line") << exception.lineNumber()
+                << QObject::tr(", column") << exception.columnNumber() << ":"
+                << exception.message();
+
+     return false;
+ }
+
+bool SessionFileParser::endDocument()
+{
+    return m_ct==2;
 }

@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QtSql>
+ #include <QXmlDefaultHandler>
 #include "ui_mainfrm.h"
 #include "CustomMsgBox.h"
 #include "frmframedetails.h"
@@ -18,6 +19,58 @@
   #endif
 
 using namespace boost;
+
+//////////////////////////////////////////////////////////////////////
+#ifndef SESSIONFILEPARSER_H
+#define SESSIONFILEPARSER_H
+
+//! Session File Handler
+/*!
+//This is an XML handler, to use with the SAX Qt classes;
+In this handler we parse the elements frame id and frametime id from an XML configuration file,
+and put them inside a sample structure, ready to be integrated into the app.
+This class is very simple and we only provide implementation for a few virtual functions;
+Usage: just give a sample and parse: have fun!":-);
+*/
+
+class SessionFileParser : public QXmlDefaultHandler
+{
+    public:
+        /*! A constructor
+          \sa ~SessionFileParser()
+        */
+        SessionFileParser(Sample* sample);
+        /*! A destructor
+          \sa SessionFileParser()
+        */
+        ~SessionFileParser();
+
+        /*! StartElement
+          \\Reimplementation of the virtual function on the base class
+          \sa characters ( const QString & ch );
+        */
+        bool              startElement( const QString& ns, const QString& localName, const QString &name, const QXmlAttributes &attrs );
+        /*! Characters
+          \\Reimplementation of the virtual function on the base class
+          \sa startElement( const QString& ns, const QString& localName, const QString &name, const QXmlAttributes &attrs );
+        */
+        bool              characters ( const QString & ch );
+        bool              fatalError (const QXmlParseException & exception);
+        bool              endDocument();
+
+        /*! sample()
+          \\returns an initialized sample structure, with frameID and frameTimeId (parsed from the XML configuration file)
+        */
+        //Sample*           sample(){return m_sample;}
+
+    private:
+        Sample*           m_sample;
+        bool              m_bReadingFrameTimeId;
+        bool              m_bReadingFrameId;
+        int               m_ct;
+};
+
+#endif //SESSIONFILEPARSER_H
 
 //////////////////////////////////////////////////////////////////////
 #ifndef MAINFRM_H
@@ -45,7 +98,9 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    initPreviewTab(PreviewTab* tab);
         void                    initUi();
         void                    updateIndexes(const int from);
-        void                    CreateXMLFile(const QString strFileName);
+
+        bool                    CreateXMLFile(const QString strFileName);
+        bool                    readXMLFile(const QString strFileName);
 
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
@@ -76,6 +131,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    cleanupMsgBoxes();
         void                    rearrangeTabs(bool bLogBook);
         void                    aboutThisProject();
+
         void                    loadFile();
         void                    writeFile();
 };
