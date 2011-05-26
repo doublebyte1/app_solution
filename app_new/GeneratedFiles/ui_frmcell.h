@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Wed 25. May 13:04:56 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 26. May 16:39:37 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

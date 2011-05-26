@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Wed 25. May 13:04:56 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 26. May 16:39:36 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -63,9 +63,10 @@ public:
     QPlainTextEdit *textComments;
     QLabel *label;
     QLabel *label_2;
-    CustomTimeCtrl *customDtStart;
     CustomTimeCtrl *customDtEnd;
     QDialogButtonBox *buttonBox;
+    CustomTimeCtrl *customDtStart;
+    QSpacerItem *horizontalSpacer_3;
     QHBoxLayout *horizontalLayout_4;
     QSpacerItem *horizontalSpacer;
     QGroupBox *groupBackNext;
@@ -79,7 +80,7 @@ public:
     {
         if (frmminorstrata->objectName().isEmpty())
             frmminorstrata->setObjectName(QString::fromUtf8("frmminorstrata"));
-        frmminorstrata->resize(711, 634);
+        frmminorstrata->resize(711, 645);
         gridLayout_2 = new QGridLayout(frmminorstrata);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         lbHeader = new QLabel(frmminorstrata);
@@ -160,7 +161,7 @@ public:
         horizontalLayout_2->addWidget(cmbGLS);
 
 
-        gridLayout->addLayout(horizontalLayout_2, 0, 0, 1, 3);
+        gridLayout->addLayout(horizontalLayout_2, 0, 0, 1, 2);
 
         groupActivity = new QGroupBox(groupDetails);
         groupActivity->setObjectName(QString::fromUtf8("groupActivity"));
@@ -204,7 +205,7 @@ public:
         gridLayout_3->addItem(verticalSpacer, 2, 0, 1, 1);
 
 
-        gridLayout->addWidget(groupActivity, 0, 3, 2, 2);
+        gridLayout->addWidget(groupActivity, 0, 2, 2, 2);
 
         label_4 = new QLabel(groupDetails);
         label_4->setObjectName(QString::fromUtf8("label_4"));
@@ -229,23 +230,27 @@ public:
         label_2 = new QLabel(groupDetails);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
-        gridLayout->addWidget(label_2, 2, 3, 1, 1);
-
-        customDtStart = new CustomTimeCtrl(groupDetails);
-        customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
-
-        gridLayout->addWidget(customDtStart, 3, 0, 2, 2);
+        gridLayout->addWidget(label_2, 2, 2, 2, 1);
 
         customDtEnd = new CustomTimeCtrl(groupDetails);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
 
-        gridLayout->addWidget(customDtEnd, 3, 2, 2, 3);
+        gridLayout->addWidget(customDtEnd, 4, 2, 1, 2);
 
         buttonBox = new QDialogButtonBox(groupDetails);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
 
-        gridLayout->addWidget(buttonBox, 4, 4, 1, 1);
+        gridLayout->addWidget(buttonBox, 5, 3, 1, 1);
+
+        customDtStart = new CustomTimeCtrl(groupDetails);
+        customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
+
+        gridLayout->addWidget(customDtStart, 3, 0, 3, 2);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_3, 5, 2, 1, 1);
 
 
         gridLayout_2->addWidget(groupDetails, 5, 0, 1, 3);

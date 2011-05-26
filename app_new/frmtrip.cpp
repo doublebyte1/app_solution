@@ -153,14 +153,10 @@ void FrmTrip::initUI()
     m_lWidgets << spinPart;
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
-    m_lWidgets << spinNOE;
-    m_lWidgets << spinCE;
-    m_lWidgets << cmbWeight;
-    m_lWidgets << spinCBE;
-    m_lWidgets << spinWeight;
-    m_lWidgets << cmbBoxes;
+    m_lWidgets << catchInputCtrl;
     m_lWidgets << textComments;
-
+    m_lWidgets << spinNOE;
+    m_lWidgets << spinNOC;
     customDtStart->setIsUTC(false);
     customDtStart->setIsAuto(false);
 
@@ -187,13 +183,16 @@ void FrmTrip::initMapper1()
     mapper1->setModel(tTrips);
 
     if (nullDellegate!=0) delete nullDellegate;
+
     QList<int> lOthers;
-    for (int i=4; i < 16; ++i){
-        lOthers << i;
-    }
-    lOthers << 17;
     QList<int> lText;
-    lText << 16;
+    for (int i=4; i < 22; ++i){
+        if (i!=16)
+            lOthers << i;
+        else
+            lText << i;
+    }
+
     nullDellegate=new NullRelationalDelegate(lOthers,lText);
     mapper1->setItemDelegate(nullDellegate);
 
@@ -205,31 +204,44 @@ void FrmTrip::initMapper1()
     cmbSampler->setModelColumn(
         tTrips->relationModel(5)->fieldIndex(tr("Name")));
 
-    cmbWeight->setModel(tTrips->relationModel(12));
-    cmbWeight->setModelColumn(
+    catchInputCtrl->pCmbWeightUnits()->setModel(tTrips->relationModel(12));
+    catchInputCtrl->pCmbWeightUnits()->setModelColumn(
         tTrips->relationModel(12)->fieldIndex(tr("Name")));
 
-    cmbBoxes->setModel(tTrips->relationModel(15));
-    cmbBoxes->setModelColumn(
+    catchInputCtrl->pCmbBoxUnits()->setModel(tTrips->relationModel(15));
+    catchInputCtrl->pCmbBoxUnits()->setModelColumn(
         tTrips->relationModel(15)->fieldIndex(tr("Name")));
+
+    catchInputCtrl->pCmbUnitUnits()->setModel(tTrips->relationModel(20));
+    catchInputCtrl->pCmbUnitUnits()->setModelColumn(
+        tTrips->relationModel(20)->fieldIndex(tr("Name")));
 
     mapper1->addMapping(cmbSite, 4);
     mapper1->addMapping(cmbSampler, 5);
     mapper1->addMapping(spinProf, 6);
     mapper1->addMapping(spinPart, 7);
+
     mapper1->addMapping(spinNOE, 8);
     mapper1->addMapping(spinNOC, 9);
-    mapper1->addMapping(spinCE, 10);
-    mapper1->addMapping(spinCC, 11);
 
-    mapper1->addMapping(cmbWeight, 12);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalE(), 10);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalC(), 11);
 
-    mapper1->addMapping(spinCBE, 13);
-    mapper1->addMapping(spinCBC, 14);
-    mapper1->addMapping(cmbBoxes, 15);
+    mapper1->addMapping(catchInputCtrl->pCmbWeightUnits(), 12);
+
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinNoBoxesE(), 13);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinNoBoxesC(), 14);
+    mapper1->addMapping(catchInputCtrl->pCmbBoxUnits(), 15);
     mapper1->addMapping(textComments,16);
 
-    mapper1->addMapping(spinWeight, 17);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightBox(), 17);
+
+    mapper1->addMapping(catchInputCtrl->pSpinUnitsE(), 18);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 19);
+
+    mapper1->addMapping(catchInputCtrl->pCmbUnitUnits(), 20);
+    mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 21);
+
 }
 
 void FrmTrip::initMappers()
@@ -426,6 +438,7 @@ void FrmTrip::initTripModel()
     tTrips->setRelation(5, QSqlRelation(tr("Ref_Samplers"), tr("ID"), tr("Name")));
     tTrips->setRelation(12, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
     tTrips->setRelation(15, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
+    tTrips->setRelation(20, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
     tTrips->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tTrips->sort(0,Qt::AscendingOrder);
     tTrips->select();

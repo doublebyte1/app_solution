@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
-    <height>589</height>
+    <width>790</width>
+    <height>644</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
@@ -71,7 +71,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_15">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QTableView" name="tableView">
        <property name="sizePolicy">
@@ -92,28 +92,24 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
-        <widget class="QPushButton" name="pushNew">
-         <property name="toolTip">
-          <string>Create new record</string>
-         </property>
-         <property name="statusTip">
-          <string>Create new record</string>
-         </property>
-         <property name="whatsThis">
-          <string>Creates new record</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="app_new.qrc">
-           <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QPushButton" name="pushNew">
+       <property name="toolTip">
+        <string>Create new record</string>
+       </property>
+       <property name="statusTip">
+        <string>Create new record</string>
+       </property>
+       <property name="whatsThis">
+        <string>Creates new record</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="app_new.qrc">
+         <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -128,25 +124,149 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
      <property name="title">
       <string>Details</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QColumnView" name="columnView"/>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Order Number</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>spinOrder</cstring>
+        </property>
+       </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QTableView" name="tableDetails"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushOk">
-          <property name="text">
-           <string>Ok</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="spinOrder"/>
       </item>
-      <item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Fishing zone</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>cmbFishingZone</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="cmbFishingZone"/>
+      </item>
+      <item row="0" column="5" rowspan="3">
+       <widget class="QPlainTextEdit" name="plainTextEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4" rowspan="2">
+       <widget class="QGroupBox" name="groupGear">
+        <property name="title">
+         <string>Gear</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Gear</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="buddy">
+              <cstring>cmbGear</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbGear"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Units</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="buddy">
+              <cstring>spinBox</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBox"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Size</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="buddy">
+              <cstring>doubleSpinSize</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="doubleSpinSize"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="4">
+       <widget class="CustomTimeCtrl" name="customDtStart"/>
+      </item>
+      <item row="3" column="4" rowspan="3" colspan="2">
+       <widget class="QGroupBox" name="groupCatch">
+        <property name="title">
+         <string>Catch</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="CatchInputCtrl" name="catchInputCtrl"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="6">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <spacer name="horizontalSpacer">
@@ -169,6 +289,32 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Comments</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>End</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="4">
+       <widget class="CustomTimeCtrl" name="customDtEnd"/>
       </item>
      </layout>
     </widget>
@@ -226,6 +372,18 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CatchInputCtrl</class>
+   <extends>QWidget</extends>
+   <header>catchinputctrl.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CustomTimeCtrl</class>
+   <extends>QWidget</extends>
+   <header>customtimectrl.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="app_new.qrc"/>
  </resources>
@@ -237,8 +395,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>createRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>656</x>
-     <y>103</y>
+     <x>302</x>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
      <x>341</x>
@@ -253,8 +411,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>previewRow(QModelIndex)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>322</x>
-     <y>104</y>
+     <x>265</x>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel">
      <x>341</x>

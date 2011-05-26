@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Wed 25. May 13:04:56 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 26. May 16:39:37 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -24,6 +24,7 @@
 #include <QtGui/QRadioButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QToolButton>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 #include "customtimectrl.h"
 
@@ -32,11 +33,13 @@ QT_BEGIN_NAMESPACE
 class Ui_frmframe
 {
 public:
-    QGridLayout *gridLayout_4;
+    QVBoxLayout *verticalLayout;
     QGroupBox *groupPhysical;
     QGridLayout *gridLayout_2;
+    QLabel *label_4;
     QComboBox *cmbPrexistent;
     QToolButton *toolView;
+    QLabel *label_3;
     QGroupBox *groupNew;
     QGridLayout *gridLayout;
     QRadioButton *radioCreate;
@@ -44,17 +47,15 @@ public:
     QRadioButton *radioCopy;
     QComboBox *cmbCopy;
     QToolButton *toolEdit;
-    QLabel *label_3;
-    QLabel *label_4;
     QGroupBox *groupTime;
     QGridLayout *gridLayout_3;
     QLabel *label;
     QLabel *label_2;
     CustomTimeCtrl *customDtStart;
     CustomTimeCtrl *customDtEnd;
-    QSpacerItem *horizontalSpacer;
     QGroupBox *groupBackNext;
     QHBoxLayout *horizontalLayout_2;
+    QSpacerItem *horizontalSpacer;
     QPushButton *pushPrevious;
     QPushButton *pushApply;
     QPushButton *pushNext;
@@ -63,13 +64,18 @@ public:
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
-        frmframe->resize(770, 520);
-        gridLayout_4 = new QGridLayout(frmframe);
-        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        frmframe->resize(770, 479);
+        verticalLayout = new QVBoxLayout(frmframe);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupPhysical = new QGroupBox(frmframe);
         groupPhysical->setObjectName(QString::fromUtf8("groupPhysical"));
         gridLayout_2 = new QGridLayout(groupPhysical);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        label_4 = new QLabel(groupPhysical);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        gridLayout_2->addWidget(label_4, 0, 0, 1, 1);
+
         cmbPrexistent = new QComboBox(groupPhysical);
         cmbPrexistent->setObjectName(QString::fromUtf8("cmbPrexistent"));
 
@@ -79,6 +85,12 @@ public:
         toolView->setObjectName(QString::fromUtf8("toolView"));
 
         gridLayout_2->addWidget(toolView, 0, 2, 1, 1);
+
+        label_3 = new QLabel(groupPhysical);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_2->addWidget(label_3, 2, 0, 1, 1);
 
         groupNew = new QGroupBox(groupPhysical);
         groupNew->setObjectName(QString::fromUtf8("groupNew"));
@@ -111,19 +123,8 @@ public:
 
         gridLayout_2->addWidget(toolEdit, 3, 2, 1, 1);
 
-        label_3 = new QLabel(groupPhysical);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout_2->addWidget(label_3, 2, 0, 1, 1);
-
-        label_4 = new QLabel(groupPhysical);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        gridLayout_2->addWidget(label_4, 0, 0, 1, 1);
-
-
-        gridLayout_4->addWidget(groupPhysical, 0, 0, 1, 2);
+        verticalLayout->addWidget(groupPhysical);
 
         groupTime = new QGroupBox(frmframe);
         groupTime->setObjectName(QString::fromUtf8("groupTime"));
@@ -144,7 +145,7 @@ public:
         sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
         label_2->setSizePolicy(sizePolicy);
 
-        gridLayout_3->addWidget(label_2, 0, 2, 1, 1);
+        gridLayout_3->addWidget(label_2, 0, 1, 1, 1);
 
         customDtStart = new CustomTimeCtrl(groupTime);
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
@@ -154,21 +155,17 @@ public:
         sizePolicy1.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
         customDtStart->setSizePolicy(sizePolicy1);
 
-        gridLayout_3->addWidget(customDtStart, 1, 1, 1, 1);
+        gridLayout_3->addWidget(customDtStart, 1, 0, 1, 1);
 
         customDtEnd = new CustomTimeCtrl(groupTime);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
         sizePolicy1.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
         customDtEnd->setSizePolicy(sizePolicy1);
 
-        gridLayout_3->addWidget(customDtEnd, 1, 2, 1, 1);
+        gridLayout_3->addWidget(customDtEnd, 1, 1, 1, 1);
 
 
-        gridLayout_4->addWidget(groupTime, 1, 0, 1, 2);
-
-        horizontalSpacer = new QSpacerItem(484, 45, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_4->addItem(horizontalSpacer, 2, 0, 1, 1);
+        verticalLayout->addWidget(groupTime);
 
         groupBackNext = new QGroupBox(frmframe);
         groupBackNext->setObjectName(QString::fromUtf8("groupBackNext"));
@@ -179,6 +176,10 @@ public:
         groupBackNext->setSizePolicy(sizePolicy2);
         horizontalLayout_2 = new QHBoxLayout(groupBackNext);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer);
+
         pushPrevious = new QPushButton(groupBackNext);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
         pushPrevious->setEnabled(false);
@@ -202,7 +203,7 @@ public:
         horizontalLayout_2->addWidget(pushNext);
 
 
-        gridLayout_4->addWidget(groupBackNext, 2, 1, 1, 1);
+        verticalLayout->addWidget(groupBackNext);
 
         QWidget::setTabOrder(cmbPrexistent, toolView);
         QWidget::setTabOrder(toolView, radioCreate);
@@ -224,6 +225,7 @@ public:
     {
         frmframe->setWindowTitle(QApplication::translate("frmframe", "Form", 0, QApplication::UnicodeUTF8));
         groupPhysical->setTitle(QApplication::translate("frmframe", "Physical Frame", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("frmframe", "Choose frame", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         toolView->setToolTip(QApplication::translate("frmframe", "View Frame", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -234,6 +236,7 @@ public:
         toolView->setWhatsThis(QApplication::translate("frmframe", "Allows viewing this frame", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         toolView->setText(QApplication::translate("frmframe", "...", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("frmframe", "Create New", 0, QApplication::UnicodeUTF8));
         groupNew->setTitle(QString());
         radioCreate->setText(QApplication::translate("frmframe", "Create from Scratch", 0, QApplication::UnicodeUTF8));
         radioCopy->setText(QApplication::translate("frmframe", "Copy from pre-existent", 0, QApplication::UnicodeUTF8));
@@ -247,8 +250,6 @@ public:
         toolEdit->setWhatsThis(QApplication::translate("frmframe", "Allows editing this frame", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         toolEdit->setText(QApplication::translate("frmframe", "...", 0, QApplication::UnicodeUTF8));
-        label_3->setText(QApplication::translate("frmframe", "Create New", 0, QApplication::UnicodeUTF8));
-        label_4->setText(QApplication::translate("frmframe", "Choose frame", 0, QApplication::UnicodeUTF8));
         groupTime->setTitle(QApplication::translate("frmframe", "Time Frame", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmframe", "Start Date", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmframe", "End Date", 0, QApplication::UnicodeUTF8));

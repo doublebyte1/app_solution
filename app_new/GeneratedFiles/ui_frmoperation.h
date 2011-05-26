@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Wed 25. May 15:29:22 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 26. May 16:39:36 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -14,41 +14,65 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QColumnView>
+#include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QDoubleSpinBox>
+#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
+#include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSpinBox>
 #include <QtGui/QTableView>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include "catchinputctrl.h"
+#include "customtimectrl.h"
 
 QT_BEGIN_NAMESPACE
 
 class Ui_FrmOperation
 {
 public:
-    QVBoxLayout *verticalLayout_2;
+    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_9;
     QLabel *lbHeader;
     QLabel *lbSource;
     QLabel *label_23;
-    QHBoxLayout *horizontalLayout_15;
+    QHBoxLayout *horizontalLayout_4;
     QTableView *tableView;
-    QVBoxLayout *verticalLayout_5;
     QPushButton *pushNew;
     QGroupBox *groupDetails;
+    QGridLayout *gridLayout;
+    QLabel *label_3;
+    QSpinBox *spinOrder;
+    QLabel *label_4;
+    QComboBox *cmbFishingZone;
+    QPlainTextEdit *plainTextEdit;
+    QLabel *label;
+    QGroupBox *groupGear;
     QVBoxLayout *verticalLayout;
-    QColumnView *columnView;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_5;
+    QComboBox *cmbGear;
     QHBoxLayout *horizontalLayout_2;
-    QTableView *tableDetails;
-    QPushButton *pushOk;
+    QLabel *label_6;
+    QSpinBox *spinBox;
+    QLabel *label_7;
+    QDoubleSpinBox *doubleSpinSize;
+    CustomTimeCtrl *customDtStart;
+    QGroupBox *groupCatch;
+    QVBoxLayout *verticalLayout_2;
+    CatchInputCtrl *catchInputCtrl;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
     QDialogButtonBox *buttonBox;
+    QLabel *label_8;
+    QLabel *label_2;
+    CustomTimeCtrl *customDtEnd;
     QHBoxLayout *horizontalLayout_16;
     QSpacerItem *horizontalSpacer_2;
     QGroupBox *groupBox_2;
@@ -60,9 +84,9 @@ public:
     {
         if (FrmOperation->objectName().isEmpty())
             FrmOperation->setObjectName(QString::fromUtf8("FrmOperation"));
-        FrmOperation->resize(683, 589);
-        verticalLayout_2 = new QVBoxLayout(FrmOperation);
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        FrmOperation->resize(790, 644);
+        verticalLayout_3 = new QVBoxLayout(FrmOperation);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
         lbHeader = new QLabel(FrmOperation);
@@ -92,15 +116,15 @@ public:
         horizontalLayout_9->addWidget(lbSource);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_9);
+        verticalLayout_3->addLayout(horizontalLayout_9);
 
         label_23 = new QLabel(FrmOperation);
         label_23->setObjectName(QString::fromUtf8("label_23"));
 
-        verticalLayout_2->addWidget(label_23);
+        verticalLayout_3->addWidget(label_23);
 
-        horizontalLayout_15 = new QHBoxLayout();
-        horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         tableView = new QTableView(FrmOperation);
         tableView->setObjectName(QString::fromUtf8("tableView"));
         QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -109,23 +133,18 @@ public:
         sizePolicy2.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
         tableView->setSizePolicy(sizePolicy2);
 
-        horizontalLayout_15->addWidget(tableView);
+        horizontalLayout_4->addWidget(tableView);
 
-        verticalLayout_5 = new QVBoxLayout();
-        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         pushNew = new QPushButton(FrmOperation);
         pushNew->setObjectName(QString::fromUtf8("pushNew"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNew->setIcon(icon);
 
-        verticalLayout_5->addWidget(pushNew);
+        horizontalLayout_4->addWidget(pushNew);
 
 
-        horizontalLayout_15->addLayout(verticalLayout_5);
-
-
-        verticalLayout_2->addLayout(horizontalLayout_15);
+        verticalLayout_3->addLayout(horizontalLayout_4);
 
         groupDetails = new QGroupBox(FrmOperation);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -134,27 +153,118 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
         groupDetails->setSizePolicy(sizePolicy3);
-        verticalLayout = new QVBoxLayout(groupDetails);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        columnView = new QColumnView(groupDetails);
-        columnView->setObjectName(QString::fromUtf8("columnView"));
+        gridLayout = new QGridLayout(groupDetails);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        label_3 = new QLabel(groupDetails);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        verticalLayout->addWidget(columnView);
+        gridLayout->addWidget(label_3, 0, 0, 1, 1);
+
+        spinOrder = new QSpinBox(groupDetails);
+        spinOrder->setObjectName(QString::fromUtf8("spinOrder"));
+
+        gridLayout->addWidget(spinOrder, 0, 1, 1, 1);
+
+        label_4 = new QLabel(groupDetails);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+        label_4->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout->addWidget(label_4, 0, 2, 1, 1);
+
+        cmbFishingZone = new QComboBox(groupDetails);
+        cmbFishingZone->setObjectName(QString::fromUtf8("cmbFishingZone"));
+
+        gridLayout->addWidget(cmbFishingZone, 0, 3, 1, 1);
+
+        plainTextEdit = new QPlainTextEdit(groupDetails);
+        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
+        plainTextEdit->setSizePolicy(sizePolicy4);
+
+        gridLayout->addWidget(plainTextEdit, 0, 5, 3, 1);
+
+        label = new QLabel(groupDetails);
+        label->setObjectName(QString::fromUtf8("label"));
+        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy);
+
+        gridLayout->addWidget(label, 1, 0, 1, 1);
+
+        groupGear = new QGroupBox(groupDetails);
+        groupGear->setObjectName(QString::fromUtf8("groupGear"));
+        verticalLayout = new QVBoxLayout(groupGear);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label_5 = new QLabel(groupGear);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+        QSizePolicy sizePolicy5(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(label_5->sizePolicy().hasHeightForWidth());
+        label_5->setSizePolicy(sizePolicy5);
+        label_5->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_3->addWidget(label_5);
+
+        cmbGear = new QComboBox(groupGear);
+        cmbGear->setObjectName(QString::fromUtf8("cmbGear"));
+
+        horizontalLayout_3->addWidget(cmbGear);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        tableDetails = new QTableView(groupDetails);
-        tableDetails->setObjectName(QString::fromUtf8("tableDetails"));
+        label_6 = new QLabel(groupGear);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        horizontalLayout_2->addWidget(tableDetails);
+        horizontalLayout_2->addWidget(label_6);
 
-        pushOk = new QPushButton(groupDetails);
-        pushOk->setObjectName(QString::fromUtf8("pushOk"));
+        spinBox = new QSpinBox(groupGear);
+        spinBox->setObjectName(QString::fromUtf8("spinBox"));
 
-        horizontalLayout_2->addWidget(pushOk);
+        horizontalLayout_2->addWidget(spinBox);
+
+        label_7 = new QLabel(groupGear);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_2->addWidget(label_7);
+
+        doubleSpinSize = new QDoubleSpinBox(groupGear);
+        doubleSpinSize->setObjectName(QString::fromUtf8("doubleSpinSize"));
+
+        horizontalLayout_2->addWidget(doubleSpinSize);
 
 
         verticalLayout->addLayout(horizontalLayout_2);
+
+
+        gridLayout->addWidget(groupGear, 1, 4, 2, 1);
+
+        customDtStart = new CustomTimeCtrl(groupDetails);
+        customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
+
+        gridLayout->addWidget(customDtStart, 2, 0, 1, 4);
+
+        groupCatch = new QGroupBox(groupDetails);
+        groupCatch->setObjectName(QString::fromUtf8("groupCatch"));
+        verticalLayout_2 = new QVBoxLayout(groupCatch);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        catchInputCtrl = new CatchInputCtrl(groupCatch);
+        catchInputCtrl->setObjectName(QString::fromUtf8("catchInputCtrl"));
+
+        verticalLayout_2->addWidget(catchInputCtrl);
+
+
+        gridLayout->addWidget(groupCatch, 3, 4, 3, 2);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -169,10 +279,28 @@ public:
         horizontalLayout->addWidget(buttonBox);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        gridLayout->addLayout(horizontalLayout, 6, 0, 1, 6);
+
+        label_8 = new QLabel(groupDetails);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+        label_8->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout->addWidget(label_8, 0, 4, 1, 1);
+
+        label_2 = new QLabel(groupDetails);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy);
+
+        gridLayout->addWidget(label_2, 3, 0, 1, 1);
+
+        customDtEnd = new CustomTimeCtrl(groupDetails);
+        customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
+
+        gridLayout->addWidget(customDtEnd, 5, 0, 1, 4);
 
 
-        verticalLayout_2->addWidget(groupDetails);
+        verticalLayout_3->addWidget(groupDetails);
 
         horizontalLayout_16 = new QHBoxLayout();
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
@@ -205,10 +333,15 @@ public:
         horizontalLayout_16->addWidget(groupBox_2);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_16);
+        verticalLayout_3->addLayout(horizontalLayout_16);
 
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
+        label_3->setBuddy(spinOrder);
+        label_4->setBuddy(cmbFishingZone);
+        label_5->setBuddy(cmbGear);
+        label_6->setBuddy(spinBox);
+        label_7->setBuddy(doubleSpinSize);
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(FrmOperation);
@@ -244,7 +377,16 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
         groupDetails->setTitle(QApplication::translate("FrmOperation", "Details", 0, QApplication::UnicodeUTF8));
-        pushOk->setText(QApplication::translate("FrmOperation", "Ok", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("FrmOperation", "Order Number", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("FrmOperation", "Fishing zone", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("FrmOperation", "Start", 0, QApplication::UnicodeUTF8));
+        groupGear->setTitle(QApplication::translate("FrmOperation", "Gear", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("FrmOperation", "Gear", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("FrmOperation", "Units", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("FrmOperation", "Size", 0, QApplication::UnicodeUTF8));
+        groupCatch->setTitle(QApplication::translate("FrmOperation", "Catch", 0, QApplication::UnicodeUTF8));
+        label_8->setText(QApplication::translate("FrmOperation", "Comments", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("FrmOperation", "End", 0, QApplication::UnicodeUTF8));
         groupBox_2->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmOperation", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmOperation", "Next", 0, QApplication::UnicodeUTF8));

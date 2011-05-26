@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Wed 25. May 13:04:56 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 26. May 16:39:36 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -16,7 +16,6 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QDoubleSpinBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
@@ -29,6 +28,7 @@
 #include <QtGui/QTableView>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include "catchinputctrl.h"
 #include "customtimectrl.h"
 
 QT_BEGIN_NAMESPACE
@@ -65,23 +65,12 @@ public:
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupTotals;
     QGridLayout *gridLayout_2;
-    QLabel *label_20;
-    QLabel *label_21;
-    QLabel *label_16;
-    QLabel *label_15;
-    QLabel *label_17;
-    QDoubleSpinBox *spinCE;
-    QDoubleSpinBox *spinCC;
-    QComboBox *cmbWeight;
     QLabel *label;
-    QLabel *label_19;
-    QLabel *label_18;
-    QDoubleSpinBox *spinCBE;
-    QDoubleSpinBox *spinCBC;
-    QDoubleSpinBox *spinWeight;
-    QComboBox *cmbBoxes;
-    QSpinBox *spinNOC;
+    QLabel *label_3;
+    QLabel *label_4;
     QSpinBox *spinNOE;
+    QSpinBox *spinNOC;
+    CatchInputCtrl *catchInputCtrl;
     QLabel *label_13;
     QPlainTextEdit *textComments;
     QHBoxLayout *horizontalLayout_12;
@@ -271,113 +260,36 @@ public:
         groupTotals->setSizePolicy(sizePolicy5);
         gridLayout_2 = new QGridLayout(groupTotals);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        label_20 = new QLabel(groupTotals);
-        label_20->setObjectName(QString::fromUtf8("label_20"));
-        sizePolicy.setHeightForWidth(label_20->sizePolicy().hasHeightForWidth());
-        label_20->setSizePolicy(sizePolicy);
-
-        gridLayout_2->addWidget(label_20, 0, 1, 1, 1);
-
-        label_21 = new QLabel(groupTotals);
-        label_21->setObjectName(QString::fromUtf8("label_21"));
-        sizePolicy.setHeightForWidth(label_21->sizePolicy().hasHeightForWidth());
-        label_21->setSizePolicy(sizePolicy);
-
-        gridLayout_2->addWidget(label_21, 0, 2, 1, 2);
-
-        label_16 = new QLabel(groupTotals);
-        label_16->setObjectName(QString::fromUtf8("label_16"));
-
-        gridLayout_2->addWidget(label_16, 1, 0, 1, 1);
-
-        label_15 = new QLabel(groupTotals);
-        label_15->setObjectName(QString::fromUtf8("label_15"));
-
-        gridLayout_2->addWidget(label_15, 2, 4, 1, 1);
-
-        label_17 = new QLabel(groupTotals);
-        label_17->setObjectName(QString::fromUtf8("label_17"));
-
-        gridLayout_2->addWidget(label_17, 3, 0, 1, 1);
-
-        spinCE = new QDoubleSpinBox(groupTotals);
-        spinCE->setObjectName(QString::fromUtf8("spinCE"));
-        QSizePolicy sizePolicy6(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(spinCE->sizePolicy().hasHeightForWidth());
-        spinCE->setSizePolicy(sizePolicy6);
-
-        gridLayout_2->addWidget(spinCE, 3, 1, 1, 2);
-
-        spinCC = new QDoubleSpinBox(groupTotals);
-        spinCC->setObjectName(QString::fromUtf8("spinCC"));
-        spinCC->setEnabled(false);
-        sizePolicy6.setHeightForWidth(spinCC->sizePolicy().hasHeightForWidth());
-        spinCC->setSizePolicy(sizePolicy6);
-
-        gridLayout_2->addWidget(spinCC, 3, 3, 1, 1);
-
-        cmbWeight = new QComboBox(groupTotals);
-        cmbWeight->setObjectName(QString::fromUtf8("cmbWeight"));
-
-        gridLayout_2->addWidget(cmbWeight, 3, 4, 1, 2);
-
         label = new QLabel(groupTotals);
         label->setObjectName(QString::fromUtf8("label"));
 
-        gridLayout_2->addWidget(label, 4, 4, 1, 1);
+        gridLayout_2->addWidget(label, 0, 1, 1, 1);
 
-        label_19 = new QLabel(groupTotals);
-        label_19->setObjectName(QString::fromUtf8("label_19"));
+        label_3 = new QLabel(groupTotals);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
 
-        gridLayout_2->addWidget(label_19, 4, 5, 1, 1);
+        gridLayout_2->addWidget(label_3, 0, 2, 1, 1);
 
-        label_18 = new QLabel(groupTotals);
-        label_18->setObjectName(QString::fromUtf8("label_18"));
-        label_18->setWordWrap(true);
+        label_4 = new QLabel(groupTotals);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
 
-        gridLayout_2->addWidget(label_18, 5, 0, 1, 1);
+        gridLayout_2->addWidget(label_4, 1, 0, 1, 1);
 
-        spinCBE = new QDoubleSpinBox(groupTotals);
-        spinCBE->setObjectName(QString::fromUtf8("spinCBE"));
-        sizePolicy6.setHeightForWidth(spinCBE->sizePolicy().hasHeightForWidth());
-        spinCBE->setSizePolicy(sizePolicy6);
+        spinNOE = new QSpinBox(groupTotals);
+        spinNOE->setObjectName(QString::fromUtf8("spinNOE"));
 
-        gridLayout_2->addWidget(spinCBE, 5, 1, 1, 2);
-
-        spinCBC = new QDoubleSpinBox(groupTotals);
-        spinCBC->setObjectName(QString::fromUtf8("spinCBC"));
-        spinCBC->setEnabled(false);
-
-        gridLayout_2->addWidget(spinCBC, 5, 3, 1, 1);
-
-        spinWeight = new QDoubleSpinBox(groupTotals);
-        spinWeight->setObjectName(QString::fromUtf8("spinWeight"));
-        sizePolicy6.setHeightForWidth(spinWeight->sizePolicy().hasHeightForWidth());
-        spinWeight->setSizePolicy(sizePolicy6);
-
-        gridLayout_2->addWidget(spinWeight, 5, 4, 1, 1);
-
-        cmbBoxes = new QComboBox(groupTotals);
-        cmbBoxes->setObjectName(QString::fromUtf8("cmbBoxes"));
-
-        gridLayout_2->addWidget(cmbBoxes, 5, 5, 1, 1);
+        gridLayout_2->addWidget(spinNOE, 1, 1, 1, 1);
 
         spinNOC = new QSpinBox(groupTotals);
         spinNOC->setObjectName(QString::fromUtf8("spinNOC"));
         spinNOC->setEnabled(false);
-        sizePolicy6.setHeightForWidth(spinNOC->sizePolicy().hasHeightForWidth());
-        spinNOC->setSizePolicy(sizePolicy6);
 
-        gridLayout_2->addWidget(spinNOC, 1, 3, 1, 1);
+        gridLayout_2->addWidget(spinNOC, 1, 2, 1, 1);
 
-        spinNOE = new QSpinBox(groupTotals);
-        spinNOE->setObjectName(QString::fromUtf8("spinNOE"));
-        sizePolicy6.setHeightForWidth(spinNOE->sizePolicy().hasHeightForWidth());
-        spinNOE->setSizePolicy(sizePolicy6);
+        catchInputCtrl = new CatchInputCtrl(groupTotals);
+        catchInputCtrl->setObjectName(QString::fromUtf8("catchInputCtrl"));
 
-        gridLayout_2->addWidget(spinNOE, 1, 1, 1, 2);
+        gridLayout_2->addWidget(catchInputCtrl, 2, 0, 1, 3);
 
 
         verticalLayout_2->addWidget(groupTotals);
@@ -391,11 +303,11 @@ public:
 
         textComments = new QPlainTextEdit(groupDetails);
         textComments->setObjectName(QString::fromUtf8("textComments"));
-        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
-        textComments->setSizePolicy(sizePolicy7);
+        QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
+        textComments->setSizePolicy(sizePolicy6);
 
         verticalLayout_2->addWidget(textComments);
 
@@ -456,27 +368,13 @@ public:
         label_23->setBuddy(tableView);
         label_22->setBuddy(spinProf);
         label_24->setBuddy(spinPart);
-        label_16->setBuddy(spinNOE);
-        label_15->setBuddy(cmbWeight);
-        label_17->setBuddy(spinCE);
-        label_19->setBuddy(cmbBoxes);
-        label_18->setBuddy(spinCBE);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
         QWidget::setTabOrder(pushNew, cmbSite);
         QWidget::setTabOrder(cmbSite, cmbSampler);
         QWidget::setTabOrder(cmbSampler, spinProf);
         QWidget::setTabOrder(spinProf, spinPart);
-        QWidget::setTabOrder(spinPart, spinNOE);
-        QWidget::setTabOrder(spinNOE, spinNOC);
-        QWidget::setTabOrder(spinNOC, spinCE);
-        QWidget::setTabOrder(spinCE, spinCC);
-        QWidget::setTabOrder(spinCC, cmbWeight);
-        QWidget::setTabOrder(cmbWeight, spinCBE);
-        QWidget::setTabOrder(spinCBE, spinCBC);
-        QWidget::setTabOrder(spinCBC, spinWeight);
-        QWidget::setTabOrder(spinWeight, cmbBoxes);
-        QWidget::setTabOrder(cmbBoxes, textComments);
+        QWidget::setTabOrder(spinPart, textComments);
         QWidget::setTabOrder(textComments, buttonBox);
         QWidget::setTabOrder(buttonBox, pushPrevious);
         QWidget::setTabOrder(pushPrevious, pushNext);
@@ -570,94 +468,26 @@ public:
         customDtEnd->setWhatsThis(QApplication::translate("FrmTrip", "Input the finishing datetime of the fishing trip", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         groupTotals->setTitle(QApplication::translate("FrmTrip", "Totals", 0, QApplication::UnicodeUTF8));
-        label_20->setText(QApplication::translate("FrmTrip", "Estimated", 0, QApplication::UnicodeUTF8));
-        label_21->setText(QApplication::translate("FrmTrip", "Calculated", 0, QApplication::UnicodeUTF8));
-        label_16->setText(QApplication::translate("FrmTrip", "No of operations", 0, QApplication::UnicodeUTF8));
-        label_15->setText(QApplication::translate("FrmTrip", "Units", 0, QApplication::UnicodeUTF8));
-        label_17->setText(QApplication::translate("FrmTrip", "Catch (weight)", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("FrmTrip", "Estimated", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("FrmTrip", "Calculated", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("FrmTrip", "No of operations", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        spinCE->setToolTip(QApplication::translate("FrmTrip", "Estimated catch (weight)", 0, QApplication::UnicodeUTF8));
+        spinNOE->setToolTip(QApplication::translate("FrmTrip", "Number of fishing operations (estimated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        spinCE->setStatusTip(QApplication::translate("FrmTrip", "Estimated catch (weight)", 0, QApplication::UnicodeUTF8));
+        spinNOE->setStatusTip(QApplication::translate("FrmTrip", "Number of fishing operations (estimated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        spinCE->setWhatsThis(QApplication::translate("FrmTrip", "Input the estimated catch (weight)", 0, QApplication::UnicodeUTF8));
+        spinNOE->setWhatsThis(QApplication::translate("FrmTrip", "Number of fishing operations (estimated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
 #ifndef QT_NO_TOOLTIP
-        spinCC->setToolTip(QApplication::translate("FrmTrip", "Calculated catch (weight)", 0, QApplication::UnicodeUTF8));
+        spinNOC->setToolTip(QApplication::translate("FrmTrip", "Number of fishing operations (calculated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        spinCC->setStatusTip(QApplication::translate("FrmTrip", "Calculated catch (weight)", 0, QApplication::UnicodeUTF8));
+        spinNOC->setStatusTip(QApplication::translate("FrmTrip", "Number of fishing operations (calculated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        spinCC->setWhatsThis(QApplication::translate("FrmTrip", "Input the calculated catch (weight)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-#ifndef QT_NO_TOOLTIP
-        cmbWeight->setToolTip(QApplication::translate("FrmTrip", "Weight units for the catch", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        cmbWeight->setStatusTip(QApplication::translate("FrmTrip", "Weight units for the catch", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        cmbWeight->setWhatsThis(QApplication::translate("FrmTrip", "Weight units for the catch", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        label->setText(QApplication::translate("FrmTrip", "Weight/box", 0, QApplication::UnicodeUTF8));
-        label_19->setText(QApplication::translate("FrmTrip", "Units", 0, QApplication::UnicodeUTF8));
-        label_18->setText(QApplication::translate("FrmTrip", "Catch (no boxes)", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        spinCBE->setToolTip(QApplication::translate("FrmTrip", "Estimated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        spinCBE->setStatusTip(QApplication::translate("FrmTrip", "Estimated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        spinCBE->setWhatsThis(QApplication::translate("FrmTrip", "Estimated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-#ifndef QT_NO_TOOLTIP
-        spinCBC->setToolTip(QApplication::translate("FrmTrip", "Calculated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        spinCBC->setStatusTip(QApplication::translate("FrmTrip", "Calculated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        spinCBC->setWhatsThis(QApplication::translate("FrmTrip", "Calculated catch (number of boxes)", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-#ifndef QT_NO_TOOLTIP
-        spinWeight->setToolTip(QApplication::translate("FrmTrip", "Weight/ box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        spinWeight->setStatusTip(QApplication::translate("FrmTrip", "Weight/ box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        spinWeight->setWhatsThis(QApplication::translate("FrmTrip", "Weight per box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-#ifndef QT_NO_TOOLTIP
-        cmbBoxes->setToolTip(QApplication::translate("FrmTrip", "Weight units for the catch/box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        cmbBoxes->setStatusTip(QApplication::translate("FrmTrip", "Weight units for the catch/box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        cmbBoxes->setWhatsThis(QApplication::translate("FrmTrip", "Weight units for the catch/box", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-#ifndef QT_NO_TOOLTIP
-        spinNOC->setToolTip(QApplication::translate("FrmTrip", "Calculated number of operations", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        spinNOC->setStatusTip(QApplication::translate("FrmTrip", "Calculated number of operations", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        spinNOC->setWhatsThis(QApplication::translate("FrmTrip", "Input the calculated number of operations", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-#ifndef QT_NO_TOOLTIP
-        spinNOE->setToolTip(QApplication::translate("FrmTrip", "Estimated number of operations", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        spinNOE->setStatusTip(QApplication::translate("FrmTrip", "Estimated number of operations", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        spinNOE->setWhatsThis(QApplication::translate("FrmTrip", "Input the estimated number of operations", 0, QApplication::UnicodeUTF8));
+        spinNOC->setWhatsThis(QApplication::translate("FrmTrip", "Number of fishing operations (calculated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         label_13->setText(QApplication::translate("FrmTrip", "Comments:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
