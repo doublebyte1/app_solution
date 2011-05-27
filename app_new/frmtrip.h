@@ -87,8 +87,10 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tTrips;
+        QSqlRelationalTableModel*              tGears;
         QSqlQueryModel*                        viewTrips;
         QDataWidgetMapper*                     mapper1;
+        QDataWidgetMapper*                     mapper2;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
 };

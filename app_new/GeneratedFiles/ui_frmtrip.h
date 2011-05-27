@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Fri 27. May 09:59:22 2011
+** Created: Fri 27. May 17:55:56 2011
 **      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -21,6 +21,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
+#include <QtGui/QListView>
 #include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
@@ -71,6 +72,11 @@ public:
     QSpinBox *spinNOE;
     QSpinBox *spinNOC;
     CatchInputCtrl *catchInputCtrl;
+    QLabel *label_5;
+    QComboBox *cmbFishingZone;
+    QListView *listGears;
+    QLabel *label_7;
+    QLabel *label_8;
     QLabel *label_13;
     QPlainTextEdit *textComments;
     QHBoxLayout *horizontalLayout_12;
@@ -86,7 +92,7 @@ public:
     {
         if (FrmTrip->objectName().isEmpty())
             FrmTrip->setObjectName(QString::fromUtf8("FrmTrip"));
-        FrmTrip->resize(750, 668);
+        FrmTrip->resize(750, 705);
         gridLayout = new QGridLayout(FrmTrip);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         horizontalLayout_9 = new QHBoxLayout();
@@ -263,33 +269,65 @@ public:
         label = new QLabel(groupTotals);
         label->setObjectName(QString::fromUtf8("label"));
 
-        gridLayout_2->addWidget(label, 0, 1, 1, 1);
+        gridLayout_2->addWidget(label, 0, 4, 1, 1);
 
         label_3 = new QLabel(groupTotals);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
-        gridLayout_2->addWidget(label_3, 0, 2, 1, 1);
+        gridLayout_2->addWidget(label_3, 0, 5, 1, 1);
 
         label_4 = new QLabel(groupTotals);
         label_4->setObjectName(QString::fromUtf8("label_4"));
 
-        gridLayout_2->addWidget(label_4, 1, 0, 1, 1);
+        gridLayout_2->addWidget(label_4, 1, 1, 1, 1);
 
         spinNOE = new QSpinBox(groupTotals);
         spinNOE->setObjectName(QString::fromUtf8("spinNOE"));
 
-        gridLayout_2->addWidget(spinNOE, 1, 1, 1, 1);
+        gridLayout_2->addWidget(spinNOE, 1, 4, 1, 1);
 
         spinNOC = new QSpinBox(groupTotals);
         spinNOC->setObjectName(QString::fromUtf8("spinNOC"));
         spinNOC->setEnabled(false);
 
-        gridLayout_2->addWidget(spinNOC, 1, 2, 1, 1);
+        gridLayout_2->addWidget(spinNOC, 1, 5, 1, 1);
 
         catchInputCtrl = new CatchInputCtrl(groupTotals);
         catchInputCtrl->setObjectName(QString::fromUtf8("catchInputCtrl"));
 
-        gridLayout_2->addWidget(catchInputCtrl, 2, 0, 1, 3);
+        gridLayout_2->addWidget(catchInputCtrl, 3, 1, 1, 5);
+
+        label_5 = new QLabel(groupTotals);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        gridLayout_2->addWidget(label_5, 4, 4, 1, 1);
+
+        cmbFishingZone = new QComboBox(groupTotals);
+        cmbFishingZone->setObjectName(QString::fromUtf8("cmbFishingZone"));
+        cmbFishingZone->setEditable(true);
+
+        gridLayout_2->addWidget(cmbFishingZone, 4, 5, 1, 1);
+
+        listGears = new QListView(groupTotals);
+        listGears->setObjectName(QString::fromUtf8("listGears"));
+        listGears->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        listGears->setAlternatingRowColors(true);
+        listGears->setSelectionMode(QAbstractItemView::MultiSelection);
+        listGears->setSelectionBehavior(QAbstractItemView::SelectRows);
+        listGears->setResizeMode(QListView::Adjust);
+        listGears->setWordWrap(true);
+
+        gridLayout_2->addWidget(listGears, 4, 3, 1, 1);
+
+        label_7 = new QLabel(groupTotals);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        gridLayout_2->addWidget(label_7, 4, 1, 1, 1);
+
+        label_8 = new QLabel(groupTotals);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        gridLayout_2->addWidget(label_8, 2, 1, 1, 1);
 
 
         verticalLayout_2->addWidget(groupTotals);
@@ -489,6 +527,27 @@ public:
 #ifndef QT_NO_WHATSTHIS
         spinNOC->setWhatsThis(QApplication::translate("FrmTrip", "Number of fishing operations (calculated)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
+        label_5->setText(QApplication::translate("FrmTrip", "Fishing Zone", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        cmbFishingZone->setToolTip(QApplication::translate("FrmTrip", "Select the fishing zone of this fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        cmbFishingZone->setStatusTip(QApplication::translate("FrmTrip", "Select the fishing zone of this fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        cmbFishingZone->setWhatsThis(QApplication::translate("FrmTrip", "Select the fishing zone of this fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        listGears->setToolTip(QApplication::translate("FrmTrip", "Select the gear(s) used during this fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        listGears->setStatusTip(QApplication::translate("FrmTrip", "Select the gear(s) used during this fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        listGears->setWhatsThis(QApplication::translate("FrmTrip", "Select the gear(s) used during this fishing trip", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        label_7->setText(QApplication::translate("FrmTrip", "Gear(s) used", 0, QApplication::UnicodeUTF8));
+        label_8->setText(QApplication::translate("FrmTrip", "Catch", 0, QApplication::UnicodeUTF8));
         label_13->setText(QApplication::translate("FrmTrip", "Comments:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         textComments->setToolTip(QApplication::translate("FrmTrip", "Comments", 0, QApplication::UnicodeUTF8));

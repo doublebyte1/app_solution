@@ -17,8 +17,10 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"),parent, flags){
     SIGNAL(blockWidgetsSignals(const bool)));
 
     tTrips=0;
+    tGears=0;
     viewTrips=0;
     mapper1=0;
+    mapper2=0;
     mapperStartDt=0;
     mapperEndDt=0;
     nullDelegate=0;
@@ -31,9 +33,11 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"),parent, flags){
 FrmTrip::~FrmTrip()
 {
     if (tTrips!=0) delete tTrips;
+    if (tGears!=0) delete tGears;
     if (viewTrips!=0) delete viewTrips;
     if (nullDelegate!=0) delete nullDelegate;
     if (mapper1!=0) delete mapper1;
+    if (mapper2!=0) delete mapper2;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
 }
@@ -98,6 +102,8 @@ void FrmTrip::previewRow(QModelIndex index)
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 
+    //TODO: preview record on tGears
+
     pushNext->setEnabled(true);
 
     emit blockCatchUISignals(false);
@@ -145,6 +151,16 @@ void FrmTrip::initModels()
     viewTrips->setHeaderData(2, Qt::Horizontal, tr("Start Time"));
     viewTrips->setHeaderData(3, Qt::Horizontal, tr("End Date"));
     viewTrips->setHeaderData(4, Qt::Horizontal, tr("End Time"));
+
+    if (tGears!=0) delete tGears;
+
+    tGears=new QSqlRelationalTableModel();
+    tGears->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Trips_Gears"),
+        QSqlDriver::TableName));
+    tGears->setRelation(1, QSqlRelation(tr("Ref_Gears"), tr("ID"), tr("Name")));
+    tGears->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tGears->sort(0,Qt::AscendingOrder);
+    tGears->select();
 }
 
 void FrmTrip::initUI()
@@ -164,6 +180,9 @@ void FrmTrip::initUI()
     m_lWidgets << textComments;
     m_lWidgets << spinNOE;
     m_lWidgets << spinNOC;
+    m_lWidgets << cmbFishingZone;
+    m_lWidgets << listGears;
+
     customDtStart->setIsUTC(false);
     customDtStart->setIsAuto(false);
 
@@ -193,7 +212,7 @@ void FrmTrip::initMapper1()
 
     QList<int> lOthers;
     QList<int> lText;
-    for (int i=4; i < 22; ++i){
+    for (int i=4; i < 23; ++i){
         if (i!=16)
             lOthers << i;
         else
@@ -223,6 +242,10 @@ void FrmTrip::initMapper1()
     catchInputCtrl->pCmbUnitUnits()->setModelColumn(
         tTrips->relationModel(20)->fieldIndex(tr("Name")));
 
+    cmbFishingZone->setModel(tTrips->relationModel(22));
+    cmbFishingZone->setModelColumn(
+        tTrips->relationModel(22)->fieldIndex(tr("Name")));
+
     mapper1->addMapping(cmbSite, 4);
     mapper1->addMapping(cmbSampler, 5);
     mapper1->addMapping(spinProf, 6);
@@ -244,6 +267,7 @@ void FrmTrip::initMapper1()
     mapper1->addMapping(catchInputCtrl->pCmbUnitUnits(), 20);
     mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 21);
 
+    mapper1->addMapping(cmbFishingZone, 22);
 }
 
 void FrmTrip::initMappers()
@@ -262,6 +286,21 @@ void FrmTrip::initMappers()
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+
+    if (mapper2!=0) delete mapper2;
+    mapper2= new QDataWidgetMapper(this);
+    mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    mapper2->setItemDelegate(new QSqlRelationalDelegate (this));
+
+    if (tGears==0) return;
+
+    mapper2->setModel(tGears);
+
+    listGears->setModel(tGears->relationModel(1));
+    listGears->setModelColumn(
+        tGears->relationModel(1)->fieldIndex(tr("Name")));
+
+    mapper2->addMapping(listGears, 1);
 }
 
 void FrmTrip::beforeShow()
@@ -337,12 +376,13 @@ bool FrmTrip::onButtonClick(QAbstractButton* button)
         if (mapper1->submit()){
             bError=!
                     tTrips->submitAll();
-                if (bError){
+            if (bError){
                     if (tTrips->lastError().type()!=QSqlError::NoError)
                         emit showError(tTrips->lastError().text());
                     else
                         emit showError(tr("Could not write cell in the database!"));
                 }
+            //TODO: comit record on tGears
         }
         }
 
@@ -429,6 +469,9 @@ void FrmTrip::createRecord()
         cmbSite->setEnabled(false);
     }
 
+    //TODO: insert record on tGears
+
+
     uI4NewRecord();//init UI
 
     emit blockCatchUISignals(false);
@@ -446,6 +489,7 @@ void FrmTrip::initTripModel()
     tTrips->setRelation(12, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
     tTrips->setRelation(15, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
     tTrips->setRelation(20, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
+    tTrips->setRelation(22, QSqlRelation(tr("Ref_Fishing_Zones"), tr("ID"), tr("Name")));
     tTrips->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tTrips->sort(0,Qt::AscendingOrder);
     tTrips->select();
