@@ -13,6 +13,9 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"),parent, flags){
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
+    connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
+    SIGNAL(blockWidgetsSignals(const bool)));
+
     tTrips=0;
     viewTrips=0;
     mapper1=0;
@@ -43,6 +46,8 @@ void FrmTrip::onItemSelection()
 
 void FrmTrip::previewRow(QModelIndex index)
 {
+    emit blockCatchUISignals(true);
+
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -94,6 +99,8 @@ void FrmTrip::previewRow(QModelIndex index)
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 
     pushNext->setEnabled(true);
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmTrip::setPreviewQuery()
@@ -226,19 +233,14 @@ void FrmTrip::initMapper1()
 
     mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalE(), 10);
     mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalC(), 11);
-
     mapper1->addMapping(catchInputCtrl->pCmbWeightUnits(), 12);
-
     mapper1->addMapping(catchInputCtrl->pDoubleSpinNoBoxesE(), 13);
     mapper1->addMapping(catchInputCtrl->pDoubleSpinNoBoxesC(), 14);
     mapper1->addMapping(catchInputCtrl->pCmbBoxUnits(), 15);
     mapper1->addMapping(textComments,16);
-
     mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightBox(), 17);
-
     mapper1->addMapping(catchInputCtrl->pSpinUnitsE(), 18);
     mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 19);
-
     mapper1->addMapping(catchInputCtrl->pCmbUnitUnits(), 20);
     mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 21);
 
@@ -380,6 +382,9 @@ void FrmTrip::uI4NewRecord()
 
 void FrmTrip::createRecord()
 {
+    //block the signals while introducing record, so we dont have to validate the units mismatch
+    emit blockCatchUISignals(true);
+
     genericCreateRecord();
     mapper1->toLast();
 
@@ -425,6 +430,8 @@ void FrmTrip::createRecord()
     }
 
     uI4NewRecord();//init UI
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmTrip::initTripModel()

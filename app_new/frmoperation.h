@@ -82,12 +82,12 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   updateSample();
-        void                                   initTripModel();
+        void                                   initOperationModel();
         void                                   initMapper1();
 
         NullRelationalDelegate*                nullDelegate;
-        QSqlRelationalTableModel*              tTrips;
-        QSqlQueryModel*                        viewTrips;
+        QSqlRelationalTableModel*              tOperations;
+        QSqlQueryModel*                        viewOperations;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;

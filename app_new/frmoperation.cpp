@@ -8,27 +8,27 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"),parent, flags){
 
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
-/*
-    tTrips=0;
-    viewTrips=0;
+
+    tOperations=0;
+    viewOperations=0;
     mapper1=0;
     mapperStartDt=0;
     mapperEndDt=0;
     nullDelegate=0;
-*/
+
     initModels();
     initUI();
     initMappers();
 }
 
 FrmOperation::~FrmOperation()
-{/*
-    if (tTrips!=0) delete tTrips;
-    if (viewTrips!=0) delete viewTrips;
+{
+    if (tOperations!=0) delete tOperations;
+    if (viewOperations!=0) delete viewOperations;
     if (nullDelegate!=0) delete nullDelegate;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
-    if (mapperEndDt!=0) delete mapperEndDt;*/
+    if (mapperEndDt!=0) delete mapperEndDt;
 }
 
 
@@ -93,8 +93,8 @@ void FrmOperation::previewRow(QModelIndex index)
 }
 
 void FrmOperation::setPreviewQuery()
-{/*
-    if (m_sample==0) return;
+{
+    if (m_sample==0) return;/*
     QString strQuery=
 
     tr("SELECT     dbo.Sampled_Fishing_Trips.ID, dbo.Ref_Samplers.Name, CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], ") +
@@ -114,26 +114,24 @@ void FrmOperation::setPreviewQuery()
     query.prepare( strQuery );
     query.bindValue(0,m_sample->sampVesselId);
     if (!query.exec()){
-        emit showError(tr("Could not obtain filter for Sampled Fishing Trips!"));
+        emit showError(tr("Could not obtain filter for Sampled Fishing Operations!"));
         return;
     }
 
-    viewTrips->setQuery(query);
+    viewOperations->setQuery(query);
 */
     tableView->hideColumn(0);
     resizeToVisibleColumns(tableView);
 }
 
 void FrmOperation::initModels()
-{/*
-    if (viewTrips!=0) delete viewTrips;
-    viewTrips = new QSqlQueryModel;
+{
+    if (viewOperations!=0) delete viewOperations;
+    viewOperations = new QSqlQueryModel;
 
-    viewTrips->setHeaderData(0, Qt::Horizontal, tr("Sampler"));
-    viewTrips->setHeaderData(1, Qt::Horizontal, tr("Start Date"));
-    viewTrips->setHeaderData(2, Qt::Horizontal, tr("Start Time"));
-    viewTrips->setHeaderData(3, Qt::Horizontal, tr("End Date"));
-    viewTrips->setHeaderData(4, Qt::Horizontal, tr("End Time"));*/
+    viewOperations->setHeaderData(0, Qt::Horizontal, tr("Start Time"));
+    viewOperations->setHeaderData(1, Qt::Horizontal, tr("End Time"));
+    viewOperations->setHeaderData(2, Qt::Horizontal, tr("Gear"));
 }
 
 void FrmOperation::initUI()
@@ -141,20 +139,17 @@ void FrmOperation::initUI()
     setHeader();
 
     this->groupDetails->setVisible(false);
-    //initPreviewTable(tableView,viewTrips);
-/*
+    initPreviewTable(tableView,viewOperations);
+
     //initializing the container for the readonly!S
-    m_lWidgets << cmbSampler;
-    m_lWidgets << spinProf;
-    m_lWidgets << spinPart;
+    m_lWidgets << spinOrder;
+    m_lWidgets << cmbFishingZone;
+    m_lWidgets << cmbGear;
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
-    m_lWidgets << spinNOE;
-    m_lWidgets << spinCE;
-    m_lWidgets << cmbWeight;
-    m_lWidgets << spinCBE;
-    m_lWidgets << spinWeight;
-    m_lWidgets << cmbBoxes;
+    m_lWidgets << spinNoUnits;
+    m_lWidgets << doubleSpinSize;
+    m_lWidgets << catchInputCtrl;
     m_lWidgets << textComments;
 
     customDtStart->setIsUTC(false);
@@ -168,68 +163,72 @@ void FrmOperation::initUI()
 
     connect(customDtEnd, SIGNAL(isDateTime(bool,int)), m_tDateTime,
         SLOT(amendDateTimeType(bool,int)));
-*/
+
     pushNext->setEnabled(false);
 }
 
 void FrmOperation::initMapper1()
-{/*
+{
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
-    if (tTrips==0) return;
+    if (tOperations==0) return;
 
-    mapper1->setModel(tTrips);
+    mapper1->setModel(tOperations);
 
     if (nullDellegate!=0) delete nullDellegate;
     QList<int> lOthers;
-    for (int i=4; i < 16; ++i){
+    for (int i=4; i < 19; ++i){
         lOthers << i;
     }
-    lOthers << 17;
+    lOthers << 20;
     QList<int> lText;
-    lText << 16;
+    lText << 19;
     nullDellegate=new NullRelationalDelegate(lOthers,lText);
     mapper1->setItemDelegate(nullDellegate);
 
-    cmbSite->setModel(tTrips->relationModel(4));
-    cmbSite->setModelColumn(
-        tTrips->relationModel(4)->fieldIndex(tr("Name")));
+    cmbFishingZone->setModel(tOperations->relationModel(18));
+    cmbFishingZone->setModelColumn(
+        tOperations->relationModel(18)->fieldIndex(tr("Name")));
 
-    cmbSampler->setModel(tTrips->relationModel(5));
-    cmbSampler->setModelColumn(
-        tTrips->relationModel(5)->fieldIndex(tr("Name")));
+    cmbGear->setModel(tOperations->relationModel(4));
+    cmbGear->setModelColumn(
+        tOperations->relationModel(4)->fieldIndex(tr("Name")));
 
-    cmbWeight->setModel(tTrips->relationModel(12));
-    cmbWeight->setModelColumn(
-        tTrips->relationModel(12)->fieldIndex(tr("Name")));
+    catchInputCtrl->pCmbWeightUnits()->setModel(tOperations->relationModel(7));
+    catchInputCtrl->pCmbWeightUnits()->setModelColumn(
+        tOperations->relationModel(7)->fieldIndex(tr("Name")));
 
-    cmbBoxes->setModel(tTrips->relationModel(15));
-    cmbBoxes->setModelColumn(
-        tTrips->relationModel(15)->fieldIndex(tr("Name")));
+    catchInputCtrl->pCmbBoxUnits()->setModel(tOperations->relationModel(10));
+    catchInputCtrl->pCmbBoxUnits()->setModelColumn(
+        tOperations->relationModel(10)->fieldIndex(tr("Name")));
 
-    mapper1->addMapping(cmbSite, 4);
-    mapper1->addMapping(cmbSampler, 5);
-    mapper1->addMapping(spinProf, 6);
-    mapper1->addMapping(spinPart, 7);
-    mapper1->addMapping(spinNOE, 8);
-    mapper1->addMapping(spinNOC, 9);
-    mapper1->addMapping(spinCE, 10);
-    mapper1->addMapping(spinCC, 11);
+    catchInputCtrl->pCmbUnitUnits()->setModel(tOperations->relationModel(14));
+    catchInputCtrl->pCmbUnitUnits()->setModelColumn(
+        tOperations->relationModel(14)->fieldIndex(tr("Name")));
 
-    mapper1->addMapping(cmbWeight, 12);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalE(), 5);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalC(), 6);
+    mapper1->addMapping(catchInputCtrl->pCmbWeightUnits(), 7);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinNoBoxesE(), 8);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinNoBoxesC(), 9);
+    mapper1->addMapping(catchInputCtrl->pCmbBoxUnits(), 10);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightBox(), 11);
+    mapper1->addMapping(catchInputCtrl->pSpinUnitsE(), 12);
+    mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 13);
+    mapper1->addMapping(catchInputCtrl->pCmbUnitUnits(), 14);
+    mapper1->addMapping(spinNoUnits, 15);
+    mapper1->addMapping(doubleSpinSize, 16);
+    mapper1->addMapping(spinOrder, 17);
+    mapper1->addMapping(cmbFishingZone, 18);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 20);
 
-    mapper1->addMapping(spinCBE, 13);
-    mapper1->addMapping(spinCBC, 14);
-    mapper1->addMapping(cmbBoxes, 15);
-    mapper1->addMapping(textComments,16);
-
-    mapper1->addMapping(spinWeight, 17);*/
+    mapper1->addMapping(textComments,19);
 }
 
 void FrmOperation::initMappers()
-{/*
+{
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
 
@@ -243,7 +242,7 @@ void FrmOperation::initMappers()
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());*/
+    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
 }
 
 void FrmOperation::beforeShow()
@@ -251,15 +250,15 @@ void FrmOperation::beforeShow()
     this->groupDetails->setVisible(false);
 
     setSourceText(lbSource);
-    //initTripModel();
+    initOperationModel();
 }
 
 bool FrmOperation::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-    {/*
+    {
         this->groupDetails->hide();
-        this->tTrips->revertAll();*/
+        this->tOperations->revertAll();
         return true;
 
     } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
@@ -349,20 +348,17 @@ void FrmOperation::uI4NewRecord()
         this->groupDetails->setVisible(true);
 
     emit lockControls(false,m_lWidgets);
-/*
+
     customDtStart->setIsDateTime(true,true,true);
-
     customDtEnd->setIsDateTime(true,true,true);
-
     textComments->clear();
-*/
+
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
 
 void FrmOperation::createRecord()
 {
-    /*
     genericCreateRecord();
     mapper1->toLast();
 
@@ -394,38 +390,35 @@ void FrmOperation::createRecord()
     connect(m_tDateTime, SIGNAL(getDateType(QModelIndex,QVariant)), customDtEnd,
         SLOT(adjustDateTime(QModelIndex,QVariant)),Qt::UniqueConnection);
 
-    while(tTrips->canFetchMore())
-        tTrips->fetchMore();
+    while(tOperations->canFetchMore())
+        tOperations->fetchMore();
 
     //Fields that we have to fill behind the scenes...
-    QModelIndex idx=tTrips->index(tTrips->rowCount()-1,1);
-    tTrips->setData(idx,m_sample->sampVesselId);//id_abstract_sampled_vessels
-
-    //TODO: on sample fill the abstract landing site
-    if (!m_sample->bLogBook){
-        cmbSite->setCurrentIndex(0);
-        cmbSite->setEnabled(false);
-    }*/
+    QModelIndex idx=tOperations->index(tOperations->rowCount()-1,1);
+    tOperations->setData(idx,m_sample->tripId);//id_fishing_trip
 
     uI4NewRecord();//init UI
 }
 
-void FrmOperation::initTripModel()
-{/*
-    if (tTrips!=0) delete tTrips;
+void FrmOperation::initOperationModel()
+{
+    if (tOperations!=0) delete tOperations;
 
-    tTrips=new QSqlRelationalTableModel();
-    tTrips->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Trips"),
+    tOperations=new QSqlRelationalTableModel();
+    tOperations->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Operations"),
         QSqlDriver::TableName));
-    tTrips->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
-    tTrips->setRelation(5, QSqlRelation(tr("Ref_Samplers"), tr("ID"), tr("Name")));
-    tTrips->setRelation(12, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tTrips->setRelation(15, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tTrips->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tTrips->sort(0,Qt::AscendingOrder);
-    tTrips->select();
 
-    setPreviewModel(tTrips);*/
+    tOperations->setRelation(4, QSqlRelation(tr("Ref_Gears"), tr("ID"), tr("Name")));
+    tOperations->setRelation(7, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
+    tOperations->setRelation(10, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
+    tOperations->setRelation(14, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
+    tOperations->setRelation(18, QSqlRelation(tr("Ref_Fishing_Zones"), tr("ID"), tr("Name")));
+
+    tOperations->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tOperations->sort(0,Qt::AscendingOrder);
+    tOperations->select();
+
+    setPreviewModel(tOperations);
 }
 
 void FrmOperation::filterModel4Combo()

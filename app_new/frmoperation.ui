@@ -155,10 +155,14 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QComboBox" name="cmbFishingZone"/>
+       <widget class="QComboBox" name="cmbFishingZone">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item row="0" column="5" rowspan="3">
-       <widget class="QPlainTextEdit" name="plainTextEdit">
+       <widget class="QPlainTextEdit" name="textComments">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -223,12 +227,12 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="buddy">
-              <cstring>spinBox</cstring>
+              <cstring>spinNoUnits</cstring>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinBox"/>
+            <widget class="QSpinBox" name="spinNoUnits"/>
            </item>
            <item>
             <widget class="QLabel" name="label_7">

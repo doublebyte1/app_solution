@@ -73,6 +73,7 @@ class PreviewTab : public GenericTab
 
     signals:
         void                                  isLogBook(const bool bIsLogbook);
+        void                                  blockCatchUISignals(const bool bBlock);
 
     public slots:
         void                                  onShowForm();

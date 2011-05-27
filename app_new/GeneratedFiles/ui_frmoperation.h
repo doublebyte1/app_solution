@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Thu 26. May 16:39:36 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Fri 27. May 12:24:53 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -51,7 +51,7 @@ public:
     QSpinBox *spinOrder;
     QLabel *label_4;
     QComboBox *cmbFishingZone;
-    QPlainTextEdit *plainTextEdit;
+    QPlainTextEdit *textComments;
     QLabel *label;
     QGroupBox *groupGear;
     QVBoxLayout *verticalLayout;
@@ -60,7 +60,7 @@ public:
     QComboBox *cmbGear;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_6;
-    QSpinBox *spinBox;
+    QSpinBox *spinNoUnits;
     QLabel *label_7;
     QDoubleSpinBox *doubleSpinSize;
     CustomTimeCtrl *customDtStart;
@@ -174,18 +174,19 @@ public:
 
         cmbFishingZone = new QComboBox(groupDetails);
         cmbFishingZone->setObjectName(QString::fromUtf8("cmbFishingZone"));
+        cmbFishingZone->setEditable(true);
 
         gridLayout->addWidget(cmbFishingZone, 0, 3, 1, 1);
 
-        plainTextEdit = new QPlainTextEdit(groupDetails);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        textComments = new QPlainTextEdit(groupDetails);
+        textComments->setObjectName(QString::fromUtf8("textComments"));
         QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy4.setHorizontalStretch(0);
         sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
-        plainTextEdit->setSizePolicy(sizePolicy4);
+        sizePolicy4.setHeightForWidth(textComments->sizePolicy().hasHeightForWidth());
+        textComments->setSizePolicy(sizePolicy4);
 
-        gridLayout->addWidget(plainTextEdit, 0, 5, 3, 1);
+        gridLayout->addWidget(textComments, 0, 5, 3, 1);
 
         label = new QLabel(groupDetails);
         label->setObjectName(QString::fromUtf8("label"));
@@ -227,10 +228,10 @@ public:
 
         horizontalLayout_2->addWidget(label_6);
 
-        spinBox = new QSpinBox(groupGear);
-        spinBox->setObjectName(QString::fromUtf8("spinBox"));
+        spinNoUnits = new QSpinBox(groupGear);
+        spinNoUnits->setObjectName(QString::fromUtf8("spinNoUnits"));
 
-        horizontalLayout_2->addWidget(spinBox);
+        horizontalLayout_2->addWidget(spinNoUnits);
 
         label_7 = new QLabel(groupGear);
         label_7->setObjectName(QString::fromUtf8("label_7"));
@@ -340,7 +341,7 @@ public:
         label_3->setBuddy(spinOrder);
         label_4->setBuddy(cmbFishingZone);
         label_5->setBuddy(cmbGear);
-        label_6->setBuddy(spinBox);
+        label_6->setBuddy(spinNoUnits);
         label_7->setBuddy(doubleSpinSize);
 #endif // QT_NO_SHORTCUT
 

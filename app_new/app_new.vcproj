@@ -15,7 +15,7 @@
 	</Platforms>
 	<ToolFiles>
 		<ToolFile
-			RelativePath="..\..\..\..\downloads\Qt GUI Toolkit Build Rules v2.0\Qt GUI Tookit Build Customizations 3.0\xr.qt.msvc\msvc-09.0\qt-build.rules"
+			RelativePath="..\Qt GUI Toolkit Build Rules v2.0\Qt GUI Tookit Build Customizations 3.0\xr.qt.msvc\msvc-09.0\qt-build.rules"
 		/>
 	</ToolFiles>
 	<Configurations>

@@ -1,8 +1,8 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Thu 26. May 10:27:11 2011
-**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+** Created: Fri 27. May 10:59:31 2011
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'previewtab.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
-#error "This file was generated using the moc from 4.7.0. It"
+#error "This file was generated using the moc from 4.6.3. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,33 +20,35 @@ QT_BEGIN_MOC_NAMESPACE
 static const uint qt_meta_data_PreviewTab[] = {
 
  // content:
-       5,       // revision
+       4,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       2,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       23,   12,   11,   11, 0x05,
+      46,   39,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      39,   11,   11,   11, 0x0a,
-      61,   52,   11,   11, 0x08,
-      80,   11,   75,   11, 0x08,
-      87,   11,   11,   11, 0x08,
-     108,  102,   11,   11, 0x08,
-     139,  132,   75,   11, 0x08,
-     171,   11,   11,   11, 0x08,
+      72,   11,   11,   11, 0x0a,
+      94,   85,   11,   11, 0x08,
+     113,   11,  108,   11, 0x08,
+     120,   11,   11,   11, 0x08,
+     141,  135,   11,   11, 0x08,
+     172,  165,  108,   11, 0x08,
+     204,   11,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_PreviewTab[] = {
     "PreviewTab\0\0bIsLogbook\0isLogBook(bool)\0"
+    "bBlock\0blockCatchUISignals(bool)\0"
     "onShowForm()\0bLogbook\0setTips(bool)\0"
     "bool\0next()\0createRecord()\0index\0"
     "previewRow(QModelIndex)\0button\0"
@@ -84,18 +86,19 @@ int PreviewTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: isLogBook((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 1: onShowForm(); break;
-        case 2: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 3: { bool _r = next();
+        case 1: blockCatchUISignals((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 2: onShowForm(); break;
+        case 3: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 4: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: createRecord(); break;
-        case 5: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 6: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
+        case 5: createRecord(); break;
+        case 6: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 7: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 7: onItemSelection(); break;
+        case 8: onItemSelection(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }
@@ -105,5 +108,12 @@ void PreviewTab::isLogBook(const bool _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void PreviewTab::blockCatchUISignals(const bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_END_MOC_NAMESPACE
