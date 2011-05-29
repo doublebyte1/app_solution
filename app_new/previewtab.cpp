@@ -133,8 +133,9 @@ void PreviewTab::genericCreateRecord()
 
     insertRecordIntoModel(m_model);
 }
+//////////////////////////////////////////////////////////////
 
-void PreviewTab::insertRecordIntoModel(QSqlTableModel* m)
+void insertRecordIntoModel(QSqlTableModel* m)
 {
     while(m->canFetchMore())
         m->fetchMore();

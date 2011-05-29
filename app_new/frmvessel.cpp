@@ -94,7 +94,7 @@ void FrmVessel::setPreviewQuery()
     if (m_sample->bLogBook){//logbook
 
         strQuery=
-        tr("                SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name, dbo.Ref_Sample_Status.name AS Status") +
+            tr("                SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name as [Vessel Name], dbo.Ref_Sample_Status.name AS Status") +
         tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
         tr("                      dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +
         tr("                      dbo.Sampled_Strata_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Strata_Vessels = dbo.Sampled_Strata_Vessels.ID INNER JOIN") +
@@ -106,7 +106,7 @@ void FrmVessel::setPreviewQuery()
 
     } else{//sampling
         strQuery=
-         tr("            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name, dbo.Ref_Sample_Status.name AS Status, id_Sampled_Cell_Vessels") +
+         tr("            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name as [Vessel Name], dbo.Ref_Sample_Status.name AS Status, id_Sampled_Cell_Vessels") +
          tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
          tr("                     dbo.Sampled_Cell_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels = dbo.Sampled_Cell_Vessels.ID INNER JOIN") +
          tr("                     dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +

@@ -104,7 +104,7 @@ void FrmVesselType::setPreviewQuery()
     if (m_sample==0) return;
 
     viewVesselTypes->setQuery(
-        tr("SELECT     dbo.Sampled_Cell_Vessel_Types.ID, dbo.Ref_Vessel_Types.Name")+
+        tr("SELECT     dbo.Sampled_Cell_Vessel_Types.ID, dbo.Ref_Vessel_Types.Name [Vessel Type]")+
         tr(" FROM         dbo.Sampled_Cell_Vessel_Types INNER JOIN")+
         tr("                      dbo.Ref_Vessel_Types ON dbo.Sampled_Cell_Vessel_Types.id_vessel_type = dbo.Ref_Vessel_Types.ID")+
         tr(" WHERE     (dbo.Sampled_Cell_Vessel_Types.id_cell =")+ QVariant(m_sample->cellId).toString() + tr(")") +

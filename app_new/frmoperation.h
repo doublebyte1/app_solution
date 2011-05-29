@@ -2,6 +2,7 @@
 #include <QtSql>
 #include "ui_frmoperation.h"
 #include "previewtab.h"
+#include "multimodeli.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -84,6 +85,10 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         bool                                   updateSample();
         void                                   initOperationModel();
         void                                   initMapper1();
+
+        QSqlTableModel*                        tOpCat;
+        QSqlQueryModel*                        tRefCat;
+        MultiModelI*                           multiModelI;
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tOperations;

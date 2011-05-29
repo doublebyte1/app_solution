@@ -272,6 +272,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\multimodeli.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\previewtab.cpp"
 				>
 			</File>
@@ -844,6 +848,32 @@
 						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_SQL_LIB -DQT_XMLPATTERNS_LIB  &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include\QtSql&quot; &quot;-I$(QTDIR)\include\QtXmlPatterns&quot; &quot;-I$(QTDIR)\include\QtTest&quot; &quot;-I.&quot; &quot;-I$(BOOSTDIR)\.&quot; &quot;-IC:\projects\VS\customctrl_solution\CustomTimeCtrl&quot; &quot;-IC:\projects\VS\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot; &quot;-I$(QTDIR)\include\QtWebKit&quot; &quot;-IC:\projects\VS\CatchInputCtrl\CatchInputCtrl&quot; &quot;-IC:\projects\VS\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot; &quot;.\modelinterface.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\multimodeli.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
 					/>
 				</FileConfiguration>
 			</File>

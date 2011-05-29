@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
@@ -124,7 +124,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
      <property name="title">
       <string>Details</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -161,7 +161,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <item>
            <widget class="QComboBox" name="cmbFishingZone">
             <property name="editable">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -228,74 +228,66 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QGroupBox" name="groupGear">
           <property name="title">
            <string>Gear</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Gear</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-               <property name="buddy">
-                <cstring>cmbGear</cstring>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="cmbGear"/>
-             </item>
-            </layout>
+            <widget class="QLabel" name="label_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Gear</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="buddy">
+              <cstring>cmbGear</cstring>
+             </property>
+            </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Units</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-               <property name="buddy">
-                <cstring>spinNoUnits</cstring>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="spinNoUnits"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>Size</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-               </property>
-               <property name="buddy">
-                <cstring>doubleSpinSize</cstring>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QDoubleSpinBox" name="doubleSpinSize"/>
-             </item>
-            </layout>
+            <widget class="QComboBox" name="cmbGear"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Units</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="buddy">
+              <cstring>spinNoUnits</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinNoUnits"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Size</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="buddy">
+              <cstring>doubleSpinSize</cstring>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="doubleSpinSize"/>
            </item>
           </layout>
          </widget>
@@ -305,7 +297,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="title">
            <string>Totals</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <widget class="QLabel" name="label_9">
              <property name="text">
@@ -314,7 +306,14 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             </widget>
            </item>
            <item>
-            <widget class="CatchInputCtrl" name="catchInputCtrl"/>
+            <widget class="CatchInputCtrl" name="catchInputCtrl">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_10">
@@ -324,12 +323,30 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             </widget>
            </item>
            <item>
-            <widget class="QListView" name="listView">
+            <widget class="QListView" name="listCategories">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Commercial categories of the catch corresponding to this fishing operation</string>
+             </property>
+             <property name="statusTip">
+              <string>Commercial categories of the catch corresponding to this fishing operation</string>
+             </property>
+             <property name="whatsThis">
+              <string>Commercial categories of the catch corresponding to this fishing operation</string>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="selectionMode">
+              <enum>QAbstractItemView::MultiSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
              </property>
             </widget>
            </item>
@@ -466,9 +483,26 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>FrmOperation</receiver>
+   <slot>onButtonClick(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>677</x>
+     <y>695</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>394</x>
+     <y>392</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>previewRow(QModelIndex)</slot>
+  <slot>onButtonClick(QAbstractButton*)</slot>
  </slots>
 </ui>

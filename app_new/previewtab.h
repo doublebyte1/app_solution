@@ -8,6 +8,9 @@
      #define new DEBUG_NEW
   #endif
 
+
+void                                  insertRecordIntoModel(QSqlTableModel* m);
+
 //////////////////////////////////////////////////////////////////////
 #ifndef PREVIEWTAB_H
 #define PREVIEWTAB_H
@@ -25,8 +28,6 @@ class PreviewTab : public GenericTab
         PreviewTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, 
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~PreviewTab();
-
-        void                                  insertRecordIntoModel(QSqlTableModel* m);
 
     protected:
     //! A pure virtual member.

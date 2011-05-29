@@ -2,6 +2,7 @@
 #include <QtSql>
 #include "ui_frmtrip.h"
 #include "previewtab.h"
+#include "multimodeli.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -87,10 +88,13 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tTrips;
-        QSqlRelationalTableModel*              tGears;
+
+        QSqlTableModel*                        tTripGears;
+        QSqlQueryModel*                        tRefGears;
+        MultiModelI*                           multiModelI;
+
         QSqlQueryModel*                        viewTrips;
         QDataWidgetMapper*                     mapper1;
-        QDataWidgetMapper*                     mapper2;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
 };
