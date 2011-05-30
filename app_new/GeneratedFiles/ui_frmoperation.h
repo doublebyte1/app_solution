@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Sun 29. May 19:51:10 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Mon 30. May 13:57:03 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -396,13 +396,13 @@ public:
         lbSource->setText(QApplication::translate("FrmOperation", "[SOURCE]", 0, QApplication::UnicodeUTF8));
         label_23->setText(QApplication::translate("FrmOperation", "Choose Fishing Operation:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        tableView->setToolTip(QApplication::translate("FrmOperation", "Choose sampled fishing trip (or create a new one)", 0, QApplication::UnicodeUTF8));
+        tableView->setToolTip(QApplication::translate("FrmOperation", "Choose sampled fishing operation (or create a new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        tableView->setStatusTip(QApplication::translate("FrmOperation", "Choose sampled fishing trip (or create a new one)", 0, QApplication::UnicodeUTF8));
+        tableView->setStatusTip(QApplication::translate("FrmOperation", "Choose sampled fishing operation (or create a new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        tableView->setWhatsThis(QApplication::translate("FrmOperation", "In this widget we can choose sampled fishing trip, or create a new one", 0, QApplication::UnicodeUTF8));
+        tableView->setWhatsThis(QApplication::translate("FrmOperation", "In this widget we can choose a sampled fishing operation, or create a new one", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
 #ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("FrmOperation", "Create new record", 0, QApplication::UnicodeUTF8));

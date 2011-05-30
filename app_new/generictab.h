@@ -21,7 +21,8 @@ This structure encapsulates the data that we want to pass around forms
 */
 
 struct Sample{
-    Sample(): frameId(-1), frameTimeId(-1), minorStrataId(-1), cellId(-1), vesselTypeId(-1), sampVesselId(-1){;}
+    Sample(): frameId(-1), frameTimeId(-1), minorStrataId(-1), cellId(-1), vesselTypeId(-1), sampVesselId(-1),
+    tripId(-1),operationId(-1){;}
     bool        bLogBook;
     int         frameId;
     int         frameTimeId;
@@ -30,6 +31,7 @@ struct Sample{
     int         vesselTypeId;
     int         sampVesselId;
     int         tripId;
+    int         operationId;
 };
 
 #endif //SAMPLE_H

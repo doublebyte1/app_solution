@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Sun 29. May 18:20:13 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Mon 30. May 13:57:03 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -451,7 +451,7 @@ public:
         tableView->setStatusTip(QApplication::translate("FrmTrip", "Choose sampled fishing trip (or create a new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        tableView->setWhatsThis(QApplication::translate("FrmTrip", "In this widget we can choose sampled fishing trip, or create a new one", 0, QApplication::UnicodeUTF8));
+        tableView->setWhatsThis(QApplication::translate("FrmTrip", "In this widget we can choose a sampled fishing trip, or create a new one", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
 #ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("FrmTrip", "Create new record", 0, QApplication::UnicodeUTF8));

@@ -81,13 +81,13 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Choose sampled fishing trip (or create a new one)</string>
+        <string>Choose sampled fishing operation (or create a new one)</string>
        </property>
        <property name="statusTip">
-        <string>Choose sampled fishing trip (or create a new one)</string>
+        <string>Choose sampled fishing operation (or create a new one)</string>
        </property>
        <property name="whatsThis">
-        <string>In this widget we can choose sampled fishing trip, or create a new one</string>
+        <string>In this widget we can choose a sampled fishing operation, or create a new one</string>
        </property>
       </widget>
      </item>

@@ -6,8 +6,14 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"),parent, flags){
 
     setupUi(this);
 
+    connect(pushNext, SIGNAL(clicked()), this,
+    SLOT(next()));
+
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
+
+    connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
+    SIGNAL(blockWidgetsSignals(const bool)));
 
     tOperations=0;
     tOpCat=0;
@@ -45,6 +51,8 @@ void FrmOperation::onItemSelection()
 
 void FrmOperation::previewRow(QModelIndex index)
 {
+    emit blockCatchUISignals(true);
+
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -101,6 +109,8 @@ void FrmOperation::previewRow(QModelIndex index)
     multiModelI->model2List(tr("id_fishing_operation"));
 
     pushNext->setEnabled(true);
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmOperation::setPreviewQuery()
@@ -140,9 +150,10 @@ void FrmOperation::initModels()
     if (viewOperations!=0) delete viewOperations;
     viewOperations = new QSqlQueryModel;
 
-    viewOperations->setHeaderData(0, Qt::Horizontal, tr("Start Time"));
-    viewOperations->setHeaderData(1, Qt::Horizontal, tr("End Time"));
-    viewOperations->setHeaderData(2, Qt::Horizontal, tr("Gear Used"));
+    //n.b.: this is *WRONG*!
+    //viewOperations->setHeaderData(0, Qt::Horizontal, tr("Start Time"));
+    //viewOperations->setHeaderData(1, Qt::Horizontal, tr("End Time"));
+    //viewOperations->setHeaderData(2, Qt::Horizontal, tr("Gear Used"));
 
     if (tRefCat!=0) delete tRefCat;
 
@@ -357,7 +368,7 @@ bool FrmOperation::onButtonClick(QAbstractButton* button)
                         if (tOperations->lastError().type()!=QSqlError::NoError)
                             emit showError(tOperations->lastError().text());
                         else
-                            emit showError(tr("Could not write cell in the database!"));
+                            emit showError(tr("Could not write operation in the database!"));
                     }else{
                         //Comiting Sampled_Fishing_Operations_Categories
                         QModelIndex idd=tOperations->index(tOperations->rowCount()-1,0);
@@ -407,6 +418,8 @@ void FrmOperation::uI4NewRecord()
 
 void FrmOperation::createRecord()
 {
+    emit blockCatchUISignals(true);
+
     genericCreateRecord();
     mapper1->toLast();
 
@@ -446,6 +459,8 @@ void FrmOperation::createRecord()
     tOperations->setData(idx,m_sample->tripId);//id_fishing_trip
 
     uI4NewRecord();//init UI
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmOperation::initOperationModel()
@@ -506,25 +521,24 @@ void FrmOperation::filterModel4Combo()
 }
 
 bool FrmOperation::updateSample()
-{/*
+{
     if (!tableView->selectionModel()->hasSelection())
         return false;
 
     //updating the sample structure
-    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),0);
+    QModelIndex idx=viewOperations->index(tableView->selectionModel()->currentIndex().row(),0);
 
-    //TODO: update the vessel here
-    //m_sample->cellId=idx.data().toInt();*/
+    m_sample->operationId=idx.data().toInt();
     return true;
 }
 
 bool FrmOperation::getNextLabel(QString& strLabel)
-{/*
+{
     if (!tableView->selectionModel()->hasSelection())
         return false;
 
     //sending the name
-    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),1);
-    strLabel=idx.data().toString();*/
+    QModelIndex idx=viewOperations->index(tableView->selectionModel()->currentIndex().row(),3);
+    strLabel=idx.data().toString();
     return true;
 }
