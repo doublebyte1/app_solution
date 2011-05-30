@@ -8,6 +8,7 @@ HEADERS += ./buttongroup.h \
     ./datemodel.h \
     ./dragdropmodel.h \
     ./frameview.h \
+    ./frmcatch.h \
     ./frmcell.h \
     ./frmchangereasons.h \
     ./frmconnect.h \
@@ -25,6 +26,7 @@ HEADERS += ./buttongroup.h \
     ./login.h \
     ./mainfrm.h \
     ./modelinterface.h \
+    ./multimodeli.h \
     ./previewtab.h \
     ./reportinghook.h \
     ./treeitem.h \
@@ -34,6 +36,7 @@ SOURCES += ./buttongroup.cpp \
     ./datemodel.cpp \
     ./dragdropmodel.cpp \
     ./frameview.cpp \
+    ./frmcatch.cpp \
     ./frmcell.cpp \
     ./frmchangereasons.cpp \
     ./frmconnect.cpp \
@@ -51,11 +54,13 @@ SOURCES += ./buttongroup.cpp \
     ./main.cpp \
     ./mainfrm.cpp \
     ./modelinterface.cpp \
+    ./multimodeli.cpp \
     ./previewtab.cpp \
     ./reportinghook.cpp \
     ./treeitem.cpp \
     ./treemodel.cpp
-FORMS += ./frmcell.ui \
+FORMS += ./frmcatch.ui \
+    ./frmcell.ui \
     ./frmchangereasons.ui \
     ./frmconnect.ui \
     ./frmframe.ui \

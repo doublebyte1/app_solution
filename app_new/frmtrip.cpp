@@ -214,6 +214,8 @@ void FrmTrip::initUI()
 
 void FrmTrip::initMapper1()
 {
+    emit blockCatchUISignals(true);
+
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -282,6 +284,8 @@ void FrmTrip::initMapper1()
     mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 21);
 
     mapper1->addMapping(cmbFishingZone, 22);
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmTrip::initMappers()
@@ -310,6 +314,7 @@ void FrmTrip::beforeShow()
 
     setSourceText(lbSource);
     initTripModel();
+
 }
 
 bool FrmTrip::onButtonClick(QAbstractButton* button)
@@ -424,8 +429,17 @@ void FrmTrip::uI4NewRecord()
     emit lockControls(false,m_lWidgets);
 
     customDtStart->setIsDateTime(true,true,true);
-
     customDtEnd->setIsDateTime(true,true,true);
+
+    //TODO: remove this initialization later, when we put the BL layer
+    catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    catchInputCtrl->cmbUnitUnits->setCurrentIndex(this->catchInputCtrl->cmbUnitUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
+        qApp->translate("null_replacements", strNa)));
 
     textComments->clear();
     listGears->clearSelection();

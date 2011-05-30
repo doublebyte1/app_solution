@@ -18,9 +18,12 @@ INCLUDEPATH += ./GeneratedFiles \
     . \
     $(BOOSTDIR) \
     ../../customctrl_solution/CustomTimeCtrl \
-    ../../customctrl_solution/CustomTimeCtrl/GeneratedFiles
+    ../../customctrl_solution/CustomTimeCtrl/GeneratedFiles \
+    ../../CatchInputCtrl/CatchInputCtrl \
+    ../../CatchInputCtrl/CatchInputCtrl/GeneratedFiles
 LIBS += -L"$(QTDIR)/plugins/designer" \
-    -lcustomtimectrld
+    -lcustomtimectrld \
+    -lCatchInputCtrld
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug

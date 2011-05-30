@@ -86,7 +86,7 @@ void FrmCatch::setPreviewQuery()
         return;
     }
 
-    //qDebug() << query.numRowsAffected() << endl;
+    qDebug() << query.numRowsAffected() << endl;
 
     viewCatch->setQuery(query);
 
@@ -122,6 +122,8 @@ void FrmCatch::initUI()
 
 void FrmCatch::initMapper1()
 {
+    emit blockCatchUISignals(true);
+
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -178,6 +180,8 @@ void FrmCatch::initMapper1()
     mapper1->addMapping(cmbUnits, 14);
 
     mapper1->addMapping(textComments,15);
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmCatch::initMappers()
@@ -241,6 +245,19 @@ void FrmCatch::uI4NewRecord()
     emit lockControls(false,m_lWidgets);
 
     textComments->clear();
+
+    //TODO: remove this initialization later, when we put the BL layer
+    catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    catchInputCtrl->cmbUnitUnits->setCurrentIndex(this->catchInputCtrl->cmbUnitUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    cmbUnits->setCurrentIndex(cmbUnits->findText(
+        qApp->translate("null_replacements", strNa)));
 
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);

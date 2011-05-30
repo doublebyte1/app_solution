@@ -168,7 +168,7 @@ void FrmVessel::initUI()
     m_lWidgets << cmbOrigin;
     m_lWidgets << textComments;
     m_lWidgets << spinET;
-    m_lWidgets << spinCT;
+    //m_lWidgets << spinCT;
 
     pushNext->setEnabled(false);
 }

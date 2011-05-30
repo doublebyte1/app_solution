@@ -210,6 +210,8 @@ void FrmOperation::initUI()
 
 void FrmOperation::initMapper1()
 {
+    emit blockCatchUISignals(true);
+
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -267,6 +269,8 @@ void FrmOperation::initMapper1()
     mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 20);
 
     mapper1->addMapping(textComments,19);
+
+    emit blockCatchUISignals(false);
 }
 
 void FrmOperation::initMappers()
@@ -411,6 +415,16 @@ void FrmOperation::uI4NewRecord()
     customDtEnd->setIsDateTime(true,true,true);
     textComments->clear();
     listCategories->clearSelection();
+
+    //TODO: remove this initialization later, when we put the BL layer
+    catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    catchInputCtrl->cmbUnitUnits->setCurrentIndex(this->catchInputCtrl->cmbUnitUnits->findText(
+        qApp->translate("null_replacements", strNa)));
+
+    catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
+        qApp->translate("null_replacements", strNa)));
 
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
