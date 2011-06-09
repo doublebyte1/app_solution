@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Mon 30. May 15:58:14 2011
+** Created: Thu 9. Jun 16:33:50 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.6.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -36,9 +36,9 @@ static const uint qt_meta_data_FrmFrame[] = {
 
  // slots: signature, parameters, type, tag, flags
       65,    9,    9,    9, 0x0a,
-      78,    9,    9,    9, 0x08,
-      99,    9,    9,    9, 0x08,
-     125,    9,  120,    9, 0x08,
+      83,    9,   78,    9, 0x0a,
+      90,    9,    9,    9, 0x08,
+     111,    9,    9,    9, 0x08,
      132,    9,    9,    9, 0x08,
 
        0        // eod
@@ -47,9 +47,8 @@ static const uint qt_meta_data_FrmFrame[] = {
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0bLogBook\0isLogBook(bool)\0"
     "index,bOk\0submitted(int,bool)\0"
-    "onShowForm()\0onHideFrameDetails()\0"
-    "onShowFrameDetails()\0bool\0next()\0"
-    "apply()\0"
+    "onShowForm()\0bool\0next()\0onHideFrameDetails()\0"
+    "onShowFrameDetails()\0apply()\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -86,10 +85,10 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: isLogBook((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: submitted((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 2: onShowForm(); break;
-        case 3: onHideFrameDetails(); break;
-        case 4: onShowFrameDetails(); break;
-        case 5: { bool _r = next();
+        case 3: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 4: onHideFrameDetails(); break;
+        case 5: onShowFrameDetails(); break;
         case 6: apply(); break;
         default: ;
         }

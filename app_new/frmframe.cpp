@@ -46,6 +46,12 @@ GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
 
     initUI();
     initMappers();
+
+    while(m_tDateTime->canFetchMore())
+        m_tDateTime->fetchMore();
+
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
+    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 }
 
 FrmFrame::~FrmFrame()
@@ -132,6 +138,8 @@ void FrmFrame::initMappers()
 {
     if (tRefFrame==0) return ;
 
+    if (mapper1!=0) delete mapper1;
+
     mapper1= new QDataWidgetMapper(this);
     mapper1->setModel(tRefFrame);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -140,6 +148,8 @@ void FrmFrame::initMappers()
     cmbCopy->setModel(tRefFrame->relationModel(0));
     cmbCopy->setModelColumn(
         tRefFrame->relationModel(0)->fieldIndex(tr("Name")));
+
+    if (mapper2!=0) delete mapper2;
 
     mapper2= new QDataWidgetMapper(this);
     mapper2->setModel(tRefFrame);
@@ -155,11 +165,15 @@ void FrmFrame::initMappers()
 
     if (m_tDateTime==0) return;
 
+    if (mapperStartDt!=0) delete mapperStartDt;
+
     mapperStartDt= new QDataWidgetMapper(this);
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
     mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+
+    if (mapperEndDt!=0) delete mapperEndDt;
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
@@ -169,13 +183,6 @@ void FrmFrame::initMappers()
 
     mapper1->toLast();
     mapper2->toLast();
-
-    while(m_tDateTime->canFetchMore())
-        m_tDateTime->fetchMore();
-
-    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
-    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
-
 }
 
 bool FrmFrame::getCurrentFrame(int& id)
@@ -375,4 +382,41 @@ bool FrmFrame::next()
     }
     emit showError(tr("It was not defined any time frame for this frame!"));
     return false;
+}
+
+bool FrmFrame::loadFrameFromSample()
+{
+    tRefFrame->relationModel(0)->setFilter(tr("FR_Frame.ID=") + QVariant(m_sample->frameId).toString());
+    //n.b.: do not forget to cast the integers on the filters to strings!!!!!
+
+    if (tRefFrame->relationModel(0)->rowCount()!=1) return false;
+
+    tFrameTime->setFilter(tr("FR_Time.ID=") + QVariant(m_sample->frameTimeId).toString());
+    if (tFrameTime->rowCount()!=1) return false;
+
+    //Now fix the dates
+    QModelIndex idx=tFrameTime->index(0,2);
+    if (!idx.isValid()){
+        emit showError (tr("Could not load the start date of this frame!"));
+        return false;
+    }
+    QString strStartDt=idx.data().toString();
+    idx=tFrameTime->index(0,3);
+    if (!idx.isValid()){
+        emit showError (tr("Could not load the end date of this frame!"));
+        return false;
+    }
+    QString strEndDt=idx.data().toString();
+
+    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+    if (m_tDateTime->rowCount()!=2)
+        return false;
+
+    mapperEndDt->toLast();
+    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
+    initMappers();
+
+    return true;
 }

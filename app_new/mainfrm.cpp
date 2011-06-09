@@ -96,6 +96,31 @@ bool MainFrm::readXMLFile(const QString strFileName)
     return true;
 }
 
+void MainFrm::loadTabs()
+{
+    qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+    statusShow(tr("Wait..."));
+
+        resetTabs();
+        initTabs();
+
+        if (pFrmFrame==0) return;
+        this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
+
+        if (sSample->frameId==-1 || sSample->frameTimeId==-1) return;
+
+        if (pFrmFrame->loadFrameFromSample()){
+            //APPLY?
+            //pFrmFrame->next();
+        }
+
+        //TODO: load frame; loop through the structure to load the other ones;
+        // combo with frame, dates: disables, etc
+
+    statusShow(tr("Project successfully loaded."));
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+}
+
 void MainFrm::loadFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -104,6 +129,8 @@ void MainFrm::loadFile()
     if (!fileName.isEmpty()){
         if (!readXMLFile(fileName))
             this->displayError(tr("Could not parse XML file! Are you sure this is a valid project file?"),true);
+        else
+            loadTabs();
     }
 }
 
@@ -146,16 +173,26 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
                 stream.writeTextElement(tr("title"), tr("Session File"));
                 stream.writeTextElement(tr("description"), 
                     tr("This is a session file, which stores the point of the application where the user was.\n Please do *NOT* edit it, unless you know what you are doing!"));
+                /*
                 stream.writeStartElement(tr("connection"));
                 stream.writeAttribute(tr("alias"), QSqlDatabase::database().connectionName());
                     stream.writeTextElement(tr("database"), QSqlDatabase::database().databaseName());
                     stream.writeTextElement(tr("driver"), QSqlDatabase::database().driverName());
                     stream.writeTextElement(tr("host"), QSqlDatabase::database().hostName());
                     stream.writeTextElement(tr("user"), QSqlDatabase::database().userName());
-                stream.writeEndElement();//connection
+                stream.writeEndElement();//connection*/
                 stream.writeStartElement(tr("indexes"));
+
+                    stream.writeTextElement(tr("isLogbook"), QVariant(sSample->bLogBook).toString());
                     stream.writeTextElement(tr("frameId"), QVariant(sSample->frameId).toString());
                     stream.writeTextElement(tr("frameTimeId"), QVariant(sSample->frameTimeId).toString());
+                    if (sSample->minorStrataId!=-1) stream.writeTextElement(tr("minorStrataId"), QVariant(sSample->minorStrataId).toString());
+                    if (sSample->cellId!=-1) stream.writeTextElement(tr("cellId"), QVariant(sSample->cellId).toString());
+                    if (sSample->vesselTypeId!=-1) stream.writeTextElement(tr("vesselTypeId"), QVariant(sSample->vesselTypeId).toString());
+                    if (sSample->sampVesselId!=-1) stream.writeTextElement(tr("sampVesselId"), QVariant(sSample->sampVesselId).toString());
+                    if (sSample->tripId!=-1) stream.writeTextElement(tr("tripId"), QVariant(sSample->tripId).toString());
+                    if (sSample->operationId!=-1) stream.writeTextElement(tr("operationId"), QVariant(sSample->operationId).toString());
+
                 stream.writeEndElement();//indexes
             stream.writeEndElement();//top
         stream.writeEndDocument();
@@ -197,7 +234,6 @@ void MainFrm::resetTabs()
         if (pFrmOperation!=0) {delete pFrmOperation; pFrmOperation=0;}
         if (pFrmCatch!=0) {delete pFrmCatch; pFrmOperation=0;}
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
-        if (sSample!=0) {delete sSample; sSample=0;}
 
         //Dates
         tDateTime= new DateModel();
@@ -206,9 +242,6 @@ void MainFrm::resetTabs()
         tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
         tDateTime->setAuto(false);
         tDateTime->select();
-
-        //Sample
-        sSample=new Sample;
 }
 
 void MainFrm::initPreviewTab(PreviewTab* tab)
@@ -216,85 +249,93 @@ void MainFrm::initPreviewTab(PreviewTab* tab)
     vTabs.push_back(tab);
 }
 
-void MainFrm::initTabs()
+void MainFrm::newTabs()
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     statusShow(tr("Wait..."));
 
         resetTabs();
+        if (sSample!=0) {delete sSample; sSample=0;}
+        sSample=new Sample;
+        initTabs();
 
-        pFrmFrame=new FrmFrame(sSample,tDateTime);
-
-         connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
-        SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
-
-         connect(pFrmFrame, SIGNAL(submitted(int,bool)), this,
-        SLOT(addTab(int,bool)),Qt::UniqueConnection);
-
-        vTabs.push_back(pFrmFrame);
+        if (pFrmFrame==0) return;
         this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
 
-        pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
-        initPreviewTab(pFrmMinorStrata);
-        pFrmCell=new FrmCell(sSample,tDateTime);
-        initPreviewTab(pFrmCell);
-        pFrmVesselType=new FrmVesselType(sSample,tDateTime);
-        initPreviewTab(pFrmVesselType);
-        pFrmVessel=new FrmVessel(sSample,tDateTime);
-        initPreviewTab(pFrmVessel);
-        pFrmTrip=new FrmTrip(sSample,tDateTime);
-        initPreviewTab(pFrmTrip);
-        pFrmOperation=new FrmOperation(sSample,tDateTime);
-        initPreviewTab(pFrmOperation);
-        pFrmCatch=new FrmCatch(sSample,tDateTime);
-        initPreviewTab(pFrmCatch);
+    statusShow(tr("Project successfully initialized."));
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+}
 
-        pFrmFrameDetails=new FrmFrameDetails();
-         connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,
-        SLOT(hideFrameDetails()));
+void MainFrm::initTabs()
+{
+    pFrmFrame=new FrmFrame(sSample,tDateTime);
 
-         connect(pFrmFrameDetails, SIGNAL(showStatus(QString)), this,
-        SLOT(statusShow(QString)));
+     connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
+    SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
 
-         connect(pFrmFrameDetails, SIGNAL(showError(QString, const bool)), this,
-        SLOT(displayError(QString, const bool)));
+     connect(pFrmFrame, SIGNAL(submitted(int,bool)), this,
+    SLOT(addTab(int,bool)),Qt::UniqueConnection);
 
-        gridLayout->addWidget(pFrmFrameDetails);
-        pFrmFrameDetails->hide();
+    vTabs.push_back(pFrmFrame);
 
-        // Connect all the signals
-         for (int i = 0; i < vTabs.size(); ++i) {
+    pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
+    initPreviewTab(pFrmMinorStrata);
+    pFrmCell=new FrmCell(sSample,tDateTime);
+    initPreviewTab(pFrmCell);
+    pFrmVesselType=new FrmVesselType(sSample,tDateTime);
+    initPreviewTab(pFrmVesselType);
+    pFrmVessel=new FrmVessel(sSample,tDateTime);
+    initPreviewTab(pFrmVessel);
+    pFrmTrip=new FrmTrip(sSample,tDateTime);
+    initPreviewTab(pFrmTrip);
+    pFrmOperation=new FrmOperation(sSample,tDateTime);
+    initPreviewTab(pFrmOperation);
+    pFrmCatch=new FrmCatch(sSample,tDateTime);
+    initPreviewTab(pFrmCatch);
 
-             connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
-            SLOT(navigateThroughTabs(const bool, const int)),Qt::UniqueConnection);
+    pFrmFrameDetails=new FrmFrameDetails();
+     connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), this,
+    SLOT(hideFrameDetails()));
 
-             connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)), this,
-            SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)),Qt::UniqueConnection);
+     connect(pFrmFrameDetails, SIGNAL(showStatus(QString)), this,
+    SLOT(statusShow(QString)));
 
-             connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), vTabs.at(i),
-            SIGNAL(hideFrameDetails(bool)),Qt::UniqueConnection);
+     connect(pFrmFrameDetails, SIGNAL(showError(QString, const bool)), this,
+    SLOT(displayError(QString, const bool)));
 
-             connect(vTabs.at(i), SIGNAL(showError(QString,bool)), this,
-            SLOT(displayError(QString,bool)),Qt::UniqueConnection);
+    gridLayout->addWidget(pFrmFrameDetails);
+    pFrmFrameDetails->hide();
 
-             connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
-            SLOT(statusShow(QString)),Qt::UniqueConnection);
+    // Connect all the signals
+     for (int i = 0; i < vTabs.size(); ++i) {
 
-             if (i < vTabs.size()-1){
-                 connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
-                SLOT(fillHeader(const QString)),Qt::UniqueConnection);
+         connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
+        SLOT(navigateThroughTabs(const bool, const int)),Qt::UniqueConnection);
 
-                 connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
-                SLOT(onShowForm()),Qt::UniqueConnection);
-             }
+         connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)), this,
+        SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)),Qt::UniqueConnection);
 
-             if (i>0)
-                 tabWidget->setTabEnabled(i,false);
+         connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), vTabs.at(i),
+        SIGNAL(hideFrameDetails(bool)),Qt::UniqueConnection);
 
+         connect(vTabs.at(i), SIGNAL(showError(QString,bool)), this,
+        SLOT(displayError(QString,bool)),Qt::UniqueConnection);
+
+         connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
+        SLOT(statusShow(QString)),Qt::UniqueConnection);
+
+         if (i < vTabs.size()-1){
+             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+            SLOT(fillHeader(const QString)),Qt::UniqueConnection);
+
+             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
+            SLOT(onShowForm()),Qt::UniqueConnection);
          }
 
-    statusShow(tr("Sampling Operation successfully initialized."));
-    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+         if (i>0)
+             tabWidget->setTabEnabled(i,false);
+
+     }
 }
 
 void MainFrm::rearrangeTabs(bool bLogBook)
@@ -423,8 +464,16 @@ void MainFrm::statusClean(QString str)
 SessionFileParser::SessionFileParser(Sample* sample)
 {
     m_sample=sample;
+    m_bReadingIsLogbook=false;
     m_bReadingFrameId=false;
     m_bReadingFrameTimeId=false;
+    m_bReadingMinorStrataId=false;
+    m_bReadingCellId=false;
+    m_bReadingVesselTypeId=false;
+    m_bReadingSampVesselId=false;
+    m_bReadingTripId=false;
+    m_bReadingOperationId=false;
+
     m_ct=0;
 }
 
@@ -434,18 +483,36 @@ SessionFileParser::~SessionFileParser()
 }
 
 bool SessionFileParser::startElement( const QString& , const QString& , const QString &name, const QXmlAttributes &)
-  {
-      if( name == QObject::tr("frameId") )
+{
+      if( name == QObject::tr("isLogbook") )
+        m_bReadingIsLogbook=true;
+      else if( name == QObject::tr("frameId") )
         m_bReadingFrameId=true;
       else if( name == QObject::tr("frameTimeId") )
         m_bReadingFrameTimeId=true;
+      else if( name == QObject::tr("minorStrataId") )
+        m_bReadingMinorStrataId=true;
+      else if( name == QObject::tr("cellId") )
+        m_bReadingCellId=true;
+      else if( name == QObject::tr("vesselTypeId") )
+        m_bReadingVesselTypeId=true;
+      else if( name == QObject::tr("sampVesselId") )
+        m_bReadingSampVesselId=true;
+      else if( name == QObject::tr("tripId") )
+        m_bReadingTripId=true;
+      else if( name == QObject::tr("operationId") )
+        m_bReadingOperationId=true;
 
     return true;
   }
 
 bool SessionFileParser::characters ( const QString & ch )
 {
-    if (m_bReadingFrameId){
+    if (m_bReadingIsLogbook){
+        m_sample->bLogBook=QVariant(ch).toBool();
+        m_bReadingIsLogbook=false;
+        m_ct++;
+    }else if (m_bReadingFrameId){
         m_sample->frameId=QVariant(ch).toInt();
         m_bReadingFrameId=false;
         m_ct++;
@@ -453,8 +520,28 @@ bool SessionFileParser::characters ( const QString & ch )
         m_sample->frameTimeId=QVariant(ch).toInt();
         m_bReadingFrameTimeId=false;
         m_ct++;
+    }else if (m_bReadingMinorStrataId){
+        m_sample->minorStrataId=QVariant(ch).toInt();
+        m_bReadingMinorStrataId=false;
+    }else if (m_bReadingCellId){
+        m_sample->cellId=QVariant(ch).toInt();
+        m_bReadingCellId=false;
+    }else if (m_bReadingVesselTypeId){
+        m_sample->vesselTypeId=QVariant(ch).toInt();
+        m_bReadingVesselTypeId=false;
+    }else if (m_bReadingSampVesselId){
+        m_sample->sampVesselId=QVariant(ch).toInt();
+        m_bReadingSampVesselId=false;
+    }else if (m_bReadingTripId){
+        m_sample->tripId=QVariant(ch).toInt();
+        m_bReadingTripId=false;
+    }else if (m_bReadingOperationId){
+        m_sample->operationId=QVariant(ch).toInt();
+        m_bReadingOperationId=false;
     }
-    return m_bReadingFrameId==false || m_bReadingFrameTimeId==false;
+
+    //return m_bReadingFrameId==false || m_bReadingFrameTimeId==false;
+    return true;
 }
 
  bool SessionFileParser::fatalError (const QXmlParseException & exception)
@@ -468,5 +555,5 @@ bool SessionFileParser::characters ( const QString & ch )
 
 bool SessionFileParser::endDocument()
 {
-    return m_ct==2;
+    return m_ct==3;
 }

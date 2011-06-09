@@ -25,13 +25,15 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrame(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrame();
 
+        bool                                   loadFrameFromSample();
+
     public slots:
         void                                   onShowForm(){;}//does nothing
+        bool                                   next();
 
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
-        bool                                   next();
         void                                   apply();
 
     signals:
