@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcatch.ui'
 **
-** Created: Mon 30. May 15:20:22 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Sun 5. Jun 22:35:45 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
