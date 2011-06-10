@@ -11,7 +11,7 @@ GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
     tRefFrame=0;
     tFrameTime=0;
     m_tabsDefined=false;
-    m_curFrameTime=-1;
+    //m_curFrameTime=-1;
 
     customDtStart->setIsDateTime(true,false,false);
     customDtStart->setIsUTC(false);
@@ -46,6 +46,12 @@ GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
 
     initUI();
     initMappers();
+
+    while(m_tDateTime->canFetchMore())
+        m_tDateTime->fetchMore();
+
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
+    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 }
 
 FrmFrame::~FrmFrame()
@@ -132,6 +138,8 @@ void FrmFrame::initMappers()
 {
     if (tRefFrame==0) return ;
 
+    if (mapper1!=0) delete mapper1;
+
     mapper1= new QDataWidgetMapper(this);
     mapper1->setModel(tRefFrame);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -140,6 +148,8 @@ void FrmFrame::initMappers()
     cmbCopy->setModel(tRefFrame->relationModel(0));
     cmbCopy->setModelColumn(
         tRefFrame->relationModel(0)->fieldIndex(tr("Name")));
+
+    if (mapper2!=0) delete mapper2;
 
     mapper2= new QDataWidgetMapper(this);
     mapper2->setModel(tRefFrame);
@@ -155,11 +165,15 @@ void FrmFrame::initMappers()
 
     if (m_tDateTime==0) return;
 
+    if (mapperStartDt!=0) delete mapperStartDt;
+
     mapperStartDt= new QDataWidgetMapper(this);
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
     mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+
+    if (mapperEndDt!=0) delete mapperEndDt;
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
@@ -169,13 +183,6 @@ void FrmFrame::initMappers()
 
     mapper1->toLast();
     mapper2->toLast();
-
-    while(m_tDateTime->canFetchMore())
-        m_tDateTime->fetchMore();
-
-    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
-    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
-
 }
 
 bool FrmFrame::getCurrentFrame(int& id)
@@ -275,6 +282,8 @@ void FrmFrame::apply()
         bError=!tFrameTime->submitAll();
     }
 
+    setReadOnly(!bError);
+    /*
     if (!bError){
         QList<QWidget*> lWidgets;
         lWidgets << this->groupPhysical;
@@ -287,18 +296,38 @@ void FrmFrame::apply()
 
     pushNext->setEnabled(!bError);
     pushApply->setEnabled(bError);
+*/
 
     if (!bError)
     {
         emit showStatus(tr("Record successfully inserted in the database!"));
         m_submitted=true;
-
+/*
         while(tFrameTime->canFetchMore())
             tFrameTime->fetchMore();
 
-        m_curFrameTime=tFrameTime->rowCount()-1;
+        m_curFrameTime=tFrameTime->rowCount()-1;*/
         updateSample();//update sample here, because of the save
     }
+}
+
+
+void FrmFrame::setReadOnly(const bool bRO)
+{
+    if (bRO){
+        QList<QWidget*> lWidgets;
+        lWidgets << this->groupPhysical;
+        lWidgets << this->groupTime;
+        emit lockControls(true,lWidgets);
+    }else{
+        if (tFrameTime->lastError().type()!=QSqlError::NoError)
+            emit showError(tFrameTime->lastError().text());
+        else
+            emit showError(tr("Could not submit results!"));
+    }
+
+    pushNext->setEnabled(bRO);
+    pushApply->setEnabled(!bRO);
 }
 
 bool FrmFrame::updateSample()
@@ -306,14 +335,14 @@ bool FrmFrame::updateSample()
     while(tFrameTime->canFetchMore())
     tFrameTime->fetchMore();
 
-    QModelIndex idx=tFrameTime->index(m_curFrameTime,0);
+    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
     if (!idx.isValid()){
         emit showError(tr("Could not retrieve index of the last inserted frame!"));
         return false;
     }
     m_sample->frameTimeId=idx.data().toInt();
 
-    idx=tFrameTime->index(m_curFrameTime,1);
+    idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
     if (!idx.isValid()){
         emit showError(tr("Could not retrieve index of the last inserted frame!"));
         return false;
@@ -357,7 +386,7 @@ bool FrmFrame::next()
 {
     //We force a submitted record on this session, unless its coming here later...
 
-    if (m_curFrameTime==-1) return false;
+    //if (m_curFrameTime==-1) return false;
 
     if (m_tabsDefined){
         emit forward(cmbPrexistent->currentText());
@@ -375,4 +404,52 @@ bool FrmFrame::next()
     }
     emit showError(tr("It was not defined any time frame for this frame!"));
     return false;
+}
+
+bool FrmFrame::loadFrameFromSample()
+{
+    tRefFrame->relationModel(0)->setFilter(tr("FR_Frame.ID=") + QVariant(m_sample->frameId).toString());
+    //n.b.: do NOT forget to cast the integers on the filters to *strings*!!!!!
+
+    if (tRefFrame->relationModel(0)->rowCount()!=1){
+        emit showError (tr("Could not find this frame!"));
+        return false;
+    }
+
+    tFrameTime->setFilter(tr("FR_Time.ID=") + QVariant(m_sample->frameTimeId).toString());
+    if (tFrameTime->rowCount()!=1){
+        emit showError (tr("Could not find this frame time!"));
+        return false;
+    }
+
+    //Now fix the dates
+    QModelIndex idx=tFrameTime->index(0,2);
+    if (!idx.isValid()){
+        emit showError (tr("Could not load the start date of this frame!"));
+        return false;
+    }
+    QString strStartDt=idx.data().toString();
+    idx=tFrameTime->index(0,3);
+    if (!idx.isValid()){
+        emit showError (tr("Could not load the end date of this frame!"));
+        return false;
+    }
+    QString strEndDt=idx.data().toString();
+
+    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+    if (m_tDateTime->rowCount()!=2){
+        emit showError (tr("Could not find this date time!"));
+        return false;
+    }
+
+    mapperEndDt->toLast();
+    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
+    initMappers();
+
+    m_submitted=true;
+    setReadOnly(true);
+
+    return true;
 }

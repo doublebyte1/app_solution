@@ -25,13 +25,15 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrame(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrame();
 
+        bool                                   loadFrameFromSample();
+
     public slots:
         void                                   onShowForm(){;}//does nothing
+        bool                                   next();
 
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
-        bool                                   next();
         void                                   apply();
 
     signals:
@@ -39,7 +41,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   submitted(int index, bool bOk);
 
     private:
-        void                                   setReadOnly(const bool bRO){(void)bRO;}//does nothing
+        void                                   setReadOnly(const bool bRO);
 
         bool                                   updateSample();
         bool                                   getCurrentFrame(int& id);
@@ -55,6 +57,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrameDetails::Mode                  m_curMode;
         bool                                   m_submitted;
         bool                                   m_tabsDefined;
-        int                                    m_curFrameTime;
+        //int                                    m_curFrameTime;
 };
 #endif //FRMFRAME_H

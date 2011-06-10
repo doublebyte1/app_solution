@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Sun 5. Jun 22:35:30 2011
+** Created: Fri 10. Jun 11:47:45 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -33,24 +33,24 @@ static const uint qt_meta_data_MainFrm[] = {
  // slots: signature, parameters, type, tag, flags
       17,    9,    8,    8, 0x08,
       34,    8,    8,    8, 0x08,
-      55,   45,    8,    8, 0x08,
-     127,   85,    8,    8, 0x08,
-     241,    8,    8,    8, 0x08,
-     264,  260,    8,    8, 0x08,
-     284,  260,    8,    8, 0x08,
-     326,  305,    8,    8, 0x08,
-     353,    8,    8,    8, 0x08,
-     380,  371,    8,    8, 0x08,
-     400,    8,    8,    8, 0x08,
-     419,    8,    8,    8, 0x08,
-     430,    8,    8,    8, 0x08,
+      54,   44,    8,    8, 0x08,
+     126,   84,    8,    8, 0x08,
+     240,    8,    8,    8, 0x08,
+     263,  259,    8,    8, 0x08,
+     283,  259,    8,    8, 0x08,
+     325,  304,    8,    8, 0x08,
+     352,    8,    8,    8, 0x08,
+     379,  370,    8,    8, 0x08,
+     399,    8,    8,    8, 0x08,
+     418,    8,    8,    8, 0x08,
+     429,    8,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainFrm[] = {
     "MainFrm\0\0idx,bOk\0addTab(int,bool)\0"
-    "initTabs()\0bNext,idx\0navigateThroughTabs(bool,int)\0"
+    "newTabs()\0bNext,idx\0navigateThroughTabs(bool,int)\0"
     "mode,persistence,sample,blackList,options\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,Sa"
     "mple*,QList<int>&,FrmFrameDetails::Options)\0"
@@ -93,7 +93,7 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: addTab((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 1: initTabs(); break;
+        case 1: newTabs(); break;
         case 2: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
         case 3: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const FrmFrameDetails::Options(*)>(_a[5]))); break;
         case 4: hideFrameDetails(); break;

@@ -181,7 +181,7 @@
    <sender>actionNew</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
-   <slot>initTabs()</slot>
+   <slot>newTabs()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -196,6 +196,6 @@
  </connections>
  <slots>
   <slot>showFrameDetails()</slot>
-  <slot>initTabs()</slot>
+  <slot>newTabs()</slot>
  </slots>
 </ui>

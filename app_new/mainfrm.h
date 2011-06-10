@@ -62,12 +62,19 @@ class SessionFileParser : public QXmlDefaultHandler
         /*! sample()
           \\returns an initialized sample structure, with frameID and frameTimeId (parsed from the XML configuration file)
         */
-        //Sample*           sample(){return m_sample;}
 
     private:
         Sample*           m_sample;
-        bool              m_bReadingFrameTimeId;
+        bool              m_bReadingIsLogbook;
         bool              m_bReadingFrameId;
+        bool              m_bReadingFrameTimeId;
+        bool              m_bReadingMinorStrataId;
+        bool              m_bReadingCellId;
+        bool              m_bReadingVesselTypeId;
+        bool              m_bReadingSampVesselId;
+        bool              m_bReadingTripId;
+        bool              m_bReadingOperationId;
+
         int               m_ct;
 };
 
@@ -103,6 +110,9 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         bool                    CreateXMLFile(const QString strFileName);
         bool                    readXMLFile(const QString strFileName);
 
+        void                    initTabs();
+        void                    loadTabs();
+
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
@@ -121,7 +131,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
 
     private slots:
         void                    addTab(int idx, bool bOk);
-        void                    initTabs();
+        void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 
                                         const FrmFrameDetails::Persistence persistence,Sample* sample, 
