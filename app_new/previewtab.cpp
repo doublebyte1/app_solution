@@ -1,7 +1,7 @@
 #include "previewtab.h"
 
-PreviewTab::PreviewTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, QWidget *parent, Qt::WFlags flags):
-GenericTab(index,inSample,inTDateTime,inStrTitle,parent,flags){
+PreviewTab::PreviewTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
 
     m_model=0;
     m_table=0;

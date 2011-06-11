@@ -3,8 +3,8 @@
 #include "ModelInterface.h"
 #include "globaldefs.h"
 
-FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime,QWidget *parent, Qt::WFlags flags):
-GenericTab(0,inSample,inTDateTime,tr("frame"),parent,flags){
+FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 

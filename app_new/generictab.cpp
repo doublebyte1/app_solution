@@ -1,10 +1,11 @@
 #include <QTest>
 #include "generictab.h"
 
-GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample), m_title(inStrTitle) {
+GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample), m_title(inStrTitle), m_ruleCheckerPtr(ruleCheckerPtr) {
 
     nullDellegate=0;
+    m_mapperBinderPtr=0;
 
     connect(this, SIGNAL(lockControls(bool,QList<QWidget*>&)), this,
     SLOT(onLockControls(bool,QList<QWidget*>&)));
@@ -17,6 +18,49 @@ QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSamp
 GenericTab::~GenericTab()
 {
     if (nullDellegate!=0) delete nullDellegate;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+}
+
+bool GenericTab::initBinder(QDataWidgetMapper* mapper)
+{
+    //safety checks!
+    if (m_ruleCheckerPtr==0) return false;
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
+
+    // initialize rule binder and *connect* signals!! (on init())
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, mapper);
+    m_mapperBinderPtr->init();
+
+    //! This is are the signals of the rule binder we need to connect to:
+    // addRecord, first stage record added and second stage record added (run and finish running post-triggers)
+    // the pre triggers signals are connected in the binder classes; then we just need the stuff to show messages...
+
+    // Default Rules
+    connect(this, SIGNAL(addRecord()), m_mapperBinderPtr,
+        SIGNAL(addRecord()));
+
+    // Pre Submit Rules
+    connect(this, SIGNAL(submit()), m_mapperBinderPtr,
+        SIGNAL(submitRecord()));
+
+    connect(m_mapperBinderPtr, SIGNAL(finishedPreSubmit(const bool)), this,
+        SLOT(onPreSubmit(const bool)));
+
+    // Post Trigger Rules
+    connect(this, SIGNAL(recordAdded(const QString)), m_mapperBinderPtr,
+        SIGNAL(recordAdded(const QString)));
+
+    connect(m_mapperBinderPtr, SIGNAL(finishedPostTrigger(bool)), this,
+        SLOT(onRecordAdded(bool)));
+
+    // Messages
+    connect(m_mapperBinderPtr, SIGNAL(showError(QString, const bool)), this,
+    SIGNAL(showError(QString, const bool)));
+
+    connect(m_mapperBinderPtr, SIGNAL(showStatus(QString)), this,
+        SIGNAL(showStatus(QString)));
+
+    return true;
 }
 
 void GenericTab::setLbHead(QLabel* inLbHeader)

@@ -3,6 +3,8 @@
 #include "frmframedetails.h"
 #include "datemodel.h"
 #include "globaldefs.h"
+#include "rulechecker.h"
+#include "mapperrulebinder.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -89,7 +91,7 @@ class GenericTab : public QWidget
     Q_OBJECT
 
     public:
-        GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, 
+        GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr=0,
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
@@ -115,18 +117,26 @@ class GenericTab : public QWidget
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
+        //Signals related to the RuleBinder
+        void                     addRecord();
+        void                     recordAdded(const QString strTableName);
+        void                     submit();
+
     protected:
         virtual void            initModels()=0;
         virtual void            initMappers()=0;
         virtual void            initUI()=0;
         bool                    getDtId(const int mapIdx, int& id);
         void                    resizeToVisibleColumns ( QTableView* table );
+        bool                    initBinder(QDataWidgetMapper* mapper);
         int                     m_index;
         const QString           m_title;
         DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
         Sample*                 m_sample;
         NullRelationalDelegate* nullDellegate;
         QLabel*                 lbHead;
+        RuleChecker*            m_ruleCheckerPtr;
+        MapperRuleBinder*       m_mapperBinderPtr;
 
     private slots:
         void                    goBack();

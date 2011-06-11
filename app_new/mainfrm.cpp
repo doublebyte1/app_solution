@@ -4,6 +4,7 @@
 MainFrm::MainFrm(QWidget *parent, Qt::WFlags flags):
 QMainWindow(parent, flags){
 
+    workerThread=0;
     tDateTime=0;
     pFrmFrame=0;
     pFrmMinorStrata=0;
@@ -17,6 +18,7 @@ QMainWindow(parent, flags){
     pFrmCatch=0;
     pFrmPrjPage=0;
     toolbar=0;
+    ruleCheckerPtr=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
 
@@ -30,6 +32,16 @@ MainFrm::~MainFrm()
 {
     tabWidget->disconnect();
     vTabs.clear();
+
+    if (workerThread!=0){
+        // Make sure we stop the thread before deleting it;
+        while (workerThread->isRunning()){
+            workerThread->terminate();
+            workerThread->wait();
+        }
+        delete workerThread; workerThread=0;
+    }
+
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
@@ -44,6 +56,43 @@ MainFrm::~MainFrm()
     //n.b.: delete these in the end, as they are used by the forms!
     if (tDateTime!=0) delete tDateTime;
     if (sSample!=0) delete sSample;
+    if (ruleCheckerPtr!=0) delete ruleCheckerPtr;
+}
+
+void MainFrm::initRules()
+{
+    //delete rulechecker, but first wait for the thread to finish
+
+    if (workerThread!=0) {
+        while (workerThread->isRunning()){
+            workerThread->terminate();
+            workerThread->wait();
+        }
+        delete workerThread; workerThread=0;
+    }
+
+    if (ruleCheckerPtr!=0) {delete ruleCheckerPtr; ruleCheckerPtr=0;}
+
+    ruleCheckerPtr=new RuleChecker();
+
+    connect(ruleCheckerPtr, SIGNAL(showStatus(QString)), this,
+        SLOT(statusShow(QString)));
+
+    connect(ruleCheckerPtr, SIGNAL(showError(QString,bool)), this,
+        SLOT(displayError(QString,bool)));
+
+    workerThread=new InitRulesThread(ruleCheckerPtr);
+
+    connect(workerThread, SIGNAL(done(bool)), this,
+        SLOT(rulesInitialized(bool)));
+
+    workerThread->start();
+}
+
+void MainFrm::rulesInitialized(bool bReady)
+{
+    //frmSamplingFramePtr->init();
+    //m_bGotRules=bReady;
 }
 
 void MainFrm::initUi()
@@ -271,6 +320,7 @@ void MainFrm::resetTabs()
         tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
         tDateTime->setAuto(false);
         tDateTime->select();
+
 }
 
 void MainFrm::initPreviewTab(PreviewTab* tab)
@@ -297,7 +347,7 @@ void MainFrm::newTabs()
 
 void MainFrm::initTabs()
 {
-    pFrmFrame=new FrmFrame(sSample,tDateTime);
+    pFrmFrame=new FrmFrame(sSample,tDateTime,ruleCheckerPtr);
 
      connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
     SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
@@ -307,19 +357,19 @@ void MainFrm::initTabs()
 
     vTabs.push_back(pFrmFrame);
 
-    pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime);
+    pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmMinorStrata);
-    pFrmCell=new FrmCell(sSample,tDateTime);
+    pFrmCell=new FrmCell(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmCell);
-    pFrmVesselType=new FrmVesselType(sSample,tDateTime);
+    pFrmVesselType=new FrmVesselType(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmVesselType);
-    pFrmVessel=new FrmVessel(sSample,tDateTime);
+    pFrmVessel=new FrmVessel(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmVessel);
-    pFrmTrip=new FrmTrip(sSample,tDateTime);
+    pFrmTrip=new FrmTrip(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmTrip);
-    pFrmOperation=new FrmOperation(sSample,tDateTime);
+    pFrmOperation=new FrmOperation(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmOperation);
-    pFrmCatch=new FrmCatch(sSample,tDateTime);
+    pFrmCatch=new FrmCatch(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmCatch);
 
     pFrmFrameDetails=new FrmFrameDetails();

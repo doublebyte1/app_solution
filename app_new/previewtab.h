@@ -26,7 +26,7 @@ class PreviewTab : public GenericTab
 
     public:
         PreviewTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, 
-            QWidget *parent = 0, Qt::WFlags flags = 0);
+            RuleChecker* ruleCheckerPtr=0, QWidget *parent=0, Qt::WFlags flags=0);
         ~PreviewTab();
 
     protected:

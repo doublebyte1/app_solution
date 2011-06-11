@@ -2,8 +2,8 @@
 #include "globaldefs.h"
 #include "frmminorstrata.h"
 
-FrmMinorStrata::FrmMinorStrata(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"),parent, flags){
+FrmMinorStrata::FrmMinorStrata(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"), ruleCheckerPtr, parent, flags){
 
     setupUi(this);
 

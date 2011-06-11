@@ -2,8 +2,8 @@
 #include "globaldefs.h"
 #include "frmvessel.h"
 
-FrmVessel::FrmVessel(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(4,inSample,inTDateTime,tr("Vessel"),parent, flags){
+FrmVessel::FrmVessel(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+PreviewTab(4,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,flags){
 
     setupUi(this);
 

@@ -22,7 +22,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     Q_OBJECT
 
     public:
-        FrmFrame(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmFrame(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent=0, Qt::WFlags flags=0);
         ~FrmFrame();
 
         bool                                   loadFrameFromSample();

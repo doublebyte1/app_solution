@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Fri 10. Jun 11:47:45 2011
+** Created: Sat 11. Jun 14:59:31 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainFrm[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -42,8 +42,9 @@ static const uint qt_meta_data_MainFrm[] = {
      352,    8,    8,    8, 0x08,
      379,  370,    8,    8, 0x08,
      399,    8,    8,    8, 0x08,
-     418,    8,    8,    8, 0x08,
-     429,    8,    8,    8, 0x08,
+     425,  418,    8,    8, 0x08,
+     448,    8,    8,    8, 0x08,
+     459,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -58,7 +59,9 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "statusClean(QString)\0strError,bShowMsgBox\0"
     "displayError(QString,bool)\0cleanupMsgBoxes()\0"
     "bLogBook\0rearrangeTabs(bool)\0"
-    "aboutThisProject()\0loadFile()\0writeFile()\0"
+    "aboutThisProject()\0bReady\0"
+    "rulesInitialized(bool)\0loadFile()\0"
+    "writeFile()\0"
 };
 
 const QMetaObject MainFrm::staticMetaObject = {
@@ -103,11 +106,12 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 8: cleanupMsgBoxes(); break;
         case 9: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 10: aboutThisProject(); break;
-        case 11: loadFile(); break;
-        case 12: writeFile(); break;
+        case 11: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: loadFile(); break;
+        case 13: writeFile(); break;
         default: ;
         }
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }

@@ -23,7 +23,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
     Q_OBJECT
 
     public:
-        FrmCell(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmCell(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmCell();
 
     signals:

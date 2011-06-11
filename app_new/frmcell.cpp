@@ -2,8 +2,8 @@
 #include "globaldefs.h"
 #include "frmcell.h"
 
-FrmCell::FrmCell(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(2,inSample,inTDateTime,tr("Cell"),parent, flags){
+FrmCell::FrmCell(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+PreviewTab(2,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent, flags){
 
     setupUi(this);
 

@@ -22,7 +22,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
     Q_OBJECT
 
     public:
-        FrmCatch(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmCatch(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmCatch();
 
     private slots:

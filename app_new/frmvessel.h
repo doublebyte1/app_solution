@@ -22,7 +22,7 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
     Q_OBJECT
 
     public:
-        FrmVessel(Sample* inSample, DateModel* inTDateTime, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmVessel(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmVessel();
 
     private slots:

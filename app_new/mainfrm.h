@@ -101,6 +101,13 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         MainFrm(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~MainFrm();
 
+        //! Init Rules
+        /*!
+        This function initializes the pointer for the rule checker class and fills the rules hash tables;
+        It should be called on the constructor;
+        */
+        void                    initRules();
+
     private:
         void                    resetTabs();
         void                    initPreviewTab(PreviewTab* tab);
@@ -128,6 +135,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
         QToolBar*               toolbar;
+        RuleChecker*            ruleCheckerPtr;//!< Pointer to a Rule Checker
+        InitRulesThread*        workerThread;//!< Thread that initializes the rule containers
 
     private slots:
         void                    addTab(int idx, bool bOk);
@@ -143,6 +152,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    cleanupMsgBoxes();
         void                    rearrangeTabs(bool bLogBook);
         void                    aboutThisProject();
+        void                    rulesInitialized(bool bReady);
 
         void                    loadFile();
         void                    writeFile();

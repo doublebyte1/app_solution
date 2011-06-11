@@ -2,8 +2,8 @@
 //#include "globaldefs.h"
 #include "frmtrip.h"
 
-FrmTrip::FrmTrip(Sample* inSample, DateModel* inTDateTime, QWidget *parent, Qt::WFlags flags):
-PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"),parent, flags){
+FrmTrip::FrmTrip(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, flags){
 
     setupUi(this);
 
