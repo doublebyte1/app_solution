@@ -123,6 +123,7 @@ bool RuleChecker::buildHashes()
      dumPtrQuery.setForwardOnly(true);
      if (!dumPtrQuery.exec()) return false;
 
+/*
      //Force also this query query
      while(dumPtrQuery.numRowsAffected()<1)
         if (!dumPtrQuery.exec()) return false;
@@ -130,7 +131,7 @@ bool RuleChecker::buildHashes()
 #ifdef _DEBUG
      test(dumPtrQuery.numRowsAffected());
 #endif
-
+*/
      while (dumPtrQuery.next()){
         QString tableO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("table"))).toString();
         size_t fieldO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("field"))).toInt();
@@ -139,14 +140,15 @@ bool RuleChecker::buildHashes()
      }
 
     }
-    else
-        buildHashes();//Sometimes the query returns -1 (QOdbc prob): let's force it again!
+    //else //TODO: handle this prob later!!!
+        //buildHashes();//Sometimes the query returns -1 (QOdbc prob): let's force it again!
 
+/*
 #ifdef _DEBUG
     test(mapPreTriggers);//n.b.: in this test we are assuming there is *at least* one trigger reference in the database!
     test(mapReferences);//n.b.: in this test we are assuming there is *at least* one rule in the database!
 #endif
-
+*/
     return true;
 }
 

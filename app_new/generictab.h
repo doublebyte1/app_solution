@@ -128,7 +128,7 @@ class GenericTab : public QWidget
         virtual void            initUI()=0;
         bool                    getDtId(const int mapIdx, int& id);
         void                    resizeToVisibleColumns ( QTableView* table );
-        bool                    initBinder(QDataWidgetMapper* mapper);
+        bool                    initBinder(MapperRuleBinder* mapperBinderPtr);
         int                     m_index;
         const QString           m_title;
         DateModel*              m_tDateTime;//pointer to the DateTime Table, hosted on the main form
@@ -136,12 +136,15 @@ class GenericTab : public QWidget
         NullRelationalDelegate* nullDellegate;
         QLabel*                 lbHead;
         RuleChecker*            m_ruleCheckerPtr;
-        MapperRuleBinder*       m_mapperBinderPtr;
+        //MapperRuleBinder*       m_mapperBinderPtr;
 
     private slots:
         void                    goBack();
         void                    goForward();
         void                    onLockControls(bool bLock,QList<QWidget*>& lWidgets);
+        //slots for the rulebinder
+        //virtual void            onRecordAdded(bool bOk);
+        //virtual bool            onPreSubmit(const bool bSubmit);
 
 };
 

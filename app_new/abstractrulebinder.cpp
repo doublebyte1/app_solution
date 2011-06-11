@@ -105,7 +105,7 @@ bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const si
                     MapRules::const_iterator itt = ruleCheckerPtr->mapPreTriggers.find(it.key());
                     while (itt != ruleCheckerPtr->mapPreTriggers.constEnd() && itt.key()==it.key()) {
                         // Grabb the pointed widget, to update
-                        if (it.value()->m_strTable!=strTable) return false;
+                        if (it.value()->m_strTable!=strTable) return false;//TODO: always touching mappers from different tables
                         if (!getPreTrigger(itt.value(),newValue, it.value()->m_idxField)) return false;
                         ++itt;
                     }
