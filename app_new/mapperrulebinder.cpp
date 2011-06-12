@@ -1,7 +1,7 @@
 #include "mapperrulebinder.h"
 
-MapperRuleBinder::MapperRuleBinder( RuleChecker* ruleChecker, QDataWidgetMapper* aMapper, QWidget *parent): 
-AbstractRuleBinder(ruleChecker, parent), mapper(aMapper){
+MapperRuleBinder::MapperRuleBinder( RuleChecker* ruleChecker, QVarLengthArray<QDataWidgetMapper*> aArMapper, QWidget *parent): 
+AbstractRuleBinder(ruleChecker, parent), arMapper(aArMapper){
 
     connect(this, SIGNAL(recordAdded(const QString)), this,
     SLOT(onFirePostTrigger(const QString)));
@@ -14,45 +14,49 @@ MapperRuleBinder::~MapperRuleBinder()
 
 void MapperRuleBinder::connectSignals()
 {
-    for (size_t i=0; i < (size_t)mapper->model()->columnCount(); ++i){
+    QDataWidgetMapper **data = arMapper.data();
+    for (size_t j=0; j < arMapper.count(); ++j){
 
-        QWidget* aWidget=mapper->mappedWidgetAt(i);
-        if (aWidget!=0){
+        for (size_t i=0; i < (size_t)arMapper[j]->model()->columnCount(); ++i){
 
-            if ( qobject_cast<QLineEdit*>(aWidget)!=0 ){
-                QLineEdit* lineEdit=qobject_cast<QLineEdit*>(aWidget);
+            QWidget* aWidget=arMapper[j]->mappedWidgetAt(i);
+            if (aWidget!=0){
 
-                connect(lineEdit, SIGNAL(editingFinished()), this,
-                    SLOT(onFireTrigger()));
+                if ( qobject_cast<QLineEdit*>(aWidget)!=0 ){
+                    QLineEdit* lineEdit=qobject_cast<QLineEdit*>(aWidget);
 
-            }/*
-            else if ( qobject_cast<TimeStampDateEdit*>(aWidget)!=0 ){
-                TimeStampDateEdit* timeStamp=qobject_cast<TimeStampDateEdit*>(aWidget);
+                    connect(lineEdit, SIGNAL(editingFinished()), this,
+                        SLOT(onFireTrigger()));
 
-                connect(timeStamp, SIGNAL(editingFinished()), this,
-                    SLOT(onFireTrigger()));
-            }*/
-            else if ( qobject_cast<QComboBox*>(aWidget)!=0){
+                }/*
+                else if ( qobject_cast<TimeStampDateEdit*>(aWidget)!=0 ){
+                    TimeStampDateEdit* timeStamp=qobject_cast<TimeStampDateEdit*>(aWidget);
 
-                QComboBox* comboBox=qobject_cast<QComboBox*>(aWidget);
+                    connect(timeStamp, SIGNAL(editingFinished()), this,
+                        SLOT(onFireTrigger()));
+                }*/
+                else if ( qobject_cast<QComboBox*>(aWidget)!=0){
 
-                connect(comboBox, SIGNAL(currentIndexChanged(const QString&)), this,
-                    SLOT(onFireTriggerText(const QString&)));
+                    QComboBox* comboBox=qobject_cast<QComboBox*>(aWidget);
 
-            }
-            else if ( qobject_cast<ButtonGroup*>(aWidget)!=0 ){
-                ButtonGroup* buttonGroup=qobject_cast<ButtonGroup*>(aWidget);
+                    connect(comboBox, SIGNAL(currentIndexChanged(const QString&)), this,
+                        SLOT(onFireTriggerText(const QString&)));
 
-                connect(buttonGroup, SIGNAL(buttonClicked(int)), this,
-                    SLOT(onFireTrigger()));
-            }
-            else if ( qobject_cast<QSpinBox*>(aWidget)!=0){
+                }
+                else if ( qobject_cast<ButtonGroup*>(aWidget)!=0 ){
+                    ButtonGroup* buttonGroup=qobject_cast<ButtonGroup*>(aWidget);
 
-                QSpinBox* spinBox=qobject_cast<QSpinBox*>(aWidget);
+                    connect(buttonGroup, SIGNAL(buttonClicked(int)), this,
+                        SLOT(onFireTrigger()));
+                }
+                else if ( qobject_cast<QSpinBox*>(aWidget)!=0){
 
-                connect(spinBox, SIGNAL(valueChanged(const QString&)), this,
-                    SLOT(onFireTriggerText(const QString&)));//SHOULD WE PASS AN INTEGER INSTEAD?
+                    QSpinBox* spinBox=qobject_cast<QSpinBox*>(aWidget);
 
+                    connect(spinBox, SIGNAL(valueChanged(const QString&)), this,
+                        SLOT(onFireTriggerText(const QString&)));//SHOULD WE PASS AN INTEGER INSTEAD?
+
+                }
             }
         }
     }
@@ -84,44 +88,69 @@ void MapperRuleBinder::onFireTriggerText(const QString& strNewText)
 
 void MapperRuleBinder::onFireTriggerGeneric(QWidget* senderWidget, const QVariant& newValue)
 {
-    // Find widgets mapped to sections of the model.
-    for (size_t i=0; i < (size_t)mapper->model()->columnCount(); ++i){
+    QDataWidgetMapper **data = arMapper.data();
+    for (size_t j=0; j < arMapper.count(); ++j){
 
-        QWidget* aWidget=mapper->mappedWidgetAt(i);
-        if (aWidget!=0){
-            if (aWidget==senderWidget){
-                // Get Pre-trigger.
-                if (!getPreTriggerGeneric(newValue,i)) emit showError(tr("Could not activate pre-trigger rule!"),false);
-                // Get Validation.
-                if (!getValidation(newValue,i)) emit showError(tr("Could not activate validation rule!"),false);
+        // Find widgets mapped to sections of the model.
+        for (size_t i=0; i < (size_t)arMapper[j]->model()->columnCount(); ++i){
+
+            QWidget* aWidget=arMapper[j]->mappedWidgetAt(i);
+            if (aWidget!=0){
+                if (aWidget==senderWidget){
+                    // Get Pre-trigger.
+                    QString strTable;
+                    if (getTableName(arMapper[j],strTable)){
+                        if (!getPreTriggerGeneric(newValue,i,strTable)) emit showError(tr("Could not activate pre-trigger rule!"),false);
+                        // Get Validation.
+                        if (!getValidation(newValue,strTable,i)) emit showError(tr("Could not activate validation rule!"),false);
+                    } else emit showError(tr("Could not retrieve the table name for this mapper!"),false);
+                }
             }
-        }
 
+        }
     }
 }
 
-bool MapperRuleBinder::getTableName(QString& strTableName)
+bool MapperRuleBinder::getTableName(const QDataWidgetMapper* mapper, QString& strTableName) const
 {
-    if ( qobject_cast<QSqlRelationalTableModel*>(mapper->model())==0) return false;
+    if ( qobject_cast<QSqlTableModel*>(mapper->model())==0) return false;
 
-    QSqlRelationalTableModel* relModel=qobject_cast<QSqlRelationalTableModel*>(mapper->model());
+    QSqlTableModel* tModel=qobject_cast<QSqlTableModel*>(mapper->model());
     // Remove extra quotes!!!
-    strTableName=FixTableName(relModel->tableName());
-    //strTableName=relModel->tableName().remove(tr("\""));
+    strTableName=FixTableName(tModel->tableName());
+    //strTableName=tModel->tableName().remove(tr("\""));
     return (strTableName.size()>0);
 }
 
-bool MapperRuleBinder::getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field)
+QDataWidgetMapper* MapperRuleBinder::getMapperFromTable(const QString strTableName)
 {
-    // For now we only support widgets whithin the same mapper (table)
+    QDataWidgetMapper **data = arMapper.data();
+    for (size_t j=0; j < arMapper.count(); ++j){
+
+          QSqlTableModel* tModel=qobject_cast<QSqlTableModel*>
+              (arMapper[j]->model());
+          if (tModel!=0){
+              QString strModelTableName=FixTableName(tModel->tableName());
+              if (strModelTableName.compare(strTableName)==0)
+                  return arMapper[j];
+          }
+    }
+    return 0;
+}
+
+bool MapperRuleBinder::getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field, const QString strTable)
+{
+    QDataWidgetMapper* mapper=getMapperFromTable(strTable);
+    if (mapper==0) return false;
+
     QWidget* aWidget=mapper->mappedWidgetAt(field);
     if (aWidget!=0){
         // Looks for parameters to bind!
         if (strRule.indexOf(tr(":par"))!=-1){
-            if (!applyRule(strRule,aWidget,RuleChecker::PRETRIGGER,newValue)) return false;
+            if (!applyRule(strRule,aWidget,RuleChecker::PRETRIGGER,strTable,newValue)) return false;
         }
         else{
-            if (!applyRule(strRule,aWidget,RuleChecker::PRETRIGGER)) return false;
+            if (!applyRule(strRule,aWidget,RuleChecker::PRETRIGGER,strTable)) return false;
         }
     }
 
@@ -148,21 +177,26 @@ bool MapperRuleBinder::getCurrentWidgetValue(QWidget* aWidget, QVariant& val)
     return true;
 }
 
-bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type eType, QVariant varPar, int field)
+bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type eType, const QString strTable,
+                                   QVariant varPar, int field)
 {
     //Must pass field (to validate) to validation rules!
     if (eType==RuleChecker::VALIDATION && field==-1) return false;
-    if ( qobject_cast<QSqlRelationalTableModel*>(mapper->model())!=0 ){
+    //if ( qobject_cast<QSqlRelationalTableModel*>(mapper->model())!=0 ){
 
-        QSqlRelationalTableModel* relModel=qobject_cast<QSqlRelationalTableModel*>(mapper->model());
+        //QSqlRelationalTableModel* relModel=qobject_cast<QSqlRelationalTableModel*>(mapper->model());
         // Remove extra quotes!
-        QString strTable=relModel->tableName().remove(tr("\""));
+        //QString strTable=relModel->tableName().remove(tr("\""));
 
         MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
         while (it != ruleCheckerPtr->mapReferences.constEnd()) {
             if ( (it.value()->m_strTable.compare(strTable)==0) &&
                 (field==-1 || it.value()->m_idxField==field) ){
                 // Found a reference: see if there is a widget mapped to this!
+
+                QDataWidgetMapper* mapper=getMapperFromTable(strTable);
+                if (mapper==0) return false;
+
                 QWidget* aWidget=mapper->mappedWidgetAt(it.value()->m_idxField);
                 if ( aWidget!=0 ) {
                         // Found a widget mapped to this field: let's have a look at the values!
@@ -171,14 +205,14 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
                             if (eType==RuleChecker::PRESUBMIT){
                                 if (!getCurrentWidgetValue(aWidget,varPar)) return false;
                             }
-                            if (!applyRule(itt.value(),aWidget,eType,varPar)) return false;
+                            if (!applyRule(itt.value(),aWidget,eType,strTable,varPar)) return false;
                             ++itt;
                         }
                 }
             }
             ++it;
         }
-    }
+    //}
 
     return true;
 }
@@ -194,19 +228,23 @@ bool MapperRuleBinder::enableWidget(QWidget* aWidget, const QVariant val)
     return true;
 }
 
-QVariant MapperRuleBinder::getVal(const size_t field)
+QVariant MapperRuleBinder::getVal(const size_t field, const QString strTable)
 {
     QVariant val;
+    QDataWidgetMapper* mapper=getMapperFromTable(strTable);
+    if (mapper==0) return QVariant();
+
     if (!getCurrentWidgetValue
                 (mapper->mappedWidgetAt(field),val)) return false;
     return val;
 }
 
-bool MapperRuleBinder::applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType, const QVariant varPar)
+bool MapperRuleBinder::applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType, const QString strTable,
+                                 const QVariant varPar)
 {
     QString originalRule=strRule;//store the original value, so that we can query it later!
 
-    if (!parseRuleReferences(strRule)) return false;
+    if (!parseRuleReferences(strTable,strRule)) return false;
 
     QSqlQuery query;
     if (!ruleCheckerPtr->applyRule(strRule,query,varPar)) return false;

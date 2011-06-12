@@ -23,13 +23,13 @@ class MapperRuleBinder : public AbstractRuleBinder
     Q_OBJECT
 
     public:
-        MapperRuleBinder( RuleChecker* ruleChecker, QDataWidgetMapper* aMapper, QWidget *parent = 0);
+        MapperRuleBinder( RuleChecker* ruleChecker, QVarLengthArray<QDataWidgetMapper*> aArMapper, QWidget *parent = 0);
         ~MapperRuleBinder();
 
-    signals:
+        QVarLengthArray<QDataWidgetMapper*>&     getArMapper(){return arMapper;}
 
     protected:
-        QVariant                        getVal(const size_t field);
+        QVariant                        getVal(const size_t field, const QString strTable);
 
     private slots:
         //! Pre-Trigger Rules
@@ -55,7 +55,7 @@ class MapperRuleBinder : public AbstractRuleBinder
         void                            onFireTriggerGeneric(QWidget* senderWidget, const QVariant& newValue);
 
     private:
-        bool                            getTableName(QString& strTableName);
+        bool                            getTableName(const QDataWidgetMapper* mapper, QString& strTableName) const;
         bool                            getPreTrigger(const QVariant& newValue, QObject object, const size_t field);
         //! Connect Pre Trigger Signals
         /*!
@@ -72,7 +72,7 @@ class MapperRuleBinder : public AbstractRuleBinder
           \return Boolean value as success or failure
           \sa AbstractRuleBinder::fetchRules()
         */
-        bool                            fetchRules(const MapRules& map, const RuleChecker::Type eType, 
+        bool                            fetchRules(const MapRules& map, const RuleChecker::Type eType, const QString strTable,
                                                 QVariant varPar=QVariant(QVariant::Invalid), int field=-1);
         //! Function that applies pre-trigger
         /*!
@@ -83,7 +83,8 @@ class MapperRuleBinder : public AbstractRuleBinder
           \return Boolean value as success or failure
           \sa getPreTriggerGeneric(const QVariant& newValue, const size_t field)
         */
-        bool                            getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field);
+        bool                            getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field,
+            const QString strTable);
         //! Function that Applies a Rule
         /*!
         This is the function that applies a rule to the mapper binder.
@@ -93,7 +94,8 @@ class MapperRuleBinder : public AbstractRuleBinder
           \param varPar optional parameter to bind to the query
           \return Boolean value as success or failure
         */
-        bool                            applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType, QVariant varPar=QVariant(QVariant::Invalid));
+        bool                            applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType, const QString strTable,
+            QVariant varPar=QVariant(QVariant::Invalid));
         //! Polymorphically grab the state of a widget
         /*!
         This function grabs the value of a given widget, so that we can verify it with a pre-submit rule
@@ -111,8 +113,16 @@ class MapperRuleBinder : public AbstractRuleBinder
           \return Boolean value as success or failure
           \sa applyRule(const QString strRule, QWidget* aWidget, const RuleChecker::Type eType, QVariant varPar=QVariant(QVariant::Invalid)),getCurrentWidgetValue(QWidget* aWidget, QVariant& val)
         */
-        bool                            enableWidget(QWidget* aWidget, const QVariant val);
-        QDataWidgetMapper*              mapper;//!< Pointer to a QDataWidgetMapper
+        bool                                    enableWidget(QWidget* aWidget, const QVariant val);
+        //! Get Mapper from Table Name
+        /*!
+        This utility function find a mapper from the mapper array, that matches the given table name.
+          \param strTableName table name as string
+          \return QDataWidgetMapper a pointer to a QDataWidgetMapper;
+        */
+        QDataWidgetMapper*                      getMapperFromTable(const QString strTableName);
+
+        QVarLengthArray<QDataWidgetMapper*>     arMapper;//!< Pointer to a collection of QDataWidgetMappers
 };
 
 #endif // MAPPERRULEBINDER_H

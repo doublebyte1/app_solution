@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'abstractrulebinder.h'
 **
-** Created: Fri 10. Jun 16:18:37 2011
+** Created: Sun 12. Jun 16:01:56 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -31,38 +31,39 @@ static const uint qt_meta_data_AbstractRuleBinder[] = {
        9,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
-      20,   19,   19,   19, 0x05,
-      45,   32,   19,   19, 0x05,
-      86,   66,   19,   19, 0x05,
-     120,  116,   19,   19, 0x05,
-     146,  116,   19,   19, 0x05,
-     170,   19,   19,   19, 0x05,
-     189,  185,   19,   19, 0x05,
-     225,  209,   19,   19, 0x05,
-     249,  185,   19,   19, 0x25,
+      33,   20,   19,   19, 0x05,
+      52,   20,   19,   19, 0x05,
+      93,   73,   19,   19, 0x05,
+     127,  123,   19,   19, 0x05,
+     153,  123,   19,   19, 0x05,
+     186,  177,   19,   19, 0x05,
+     212,  208,   19,   19, 0x05,
+     248,  232,   19,   19, 0x05,
+     272,  208,   19,   19, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     273,   19,  268,   19, 0x08,
-     292,   19,   19,   19, 0x08,
-     324,  308,   19,   19, 0x08,
-     369,  360,   19,   19, 0x28,
-     396,   19,   19,   19, 0x08,
+     296,  177,  291,   19, 0x08,
+     322,   19,   19,   19, 0x08,
+     354,  338,   19,   19, 0x08,
+     390,  177,   19,   19, 0x28,
+     417,  177,   19,   19, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_AbstractRuleBinder[] = {
-    "AbstractRuleBinder\0\0addRecord()\0"
-    "strTableName\0recordAdded(QString)\0"
+    "AbstractRuleBinder\0\0strTableName\0"
+    "addRecord(QString)\0recordAdded(QString)\0"
     "strTableName,varPar\0recordAdded(QString,QVariant)\0"
     "bOk\0finishedPostTrigger(bool)\0"
-    "finishedPreSubmit(bool)\0submitRecord()\0"
-    "str\0showStatus(QString)\0str,bShowMsgBox\0"
-    "showError(QString,bool)\0showError(QString)\0"
-    "bool\0getDefaultValues()\0onFireTrigger()\0"
+    "finishedPreSubmit(bool)\0strTable\0"
+    "submitRecord(QString)\0str\0showStatus(QString)\0"
+    "str,bShowMsgBox\0showError(QString,bool)\0"
+    "showError(QString)\0bool\0"
+    "getDefaultValues(QString)\0onFireTrigger()\0"
     "strTable,varPar\0onFirePostTrigger(QString,QVariant)\0"
-    "strTable\0onFirePostTrigger(QString)\0"
-    "getPreSubmitValidation()\0"
+    "onFirePostTrigger(QString)\0"
+    "getPreSubmitValidation(QString)\0"
 };
 
 const QMetaObject AbstractRuleBinder::staticMetaObject = {
@@ -94,21 +95,21 @@ int AbstractRuleBinder::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: addRecord(); break;
+        case 0: addRecord((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 1: recordAdded((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: recordAdded((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2]))); break;
         case 3: finishedPostTrigger((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 4: finishedPreSubmit((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 5: submitRecord(); break;
+        case 5: submitRecord((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 7: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 8: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 9: { bool _r = getDefaultValues();
+        case 9: { bool _r = getDefaultValues((*reinterpret_cast< const QString(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 10: onFireTrigger(); break;
         case 11: onFirePostTrigger((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QVariant(*)>(_a[2]))); break;
         case 12: onFirePostTrigger((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 13: getPreSubmitValidation(); break;
+        case 13: getPreSubmitValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 14;
@@ -117,9 +118,10 @@ int AbstractRuleBinder::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void AbstractRuleBinder::addRecord()
+void AbstractRuleBinder::addRecord(const QString _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 0, 0);
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
@@ -151,9 +153,10 @@ void AbstractRuleBinder::finishedPreSubmit(bool _t1)
 }
 
 // SIGNAL 5
-void AbstractRuleBinder::submitRecord()
+void AbstractRuleBinder::submitRecord(const QString _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 5, 0);
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6

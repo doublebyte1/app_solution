@@ -27,17 +27,17 @@ class AbstractRuleBinder : public QObject
         RuleChecker*                    getRuleCheckerPtr(){return ruleCheckerPtr;}
 
     signals:
-        void                            addRecord();//!< Signal that is emited when a new record has been initialized
+        void                            addRecord(const QString strTableName);//!< Signal that is emited when a new record has been initialized
         void                            recordAdded(const QString strTableName);//!< Signal to tell the binder to run post-triggers
         void                            recordAdded(const QString strTableName, const QVariant varPar);//!< Override, to pass a parameter!
         void                            finishedPostTrigger(bool bOk);//!< Signal to tell the UI, that the triggers were run
         void                            finishedPreSubmit(bool bOk);//!< Signal to tell the UI, that the pre submit validation is finished
-        void                            submitRecord();//!< Signal that is emited when we are about to submit a record to the database
+        void                            submitRecord(const QString strTable);//!< Signal that is emited when we are about to submit a record to the database
         void                            showStatus(QString str);//!< Signal for messages in the status bar
         void                            showError(QString str, const bool bShowMsgBox=true);//!< Signal for errors
 
     protected:
-        virtual bool                    getTableName(QString& strTableName)=0;
+        //virtual bool                    getTableName(QString& strTableName)=0;
         //! Function that Connects Signals
         /*!
         In this function we connect all the signals responsible for the pre-triggers.
@@ -52,7 +52,8 @@ class AbstractRuleBinder : public QObject
           \return Boolean value as success or failure
           \sa getPreTriggerGeneric(const QVariant& newValue, const size_t field)
         */
-        virtual bool                    getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field)=0;
+        virtual bool                    getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field,
+                        const QString strTable)=0;
         //! Function that retrieves the rules from the hash table
         /*!
           \param map generic rule container
@@ -61,9 +62,9 @@ class AbstractRuleBinder : public QObject
           \param field field is compulsory for validation rules, but ignored on default rules
           \return Boolean value as success or failure
         */
-        virtual bool                    fetchRules(const MapRules& map, const RuleChecker::Type eType, 
+        virtual bool                    fetchRules(const MapRules& map, const RuleChecker::Type eType, const QString strTable,
                                                 QVariant varPar=QVariant(QVariant::Invalid), int field=-1)=0;
-        bool                            getValidation(const QVariant& newValue, const size_t field);
+        bool                            getValidation(const QVariant& newValue, const QString strTable, const size_t field);
         //! Entry Point for Pre-Trigger
         /*!
         This is the generic entry for the polimorphic pre-triggers.
@@ -72,9 +73,9 @@ class AbstractRuleBinder : public QObject
           \return Boolean value as success or failure
           \sa getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field)
         */
-        bool                            getPreTriggerGeneric(const QVariant& newValue, const size_t field);
-        virtual QVariant                getVal(const size_t field)=0;
-        bool                            parseRuleReferences(QString& strRule);
+        bool                            getPreTriggerGeneric(const QVariant& newValue, const size_t field, const QString strTable);
+        virtual QVariant                getVal(const size_t field, const QString strTable)=0;
+        bool                            parseRuleReferences(const QString strTable, QString& strRule);
 
         RuleChecker*                    ruleCheckerPtr;//!< Pointer to the rule checker
 
@@ -84,7 +85,7 @@ class AbstractRuleBinder : public QObject
         This slot initializes the default values, associated to the table underlying the binder.
           \sa onFireTrigger(), onFirePostTrigger(const QString strTable, const QVariant varPar=QVariant(QVariant::Invalid))
         */
-        bool                            getDefaultValues();
+        bool                            getDefaultValues(const QString strTable);
         //! Pre-Trigger Rules
         /*!
         This slot is connected to the specific UI signals of the binder, and it calls the pre-trigger rules.
@@ -101,7 +102,7 @@ class AbstractRuleBinder : public QObject
         /*!
         This slot prompts the rulechecker to apply Pre-Submit rules
         */
-        void                            getPreSubmitValidation();
+        void                            getPreSubmitValidation(const QString strTable);
 };
 
 #endif // ABSTRACTRULEBINDER_H

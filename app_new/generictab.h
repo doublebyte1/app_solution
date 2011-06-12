@@ -118,9 +118,9 @@ class GenericTab : public QWidget
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
         //Signals related to the RuleBinder
-        void                     addRecord();
+        void                     addRecord(const QString strTableName);
         void                     recordAdded(const QString strTableName);
-        void                     submit();
+        void                     submit(const QString strTableName);
 
     protected:
         virtual void            initModels()=0;
@@ -136,7 +136,6 @@ class GenericTab : public QWidget
         NullRelationalDelegate* nullDellegate;
         QLabel*                 lbHead;
         RuleChecker*            m_ruleCheckerPtr;
-        //MapperRuleBinder*       m_mapperBinderPtr;
 
     private slots:
         void                    goBack();
@@ -144,7 +143,7 @@ class GenericTab : public QWidget
         void                    onLockControls(bool bLock,QList<QWidget*>& lWidgets);
         //slots for the rulebinder
         //virtual void            onRecordAdded(bool bOk);
-        //virtual bool            onPreSubmit(const bool bSubmit);
+        virtual bool            onPreSubmit(const bool bSubmit);
 
 };
 

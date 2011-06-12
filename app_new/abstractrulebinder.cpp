@@ -4,11 +4,11 @@ AbstractRuleBinder::AbstractRuleBinder( RuleChecker* ruleChecker, QWidget *paren
 QObject(parent), ruleCheckerPtr(ruleChecker){
 
     // Let's not connect directly to Rulechecker, so establish all signal-slot dialog here!
-        connect(this, SIGNAL(addRecord()), this,
-        SLOT(getDefaultValues()));
+        connect(this, SIGNAL(addRecord(const QString)), this,
+        SLOT(getDefaultValues(const QString)));
 
-        connect(this, SIGNAL(submitRecord()), this,
-        SLOT(getPreSubmitValidation()));
+        connect(this, SIGNAL(submitRecord(const QString)), this,
+        SLOT(getPreSubmitValidation(const QString)));
 }
 
 void AbstractRuleBinder::init()
@@ -16,7 +16,7 @@ void AbstractRuleBinder::init()
     connectSignals();//! Connect the signal for pre trigger rules, *polymorphically* according with the type of widget!
 }
 
-bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
+bool AbstractRuleBinder::parseRuleReferences(const QString strTable, QString& strRule)
 {
     QList<size_t> idList;
     QMultiMap<QString, size_t> mapLookups;
@@ -24,14 +24,14 @@ bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
     if (mapLookups.size()>0){
 
         size_t ctr=0;
-        QString strTable;
-        if (!getTableName(strTable)) return false;
+        //QString strTable;
+        //if (!getTableName(strTable)) return false;
         //For now we only support references to the same binder/table!
         QMultiMap<QString, size_t>::iterator j = mapLookups.find(strTable);
          while (j != mapLookups.end() && j.key() == strTable) {
 
              QString strResult;
-             QVariant var=getVal(j.value());
+             QVariant var=getVal(j.value(),strTable);
              if (var.type()==QVariant::Invalid) return false;
              if (var.type()==QVariant::String) strResult=tr("'") + var.toString() + tr("'");
              else strResult=var.toString();
@@ -74,27 +74,27 @@ void AbstractRuleBinder::onFirePostTrigger(const QString strTable, const QVarian
     emit finishedPostTrigger(bOk);
 }
 
-bool AbstractRuleBinder::getDefaultValues()
+bool AbstractRuleBinder::getDefaultValues(const QString strTable)
 {
-    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT);
+    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT,strTable);
 }
 
-void AbstractRuleBinder::getPreSubmitValidation()
+void AbstractRuleBinder::getPreSubmitValidation(const QString strTable)
 {
-    bool bOk=fetchRules(ruleCheckerPtr->mapPreSubmitRls,RuleChecker::PRESUBMIT);
+    bool bOk=fetchRules(ruleCheckerPtr->mapPreSubmitRls,RuleChecker::PRESUBMIT,strTable);
     emit finishedPreSubmit(bOk);
 }
 
-bool AbstractRuleBinder::getValidation(const QVariant& newValue, const size_t field)
+bool AbstractRuleBinder::getValidation(const QVariant& newValue, const QString strTable, const size_t field)
 {
-    return fetchRules(ruleCheckerPtr->mapValidationRls, RuleChecker::VALIDATION, newValue, field);
+    return fetchRules(ruleCheckerPtr->mapValidationRls, RuleChecker::VALIDATION, strTable, newValue, field);
 }
 
-bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const size_t field)
+bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const size_t field, const QString strTable)
 {
         // Retrieve table name
-        QString strTable;
-        if (!getTableName(strTable)) return false;
+        //QString strTable;
+        //if (!getTableName(strTable)) return false;
 
         // First find the key
         MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
@@ -105,8 +105,8 @@ bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const si
                     MapRules::const_iterator itt = ruleCheckerPtr->mapPreTriggers.find(it.key());
                     while (itt != ruleCheckerPtr->mapPreTriggers.constEnd() && itt.key()==it.key()) {
                         // Grabb the pointed widget, to update
-                        if (it.value()->m_strTable!=strTable) return false;//TODO: always touching mappers from different tables
-                        if (!getPreTrigger(itt.value(),newValue, it.value()->m_idxField)) return false;
+                        //if (it.value()->m_strTable!=strTable) return false;//TODO: always touching mappers from different tables
+                        if (!getPreTrigger(itt.value(),newValue, it.value()->m_idxField,strTable)) return false;
                         ++itt;
                     }
                 }

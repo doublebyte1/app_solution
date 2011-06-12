@@ -8,10 +8,10 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 
+    m_mapperBinderPtr=0;
     tRefFrame=0;
     tFrameTime=0;
     m_tabsDefined=false;
-    //m_curFrameTime=-1;
 
     customDtStart->setIsDateTime(true,false,false);
     customDtStart->setIsUTC(false);
@@ -52,12 +52,16 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
+
+    if ( qobject_cast<QSqlTableModel*>(mapperStartDt->model())!=0){
+        emit addRecord(qobject_cast<QSqlTableModel*>(mapperStartDt->model())->tableName());
+    }
 }
 
 FrmFrame::~FrmFrame()
 {
     if (tRefFrame!=0) delete tRefFrame;
-    //if (tDateTime!=0) delete tDateTime;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if(tFrameTime!=0) delete tFrameTime;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
@@ -183,6 +187,16 @@ void FrmFrame::initMappers()
 
     mapper1->toLast();
     mapper2->toLast();
+
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
+    QVarLengthArray<QDataWidgetMapper*> arMapper;
+    arMapper.append(mapper1);
+    arMapper.append(mapper2);
+    arMapper.append(mapperStartDt);
+    arMapper.append(mapperEndDt);
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, arMapper);
+    if (!initBinder(m_mapperBinderPtr))
+        emit showError(tr("Could not init binder!"));
 }
 
 bool FrmFrame::getCurrentFrame(int& id)
