@@ -28,39 +28,28 @@ bool GenericTab::initBinder(MapperRuleBinder* mapperBinderPtr)
     //! This is are the signals of the rule binder we need to connect to:
     // addRecord, first stage record added and second stage record added (run and finish running post-triggers)
     // the pre triggers signals are connected in the binder classes; then we just need the stuff to show messages...
-/*
-    QDataWidgetMapper **data = mapperBinderPtr->getArMapper().data();
-    for (size_t j=0; j < mapperBinderPtr->getArMapper().count(); ++j){
 
-        if ( qobject_cast<QSqlTableModel*>(mapperBinderPtr->getArMapper()[j]->model())==0) return false;
-        QSqlTableModel* tModel=qobject_cast<QSqlTableModel*>(mapperBinderPtr->getArMapper()[j]->model());*/
+    // Default Rules
+    connect(this, SIGNAL(addRecord(const size_t)), mapperBinderPtr,
+        SIGNAL(addRecord(const size_t)));
 
-        // Default Rules
-        connect(this, SIGNAL(addRecord(const QString)), mapperBinderPtr,
-            SIGNAL(addRecord(const QString)));
+    // Pre Submit Rules
+    connect(this, SIGNAL(submit(const size_t)), mapperBinderPtr,
+        SIGNAL(submitRecord(const size_t)));
 
-        // Pre Submit Rules
-        connect(this, SIGNAL(submit(const QString)), mapperBinderPtr,
-            SIGNAL(submitRecord(const QString)));
+    connect(mapperBinderPtr, SIGNAL(finishedPreSubmit(const bool)), this,
+        SLOT(onPreSubmit(const bool)));
 
-        connect(mapperBinderPtr, SIGNAL(finishedPreSubmit(const bool)), this,
-            SLOT(onPreSubmit(const bool)));
+    // Post Trigger Rules
+    connect(this, SIGNAL(recordAdded(const size_t)), mapperBinderPtr,
+        SIGNAL(recordAdded(const size_t)));
 
-        // Post Trigger Rules
-        connect(this, SIGNAL(recordAdded(const QString)), mapperBinderPtr,
-            SIGNAL(recordAdded(const QString)));
+    // Messages
+    connect(mapperBinderPtr, SIGNAL(showError(QString, const bool)), this,
+    SIGNAL(showError(QString, const bool)));
 
-        //connect(mapperBinderPtr, SIGNAL(finishedPostTrigger(bool)), this,
-            //SLOT(onRecordAdded(bool)));
-
-        // Messages
-        connect(mapperBinderPtr, SIGNAL(showError(QString, const bool)), this,
-        SIGNAL(showError(QString, const bool)));
-
-        connect(mapperBinderPtr, SIGNAL(showStatus(QString)), this,
-            SIGNAL(showStatus(QString)));
-
-    //}
+    connect(mapperBinderPtr, SIGNAL(showStatus(QString)), this,
+        SIGNAL(showStatus(QString)));
 
     return true;
 }

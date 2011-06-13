@@ -1,14 +1,14 @@
 #include "abstractrulebinder.h"
 
-AbstractRuleBinder::AbstractRuleBinder( RuleChecker* ruleChecker, QWidget *parent): 
-QObject(parent), ruleCheckerPtr(ruleChecker){
+AbstractRuleBinder::AbstractRuleBinder( RuleChecker* ruleChecker, const QString strForm, QWidget *parent): 
+QObject(parent), ruleCheckerPtr(ruleChecker), m_strForm(strForm){
 
     // Let's not connect directly to Rulechecker, so establish all signal-slot dialog here!
-        connect(this, SIGNAL(addRecord(const QString)), this,
-        SLOT(getDefaultValues(const QString)));
+        connect(this, SIGNAL(addRecord(const size_t)), this,
+        SLOT(getDefaultValues(const size_t)));
 
-        connect(this, SIGNAL(submitRecord(const QString)), this,
-        SLOT(getPreSubmitValidation(const QString)));
+        connect(this, SIGNAL(submitRecord(const size_t)), this,
+        SLOT(getPreSubmitValidation(const size_t)));
 }
 
 void AbstractRuleBinder::init()
@@ -16,22 +16,25 @@ void AbstractRuleBinder::init()
     connectSignals();//! Connect the signal for pre trigger rules, *polymorphically* according with the type of widget!
 }
 
-bool AbstractRuleBinder::parseRuleReferences(const QString strTable, QString& strRule)
+bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
 {
     QList<size_t> idList;
-    QMultiMap<QString, size_t> mapLookups;
+    QMultiMap<QString, QMap<size_t,size_t> > mapLookups;
     if (!ruleCheckerPtr->parseRule(strRule,idList,mapLookups)) return false;
     if (mapLookups.size()>0){
 
         size_t ctr=0;
         //QString strTable;
         //if (!getTableName(strTable)) return false;
-        //For now we only support references to the same binder/table!
-        QMultiMap<QString, size_t>::iterator j = mapLookups.find(strTable);
-         while (j != mapLookups.end() && j.key() == strTable) {
+        QMultiMap<QString,  QMap<size_t,size_t> >::iterator j = mapLookups.find(m_strForm);
+         while (j != mapLookups.end() && j.key() == m_strForm) {
 
              QString strResult;
-             QVariant var=getVal(j.value(),strTable);
+
+             size_t field=j.value().begin().value();
+             size_t mapper=j.value().begin().key();
+
+             QVariant var=getVal(field,mapper);
              if (var.type()==QVariant::Invalid) return false;
              if (var.type()==QVariant::String) strResult=tr("'") + var.toString() + tr("'");
              else strResult=var.toString();
@@ -47,7 +50,7 @@ bool AbstractRuleBinder::parseRuleReferences(const QString strTable, QString& st
     }
     return true;
 }
-
+/*
 void AbstractRuleBinder::onFirePostTrigger(const QString strTable, const QVariant varPar)
 {
     bool bOk=true;
@@ -73,40 +76,35 @@ void AbstractRuleBinder::onFirePostTrigger(const QString strTable, const QVarian
     }
     emit finishedPostTrigger(bOk);
 }
-
-bool AbstractRuleBinder::getDefaultValues(const QString strTable)
+*/
+bool AbstractRuleBinder::getDefaultValues(const size_t mapper)
 {
-    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT,strTable);
+    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT,mapper);
 }
 
-void AbstractRuleBinder::getPreSubmitValidation(const QString strTable)
+void AbstractRuleBinder::getPreSubmitValidation(const size_t mapper)
 {
-    bool bOk=fetchRules(ruleCheckerPtr->mapPreSubmitRls,RuleChecker::PRESUBMIT,strTable);
+    bool bOk=fetchRules(ruleCheckerPtr->mapPreSubmitRls,RuleChecker::PRESUBMIT,mapper);
     emit finishedPreSubmit(bOk);
 }
 
-bool AbstractRuleBinder::getValidation(const QVariant& newValue, const QString strTable, const size_t field)
+bool AbstractRuleBinder::getValidation(const QVariant& newValue, const size_t mapper, const size_t field)
 {
-    return fetchRules(ruleCheckerPtr->mapValidationRls, RuleChecker::VALIDATION, strTable, newValue, field);
+    return fetchRules(ruleCheckerPtr->mapValidationRls, RuleChecker::VALIDATION, mapper, newValue, field);
 }
 
-bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const size_t field, const QString strTable)
+bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const size_t field, const size_t mapper)
 {
-        // Retrieve table name
-        //QString strTable;
-        //if (!getTableName(strTable)) return false;
-
         // First find the key
         MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
         while (it != ruleCheckerPtr->mapReferences.constEnd()) {
-            if ( it.value()->oCellPtr && it.value()->oCellPtr->m_strTable.compare(strTable)==0){
+            if ( it.value()->oCellPtr && it.value()->oCellPtr->m_strForm.compare(m_strForm)==0){
                 if (it.value()->oCellPtr->m_idxField==field){
                     // Found a reference, let's fetch the data at the other hash!
                     MapRules::const_iterator itt = ruleCheckerPtr->mapPreTriggers.find(it.key());
                     while (itt != ruleCheckerPtr->mapPreTriggers.constEnd() && itt.key()==it.key()) {
                         // Grabb the pointed widget, to update
-                        //if (it.value()->m_strTable!=strTable) return false;//TODO: always touching mappers from different tables
-                        if (!getPreTrigger(itt.value(),newValue, it.value()->m_idxField,strTable)) return false;
+                        if (!getPreTrigger(itt.value(),newValue, it.value()->m_idxField,mapper)) return false;
                         ++itt;
                     }
                 }

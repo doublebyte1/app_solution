@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'rulechecker.h'
 **
-** Created: Sat 11. Jun 14:30:40 2011
+** Created: Mon 13. Jun 10:44:17 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

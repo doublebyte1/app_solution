@@ -23,13 +23,13 @@ class MapperRuleBinder : public AbstractRuleBinder
     Q_OBJECT
 
     public:
-        MapperRuleBinder( RuleChecker* ruleChecker, QVarLengthArray<QDataWidgetMapper*> aArMapper, QWidget *parent = 0);
+        MapperRuleBinder( RuleChecker* ruleChecker, QList<QDataWidgetMapper*> alMapper, const QString strForm, QWidget *parent = 0);
         ~MapperRuleBinder();
 
-        QVarLengthArray<QDataWidgetMapper*>&     getArMapper(){return arMapper;}
+        QList<QDataWidgetMapper*>&     getLMapper(){return lMapper;}
 
     protected:
-        QVariant                        getVal(const size_t field, const QString strTable);
+        QVariant                        getVal(const size_t field, const size_t mapper);
 
     private slots:
         //! Pre-Trigger Rules
@@ -72,8 +72,8 @@ class MapperRuleBinder : public AbstractRuleBinder
           \return Boolean value as success or failure
           \sa AbstractRuleBinder::fetchRules()
         */
-        bool                            fetchRules(const MapRules& map, const RuleChecker::Type eType, const QString strTable,
-                                                QVariant varPar=QVariant(QVariant::Invalid), int field=-1);
+        bool                            fetchRules(const MapRules& map, const RuleChecker::Type eType,
+                                                const size_t mapper,QVariant varPar=QVariant(QVariant::Invalid), int field=-1);
         //! Function that applies pre-trigger
         /*!
         This is an implementation of the virtual function, on the abstract class.
@@ -84,7 +84,7 @@ class MapperRuleBinder : public AbstractRuleBinder
           \sa getPreTriggerGeneric(const QVariant& newValue, const size_t field)
         */
         bool                            getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field,
-            const QString strTable);
+            const size_t mapper);
         //! Function that Applies a Rule
         /*!
         This is the function that applies a rule to the mapper binder.
@@ -94,7 +94,7 @@ class MapperRuleBinder : public AbstractRuleBinder
           \param varPar optional parameter to bind to the query
           \return Boolean value as success or failure
         */
-        bool                            applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType, const QString strTable,
+        bool                            applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType,
             QVariant varPar=QVariant(QVariant::Invalid));
         //! Polymorphically grab the state of a widget
         /*!
@@ -122,7 +122,7 @@ class MapperRuleBinder : public AbstractRuleBinder
         */
         QDataWidgetMapper*                      getMapperFromTable(const QString strTableName);
 
-        QVarLengthArray<QDataWidgetMapper*>     arMapper;//!< Pointer to a collection of QDataWidgetMappers
+        QList<QDataWidgetMapper*>     lMapper;//!< Pointer to a collection of QDataWidgetMappers
 };
 
 #endif // MAPPERRULEBINDER_H

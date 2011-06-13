@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'msgbox.ui'
 **
-** Created: Fri 10. Jun 11:47:59 2011
+** Created: Mon 13. Jun 09:16:51 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -44,7 +44,7 @@ public:
         CustomMsgBoxDialog->resize(610, 94);
         CustomMsgBoxDialog->setContextMenuPolicy(Qt::NoContextMenu);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app/MedFisis.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/app_new/medfisis.ico"), QSize(), QIcon::Normal, QIcon::Off);
         CustomMsgBoxDialog->setWindowIcon(icon);
         CustomMsgBoxDialog->setModal(true);
         verticalLayout = new QVBoxLayout(CustomMsgBoxDialog);
@@ -59,7 +59,7 @@ public:
         sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
         label->setSizePolicy(sizePolicy);
         label->setAutoFillBackground(true);
-        label->setPixmap(QPixmap(QString::fromUtf8(":/app/qmessagebox-crit.ico")));
+        label->setPixmap(QPixmap(QString::fromUtf8(":/app_new/qmessagebox-crit.ico")));
         label->setScaledContents(true);
 
         horizontalLayout->addWidget(label);

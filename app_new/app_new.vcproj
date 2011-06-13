@@ -1621,6 +1621,10 @@
 				RelativePath=".\GeneratedFiles\ui_mainfrm.h"
 				>
 			</File>
+			<File
+				RelativePath=".\GeneratedFiles\ui_msgbox.h"
+				>
+			</File>
 			<Filter
 				Name="Release"
 				Filter="cpp;moc"

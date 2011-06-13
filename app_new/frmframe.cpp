@@ -53,9 +53,9 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
-    if ( qobject_cast<QSqlTableModel*>(mapperStartDt->model())!=0){
-        emit addRecord(qobject_cast<QSqlTableModel*>(mapperStartDt->model())->tableName());
-    }
+    //signals for the rule checker default values
+    emit addRecord(2);
+    emit addRecord(3);
 }
 
 FrmFrame::~FrmFrame()
@@ -189,12 +189,9 @@ void FrmFrame::initMappers()
     mapper2->toLast();
 
     if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
-    QVarLengthArray<QDataWidgetMapper*> arMapper;
-    arMapper.append(mapper1);
-    arMapper.append(mapper2);
-    arMapper.append(mapperStartDt);
-    arMapper.append(mapperEndDt);
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, arMapper);
+    QList<QDataWidgetMapper*> lMapper;
+    lMapper << mapper1 << mapper2 << mapperStartDt << mapperEndDt;
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
 }

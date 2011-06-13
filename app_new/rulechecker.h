@@ -39,19 +39,22 @@ struct cell {
           \param outCell reference to another cell, for pre-triggers; this cell is the initiator of this rule;
           \sa cell(const QString table, const size_t field)
         */
-    cell(const QString table, const size_t field, shared_ptr<cell> outCell):m_strTable(table),
-        m_idxField(field), oCellPtr(outCell)
+    cell(const QString table, const size_t field, const QString form, size_t mapper, shared_ptr<cell> outCell):m_strTable(table),
+        m_idxField(field), m_strForm(form), m_idxMapper(mapper), oCellPtr(outCell)
     {}
     //! Constructor.
         /*!
           Overriden constructor that does not need a cell reference; this is used by all rules, but pre-triggers
           \sa cell(const QString table, const size_t field, shared_ptr<cell> outCell)
         */
-    cell(const QString table, const size_t field):m_strTable(table),
-        m_idxField(field)
+    cell(const QString table, const size_t field, const QString form, size_t mapper):m_strTable(table),
+        m_idxField(field),m_strForm(form),m_idxMapper(mapper)
     {}
    QString             m_strTable;//!< table name
    size_t              m_idxField;//!< field index (field column in the database)
+   QString             m_strForm;//!< form name
+   size_t              m_idxMapper;//!< mapper index
+
    // We wrapp the cell reference inside a smart pointer, to avoid mem leaks!
    shared_ptr<cell>    oCellPtr;//!< pointer to another cell
 };
@@ -115,7 +118,8 @@ class RuleChecker: public QWidget
                   \return Boolean value as success or failure
                   \sa TableRuleBinder::applyRule(QString strRule, const QModelIndex& tl, const RuleChecker::Type eType, const QVariant varPar)
                 */
-            bool                parseRule(const QString strRule, QList<size_t>& idList, QMultiMap<QString, size_t>& mapLookups);
+            bool                parseRule(const QString strRule, QList<size_t>& idList, 
+                                    QMultiMap<QString, QMap<size_t,size_t> > & mapLookups);
 
             // We store the rules on this containers, for rapid access: remember to redo them, when adding new rules!
             MapRules            mapDefaultRls;//!< Hash table for storing default value rules.
@@ -145,7 +149,8 @@ class RuleChecker: public QWidget
                   \param map reference to a generic map
                   \return Boolean value as success or failure
                 */
-            bool                standardRuleInsertion(const QString rule, const size_t id, cellShrPtr ref, MapRules& ruleMap);
+            bool                standardRuleInsertion(const QString rule, const size_t id,
+                cellShrPtr ref, MapRules& ruleMap);
             //! Function that Points String to Type
                 /*!
                   Convenience function for extracting the correct enum type for the rule, from a text string.
@@ -174,7 +179,8 @@ class RuleChecker: public QWidget
                   \return MapRules hash table for storing the rules
                   \sa parseRule(const QString strRule, QList<size_t>& idList, QMultiMap<QString, size_t>& mapLookups)
                 */
-            bool                findReference(const int refId, QString& strOutTable, size_t& strOutField);
+            bool                findReference(const int refId, QString& strOutTable, size_t& strOutField,
+                QString& strOutForm, size_t& strOutMapper);
 
         private slots:
             //! Test

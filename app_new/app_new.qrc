@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>qmessagebox-crit.ico</file>
     <file>folder.png</file>
     <file>kcoloredit.png</file>
     <file>vesself.png</file>
