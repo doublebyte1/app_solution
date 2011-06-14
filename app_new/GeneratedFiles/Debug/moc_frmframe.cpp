@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Sun 12. Jun 20:09:45 2011
+** Created: Tue 14. Jun 12:15:13 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,9 +37,11 @@ static const uint qt_meta_data_FrmFrame[] = {
  // slots: signature, parameters, type, tag, flags
       65,    9,    9,    9, 0x0a,
       83,    9,   78,    9, 0x0a,
-      90,    9,    9,    9, 0x08,
-     111,    9,    9,    9, 0x08,
-     132,    9,    9,    9, 0x08,
+      90,    9,    9,    9, 0x0a,
+     113,    9,    9,    9, 0x0a,
+     138,    9,    9,    9, 0x08,
+     159,    9,    9,    9, 0x08,
+     180,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -47,8 +49,10 @@ static const uint qt_meta_data_FrmFrame[] = {
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0bLogBook\0isLogBook(bool)\0"
     "index,bOk\0submitted(int,bool)\0"
-    "onShowForm()\0bool\0next()\0onHideFrameDetails()\0"
-    "onShowFrameDetails()\0apply()\0"
+    "onShowForm()\0bool\0next()\0"
+    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
+    "onHideFrameDetails()\0onShowFrameDetails()\0"
+    "apply()\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -87,12 +91,14 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 2: onShowForm(); break;
         case 3: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: onHideFrameDetails(); break;
-        case 5: onShowFrameDetails(); break;
-        case 6: apply(); break;
+        case 4: blockCustomDateCtrls(); break;
+        case 5: unblockCustomDateCtrls(); break;
+        case 6: onHideFrameDetails(); break;
+        case 7: onShowFrameDetails(); break;
+        case 8: apply(); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

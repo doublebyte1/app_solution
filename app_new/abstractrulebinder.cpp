@@ -51,7 +51,9 @@ bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
 
 bool AbstractRuleBinder::getDefaultValues()
 {
-    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT);
+    bool bOk=fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT);
+    emit defaultValuesRead();
+    return bOk;
 }
 
 void AbstractRuleBinder::getPreSubmitValidation()
@@ -76,7 +78,7 @@ bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const si
                     MapRules::const_iterator itt = ruleCheckerPtr->mapPreTriggers.find(it.key());
                     while (itt != ruleCheckerPtr->mapPreTriggers.constEnd() && itt.key()==it.key()) {
                         // Grabb the pointed widget, to update
-                        if (!getPreTrigger(itt.value(),newValue, it.value()->m_idxField,mapper)) return false;
+                        if (!getPreTrigger(itt,newValue, it.value()->m_idxField,mapper)) return false;
                         ++itt;
                     }
                 }

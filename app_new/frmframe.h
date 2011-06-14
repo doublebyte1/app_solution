@@ -30,6 +30,8 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     public slots:
         void                                   onShowForm(){;}//does nothing
         bool                                   next();
+        void                                   blockCustomDateCtrls();
+        void                                   unblockCustomDateCtrls();
 
     private slots:
         void                                   onHideFrameDetails();
@@ -42,7 +44,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
 
     private:
         void                                   setReadOnly(const bool bRO);
-
         bool                                   updateSample();
         bool                                   getCurrentFrame(int& id);
         void                                   initModels();

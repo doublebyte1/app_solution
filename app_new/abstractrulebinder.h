@@ -28,6 +28,7 @@ class AbstractRuleBinder : public QObject
 
     signals:
         void                            addRecord();//!< Signal that is emited when a new record has been initialized
+        void                            defaultValuesRead();
         void                            submitRecord();//!< Signal that is emited when we are about to submit a record to the database
         void                            finishedPreSubmit(bool bOk);//!< Signal to tell the UI, that the pre submit validation is finished
 
@@ -48,7 +49,7 @@ class AbstractRuleBinder : public QObject
           \return Boolean value as success or failure
           \sa getPreTriggerGeneric(const QVariant& newValue, const size_t field)
         */
-        virtual bool                    getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field,
+        virtual bool                    getPreTrigger(QHash<size_t,QString>::const_iterator& rule, const QVariant& newValue, const size_t field,
                         const size_t mapper)=0;
         //! Function that retrieves the rules from the hash table
         /*!

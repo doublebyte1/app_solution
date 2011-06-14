@@ -105,16 +105,16 @@ void MapperRuleBinder::onFireTriggerGeneric(QWidget* senderWidget, const QVarian
     }
 }
 
-bool MapperRuleBinder::getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field, const size_t mapper)
+bool MapperRuleBinder::getPreTrigger(QHash<size_t,QString>::const_iterator& rule, const QVariant& newValue, const size_t field, const size_t mapper)
 {
     QWidget* aWidget=lMapper.at(mapper)->mappedWidgetAt(field);
     if (aWidget!=0){
         // Looks for parameters to bind!
-        if (strRule.indexOf(tr(":par"))!=-1){
-            if (!applyRule(strRule,aWidget,RuleChecker::PRETRIGGER,newValue)) return false;
+        if (rule.value().indexOf(tr(":par"))!=-1){
+            if (!applyRule(rule,aWidget,RuleChecker::PRETRIGGER,newValue)) return false;
         }
         else{
-            if (!applyRule(strRule,aWidget,RuleChecker::PRETRIGGER)) return false;
+            if (!applyRule(rule,aWidget,RuleChecker::PRETRIGGER)) return false;
         }
     }
 
@@ -147,23 +147,32 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
     //Must pass field & mapper (to validate) to validation rules!
     if (eType==RuleChecker::VALIDATION && (field==-1 || mapper==-1)) return false;
 
-    //Default rules
     MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
     while (it != ruleCheckerPtr->mapReferences.constEnd()) {
-        if ( (it.value()->m_strForm.compare(m_strForm)==0) && eType==RuleChecker::DEFAULT ){
+        if ( it.value()->m_strForm.compare(m_strForm)==0 ){
 
-            QWidget* aWidget=lMapper.at(it.value()->m_idxMapper)->mappedWidgetAt(it.value()->m_idxField);
-            if ( aWidget!=0 ) {
-                        // Found a widget mapped to this field: let's have a look at the values!
-                        MapRules::const_iterator itt = map.find(it.key());
-                        while (itt != map.constEnd() && itt.key()==it.key()) {
-                            if (!applyRule(itt.value(),aWidget,eType,varPar)) return false;
-                            ++itt;
-                        }
-                }
+            if (eType==RuleChecker::DEFAULT || eType==RuleChecker::PRESUBMIT ||
+                    (eType==RuleChecker::VALIDATION && it.value()->m_idxField==field &&
+                    it.value()->m_idxMapper == mapper) ){
+
+                    QWidget* aWidget=lMapper.at(it.value()->m_idxMapper)->mappedWidgetAt(it.value()->m_idxField);
+                    if ( aWidget!=0 ) {
+                                // Found a widget mapped to this field: let's have a look at the values!
+
+                            if (eType==RuleChecker::PRESUBMIT){
+                                if (!getCurrentWidgetValue(aWidget,varPar)) return false;
+                            }
+
+                                MapRules::const_iterator itt = map.find(it.key());
+                                if (itt!=map.end())
+                                    if (!applyRule(itt,aWidget,eType,varPar)) return false;
+                    }
+
         }
         ++it;
+        }
     }
+
 /*
         MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
         while (it != ruleCheckerPtr->mapReferences.constEnd()) {
@@ -211,10 +220,10 @@ QVariant MapperRuleBinder::getVal(const size_t field, const size_t mapper)
     return val;
 }
 
-bool MapperRuleBinder::applyRule(QString strRule, QWidget* aWidget, const RuleChecker::Type eType,
+bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QWidget* aWidget, const RuleChecker::Type eType,
                                  const QVariant varPar)
 {
-    QString originalRule=strRule;//store the original value, so that we can query it later!
+    QString strRule=rule.value();
 
     if (!parseRuleReferences(strRule)) return false;
 
@@ -263,8 +272,8 @@ bool MapperRuleBinder::applyRule(QString strRule, QWidget* aWidget, const RuleCh
           if (val.toBool()==0){
                 // Look for error
                 QSqlQuery eQuery;
-                eQuery.prepare(tr("SELECT description, [rule] FROM dbo.UI_Rules WHERE ([rule] LIKE :rule)"));
-                eQuery.bindValue(tr(":rule"),originalRule);
+                eQuery.prepare(tr("SELECT description, [rule] FROM dbo.UI_Rules WHERE (id_rules LIKE :rule)"));
+                eQuery.bindValue(tr(":rule"),rule.key());
                 eQuery.setForwardOnly(true);
                 if (!eQuery.exec()) return false;
                 eQuery.first();
