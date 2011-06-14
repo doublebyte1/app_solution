@@ -41,6 +41,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         void                                   onItemSelection();
 
     private:
+        void                                   reallyApply(){;}
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

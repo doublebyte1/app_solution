@@ -42,6 +42,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         void                                   onItemSelection();
 
     private:
+        void                                   reallyApply(){;}
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

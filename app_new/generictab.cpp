@@ -33,7 +33,6 @@ bool GenericTab::initBinder(MapperRuleBinder* mapperBinderPtr)
     connect(this, SIGNAL(addRecord()), mapperBinderPtr,
         SIGNAL(addRecord()));
 
-
     // Pre Submit Rules
     connect(this, SIGNAL(submit()), mapperBinderPtr,
         SIGNAL(submitRecord()));
@@ -51,10 +50,14 @@ bool GenericTab::initBinder(MapperRuleBinder* mapperBinderPtr)
     return true;
 }
 
-bool GenericTab::onPreSubmit(const bool bSubmit)
+void GenericTab::apply()
 {
-    //TODO: make this virtual and abstract
-    return true;
+    emit submit();
+}
+
+void GenericTab::onPreSubmit(const bool bSubmit)
+{
+    if (bSubmit) reallyApply();
 }
 
 void GenericTab::setLbHead(QLabel* inLbHeader)

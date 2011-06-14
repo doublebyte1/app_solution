@@ -40,6 +40,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   onShowFrameDetails();
 
     private:
+        void                                   reallyApply(){;}
         void                                   setPreviewQuery();
         void                                   filterModel4Combo();
         void                                   uI4NewRecord();

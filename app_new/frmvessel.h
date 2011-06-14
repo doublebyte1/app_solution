@@ -43,6 +43,7 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         //void                                   onShowFrameDetails();
 
     private:
+        void                                   reallyApply(){;}
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

@@ -42,6 +42,7 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         void                                   onItemSelection();
 
     private:
+        void                                   reallyApply(){;}
         //! Set Header widget
         /*! Reimplemented from the genericTab base class
         */

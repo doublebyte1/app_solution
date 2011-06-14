@@ -158,11 +158,6 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
                     QWidget* aWidget=lMapper.at(it.value()->m_idxMapper)->mappedWidgetAt(it.value()->m_idxField);
                     if ( aWidget!=0 ) {
                                 // Found a widget mapped to this field: let's have a look at the values!
-
-                            if (eType==RuleChecker::PRESUBMIT){
-                                if (!getCurrentWidgetValue(aWidget,varPar)) return false;
-                            }
-
                                 MapRules::const_iterator itt = map.find(it.key());
                                 if (itt!=map.end())
                                     if (!applyRule(itt,aWidget,eType,varPar)) return false;
@@ -173,31 +168,6 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
         }
     }
 
-/*
-        MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
-        while (it != ruleCheckerPtr->mapReferences.constEnd()) {
-            if ( (it.value()->m_strForm.compare(m_strForm)==0) &&
-                (field==-1 || (it.value()->m_idxField==field && it.value()->m_idxMapper==mapper)) ){
-                // Found a reference: see if there is a widget mapped to this!
-
-                //TODO: if field==-1?
-
-                QWidget* aWidget=lMapper.at(mapper)->mappedWidgetAt(field);
-                if ( aWidget!=0 ) {
-                        // Found a widget mapped to this field: let's have a look at the values!
-                        MapRules::const_iterator itt = map.find(it.key());
-                        while (itt != map.constEnd() && itt.key()==it.key()) {
-                            if (eType==RuleChecker::PRESUBMIT){
-                                if (!getCurrentWidgetValue(aWidget,varPar)) return false;
-                            }
-                            if (!applyRule(itt.value(),aWidget,eType,varPar)) return false;
-                            ++itt;
-                        }
-                }
-            }
-            ++it;
-        }
-*/
     return true;
 }
 

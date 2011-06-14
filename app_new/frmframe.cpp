@@ -222,7 +222,7 @@ bool FrmFrame::getCurrentFrame(int& id)
     return true;
 }
 
-void FrmFrame::apply()
+void FrmFrame::reallyApply()
 {
     bool bError=false;
 
@@ -312,30 +312,11 @@ void FrmFrame::apply()
     }
 
     setReadOnly(!bError);
-    /*
-    if (!bError){
-        QList<QWidget*> lWidgets;
-        lWidgets << this->groupPhysical;
-        lWidgets << this->groupTime;
-        emit lockControls(true,lWidgets);
-    }else{
-        if (tFrameTime->lastError().type()!=QSqlError::NoError)
-            emit showError(tFrameTime->lastError().text());
-    }
-
-    pushNext->setEnabled(!bError);
-    pushApply->setEnabled(bError);
-*/
 
     if (!bError)
     {
         emit showStatus(tr("Record successfully inserted in the database!"));
         m_submitted=true;
-/*
-        while(tFrameTime->canFetchMore())
-            tFrameTime->fetchMore();
-
-        m_curFrameTime=tFrameTime->rowCount()-1;*/
         updateSample();//update sample here, because of the save
     }
 }

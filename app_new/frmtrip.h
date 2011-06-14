@@ -42,6 +42,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         void                                   onItemSelection();
 
     private:
+        void                                   reallyApply(){;}
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

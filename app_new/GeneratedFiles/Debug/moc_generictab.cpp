@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'generictab.h'
 **
-** Created: Mon 13. Jun 17:03:20 2011
+** Created: Tue 14. Jun 15:26:37 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -72,7 +72,7 @@ static const uint qt_meta_data_GenericTab[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      21,   14, // methods
+      22,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -99,10 +99,11 @@ static const uint qt_meta_data_GenericTab[] = {
      653,   63,   11,   11, 0x0a,
      673,   11,   11,   11, 0x0a,
      691,   11,  686,   11, 0x0a,
-     698,   11,   11,   11, 0x08,
-     707,   11,   11,   11, 0x08,
-     719,   12,   11,   11, 0x08,
-     765,  757,  686,   11, 0x08,
+     698,   11,   11,   11, 0x0a,
+     706,   11,   11,   11, 0x08,
+     715,   11,   11,   11, 0x08,
+     727,   12,   11,   11, 0x08,
+     773,  765,   11,   11, 0x08,
 
        0        // eod
 };
@@ -126,7 +127,7 @@ static const char qt_meta_stringdata_GenericTab[] = {
     "showError(QString,bool)\0showError(QString)\0"
     "addRecord()\0recordAdded()\0submit()\0"
     "fillHeader(QString)\0onShowForm()\0bool\0"
-    "next()\0goBack()\0goForward()\0"
+    "next()\0apply()\0goBack()\0goForward()\0"
     "onLockControls(bool,QList<QWidget*>&)\0"
     "bSubmit\0onPreSubmit(bool)\0"
 };
@@ -178,14 +179,14 @@ int GenericTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 15: onShowForm(); break;
         case 16: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 17: goBack(); break;
-        case 18: goForward(); break;
-        case 19: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
-        case 20: { bool _r = onPreSubmit((*reinterpret_cast< const bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 17: apply(); break;
+        case 18: goBack(); break;
+        case 19: goForward(); break;
+        case 20: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
+        case 21: onPreSubmit((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 21;
+        _id -= 22;
     }
     return _id;
 }

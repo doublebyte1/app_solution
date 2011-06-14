@@ -18,14 +18,12 @@ void AbstractRuleBinder::init()
 
 bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
 {
-    QList<size_t> idList;
-    QMultiMap<QString, QMap<size_t,size_t> > mapLookups;
-    if (!ruleCheckerPtr->parseRule(strRule,idList,mapLookups)) return false;
+    QMultiMap<size_t, QMap<size_t,size_t> > mapLookups;
+    if (!ruleCheckerPtr->parseRule(strRule,mapLookups)) return false;
     if (mapLookups.size()>0){
 
-        size_t ctr=0;
-        QMultiMap<QString,  QMap<size_t,size_t> >::iterator j = mapLookups.find(m_strForm);
-         while (j != mapLookups.end() && j.key() == m_strForm) {
+        QMultiMap<size_t,  QMap<size_t,size_t> >::iterator j = mapLookups.begin();
+         while (j != mapLookups.end()) {
 
              QString strResult;
 
@@ -37,10 +35,9 @@ bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
              if (var.type()==QVariant::String) strResult=tr("'") + var.toString() + tr("'");
              else strResult=var.toString();
 
-             QString searchStr=StrRulePtr + tr("(") + QVariant(idList.at(ctr)).toString() + tr(")");
+             QString searchStr=StrRulePtr + tr("(") + QVariant(j.key()).toString() + tr(")");
              strRule=strRule.replace(searchStr,
                  strResult);
-             ctr++;
 
              ++j;
          }

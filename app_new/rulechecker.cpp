@@ -208,7 +208,7 @@ bool RuleChecker::findReference(const int refId, size_t& strOutField, QString& s
     return true;
 }
 
-bool RuleChecker::parseRule(const QString strRule, QList<size_t>& idList, QMultiMap<QString, QMap<size_t,size_t> >& mapLookups)
+bool RuleChecker::parseRule(const QString strRule, QMultiMap<size_t, QMap<size_t,size_t> >& mapLookups)
 {
     int left=0,right=0;
     while (left!=-1){
@@ -220,13 +220,13 @@ bool RuleChecker::parseRule(const QString strRule, QList<size_t>& idList, QMulti
         int start=left+ QString(StrRulePtr+ tr("(")).length();
         int len=right-start;
         int no=strRule.mid(start,len).toInt();
-        idList.push_back(no);
+        //idList.push_back(no);
         QString strTable,strForm;
         size_t field,mapper;
         if (!findReference(no,field,strForm,mapper)) return false;
         QMap<size_t,size_t> mapMapper;
         mapMapper.insert(mapper,field);
-        mapLookups.insert(strForm,mapMapper);
+        mapLookups.insert(no,mapMapper);
         left=start+len;//found next occurrence
     }
 

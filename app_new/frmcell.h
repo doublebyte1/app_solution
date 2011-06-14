@@ -46,6 +46,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
 
 
     private:
+        void                                   reallyApply(){;}
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

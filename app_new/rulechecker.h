@@ -118,8 +118,8 @@ class RuleChecker: public QWidget
                   \return Boolean value as success or failure
                   \sa TableRuleBinder::applyRule(QString strRule, const QModelIndex& tl, const RuleChecker::Type eType, const QVariant varPar)
                 */
-            bool                parseRule(const QString strRule, QList<size_t>& idList, 
-                                    QMultiMap<QString, QMap<size_t,size_t> > & mapLookups);
+            bool                parseRule(const QString strRule, 
+                                    QMultiMap<size_t, QMap<size_t,size_t> > & mapLookups);
 
             // We store the rules on this containers, for rapid access: remember to redo them, when adding new rules!
             MapRules            mapDefaultRls;//!< Hash table for storing default value rules.

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 14. Jun 12:15:13 2011
+** Created: Tue 14. Jun 15:28:54 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -41,7 +41,6 @@ static const uint qt_meta_data_FrmFrame[] = {
      113,    9,    9,    9, 0x0a,
      138,    9,    9,    9, 0x08,
      159,    9,    9,    9, 0x08,
-     180,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -52,7 +51,6 @@ static const char qt_meta_stringdata_FrmFrame[] = {
     "onShowForm()\0bool\0next()\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
     "onHideFrameDetails()\0onShowFrameDetails()\0"
-    "apply()\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -95,10 +93,9 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 5: unblockCustomDateCtrls(); break;
         case 6: onHideFrameDetails(); break;
         case 7: onShowFrameDetails(); break;
-        case 8: apply(); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 8;
     }
     return _id;
 }

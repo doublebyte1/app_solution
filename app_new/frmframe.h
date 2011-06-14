@@ -36,13 +36,14 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
-        void                                   apply();
+//        void                                   apply();
 
     signals:
         void                                   isLogBook(bool bLogBook);
         void                                   submitted(int index, bool bOk);
 
     private:
+        void                                   reallyApply();
         void                                   setReadOnly(const bool bRO);
         bool                                   updateSample();
         bool                                   getCurrentFrame(int& id);
