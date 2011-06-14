@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'generictab.h'
 **
-** Created: Mon 13. Jun 11:56:33 2011
+** Created: Mon 13. Jun 17:03:20 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -91,18 +91,18 @@ static const uint qt_meta_data_GenericTab[] = {
      539,   63,   11,   11, 0x05,
      575,  559,   11,   11, 0x05,
      599,   63,   11,   11, 0x25,
-     625,  618,   11,   11, 0x05,
-     643,  618,   11,   11, 0x05,
-     663,  618,   11,   11, 0x05,
+     618,   11,   11,   11, 0x05,
+     630,   11,   11,   11, 0x05,
+     644,   11,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     678,   63,   11,   11, 0x0a,
-     698,   11,   11,   11, 0x0a,
-     716,   11,  711,   11, 0x0a,
-     723,   11,   11,   11, 0x08,
-     732,   11,   11,   11, 0x08,
-     744,   12,   11,   11, 0x08,
-     790,  782,  711,   11, 0x08,
+     653,   63,   11,   11, 0x0a,
+     673,   11,   11,   11, 0x0a,
+     691,   11,  686,   11, 0x0a,
+     698,   11,   11,   11, 0x08,
+     707,   11,   11,   11, 0x08,
+     719,   12,   11,   11, 0x08,
+     765,  757,  686,   11, 0x08,
 
        0        // eod
 };
@@ -124,10 +124,10 @@ static const char qt_meta_stringdata_GenericTab[] = {
     "mple*)\0"
     "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
-    "mapper\0addRecord(size_t)\0recordAdded(size_t)\0"
-    "submit(size_t)\0fillHeader(QString)\0"
-    "onShowForm()\0bool\0next()\0goBack()\0"
-    "goForward()\0onLockControls(bool,QList<QWidget*>&)\0"
+    "addRecord()\0recordAdded()\0submit()\0"
+    "fillHeader(QString)\0onShowForm()\0bool\0"
+    "next()\0goBack()\0goForward()\0"
+    "onLockControls(bool,QList<QWidget*>&)\0"
     "bSubmit\0onPreSubmit(bool)\0"
 };
 
@@ -171,9 +171,9 @@ int GenericTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 8: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 9: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 10: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 11: addRecord((*reinterpret_cast< const size_t(*)>(_a[1]))); break;
-        case 12: recordAdded((*reinterpret_cast< const size_t(*)>(_a[1]))); break;
-        case 13: submit((*reinterpret_cast< const size_t(*)>(_a[1]))); break;
+        case 11: addRecord(); break;
+        case 12: recordAdded(); break;
+        case 13: submit(); break;
         case 14: fillHeader((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 15: onShowForm(); break;
         case 16: { bool _r = next();
@@ -246,23 +246,20 @@ void GenericTab::showError(QString _t1, const bool _t2)
 }
 
 // SIGNAL 11
-void GenericTab::addRecord(const size_t _t1)
+void GenericTab::addRecord()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 11, _a);
+    QMetaObject::activate(this, &staticMetaObject, 11, 0);
 }
 
 // SIGNAL 12
-void GenericTab::recordAdded(const size_t _t1)
+void GenericTab::recordAdded()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 12, _a);
+    QMetaObject::activate(this, &staticMetaObject, 12, 0);
 }
 
 // SIGNAL 13
-void GenericTab::submit(const size_t _t1)
+void GenericTab::submit()
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 13, _a);
+    QMetaObject::activate(this, &staticMetaObject, 13, 0);
 }
 QT_END_MOC_NAMESPACE

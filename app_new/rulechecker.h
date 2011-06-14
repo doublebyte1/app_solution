@@ -28,18 +28,19 @@ static const char *StrRulePtr =
      QT_TRANSLATE_NOOP("RULE", "ptr");/**< Keyword for calling a reference value on [UI_Rule_Ptrs] */
 
 //! cell struct
-/*! This structure references a cell (table, field index), and optionally a linked cell that origins the update;
+/*! This structure references a cell (field index, form, mapper index), and optionally a linked cell that origins the update;
 */
 struct cell {
     //! Constructor.
         /*!
           This is the constructor for a cell, that initializes all the member variables.
-          \param table table name
+          \param form form name
+          \param mapper mapper index
           \param field field index
           \param outCell reference to another cell, for pre-triggers; this cell is the initiator of this rule;
           \sa cell(const QString table, const size_t field)
         */
-    cell(const QString table, const size_t field, const QString form, size_t mapper, shared_ptr<cell> outCell):m_strTable(table),
+    cell(const size_t field, const QString form, size_t mapper, shared_ptr<cell> outCell):
         m_idxField(field), m_strForm(form), m_idxMapper(mapper), oCellPtr(outCell)
     {}
     //! Constructor.
@@ -47,10 +48,9 @@ struct cell {
           Overriden constructor that does not need a cell reference; this is used by all rules, but pre-triggers
           \sa cell(const QString table, const size_t field, shared_ptr<cell> outCell)
         */
-    cell(const QString table, const size_t field, const QString form, size_t mapper):m_strTable(table),
+    cell(const size_t field, const QString form, size_t mapper):
         m_idxField(field),m_strForm(form),m_idxMapper(mapper)
     {}
-   QString             m_strTable;//!< table name
    size_t              m_idxField;//!< field index (field column in the database)
    QString             m_strForm;//!< form name
    size_t              m_idxMapper;//!< mapper index
@@ -174,12 +174,11 @@ class RuleChecker: public QWidget
                   This function gets a rule ID as reference and fetches its properties
                   from the mapReferences container.
                   \param refId Rule ID
-                  \param strOutTable out: adress of a string, to put the table name
                   \param strOutField out: adress of a size_t, to put the field index
                   \return MapRules hash table for storing the rules
                   \sa parseRule(const QString strRule, QList<size_t>& idList, QMultiMap<QString, size_t>& mapLookups)
                 */
-            bool                findReference(const int refId, QString& strOutTable, size_t& strOutField,
+            bool                findReference(const int refId, size_t& strOutField,
                 QString& strOutForm, size_t& strOutMapper);
 
         private slots:

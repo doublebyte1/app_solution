@@ -4,8 +4,6 @@
 MapperRuleBinder::MapperRuleBinder( RuleChecker* ruleChecker, QList<QDataWidgetMapper*> aLMapper, const QString strForm, QWidget *parent): 
 AbstractRuleBinder(ruleChecker, strForm, parent), lMapper(aLMapper){
 
-    //connect(this, SIGNAL(recordAdded(const size_t)), this,
-    //SLOT(onFirePostTrigger(const size_t)));
 }
 
 MapperRuleBinder::~MapperRuleBinder()
@@ -97,43 +95,14 @@ void MapperRuleBinder::onFireTriggerGeneric(QWidget* senderWidget, const QVarian
             if (aWidget!=0){
                 if (aWidget==senderWidget){
                     // Get Pre-trigger.
-                    QString strTable;
-                    if (getTableName(lMapper[j],strTable)){
-                        if (!getPreTriggerGeneric(newValue,i,j)) emit showError(tr("Could not activate pre-trigger rule!"),false);
-                        // Get Validation.
-                        if (!getValidation(newValue,j,i)) emit showError(tr("Could not activate validation rule!"),false);
-                    } else emit showError(tr("Could not retrieve the table name for this mapper!"),false);
+                    if (!getPreTriggerGeneric(newValue,i,j)) emit showError(tr("Could not activate pre-trigger rule!"),false);
+                    // Get Validation.
+                    if (!getValidation(newValue,j,i)) emit showError(tr("Could not activate validation rule!"),false);
                 }
             }
 
         }
     }
-}
-
-bool MapperRuleBinder::getTableName(const QDataWidgetMapper* mapper, QString& strTableName) const
-{
-    if ( qobject_cast<QSqlTableModel*>(mapper->model())==0) return false;
-
-    QSqlTableModel* tModel=qobject_cast<QSqlTableModel*>(mapper->model());
-    // Remove extra quotes!!!
-    strTableName=FixTableName(tModel->tableName());
-    //strTableName=tModel->tableName().remove(tr("\""));
-    return (strTableName.size()>0);
-}
-
-QDataWidgetMapper* MapperRuleBinder::getMapperFromTable(const QString strTableName)
-{
-    for (size_t j=0; j < lMapper.count(); ++j){
-
-          QSqlTableModel* tModel=qobject_cast<QSqlTableModel*>
-              (lMapper[j]->model());
-          if (tModel!=0){
-              QString strModelTableName=FixTableName(tModel->tableName());
-              if (strModelTableName.compare(strTableName)==0)
-                  return lMapper[j];
-          }
-    }
-    return 0;
 }
 
 bool MapperRuleBinder::getPreTrigger(const QString strRule, const QVariant& newValue, const size_t field, const size_t mapper)
@@ -158,33 +127,53 @@ bool MapperRuleBinder::getCurrentWidgetValue(QWidget* aWidget, QVariant& val)
         val=qobject_cast<QLineEdit*>(aWidget)->text();
     else if ( qobject_cast<QDateEdit*>(aWidget)!=0 )
         val=qobject_cast<QDateEdit*>(aWidget)->date();
-/*    else if ( qobject_cast<TimeStampDateEdit*>(aWidget)!=0 ){
-        val=qobject_cast<TimeStampDateEdit*>(aWidget)->date();
-    }*/
+    else if ( qobject_cast<CustomTimeCtrl*>(aWidget)!=0 )
+        val=qobject_cast<CustomTimeCtrl*>(aWidget)->dateTime();
     else if ( qobject_cast<QComboBox*>(aWidget)!=0 )
         val=qobject_cast<QComboBox*>(aWidget)->currentText();
     else if ( qobject_cast<ButtonGroup*>(aWidget)!=0 )
         val=qobject_cast<ButtonGroup*>(aWidget)->getCheckedId();//TODO: TEST THIS!
     else if ( qobject_cast<QSpinBox*>(aWidget)!=0 )
         val=qobject_cast<QSpinBox*>(aWidget)->value();
+    //TODO: add catch control
     else return false;
 
     return true;
 }
 
 bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type eType, size_t mapper,
-                                   QVariant varPar, int field)
+                                   int field, QVariant varPar )
 {
-    //Must pass field (to validate) to validation rules!
-    if (eType==RuleChecker::VALIDATION && field==-1) return false;
+    //Must pass field & mapper (to validate) to validation rules!
+    if (eType==RuleChecker::VALIDATION && (field==-1 || mapper==-1)) return false;
 
+    //Default rules
+    MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
+    while (it != ruleCheckerPtr->mapReferences.constEnd()) {
+        if ( (it.value()->m_strForm.compare(m_strForm)==0) && eType==RuleChecker::DEFAULT ){
+
+            QWidget* aWidget=lMapper.at(it.value()->m_idxMapper)->mappedWidgetAt(it.value()->m_idxField);
+            if ( aWidget!=0 ) {
+                        // Found a widget mapped to this field: let's have a look at the values!
+                        MapRules::const_iterator itt = map.find(it.key());
+                        while (itt != map.constEnd() && itt.key()==it.key()) {
+                            if (!applyRule(itt.value(),aWidget,eType,varPar)) return false;
+                            ++itt;
+                        }
+                }
+        }
+        ++it;
+    }
+/*
         MapReferences::const_iterator it = ruleCheckerPtr->mapReferences.constBegin();
         while (it != ruleCheckerPtr->mapReferences.constEnd()) {
             if ( (it.value()->m_strForm.compare(m_strForm)==0) &&
                 (field==-1 || (it.value()->m_idxField==field && it.value()->m_idxMapper==mapper)) ){
                 // Found a reference: see if there is a widget mapped to this!
 
-                QWidget* aWidget=lMapper.at(mapper)->mappedWidgetAt(it.value()->m_idxField);
+                //TODO: if field==-1?
+
+                QWidget* aWidget=lMapper.at(mapper)->mappedWidgetAt(field);
                 if ( aWidget!=0 ) {
                         // Found a widget mapped to this field: let's have a look at the values!
                         MapRules::const_iterator itt = map.find(it.key());
@@ -199,7 +188,7 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
             }
             ++it;
         }
-
+*/
     return true;
 }
 
@@ -216,10 +205,7 @@ bool MapperRuleBinder::enableWidget(QWidget* aWidget, const QVariant val)
 
 QVariant MapperRuleBinder::getVal(const size_t field, const size_t mapper)
 {
-    QVariant val;/*
-    QDataWidgetMapper* mapper=getMapperFromTable(strTable);
-    if (mapper==0) return QVariant();
-*/
+    QVariant val;
     if (!getCurrentWidgetValue
         (lMapper.at(mapper)->mappedWidgetAt(field),val)) return false;
     return val;
@@ -256,15 +242,9 @@ bool MapperRuleBinder::applyRule(QString strRule, QWidget* aWidget, const RuleCh
                 qobject_cast<QDateEdit*>(aWidget)->setDate(val.toDate());
             else if ( qobject_cast<CustomTimeCtrl*>(aWidget)!=0 ){
                 QDateTime myDate;
-                if (val.type()==QVariant::Date || val.type()==QVariant::DateTime){
-                    QDateTime dt(val.toDateTime());
-                    myDate=dt;
-                }/*
-                else if (val.type()==QVariant::String){
-                    QString strDate=val.toString();
-                    myDate=QDateTime::fromString(strDate,defaultFormat);
-                }*/
-                qobject_cast<CustomTimeCtrl*>(aWidget)->setDateTime(myDate);
+                if (val.type()==QVariant::DateTime){
+                    qobject_cast<CustomTimeCtrl*>(aWidget)->setDateTime(val.toDateTime());
+                }
             }
             else if ( qobject_cast<QComboBox*>(aWidget)!=0 )
                 qobject_cast<QComboBox*>(aWidget)->setCurrentIndex(
@@ -293,11 +273,11 @@ bool MapperRuleBinder::applyRule(QString strRule, QWidget* aWidget, const RuleCh
                 emit showError(strError);
                 aWidget->setFocus();
                 if ( qobject_cast<QLineEdit*>(aWidget)!=0 )
-                    qobject_cast<QLineEdit*>(aWidget)->selectAll();/*
-                else if ( qobject_cast<TimeStampDateEdit*>(aWidget)!=0 ){
-                    qobject_cast<TimeStampDateEdit*>(aWidget)->selectAll();
-                    qobject_cast<TimeStampDateEdit*>(aWidget)->setFocus();
-                }*/
+                    qobject_cast<QLineEdit*>(aWidget)->selectAll();
+                else if ( qobject_cast<CustomTimeCtrl*>(aWidget)!=0 ){
+                    qobject_cast<CustomTimeCtrl*>(aWidget)->selectAll();
+                    qobject_cast<CustomTimeCtrl*>(aWidget)->setFocus();
+                }
                 else if ( qobject_cast<QComboBox*>(aWidget)!=0 ){
                     qobject_cast<QComboBox*>(aWidget)->setFocus();
                     if (qobject_cast<QComboBox*>(aWidget)->isEditable())

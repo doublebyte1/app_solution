@@ -118,9 +118,9 @@ class GenericTab : public QWidget
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
         //Signals related to the RuleBinder
-        void                     addRecord(const size_t mapper);
-        void                     recordAdded(const size_t mapper);
-        void                     submit(const size_t mapper);
+        void                     addRecord();
+        void                     recordAdded();
+        void                     submit();
 
     protected:
         virtual void            initModels()=0;

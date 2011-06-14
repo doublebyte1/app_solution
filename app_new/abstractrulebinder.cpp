@@ -4,11 +4,11 @@ AbstractRuleBinder::AbstractRuleBinder( RuleChecker* ruleChecker, const QString 
 QObject(parent), ruleCheckerPtr(ruleChecker), m_strForm(strForm){
 
     // Let's not connect directly to Rulechecker, so establish all signal-slot dialog here!
-        connect(this, SIGNAL(addRecord(const size_t)), this,
-        SLOT(getDefaultValues(const size_t)));
+        connect(this, SIGNAL(addRecord()), this,
+        SLOT(getDefaultValues()));
 
-        connect(this, SIGNAL(submitRecord(const size_t)), this,
-        SLOT(getPreSubmitValidation(const size_t)));
+        connect(this, SIGNAL(submitRecord()), this,
+        SLOT(getPreSubmitValidation()));
 }
 
 void AbstractRuleBinder::init()
@@ -24,8 +24,6 @@ bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
     if (mapLookups.size()>0){
 
         size_t ctr=0;
-        //QString strTable;
-        //if (!getTableName(strTable)) return false;
         QMultiMap<QString,  QMap<size_t,size_t> >::iterator j = mapLookups.find(m_strForm);
          while (j != mapLookups.end() && j.key() == m_strForm) {
 
@@ -50,47 +48,21 @@ bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
     }
     return true;
 }
-/*
-void AbstractRuleBinder::onFirePostTrigger(const QString strTable, const QVariant varPar)
-{
-    bool bOk=true;
 
-    QString strFixTable=FixTableName(strTable);
-    MapRules::const_iterator it = ruleCheckerPtr->mapPostTriggerRls.constBegin();
-    while (it != ruleCheckerPtr->mapPostTriggerRls.constEnd()) {
-
-        // Retrieve rules on the reference table
-        MapReferences::const_iterator itt = ruleCheckerPtr->mapReferences.find(it.key());
-        while (itt != ruleCheckerPtr->mapReferences.constEnd() && itt.key()==it.key()) {
-            if ( itt.value()->m_strTable.compare(strFixTable)==0){
-            // Found a post-trigger rule for this table: let's run it!
-                QSqlQuery query;
-                if (!ruleCheckerPtr->applyRule(it.value(),query,varPar)){
-                    bOk=false;
-                    emit showError(tr("Could not run Post-Trigger Query!"));
-                }
-            }
-            ++itt;
-        }
-        ++it;
-    }
-    emit finishedPostTrigger(bOk);
-}
-*/
-bool AbstractRuleBinder::getDefaultValues(const size_t mapper)
+bool AbstractRuleBinder::getDefaultValues()
 {
-    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT,mapper);
+    return fetchRules(ruleCheckerPtr->mapDefaultRls,RuleChecker::DEFAULT);
 }
 
-void AbstractRuleBinder::getPreSubmitValidation(const size_t mapper)
+void AbstractRuleBinder::getPreSubmitValidation()
 {
-    bool bOk=fetchRules(ruleCheckerPtr->mapPreSubmitRls,RuleChecker::PRESUBMIT,mapper);
+    bool bOk=fetchRules(ruleCheckerPtr->mapPreSubmitRls,RuleChecker::PRESUBMIT);
     emit finishedPreSubmit(bOk);
 }
 
 bool AbstractRuleBinder::getValidation(const QVariant& newValue, const size_t mapper, const size_t field)
 {
-    return fetchRules(ruleCheckerPtr->mapValidationRls, RuleChecker::VALIDATION, mapper, newValue, field);
+    return fetchRules(ruleCheckerPtr->mapValidationRls, RuleChecker::VALIDATION, mapper, field, newValue);
 }
 
 bool AbstractRuleBinder::getPreTriggerGeneric(const QVariant& newValue, const size_t field, const size_t mapper)

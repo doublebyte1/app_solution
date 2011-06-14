@@ -27,12 +27,10 @@ class AbstractRuleBinder : public QObject
         RuleChecker*                    getRuleCheckerPtr(){return ruleCheckerPtr;}
 
     signals:
-        void                            addRecord(const size_t mapper);//!< Signal that is emited when a new record has been initialized
-        void                            recordAdded(const size_t mapper);//!< Signal to tell the binder to run post-triggers
-        void                            recordAdded(const size_t mapper, const QVariant varPar);//!< Override, to pass a parameter!
-        void                            finishedPostTrigger(bool bOk);//!< Signal to tell the UI, that the triggers were run
+        void                            addRecord();//!< Signal that is emited when a new record has been initialized
+        void                            submitRecord();//!< Signal that is emited when we are about to submit a record to the database
         void                            finishedPreSubmit(bool bOk);//!< Signal to tell the UI, that the pre submit validation is finished
-        void                            submitRecord(const size_t mapper);//!< Signal that is emited when we are about to submit a record to the database
+
         void                            showStatus(QString str);//!< Signal for messages in the status bar
         void                            showError(QString str, const bool bShowMsgBox=true);//!< Signal for errors
 
@@ -61,7 +59,7 @@ class AbstractRuleBinder : public QObject
           \return Boolean value as success or failure
         */
         virtual bool                    fetchRules(const MapRules& map, const RuleChecker::Type eType,
-                                                const size_t mapper,QVariant varPar=QVariant(QVariant::Invalid), int field=-1)=0;
+                                                const size_t mapper=-1, int field=-1, QVariant varPar=QVariant(QVariant::Invalid))=0;
         bool                            getValidation(const QVariant& newValue, const size_t mapper, const size_t field);
         //! Entry Point for Pre-Trigger
         /*!
@@ -84,24 +82,18 @@ class AbstractRuleBinder : public QObject
         This slot initializes the default values, associated to the table underlying the binder.
           \sa onFireTrigger(), onFirePostTrigger(const QString strTable, const QVariant varPar=QVariant(QVariant::Invalid))
         */
-        bool                            getDefaultValues(const size_t mapper);
+        bool                            getDefaultValues();
         //! Pre-Trigger Rules
         /*!
         This slot is connected to the specific UI signals of the binder, and it calls the pre-trigger rules.
           \sa getDefaultValues(), onFirePostTrigger(const QString strTable, const QVariant varPar=QVariant(QVariant::Invalid))
         */
         virtual void                    onFireTrigger()=0;
-        //! Post-Trigger Rules
-        /*!
-        This slot fires the post trigger rules, associated to the table underlying the binder.
-          \sa getDefaultValues(), onFireTrigger()
-        */
-        //void                            onFirePostTrigger(const QString strTable, const QVariant varPar=QVariant(QVariant::Invalid));
         //! Get Pre-submit Validation
         /*!
         This slot prompts the rulechecker to apply Pre-Submit rules
         */
-        void                            getPreSubmitValidation(const size_t mapper);
+        void                            getPreSubmitValidation();
 };
 
 #endif // ABSTRACTRULEBINDER_H

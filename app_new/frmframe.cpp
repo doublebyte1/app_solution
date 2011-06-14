@@ -53,9 +53,8 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);//just before last
     mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
 
-    //signals for the rule checker default values
-    emit addRecord(2);
-    emit addRecord(3);
+    //signal for the rule checker default values
+    emit addRecord();
 }
 
 FrmFrame::~FrmFrame()

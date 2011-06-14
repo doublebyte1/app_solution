@@ -30,19 +30,16 @@ bool GenericTab::initBinder(MapperRuleBinder* mapperBinderPtr)
     // the pre triggers signals are connected in the binder classes; then we just need the stuff to show messages...
 
     // Default Rules
-    connect(this, SIGNAL(addRecord(const size_t)), mapperBinderPtr,
-        SIGNAL(addRecord(const size_t)));
+    connect(this, SIGNAL(addRecord()), mapperBinderPtr,
+        SIGNAL(addRecord()));
+
 
     // Pre Submit Rules
-    connect(this, SIGNAL(submit(const size_t)), mapperBinderPtr,
-        SIGNAL(submitRecord(const size_t)));
+    connect(this, SIGNAL(submit()), mapperBinderPtr,
+        SIGNAL(submitRecord()));
 
     connect(mapperBinderPtr, SIGNAL(finishedPreSubmit(const bool)), this,
         SLOT(onPreSubmit(const bool)));
-
-    // Post Trigger Rules
-    connect(this, SIGNAL(recordAdded(const size_t)), mapperBinderPtr,
-        SIGNAL(recordAdded(const size_t)));
 
     // Messages
     connect(mapperBinderPtr, SIGNAL(showError(QString, const bool)), this,

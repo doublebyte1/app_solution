@@ -55,7 +55,6 @@ class MapperRuleBinder : public AbstractRuleBinder
         void                            onFireTriggerGeneric(QWidget* senderWidget, const QVariant& newValue);
 
     private:
-        bool                            getTableName(const QDataWidgetMapper* mapper, QString& strTableName) const;
         bool                            getPreTrigger(const QVariant& newValue, QObject object, const size_t field);
         //! Connect Pre Trigger Signals
         /*!
@@ -73,7 +72,7 @@ class MapperRuleBinder : public AbstractRuleBinder
           \sa AbstractRuleBinder::fetchRules()
         */
         bool                            fetchRules(const MapRules& map, const RuleChecker::Type eType,
-                                                const size_t mapper,QVariant varPar=QVariant(QVariant::Invalid), int field=-1);
+                                                const size_t mapper,int field=-1,QVariant varPar=QVariant(QVariant::Invalid));
         //! Function that applies pre-trigger
         /*!
         This is an implementation of the virtual function, on the abstract class.

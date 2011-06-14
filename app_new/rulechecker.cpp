@@ -64,7 +64,7 @@ bool RuleChecker::buildHashes()
     //First run queries
     QString sqlActiveRules=tr("SELECT distinct dbo.UI_Rules.id_rules, dbo.UI_Rules.field, dbo.UI_Rules.mapper, "
         "dbo.UI_Forms.Name as form_name, "
-        "dbo.UI_Rules.[rule], dbo.UI_Rule_Types.name AS type_name, dbo.UI_Rules.[table] "
+        "dbo.UI_Rules.[rule], dbo.UI_Rule_Types.name AS type_name "
         "FROM dbo.UI_Rule_Ptrs RIGHT OUTER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.id_rules = "
         "dbo.UI_Rules.id_rules INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types "
         "INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID "
@@ -74,7 +74,7 @@ bool RuleChecker::buildHashes()
     if (!query.prepare(sqlActiveRules)) return false;
     QSqlQuery triggerPtrQuery;
     if (!triggerPtrQuery.prepare(
-        tr("SELECT dbo.UI_Rule_Ptrs.[table], dbo.UI_Rule_Ptrs.field, dbo.UI_Rule_Ptrs.id_rules, "
+        tr("SELECT dbo.UI_Rule_Ptrs.field, dbo.UI_Rule_Ptrs.id_rules, "
         "dbo.UI_Rule_Ptrs.mapper, dbo.UI_Forms.Name as form_name"
         "dbo.UI_Rule_Ptrs.ID FROM dbo.UI_Rule_Ptrs INNER JOIN dbo.UI_Rules ON "
         "dbo.UI_Rule_Ptrs.id_rules = dbo.UI_Rules.id_rules "
@@ -92,7 +92,6 @@ bool RuleChecker::buildHashes()
     if (query.numRowsAffected()>0){//Maybe we don't have any active rules?
 
         while (query.next()){
-            QString table=query.value(query.record().indexOf(tr("table"))).toString();
             size_t field=query.value(query.record().indexOf(tr("field"))).toInt();
             QString rule=query.value(query.record().indexOf(tr("rule"))).toString();
             QString form=query.value(query.record().indexOf(tr("form_name"))).toString();
@@ -106,7 +105,7 @@ bool RuleChecker::buildHashes()
                 // Watch out this piece of code, cause the pointers and references can get us into a lot of trouble!
                 MapRules* mapPtr=GetContainerFromType(eRuleType);
                     if (mapPtr!=0)
-                        if (!standardRuleInsertion(rule,id,cellShrPtr(new cell(table,field,form,mapper)),*mapPtr)) return false;
+                        if (!standardRuleInsertion(rule,id,cellShrPtr(new cell(field,form,mapper)),*mapPtr)) return false;
             }else if (eRuleType==RuleChecker::PRETRIGGER){
                 // Retrieve the settings from the origin column
                 size_t id=query.value(query.record().indexOf(tr("id_rules"))).toInt();
@@ -117,11 +116,10 @@ bool RuleChecker::buildHashes()
                 }
                 // Watch out because we can have more than one reference to rows in the other table!
                 while (triggerPtrQuery.next()) {
-                    QString tableO=triggerPtrQuery.value(triggerPtrQuery.record().indexOf(tr("table"))).toString();
                     size_t fieldO=triggerPtrQuery.value(triggerPtrQuery.record().indexOf(tr("field"))).toInt();
                     QString formO=triggerPtrQuery.value(triggerPtrQuery.record().indexOf(tr("form_name"))).toString();
                     size_t mapperO=triggerPtrQuery.value(triggerPtrQuery.record().indexOf(tr("mapper"))).toInt();
-                    if (!standardRuleInsertion(rule,id,cellShrPtr(new cell(table,field,form,mapper,cellShrPtr(new cell(tableO,fieldO,formO,mapperO)))),mapPreTriggers)) return false;
+                    if (!standardRuleInsertion(rule,id,cellShrPtr(new cell(field,form,mapper,cellShrPtr(new cell(fieldO,formO,mapperO)))),mapPreTriggers)) return false;
                  }
 
             }else return false;
@@ -129,7 +127,7 @@ bool RuleChecker::buildHashes()
 
     QSqlQuery dumPtrQuery;
     if (!dumPtrQuery.prepare(
-        "SELECT dbo.UI_Rule_Ptrs.[table], dbo.UI_Rule_Ptrs.field,dbo.UI_Rule_Ptrs.ID , dbo.UI_Rule_Ptrs.mapper, "
+        "SELECT dbo.UI_Rule_Ptrs.field,dbo.UI_Rule_Ptrs.ID , dbo.UI_Rule_Ptrs.mapper, "
         "UI_Forms.Name as form_name FROM UI_Rule_Ptrs "
         "INNER JOIN UI_Forms ON UI_Rule_Ptrs.form=UI_Forms.ID "
         " WHERE (dbo.UI_Rule_Ptrs.id_rules =:id AND dbo.UI_Rule_Ptrs.active=1)"
@@ -152,12 +150,11 @@ bool RuleChecker::buildHashes()
 #endif
 */
      while (dumPtrQuery.next()){
-        QString tableO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("table"))).toString();
         size_t fieldO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("field"))).toInt();
         size_t idO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("ID"))).toInt();
         QString formO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("form_name"))).toString();
         size_t mapperO=dumPtrQuery.value(dumPtrQuery.record().indexOf(tr("mapper"))).toInt();
-        mapReferences.insert(idO,cellShrPtr(new cell(tableO,fieldO,formO,mapperO)));
+        mapReferences.insert(idO,cellShrPtr(new cell(fieldO,formO,mapperO)));
      }
 
     }
@@ -197,12 +194,11 @@ bool RuleChecker::standardRuleInsertion(const QString rule, const size_t id,
     return true;
 }
 
-bool RuleChecker::findReference(const int refId, QString& strOutTable, size_t& strOutField, QString& strOutForm, size_t& strOutMapper)
+bool RuleChecker::findReference(const int refId, size_t& strOutField, QString& strOutForm, size_t& strOutMapper)
 {
     MapReferences::const_iterator it=mapReferences.find(refId);
     if (it!=mapReferences.end())
     {
-        strOutTable=it.value().get()->m_strTable;
         strOutField=it.value().get()->m_idxField;
         strOutForm=it.value().get()->m_strForm;
         strOutMapper=it.value().get()->m_idxMapper;
@@ -227,7 +223,7 @@ bool RuleChecker::parseRule(const QString strRule, QList<size_t>& idList, QMulti
         idList.push_back(no);
         QString strTable,strForm;
         size_t field,mapper;
-        if (!findReference(no,strTable,field,strForm,mapper)) return false;
+        if (!findReference(no,field,strForm,mapper)) return false;
         QMap<size_t,size_t> mapMapper;
         mapMapper.insert(mapper,field);
         mapLookups.insert(strForm,mapMapper);
