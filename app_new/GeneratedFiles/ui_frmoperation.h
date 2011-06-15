@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Fri 10. Jun 11:48:00 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Wed 15. Jun 13:08:49 2011
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

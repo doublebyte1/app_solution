@@ -17,10 +17,10 @@ INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     . \
     $(BOOSTDIR) \
-    ../../customctrl_solution/CustomTimeCtrl \
-    ../../customctrl_solution/CustomTimeCtrl/GeneratedFiles \
-    ../../CatchInputCtrl/CatchInputCtrl \
-    ../../CatchInputCtrl/CatchInputCtrl/GeneratedFiles
+    $(PROJDIR)/customctrl_solution/CustomTimeCtrl \
+    $(PROJDIR)/customctrl_solution/CustomTimeCtrl/GeneratedFiles \
+    $(PROJDIR)/CatchInputCtrl/CatchInputCtrl \
+    $(PROJDIR)/CatchInputCtrl/CatchInputCtrl/GeneratedFiles
 LIBS += -L"$(QTDIR)/plugins/designer" \
     -lcustomtimectrld \
     -lCatchInputCtrld
