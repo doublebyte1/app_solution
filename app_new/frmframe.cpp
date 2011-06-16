@@ -66,7 +66,7 @@ FrmFrame::~FrmFrame()
 {
     if (tRefFrame!=0) delete tRefFrame;
     if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
-    if(tFrameTime!=0) delete tFrameTime;
+    if (tFrameTime!=0) delete tFrameTime;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
     if (mapperStartDt!=0) delete mapperStartDt;
@@ -159,7 +159,7 @@ void FrmFrame::onShowFrameDetails()
 void FrmFrame::initMappers()
 {
     if (tRefFrame==0) return ;
-
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     if (mapper1!=0) delete mapper1;
 
     mapper1= new QDataWidgetMapper(this);
@@ -206,7 +206,6 @@ void FrmFrame::initMappers()
     mapper1->toLast();
     mapper2->toLast();
 
-    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapper2 << mapperStartDt << mapperEndDt;
     m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
@@ -222,7 +221,7 @@ bool FrmFrame::getCurrentFrame(int& id)
     return true;
 }
 
-void FrmFrame::reallyApply()
+bool FrmFrame::reallyApply()
 {
     bool bError=false;
 
@@ -318,7 +317,9 @@ void FrmFrame::reallyApply()
         emit showStatus(tr("Record successfully inserted in the database!"));
         m_submitted=true;
         updateSample();//update sample here, because of the save
+        return true;
     }
+    else return false;
 }
 
 

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Thu 16. Jun 11:01:15 2011
+** Created: Thu 16. Jun 16:37:53 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,19 +33,20 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
  // slots: signature, parameters, type, tag, flags
       16,   15,   15,   15, 0x08,
       37,   31,   15,   15, 0x08,
-      73,   66,   61,   15, 0x08,
-     113,  105,   15,   15, 0x08,
-     135,   15,   15,   15, 0x08,
-     156,   15,   15,   15, 0x08,
-     174,   15,   15,   15, 0x08,
+      61,   15,   15,   15, 0x08,
+      84,   15,   15,   15, 0x08,
+     117,  109,   15,   15, 0x08,
+     139,   15,   15,   15, 0x08,
+     160,   15,   15,   15, 0x08,
+     178,   15,   15,   15, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmMinorStrata[] = {
     "FrmMinorStrata\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0bool\0button\0"
-    "onButtonClick(QAbstractButton*)\0bActive\0"
+    "previewRow(QModelIndex)\0blockCustomDateCtrls()\0"
+    "unblockCustomDateCtrls()\0bActive\0"
     "setActiveReason(bool)\0disableReasonCombo()\0"
     "onItemSelection()\0onShowFrameDetails()\0"
 };
@@ -83,15 +84,15 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: createRecord(); break;
         case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 3: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 4: disableReasonCombo(); break;
-        case 5: onItemSelection(); break;
-        case 6: onShowFrameDetails(); break;
+        case 2: blockCustomDateCtrls(); break;
+        case 3: unblockCustomDateCtrls(); break;
+        case 4: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: disableReasonCombo(); break;
+        case 6: onItemSelection(); break;
+        case 7: onShowFrameDetails(); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

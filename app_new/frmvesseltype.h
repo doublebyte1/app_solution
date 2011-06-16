@@ -38,11 +38,11 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         //! On Button Click
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   onButtonClick(QAbstractButton * button);
+        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   onItemSelection();
 
     private:
-        void                                   reallyApply(){;}
+        bool                                   reallyApply();
         //! Set Header widget
         /*! Reimplemented from the genericTab base class
         */
@@ -92,5 +92,6 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         QSqlRelationalTableModel*              tSVesselTypes;
         NullRelationalDelegate*                nullDellegate;
         QDataWidgetMapper*                     mapper1;
+        MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMVESSELTYPE_H

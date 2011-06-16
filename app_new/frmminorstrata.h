@@ -31,7 +31,9 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
     private slots:
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
-        bool                                   onButtonClick(QAbstractButton * button);
+        //bool                                   onButtonClick(QAbstractButton * button);
+        void                                   blockCustomDateCtrls();
+        void                                   unblockCustomDateCtrls();
 
         void                                   setActiveReason(bool bActive);
         void                                   disableReasonCombo();
@@ -40,7 +42,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   onShowFrameDetails();
 
     private:
-        void                                   reallyApply(){;}
+        bool                                   reallyApply();
         void                                   setPreviewQuery();
         void                                   filterModel4Combo();
         void                                   uI4NewRecord();
@@ -66,5 +68,6 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         ButtonGroup*                           buttonGroup;
+        MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMMINORSTRATA_H

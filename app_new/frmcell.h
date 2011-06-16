@@ -40,13 +40,14 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         //! On Button Click
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   onButtonClick(QAbstractButton * button);
+        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   onShowFrameDetails();
         void                                   onItemSelection();
-
+        void                                   blockCustomDateCtrls();
+        void                                   unblockCustomDateCtrls();
 
     private:
-        void                                   reallyApply(){;}
+        bool                                   reallyApply();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */
@@ -96,5 +97,6 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
+        MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMCELL_H

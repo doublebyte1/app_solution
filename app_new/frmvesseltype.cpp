@@ -12,6 +12,7 @@ PreviewTab(3,inSample,inTDateTime,tr("Vessel Type"), ruleCheckerPtr, parent, fla
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
+    m_mapperBinderPtr=0;
     mapper1=0;
     tSVesselTypes=0;
     viewVesselTypes=0;
@@ -20,12 +21,16 @@ PreviewTab(3,inSample,inTDateTime,tr("Vessel Type"), ruleCheckerPtr, parent, fla
     initModels();
     initUI();
     initMappers();
+
+    //signal for the rule checker default values
+//    emit addRecord();
 }
 
 FrmVesselType::~FrmVesselType()
 {
     if (tSVesselTypes!=0) delete tSVesselTypes;
     if (nullDellegate!=0) delete nullDellegate;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (viewVesselTypes!=0) delete viewVesselTypes;
 }
@@ -42,6 +47,7 @@ void FrmVesselType::initMappers()
 
 void FrmVesselType::initMapper1()
 {
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -72,6 +78,12 @@ void FrmVesselType::initMapper1()
     mapper1->addMapping(spinOC, 10);
 
     mapper1->addMapping(textComments,11);
+/*
+    QList<QDataWidgetMapper*> lMapper;
+    lMapper << mapper1;
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    if (!initBinder(m_mapperBinderPtr))
+        emit showError(tr("Could not init binder!"));*/
 }
 
 void FrmVesselType::previewRow(QModelIndex index)
@@ -123,6 +135,37 @@ void FrmVesselType::beforeShow()
     initVesselTypeModel();
 }
 
+bool FrmVesselType::reallyApply()
+{
+        bool bError=false;
+
+        if (mapper1->submit()){
+                    bError=!
+                        tSVesselTypes->submitAll();
+                    if (bError){
+                        if (tSVesselTypes->lastError().type()!=QSqlError::NoError)
+                            emit showError(tSVesselTypes->lastError().text());
+                        else
+                            emit showError(tr("Could not write vessel type in the database!"));
+                    }//mapper1->toLast();
+        }else bError=true;
+
+        buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+        //button->setEnabled(bError);
+
+        emit lockControls(!bError,m_lWidgets);
+        if (!bError){
+            buttonBox->button(QDialogButtonBox::Apply)->hide();
+        }else{
+            buttonBox->button(QDialogButtonBox::Apply)->show();
+        }
+
+        if (!bError){
+            bError=afterApply();
+        }
+        return !bError;
+}
+/*
 bool FrmVesselType::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
@@ -162,6 +205,7 @@ bool FrmVesselType::onButtonClick(QAbstractButton* button)
     }else return false;
     return false;
 }
+*/
 
 void FrmVesselType::uI4NewRecord()
 {

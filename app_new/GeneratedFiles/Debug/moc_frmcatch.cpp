@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcatch.h'
 **
-** Created: Thu 16. Jun 11:01:20 2011
+** Created: Thu 16. Jun 16:37:55 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmCatch[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,17 +33,14 @@ static const uint qt_meta_data_FrmCatch[] = {
  // slots: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x08,
       31,   25,    9,    9, 0x08,
-      67,   60,   55,    9, 0x08,
-      99,    9,    9,    9, 0x08,
+      55,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmCatch[] = {
     "FrmCatch\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0bool\0button\0"
-    "onButtonClick(QAbstractButton*)\0"
-    "onItemSelection()\0"
+    "previewRow(QModelIndex)\0onItemSelection()\0"
 };
 
 const QMetaObject FrmCatch::staticMetaObject = {
@@ -79,12 +76,10 @@ int FrmCatch::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: createRecord(); break;
         case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 3: onItemSelection(); break;
+        case 2: onItemSelection(); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 3;
     }
     return _id;
 }

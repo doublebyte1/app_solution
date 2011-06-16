@@ -37,11 +37,11 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         //! On Button Click
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   onButtonClick(QAbstractButton * button);
+        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   onItemSelection();
 
     private:
-        void                                   reallyApply(){;}
+        bool                                   reallyApply();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */
@@ -93,5 +93,6 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         QSqlRelationalTableModel*              tCatch;
         QSqlQueryModel*                        viewCatch;
         QDataWidgetMapper*                     mapper1;
+        MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMCATCH_H

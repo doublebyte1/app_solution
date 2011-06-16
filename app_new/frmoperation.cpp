@@ -6,6 +6,8 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"), ruleCheckerPtr, paren
 
     setupUi(this);
 
+    blockCustomDateCtrls();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 
@@ -15,6 +17,7 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"), ruleCheckerPtr, paren
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
+    m_mapperBinderPtr=0;
     tOperations=0;
     tOpCat=0;
     tRefCat=0;
@@ -28,6 +31,12 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"), ruleCheckerPtr, paren
     initModels();
     initUI();
     initMappers();
+
+    //connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
+      //  SLOT(unblockCustomDateCtrls()));
+
+    //signal for the rule checker default values
+    //emit addRecord();
 }
 
 FrmOperation::~FrmOperation()
@@ -38,6 +47,7 @@ FrmOperation::~FrmOperation()
     if (tOperations!=0) delete tOperations;
     if (viewOperations!=0) delete viewOperations;
     if (nullDelegate!=0) delete nullDelegate;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
@@ -212,6 +222,7 @@ void FrmOperation::initMapper1()
 {
     emit blockCatchUISignals(true);
 
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -269,8 +280,28 @@ void FrmOperation::initMapper1()
     mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 20);
 
     mapper1->addMapping(textComments,19);
-
+/*
+    QList<QDataWidgetMapper*> lMapper;
+    lMapper << mapper1 << mapperStartDt << mapperEndDt;
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    if (!initBinder(m_mapperBinderPtr))
+        emit showError(tr("Could not init binder!"));
+*/
     emit blockCatchUISignals(false);
+}
+
+void FrmOperation::blockCustomDateCtrls()
+{
+    //block signals here because of the rule binder!
+    customDtStart->blockSignals(true);
+    customDtEnd->blockSignals(true);
+}
+
+void FrmOperation::unblockCustomDateCtrls()
+{
+    //block signals here because of the rule binder!
+    customDtStart->blockSignals(false);
+    customDtEnd->blockSignals(false);
 }
 
 void FrmOperation::initMappers()
@@ -299,6 +330,103 @@ void FrmOperation::beforeShow()
     initOperationModel();
 }
 
+bool FrmOperation::reallyApply()
+{
+        bool bError=false;
+
+        if (!listCategories->selectionModel()->hasSelection()){
+            emit showError(tr("You must select one or more commercial categories for this trip!"));
+            bError=true;
+        }else{
+
+            //First insert the dates...
+            if (!mapperStartDt->submit() 
+                || !mapperEndDt->submit()){
+                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_tDateTime->lastError().text());
+                else
+                    emit showError(tr("Could not submit mapper!"));
+                bError=true;
+            }
+            else{
+                if (!m_tDateTime->submitAll()){
+                    if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                        emit showError(m_tDateTime->lastError().text());
+                    else
+                        emit showError(tr("Could not write DateTime in the database!"));
+
+                    bError=true;
+                }
+            }
+
+            while(m_tDateTime->canFetchMore())
+                m_tDateTime->fetchMore();
+
+            int startIdx=m_tDateTime->rowCount()-2;
+            int endIdx=m_tDateTime->rowCount()-1;
+
+            mapperStartDt->setCurrentIndex(startIdx);
+            mapperEndDt->setCurrentIndex(endIdx);
+
+            if (bError) {
+                emit showError(tr("Could not create dates in the database!"));
+            }else{
+
+                int idStart;
+                if (getDtId(startIdx,idStart)){
+                    QModelIndex idxStart=tOperations->index(tOperations->rowCount()-1,2);
+                    if (idxStart.isValid()){
+                        tOperations->setData(idxStart,idStart);
+                    }else bError=true;
+                }else bError=true;
+
+                int idEnd;
+                if (getDtId(endIdx,idEnd)){
+                    QModelIndex idxEnd=tOperations->index(tOperations->rowCount()-1,3);
+                    if (idxEnd.isValid()){
+                        tOperations->setData(idxEnd,idEnd);
+                    }else bError=true;
+                }else bError=true;
+
+            if (mapper1->submit()){
+                bError=!
+                    tOperations->submitAll();
+                    if (bError){
+                        if (tOperations->lastError().type()!=QSqlError::NoError)
+                            emit showError(tOperations->lastError().text());
+                        else
+                            emit showError(tr("Could not write operation in the database!"));
+                    }else{
+                        //Comiting Sampled_Fishing_Operations_Categories
+                        QModelIndex idd=tOperations->index(tOperations->rowCount()-1,0);
+                        multiModelI->setParentId(idd.data().toInt());
+                        if (!multiModelI->list2Model()){
+                            emit showError(tr("Could not associate commercial categories to this fishing operation!"));
+                            bError=true;
+                        }
+
+                    }
+            }
+
+            }
+        }
+        //button->setEnabled(bError);
+        buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+
+        emit lockControls(!bError,m_lWidgets);
+        if (!bError){
+            buttonBox->button(QDialogButtonBox::Apply)->hide();
+        }else{
+            buttonBox->button(QDialogButtonBox::Apply)->show();
+        }
+
+        if (!bError)
+            return afterApply();
+
+    return false;
+}
+
+/*
 bool FrmOperation::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
@@ -403,6 +531,7 @@ bool FrmOperation::onButtonClick(QAbstractButton* button)
 
     return false;
 }
+*/
 
 void FrmOperation::uI4NewRecord()
 {

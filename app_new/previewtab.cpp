@@ -26,6 +26,22 @@ void PreviewTab::setTips(const bool bLogbook)
     lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
+bool PreviewTab::onButtonClick(QAbstractButton* button)
+{
+    if ( m_buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
+    {
+        m_groupDetails->hide();
+        this->m_model->revertAll();
+        return true;
+
+    } else if (m_buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
+
+        emit submit();
+        return true;
+    }
+    else return false;
+}
+
 void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
 {
     m_table=aTable;

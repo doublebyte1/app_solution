@@ -4,6 +4,7 @@
 GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
 QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample), m_title(inStrTitle), m_ruleCheckerPtr(ruleCheckerPtr) {
 
+    //m_mapperBinderPtr=0;
     nullDellegate=0;
 
     connect(this, SIGNAL(lockControls(bool,QList<QWidget*>&)), this,

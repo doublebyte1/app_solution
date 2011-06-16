@@ -13,6 +13,7 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,flags){
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
+    m_mapperBinderPtr=0;
     tAVessel=0;
     tCellVessels=0;
     tStrataVessels=0;
@@ -24,6 +25,9 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,flags){
     initModels();
     initUI();
     initMappers();
+
+    //signal for the rule checker default values
+    //emit addRecord();
 }
 
 FrmVessel::~FrmVessel()
@@ -31,6 +35,7 @@ FrmVessel::~FrmVessel()
     if (tAVessel!=0) delete tAVessel;
     if (viewVessel!=0) delete viewVessel;
     if (nullDelegate!=0) delete nullDelegate;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
     if (tCellVessels!=0) delete tCellVessels;
@@ -160,6 +165,8 @@ void FrmVessel::initUI()
     setHeader();
 
     this->groupDetails->setVisible(false);
+    setGroupDetails(groupDetails);
+    setButtonBox(buttonBox);
     initPreviewTable(tableView,viewVessel);
 
     //initializing the container for the readonly!S
@@ -175,6 +182,7 @@ void FrmVessel::initUI()
 
 void FrmVessel::initMapper1()
 {
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -207,6 +215,12 @@ void FrmVessel::initMapper1()
     mapper1->addMapping(cmbOrigin, 3);
     mapper1->addMapping(cmbStatus, 4);
     mapper1->addMapping(textComments,7);
+/*
+    QList<QDataWidgetMapper*> lMapper;
+    lMapper << mapper1 << mapper2;
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    if (!initBinder(m_mapperBinderPtr))
+        emit showError(tr("Could not init binder!"));*/
 }
 
 void FrmVessel::initMappers()
@@ -303,6 +317,84 @@ bool FrmVessel::comitStrataVessels(int& id)
     return true;
 }
 
+bool FrmVessel::reallyApply()
+{
+    bool bError=false;
+
+    if (mapper1->submit()){
+
+        //setting the vessel source
+        QSqlQuery query;
+        query.prepare( tr("SELECT     ID") +
+                       tr(" FROM         dbo.Ref_Source") +
+                       tr(" WHERE     (Name = :name)") );
+        query.bindValue(0,qApp->translate("frame", (m_sample->bLogBook? strLogbook: strSampling) ));
+
+        if (!query.exec() || query.numRowsAffected()!=1){
+            emit showError(tr("Could not obtain filter for Vessels!"));
+            return false;
+        }
+        query.first();
+
+        while(tAVessel->canFetchMore())
+            tAVessel->fetchMore();
+
+        QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,1);
+        if (!idx.isValid()){
+            emit showError(tr("Could not create a record for this vessel!"));
+            return false;
+        }
+
+        tAVessel->setData(idx,query.value(0).toInt());
+
+        int id_cell, id_strata;
+        if (!comitNonAbstractVessels(m_sample->bLogBook,id_cell,id_strata))
+        {
+            if (tCellVessels->lastError().type()!=QSqlError::NoError)
+                emit showError(tCellVessels->lastError().text());
+            else if (tStrataVessels->lastError().type()!=QSqlError::NoError)
+                emit showError(tStrataVessels->lastError().text());
+            bError=true;
+        }else{
+
+            QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,5);
+            if (!idx.isValid()) return false;
+            tAVessel->setData(idx,id_cell);
+            idx=tAVessel->index(tAVessel->rowCount()-1,6);
+            if (!idx.isValid()) return false;
+            tAVessel->setData(idx,id_strata);
+
+            bError=!
+                tAVessel->submitAll();
+            if (bError){
+                if (tAVessel->lastError().type()!=QSqlError::NoError)
+                    emit showError(tAVessel->lastError().text());
+                else
+                    emit showError(tr("Could not write cell in the database!"));
+            }
+        }
+    }
+
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+    //button->setEnabled(bError);
+
+    emit lockControls(!bError,m_lWidgets);
+    if (!bError){
+        buttonBox->button(QDialogButtonBox::Apply)->hide();
+    }else{
+        buttonBox->button(QDialogButtonBox::Apply)->show();
+    }
+
+    if (!bError)
+        return afterApply();
+
+    mapper1->toLast();
+    mapper2->toLast();
+
+    return false;
+}
+
+/*
 bool FrmVessel::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
@@ -388,7 +480,7 @@ bool FrmVessel::onButtonClick(QAbstractButton* button)
     mapper2->toLast();
     return false;
 }
-
+*/
 void FrmVessel::uI4NewRecord()
 {
     if (!this->groupDetails->isVisible())

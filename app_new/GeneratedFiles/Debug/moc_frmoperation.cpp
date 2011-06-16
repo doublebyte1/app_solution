@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmoperation.h'
 **
-** Created: Thu 16. Jun 11:01:14 2011
+** Created: Thu 16. Jun 16:37:52 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmOperation[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,17 +33,17 @@ static const uint qt_meta_data_FrmOperation[] = {
  // slots: signature, parameters, type, tag, flags
       14,   13,   13,   13, 0x08,
       35,   29,   13,   13, 0x08,
-      71,   64,   59,   13, 0x08,
-     103,   13,   13,   13, 0x08,
+      59,   13,   13,   13, 0x08,
+      77,   13,   13,   13, 0x08,
+     100,   13,   13,   13, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmOperation[] = {
     "FrmOperation\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0bool\0button\0"
-    "onButtonClick(QAbstractButton*)\0"
-    "onItemSelection()\0"
+    "previewRow(QModelIndex)\0onItemSelection()\0"
+    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
 };
 
 const QMetaObject FrmOperation::staticMetaObject = {
@@ -79,12 +79,12 @@ int FrmOperation::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: createRecord(); break;
         case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 3: onItemSelection(); break;
+        case 2: onItemSelection(); break;
+        case 3: blockCustomDateCtrls(); break;
+        case 4: unblockCustomDateCtrls(); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

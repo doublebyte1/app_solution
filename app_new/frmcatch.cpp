@@ -11,6 +11,7 @@ PreviewTab(7,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
+    m_mapperBinderPtr=0;
     tCatch=0;
     viewCatch=0;
     mapper1=0;
@@ -19,6 +20,9 @@ PreviewTab(7,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
     initModels();
     initUI();
     initMappers();
+
+    //signal for the rule checker default values
+    //emit addRecord();
 }
 
 FrmCatch::~FrmCatch()
@@ -26,6 +30,7 @@ FrmCatch::~FrmCatch()
     if (tCatch!=0) delete tCatch;
     if (viewCatch!=0) delete viewCatch;
     if (nullDelegate!=0) delete nullDelegate;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
 }
 
@@ -86,8 +91,6 @@ void FrmCatch::setPreviewQuery()
         return;
     }
 
-    qDebug() << query.numRowsAffected() << endl;
-
     viewCatch->setQuery(query);
 
     tableView->hideColumn(0);
@@ -123,6 +126,8 @@ void FrmCatch::initUI()
 void FrmCatch::initMapper1()
 {
     emit blockCatchUISignals(true);
+
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
 
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
@@ -180,8 +185,13 @@ void FrmCatch::initMapper1()
     mapper1->addMapping(cmbUnits, 14);
 
     mapper1->addMapping(textComments,15);
-
-    emit blockCatchUISignals(false);
+/*
+    QList<QDataWidgetMapper*> lMapper;
+    lMapper << mapper1;
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    if (!initBinder(m_mapperBinderPtr))
+        emit showError(tr("Could not init binder!"));
+*/
 }
 
 void FrmCatch::initMappers()
@@ -197,6 +207,38 @@ void FrmCatch::beforeShow()
     initCatchModel();
 }
 
+bool FrmCatch::reallyApply()
+{
+    bool bError=false;
+
+    if (mapper1->submit()){
+        bError=!
+            tCatch->submitAll();
+            if (bError){
+                if (tCatch->lastError().type()!=QSqlError::NoError)
+                    emit showError(tCatch->lastError().text());
+                else
+                    emit showError(tr("Could not write operation in the database!"));
+            }
+    }else bError=true;
+
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+    //button->setEnabled(bError);
+
+    emit lockControls(!bError,m_lWidgets);
+    if (!bError){
+        buttonBox->button(QDialogButtonBox::Apply)->hide();
+    }else{
+        buttonBox->button(QDialogButtonBox::Apply)->show();
+    }
+
+    if (!bError)
+        return afterApply();
+
+    return false;
+}
+
+/*
 bool FrmCatch::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
@@ -236,7 +278,7 @@ bool FrmCatch::onButtonClick(QAbstractButton* button)
 
     return false;
 }
-
+*/
 void FrmCatch::uI4NewRecord()
 {
     if (!this->groupDetails->isVisible())

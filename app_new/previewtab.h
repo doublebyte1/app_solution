@@ -35,6 +35,10 @@ class PreviewTab : public GenericTab
       \sa setPreviewTable(QTableView* aTable), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
     */
         void                                  setPreviewModel(QSqlRelationalTableModel* aModel){m_model=aModel;}
+
+        void                                  setGroupDetails(QGroupBox* aGroupDetails){m_groupDetails=aGroupDetails;}
+        void                                  setButtonBox(QDialogButtonBox* aButtonBox){m_buttonBox=aButtonBox;}
+
     //! A pure virtual member.
     /*! In this function we set the table that displays the records;
       \sa setPreviewModel(QSqlRelationalTableModel* aModel), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
@@ -102,7 +106,7 @@ class PreviewTab : public GenericTab
         /*! Slot that implements the two buttons on the preview/edit dialog: close and apply
           \sa createRecord(), previewRow(QModelIndex index), onItemSelection()
         */
-        virtual bool                          onButtonClick(QAbstractButton * button)=0;
+        virtual bool                          onButtonClick(QAbstractButton * button);
         //! A pure virtual member.
         /*! Slot that implements the behaviour corresponding to select an item on the table
         (most of the times, it enables the pushNext button);
@@ -124,5 +128,8 @@ class PreviewTab : public GenericTab
 
         QSqlRelationalTableModel*             m_model;/**< pointer for the main model in this form */
         QTableView*                           m_table;/**< pointer for the table in this form */
+        QDialogButtonBox*                     m_buttonBox;/**< pointer for the buttonBox in this form */
+        QGroupBox*                            m_groupDetails;/**< pointer for the detail groupbox in this form */
+
 };
 #endif //PREVIEWTAB_H

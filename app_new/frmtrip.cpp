@@ -7,6 +7,8 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, fl
 
     setupUi(this);
 
+    blockCustomDateCtrls();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 
@@ -16,6 +18,7 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, fl
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
+    m_mapperBinderPtr=0;
     tTrips=0;
     tRefGears=0;
     tTripGears=0;
@@ -29,6 +32,12 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, fl
     initModels();
     initUI();
     initMappers();
+
+    //connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
+      //  SLOT(unblockCustomDateCtrls()));
+
+    //signal for the rule checker default values
+    //emit addRecord();
 }
 
 FrmTrip::~FrmTrip()
@@ -38,6 +47,7 @@ FrmTrip::~FrmTrip()
     if (tTripGears!=0) delete tTripGears;
     if (viewTrips!=0) delete viewTrips;
     if (nullDelegate!=0) delete nullDelegate;
+    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (multiModelI!=0) delete multiModelI;
     if (mapperStartDt!=0) delete mapperStartDt;
@@ -216,6 +226,7 @@ void FrmTrip::initMapper1()
 {
     emit blockCatchUISignals(true);
 
+    if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     if (mapper1!=0) delete mapper1;
     mapper1= new QDataWidgetMapper(this);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -284,8 +295,28 @@ void FrmTrip::initMapper1()
     mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 21);
 
     mapper1->addMapping(cmbFishingZone, 22);
-
+/*
+    QList<QDataWidgetMapper*> lMapper;
+    lMapper << mapper1 << mapperStartDt << mapperEndDt;
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    if (!initBinder(m_mapperBinderPtr))
+        emit showError(tr("Could not init binder!"));
+*/
     emit blockCatchUISignals(false);
+}
+
+void FrmTrip::blockCustomDateCtrls()
+{
+    //block signals here because of the rule binder!
+    customDtStart->blockSignals(true);
+    customDtEnd->blockSignals(true);
+}
+
+void FrmTrip::unblockCustomDateCtrls()
+{
+    //block signals here because of the rule binder!
+    customDtStart->blockSignals(false);
+    customDtEnd->blockSignals(false);
 }
 
 void FrmTrip::initMappers()
@@ -317,6 +348,101 @@ void FrmTrip::beforeShow()
 
 }
 
+bool FrmTrip::reallyApply()
+{
+    bool bError=false;
+
+    if (!listGears->selectionModel()->hasSelection()){
+        emit showError(tr("You must select one or more gears for this trip!"));
+        bError=true;
+    }else{
+
+        //First insert the dates...
+        if (!mapperStartDt->submit() 
+            || !mapperEndDt->submit()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
+            else
+                emit showError(tr("Could not submit mapper!"));
+            bError=true;
+        }
+        else{
+            if (!m_tDateTime->submitAll()){
+                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_tDateTime->lastError().text());
+                else
+                    emit showError(tr("Could not write DateTime in the database!"));
+
+                bError=true;
+            }
+        }
+
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
+
+        int startIdx=m_tDateTime->rowCount()-2;
+        int endIdx=m_tDateTime->rowCount()-1;
+
+        mapperStartDt->setCurrentIndex(startIdx);
+        mapperEndDt->setCurrentIndex(endIdx);
+
+        if (bError) {
+            emit showError(tr("Could not create dates in the database!"));
+        }else{
+
+            int idStart;
+            if (getDtId(startIdx,idStart)){
+                QModelIndex idxStart=tTrips->index(tTrips->rowCount()-1,2);
+                if (idxStart.isValid()){
+                    tTrips->setData(idxStart,idStart);
+                }else bError=true;
+            }else bError=true;
+
+            int idEnd;
+            if (getDtId(endIdx,idEnd)){
+                QModelIndex idxEnd=tTrips->index(tTrips->rowCount()-1,3);
+                if (idxEnd.isValid()){
+                    tTrips->setData(idxEnd,idEnd);
+                }else bError=true;
+            }else bError=true;
+
+        if (mapper1->submit()){
+            bError=!
+                    tTrips->submitAll();
+            if (bError){
+                    if (tTrips->lastError().type()!=QSqlError::NoError)
+                        emit showError(tTrips->lastError().text());
+                    else
+                        emit showError(tr("Could not write cell in the database!"));
+            }else{
+                //Comiting Sampled_Fishing_Trips_Gears
+                QModelIndex idd=tTrips->index(tTrips->rowCount()-1,0);
+                multiModelI->setParentId(idd.data().toInt());
+                if (!multiModelI->list2Model()){
+                    emit showError(tr("Could not associate gears to this fishing trip!"));
+                    bError=true;
+                }
+            }
+        }
+        }
+    }
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+    //button->setEnabled(bError);
+
+    emit lockControls(!bError,m_lWidgets);
+    if (!bError){
+        buttonBox->button(QDialogButtonBox::Apply)->hide();
+    }else{
+        buttonBox->button(QDialogButtonBox::Apply)->show();
+    }
+
+    if (!bError)
+        return afterApply();
+
+    return false;
+}
+
+/*
 bool FrmTrip::onButtonClick(QAbstractButton* button)
 {
     if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
@@ -420,6 +546,7 @@ bool FrmTrip::onButtonClick(QAbstractButton* button)
 
     return false;
 }
+*/
 
 void FrmTrip::uI4NewRecord()
 {

@@ -43,7 +43,7 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   submitted(int index, bool bOk);
 
     private:
-        void                                   reallyApply();
+        bool                                   reallyApply();
         void                                   setReadOnly(const bool bRO);
         bool                                   updateSample();
         bool                                   getCurrentFrame(int& id);
