@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmprjpage.ui'
 **
-** Created: Wed 15. Jun 13:08:49 2011
-**      by: Qt User Interface Compiler version 4.6.3
+** Created: Thu 16. Jun 11:01:26 2011
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

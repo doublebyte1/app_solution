@@ -1,5 +1,6 @@
 #include "mapperrulebinder.h"
 #include "customtimectrl.h"
+#include "sql.h"
 
 MapperRuleBinder::MapperRuleBinder( RuleChecker* ruleChecker, QList<QDataWidgetMapper*> aLMapper, const QString strForm, QWidget *parent): 
 AbstractRuleBinder(ruleChecker, strForm, parent), lMapper(aLMapper){
@@ -155,13 +156,31 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
                     (eType==RuleChecker::VALIDATION && it.value()->m_idxField==field &&
                     it.value()->m_idxMapper == mapper) ){
 
-                    QWidget* aWidget=lMapper.at(it.value()->m_idxMapper)->mappedWidgetAt(it.value()->m_idxField);
-                    if ( aWidget!=0 ) {
-                                // Found a widget mapped to this field: let's have a look at the values!
-                                MapRules::const_iterator itt = map.find(it.key());
-                                if (itt!=map.end())
-                                    if (!applyRule(itt,aWidget,eType,varPar)) return false;
-                    }
+                        MapRules::const_iterator itt = map.find(it.key());
+                        if (itt!=map.end()){
+
+                            bool bHasWidget=true;
+                            QWidget* aWidget;
+                            if (eType==RuleChecker::PRESUBMIT){
+                                //we tolerate n/a values for pre-submit values (but we can also pass a widget if we want!)
+                                QString strNullValue;
+                                if (!getNullForType(tr("smallint"),tr("n/a"),strNullValue))
+                                                                                    return false;
+                                int intNullVal=QVariant(strNullValue).toInt();
+
+                                if (it.value()->m_idxMapper==intNullVal || it.value()->m_idxField==intNullVal)
+                                    bHasWidget=false;
+                            }
+
+                            if (bHasWidget)
+                                aWidget=lMapper.at(it.value()->m_idxMapper)->mappedWidgetAt(it.value()->m_idxField);
+                            else
+                                aWidget=0;
+
+                            if ( aWidget!=0 || eType==RuleChecker::PRESUBMIT) {
+                                if (!applyRule(itt,aWidget,eType,varPar)) return false;
+                            }
+                        }
 
         }
         ++it;
@@ -250,25 +269,27 @@ bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QW
                 //QString strError=tr("This value is not allowed: ").append(eQuery.value(0).toString());
                 QString strError=eQuery.value(0).toString();
                 emit showError(strError);
-                aWidget->setFocus();
-                if ( qobject_cast<QLineEdit*>(aWidget)!=0 )
-                    qobject_cast<QLineEdit*>(aWidget)->selectAll();
-                else if ( qobject_cast<CustomTimeCtrl*>(aWidget)!=0 ){
-                    qobject_cast<CustomTimeCtrl*>(aWidget)->selectAll();
-                    qobject_cast<CustomTimeCtrl*>(aWidget)->setFocus();
-                }
-                else if ( qobject_cast<QComboBox*>(aWidget)!=0 ){
-                    qobject_cast<QComboBox*>(aWidget)->setFocus();
-                    if (qobject_cast<QComboBox*>(aWidget)->isEditable())
-                        qobject_cast<QComboBox*>(aWidget)->lineEdit()->selectAll();
-                }
-                else if ( qobject_cast<QSpinBox*>(aWidget)!=0 ){
-                    qobject_cast<QSpinBox*>(aWidget)->setFocus();
-                    qobject_cast<QSpinBox*>(aWidget)->selectAll();
-                }
-                // Note: do we want to validate a RadioButton?
-                else return false;
 
+                if (aWidget!=0){
+                    aWidget->setFocus();
+                    if ( qobject_cast<QLineEdit*>(aWidget)!=0 )
+                        qobject_cast<QLineEdit*>(aWidget)->selectAll();
+                    else if ( qobject_cast<CustomTimeCtrl*>(aWidget)!=0 ){
+                        qobject_cast<CustomTimeCtrl*>(aWidget)->setFocus();
+                        qobject_cast<CustomTimeCtrl*>(aWidget)->selectAll();
+                    }
+                    else if ( qobject_cast<QComboBox*>(aWidget)!=0 ){
+                        qobject_cast<QComboBox*>(aWidget)->setFocus();
+                        if (qobject_cast<QComboBox*>(aWidget)->isEditable())
+                            qobject_cast<QComboBox*>(aWidget)->lineEdit()->selectAll();
+                    }
+                    else if ( qobject_cast<QSpinBox*>(aWidget)!=0 ){
+                        qobject_cast<QSpinBox*>(aWidget)->setFocus();
+                        qobject_cast<QSpinBox*>(aWidget)->selectAll();
+                    }
+                    // Note: do we want to validate a RadioButton?
+                    else return false;
+                }
                 return false;
 
             }else{

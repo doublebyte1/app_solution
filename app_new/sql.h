@@ -745,9 +745,12 @@ static bool getNullForType(const QString strType, const QString strInternalName,
     else if (strType.compare(QObject::tr("nchar(3)"))==0 || strType.compare(QObject::tr("char(3)"))==0){
         strPar=QObject::tr("char3");
     }
-    else if (strType.compare(QObject::tr("smallint"))==0 || strType.compare(QObject::tr("bigint"))==0
+    else if (/*strType.compare(QObject::tr("smallint"))==0 || */strType.compare(QObject::tr("bigint"))==0
         || strType.compare(QObject::tr("int"))==0){
         strPar=QObject::tr("int");
+    }
+    else if (strType.compare(QObject::tr("smallint"))==0){
+            strPar=QObject::tr("smallint");
     }
     else if (strType.compare(QObject::tr("datetime"))==0){
         strPar=QObject::tr("datetime");
@@ -760,7 +763,7 @@ static bool getNullForType(const QString strType, const QString strInternalName,
     }
     else return false;
 
-    strQuery=QObject::tr("SELECT ") + strPar + QObject::tr(" FROM Null_Replacements WHERE internal_name='")
+    strQuery=QObject::tr("SELECT ") + strPar + QObject::tr(" FROM GL_Null_Replacements WHERE internal_name='")
     + strInternalName + QObject::tr("'");
     query.prepare(strQuery);
 
