@@ -225,6 +225,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="whatsThis">
            <string>Input the number of professional fishermen</string>
           </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
          </widget>
         </item>
         <item>
@@ -262,6 +265,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           </property>
           <property name="whatsThis">
            <string>Input the number of part-time fishermen</string>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
           </property>
          </widget>
         </item>
@@ -409,6 +415,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                <property name="whatsThis">
                 <string>Number of fishing operations (estimated)</string>
                </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
               </widget>
              </item>
              <item row="1" column="5">
@@ -424,6 +433,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                </property>
                <property name="whatsThis">
                 <string>Number of fishing operations (calculated)</string>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
                </property>
               </widget>
              </item>

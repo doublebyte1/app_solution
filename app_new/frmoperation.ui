@@ -271,7 +271,11 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spinNoUnits"/>
+            <widget class="QSpinBox" name="spinNoUnits">
+             <property name="maximum">
+              <number>1000</number>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_7">
@@ -287,7 +291,11 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="doubleSpinSize"/>
+            <widget class="QDoubleSpinBox" name="doubleSpinSize">
+             <property name="maximum">
+              <double>100000000.000000000000000</double>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

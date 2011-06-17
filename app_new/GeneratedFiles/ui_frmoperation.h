@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Thu 16. Jun 16:13:00 2011
+** Created: Fri 17. Jun 17:12:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -264,6 +264,7 @@ public:
 
         spinNoUnits = new QSpinBox(groupGear);
         spinNoUnits->setObjectName(QString::fromUtf8("spinNoUnits"));
+        spinNoUnits->setMaximum(1000);
 
         horizontalLayout_2->addWidget(spinNoUnits);
 
@@ -275,6 +276,7 @@ public:
 
         doubleSpinSize = new QDoubleSpinBox(groupGear);
         doubleSpinSize->setObjectName(QString::fromUtf8("doubleSpinSize"));
+        doubleSpinSize->setMaximum(1e+08);
 
         horizontalLayout_2->addWidget(doubleSpinSize);
 

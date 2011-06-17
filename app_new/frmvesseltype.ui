@@ -186,6 +186,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
        </widget>
       </item>
       <item row="2" column="3">
@@ -198,6 +201,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
         </property>
        </widget>
       </item>
@@ -222,6 +228,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
        </widget>
       </item>
       <item row="3" column="3">
@@ -234,6 +243,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
         </property>
        </widget>
       </item>
@@ -255,6 +267,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
        </widget>
       </item>
       <item row="4" column="3">
@@ -267,6 +282,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
         </property>
        </widget>
       </item>
@@ -288,6 +306,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
        </widget>
       </item>
       <item row="5" column="3">
@@ -300,6 +321,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
         </property>
        </widget>
       </item>

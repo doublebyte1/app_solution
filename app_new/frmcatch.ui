@@ -220,6 +220,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
              <property name="whatsThis">
               <string>Number of individuals on the sample</string>
              </property>
+             <property name="maximum">
+              <number>1000</number>
+             </property>
             </widget>
            </item>
            <item row="1" column="0">
@@ -245,6 +248,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
              </property>
              <property name="whatsThis">
               <string>Weight per sampled individual</string>
+             </property>
+             <property name="maximum">
+              <double>10000000.000000000000000</double>
              </property>
             </widget>
            </item>

@@ -245,16 +245,32 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinNE"/>
+           <widget class="QSpinBox" name="spinNE">
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinAE"/>
+           <widget class="QSpinBox" name="spinAE">
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinIE"/>
+           <widget class="QSpinBox" name="spinIE">
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinOE"/>
+           <widget class="QSpinBox" name="spinOE">
+            <property name="maximum">
+             <number>1000</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -278,12 +294,18 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QSpinBox" name="spinAC">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
             </property>
            </widget>
           </item>
@@ -292,12 +314,18 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             <property name="enabled">
              <bool>false</bool>
             </property>
+            <property name="maximum">
+             <number>1000</number>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QSpinBox" name="spinOC">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>1000</number>
             </property>
            </widget>
           </item>

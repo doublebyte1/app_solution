@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Thu 16. Jun 16:12:59 2011
+** Created: Fri 17. Jun 17:12:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -176,6 +176,7 @@ public:
         spinNE->setObjectName(QString::fromUtf8("spinNE"));
         sizePolicy2.setHeightForWidth(spinNE->sizePolicy().hasHeightForWidth());
         spinNE->setSizePolicy(sizePolicy2);
+        spinNE->setMaximum(1000);
 
         gridLayout->addWidget(spinNE, 2, 2, 1, 1);
 
@@ -184,6 +185,7 @@ public:
         spinNC->setEnabled(false);
         sizePolicy2.setHeightForWidth(spinNC->sizePolicy().hasHeightForWidth());
         spinNC->setSizePolicy(sizePolicy2);
+        spinNC->setMaximum(1000);
 
         gridLayout->addWidget(spinNC, 2, 3, 1, 1);
 
@@ -201,6 +203,7 @@ public:
         spinAE->setObjectName(QString::fromUtf8("spinAE"));
         sizePolicy2.setHeightForWidth(spinAE->sizePolicy().hasHeightForWidth());
         spinAE->setSizePolicy(sizePolicy2);
+        spinAE->setMaximum(1000);
 
         gridLayout->addWidget(spinAE, 3, 2, 1, 1);
 
@@ -209,6 +212,7 @@ public:
         spinAC->setEnabled(false);
         sizePolicy2.setHeightForWidth(spinAC->sizePolicy().hasHeightForWidth());
         spinAC->setSizePolicy(sizePolicy2);
+        spinAC->setMaximum(1000);
 
         gridLayout->addWidget(spinAC, 3, 3, 1, 1);
 
@@ -221,6 +225,7 @@ public:
         spinIE->setObjectName(QString::fromUtf8("spinIE"));
         sizePolicy2.setHeightForWidth(spinIE->sizePolicy().hasHeightForWidth());
         spinIE->setSizePolicy(sizePolicy2);
+        spinIE->setMaximum(1000);
 
         gridLayout->addWidget(spinIE, 4, 2, 1, 1);
 
@@ -229,6 +234,7 @@ public:
         spinIC->setEnabled(false);
         sizePolicy2.setHeightForWidth(spinIC->sizePolicy().hasHeightForWidth());
         spinIC->setSizePolicy(sizePolicy2);
+        spinIC->setMaximum(1000);
 
         gridLayout->addWidget(spinIC, 4, 3, 1, 1);
 
@@ -241,6 +247,7 @@ public:
         spinOE->setObjectName(QString::fromUtf8("spinOE"));
         sizePolicy2.setHeightForWidth(spinOE->sizePolicy().hasHeightForWidth());
         spinOE->setSizePolicy(sizePolicy2);
+        spinOE->setMaximum(1000);
 
         gridLayout->addWidget(spinOE, 5, 2, 1, 1);
 
@@ -249,6 +256,7 @@ public:
         spinOC->setEnabled(false);
         sizePolicy2.setHeightForWidth(spinOC->sizePolicy().hasHeightForWidth());
         spinOC->setSizePolicy(sizePolicy2);
+        spinOC->setMaximum(1000);
 
         gridLayout->addWidget(spinOC, 5, 3, 1, 1);
 

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvessel.ui'
 **
-** Created: Thu 16. Jun 16:12:59 2011
+** Created: Fri 17. Jun 17:12:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -227,12 +227,14 @@ public:
 
         spinET = new QSpinBox(groupFT);
         spinET->setObjectName(QString::fromUtf8("spinET"));
+        spinET->setMaximum(1000);
 
         gridLayout->addWidget(spinET, 1, 1, 1, 1);
 
         spinCT = new QSpinBox(groupFT);
         spinCT->setObjectName(QString::fromUtf8("spinCT"));
         spinCT->setEnabled(false);
+        spinCT->setMaximum(1000);
 
         gridLayout->addWidget(spinCT, 1, 2, 1, 1);
 

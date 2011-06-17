@@ -97,6 +97,6 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
-        MapperRuleBinder*                      m_mapperBinderPtr;
+        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMCELL_H

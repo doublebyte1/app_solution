@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Thu 16. Jun 16:12:59 2011
+** Created: Fri 17. Jun 17:12:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -260,21 +260,25 @@ public:
 
         spinNE = new QSpinBox(groupDetails);
         spinNE->setObjectName(QString::fromUtf8("spinNE"));
+        spinNE->setMaximum(1000);
 
         verticalLayout_2->addWidget(spinNE);
 
         spinAE = new QSpinBox(groupDetails);
         spinAE->setObjectName(QString::fromUtf8("spinAE"));
+        spinAE->setMaximum(1000);
 
         verticalLayout_2->addWidget(spinAE);
 
         spinIE = new QSpinBox(groupDetails);
         spinIE->setObjectName(QString::fromUtf8("spinIE"));
+        spinIE->setMaximum(1000);
 
         verticalLayout_2->addWidget(spinIE);
 
         spinOE = new QSpinBox(groupDetails);
         spinOE->setObjectName(QString::fromUtf8("spinOE"));
+        spinOE->setMaximum(1000);
 
         verticalLayout_2->addWidget(spinOE);
 
@@ -293,24 +297,28 @@ public:
         spinNC = new QSpinBox(groupDetails);
         spinNC->setObjectName(QString::fromUtf8("spinNC"));
         spinNC->setEnabled(false);
+        spinNC->setMaximum(1000);
 
         verticalLayout_3->addWidget(spinNC);
 
         spinAC = new QSpinBox(groupDetails);
         spinAC->setObjectName(QString::fromUtf8("spinAC"));
         spinAC->setEnabled(false);
+        spinAC->setMaximum(1000);
 
         verticalLayout_3->addWidget(spinAC);
 
         spinIC = new QSpinBox(groupDetails);
         spinIC->setObjectName(QString::fromUtf8("spinIC"));
         spinIC->setEnabled(false);
+        spinIC->setMaximum(1000);
 
         verticalLayout_3->addWidget(spinIC);
 
         spinOC = new QSpinBox(groupDetails);
         spinOC->setObjectName(QString::fromUtf8("spinOC"));
         spinOC->setEnabled(false);
+        spinOC->setMaximum(1000);
 
         verticalLayout_3->addWidget(spinOC);
 

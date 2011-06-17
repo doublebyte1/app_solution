@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Thu 16. Jun 16:12:59 2011
+** Created: Fri 17. Jun 17:12:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -211,6 +211,7 @@ public:
         sizePolicy4.setVerticalStretch(0);
         sizePolicy4.setHeightForWidth(spinProf->sizePolicy().hasHeightForWidth());
         spinProf->setSizePolicy(sizePolicy4);
+        spinProf->setMaximum(1000);
 
         horizontalLayout_11->addWidget(spinProf);
 
@@ -226,6 +227,7 @@ public:
         spinPart->setObjectName(QString::fromUtf8("spinPart"));
         sizePolicy4.setHeightForWidth(spinPart->sizePolicy().hasHeightForWidth());
         spinPart->setSizePolicy(sizePolicy4);
+        spinPart->setMaximum(1000);
 
         horizontalLayout_11->addWidget(spinPart);
 
@@ -312,12 +314,14 @@ public:
 
         spinNOE = new QSpinBox(groupTotals);
         spinNOE->setObjectName(QString::fromUtf8("spinNOE"));
+        spinNOE->setMaximum(1000);
 
         gridLayout_2->addWidget(spinNOE, 1, 4, 1, 1);
 
         spinNOC = new QSpinBox(groupTotals);
         spinNOC->setObjectName(QString::fromUtf8("spinNOC"));
         spinNOC->setEnabled(false);
+        spinNOC->setMaximum(1000);
 
         gridLayout_2->addWidget(spinNOC, 1, 5, 1, 1);
 

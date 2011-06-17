@@ -18,7 +18,7 @@ PreviewTab(2,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent, flags){
     connect(toolButton, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     tSampCell=0;
     viewCell=0;
     mapper1=0;
@@ -29,16 +29,11 @@ PreviewTab(2,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent, flags){
     initUI();
     initMappers();
 
-    //connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
-        //SLOT(unblockCustomDateCtrls()));
-
-    //signal for the rule checker default values
-    //emit addRecord();
 }
 
 FrmCell::~FrmCell()
 {
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
@@ -183,6 +178,8 @@ void FrmCell::initUI()
         SLOT(amendDateTimeType(bool,int)));
 
     initPreviewTable(tableView,viewCell);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbLS;
@@ -230,12 +227,15 @@ void FrmCell::initMapper1()
     mapper1->addMapping(spinOC, 12);
 
     mapper1->addMapping(textComments,13);
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapperStartDt << mapperEndDt;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
-        emit showError(tr("Could not init binder!"));*/
+        emit showError(tr("Could not init binder!"));
+
+    connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
+        SLOT(unblockCustomDateCtrls()));
 }
 
 void FrmCell::blockCustomDateCtrls()
@@ -283,7 +283,6 @@ void FrmCell::beforeShow()
 
 bool FrmCell::reallyApply()
 {
-
         bool bError=false;
 
         //First insert the dates...
@@ -537,6 +536,9 @@ void FrmCell::createRecord()
     tSampCell->setData(idx,m_sample->minorStrataId);//id_minor_strata
 
     uI4NewRecord();//init UI
+
+    //signal for the rule checker default values
+    emit addRecord();
 }
 
 void FrmCell::initCellModel()

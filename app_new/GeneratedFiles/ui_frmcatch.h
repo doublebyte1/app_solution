@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcatch.ui'
 **
-** Created: Thu 16. Jun 16:12:59 2011
+** Created: Fri 17. Jun 17:12:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -208,6 +208,7 @@ public:
 
         spinNoInd = new QSpinBox(groupGear);
         spinNoInd->setObjectName(QString::fromUtf8("spinNoInd"));
+        spinNoInd->setMaximum(1000);
 
         gridLayout->addWidget(spinNoInd, 0, 1, 1, 1);
 
@@ -219,6 +220,7 @@ public:
 
         doubleSpinWeight = new QDoubleSpinBox(groupGear);
         doubleSpinWeight->setObjectName(QString::fromUtf8("doubleSpinWeight"));
+        doubleSpinWeight->setMaximum(1e+07);
 
         gridLayout->addWidget(doubleSpinWeight, 1, 1, 1, 1);
 
