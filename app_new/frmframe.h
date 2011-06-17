@@ -59,6 +59,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrameDetails::Mode                  m_curMode;
         bool                                   m_submitted;
         bool                                   m_tabsDefined;
-        MapperRuleBinder*                      m_mapperBinderPtr;
+        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMFRAME_H

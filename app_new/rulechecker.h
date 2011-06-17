@@ -27,6 +27,9 @@ static const char *strNothing =
 static const char *StrRulePtr = 
      QT_TRANSLATE_NOOP("RULE", "ptr");/**< Keyword for calling a reference value on [UI_Rule_Ptrs] */
 
+static const char *StrRuleSample = 
+     QT_TRANSLATE_NOOP("RULE", "smp");/**< Keyword for calling a sample reference on a rule */
+
 //! cell struct
 /*! This structure references a cell (field index, form, mapper index), and optionally a linked cell that origins the update;
 */

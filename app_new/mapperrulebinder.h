@@ -3,7 +3,6 @@
 
 //#include <QWidget>
 #include "abstractrulebinder.h"
-//#include "timestampdateedit.h"
 #include "buttongroup.h"
 
   #if defined(WIN32) && defined(_DEBUG)
@@ -23,7 +22,7 @@ class MapperRuleBinder : public AbstractRuleBinder
     Q_OBJECT
 
     public:
-        MapperRuleBinder( RuleChecker* ruleChecker, QList<QDataWidgetMapper*> alMapper, const QString strForm, QWidget *parent = 0);
+        MapperRuleBinder( RuleChecker* ruleChecker, Sample* sample, QList<QDataWidgetMapper*> alMapper, const QString strForm, QWidget *parent = 0);
         ~MapperRuleBinder();
 
         QList<QDataWidgetMapper*>&     getLMapper(){return lMapper;}

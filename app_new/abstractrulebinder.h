@@ -4,6 +4,8 @@
 #include <QObject>
 #include "rulechecker.h"
 
+struct Sample;
+
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
      #define new DEBUG_NEW
@@ -21,7 +23,7 @@ class AbstractRuleBinder : public QObject
     Q_OBJECT
 
     public:
-        AbstractRuleBinder( RuleChecker* ruleChecker, const QString strForm, QWidget *parent = 0);
+        AbstractRuleBinder( RuleChecker* ruleChecker, Sample* sample, const QString strForm, QWidget *parent = 0);
 
         void                            init();
         RuleChecker*                    getRuleCheckerPtr(){return ruleCheckerPtr;}
@@ -75,7 +77,11 @@ class AbstractRuleBinder : public QObject
         bool                            parseRuleReferences(QString& strRule);
 
         RuleChecker*                    ruleCheckerPtr;//!< Pointer to the rule checker
+        Sample*                         m_sample;//!< Pointer to the sample structure (so that we can get the current values)
         QString                         m_strForm;
+
+    private:
+        bool                            parseSample(const QString strRule, QMap<QString,QString>& mapLookups);
 
     private slots:
         //! Default Value Rules

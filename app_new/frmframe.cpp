@@ -8,7 +8,7 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     tRefFrame=0;
     tFrameTime=0;
     m_tabsDefined=false;
@@ -65,7 +65,7 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 FrmFrame::~FrmFrame()
 {
     if (tRefFrame!=0) delete tRefFrame;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (tFrameTime!=0) delete tFrameTime;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
@@ -208,7 +208,7 @@ void FrmFrame::initMappers()
 
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapper2 << mapperStartDt << mapperEndDt;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
 }

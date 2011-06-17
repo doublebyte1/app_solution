@@ -1,7 +1,8 @@
 #include "abstractrulebinder.h"
+#include "generictab.h"
 
-AbstractRuleBinder::AbstractRuleBinder( RuleChecker* ruleChecker, const QString strForm, QWidget *parent): 
-QObject(parent), ruleCheckerPtr(ruleChecker), m_strForm(strForm){
+AbstractRuleBinder::AbstractRuleBinder( RuleChecker* ruleChecker, Sample* sample, const QString strForm, QWidget *parent): 
+QObject(parent), ruleCheckerPtr(ruleChecker), m_strForm(strForm), m_sample(sample){
 
     // Let's not connect directly to Rulechecker, so establish all signal-slot dialog here!
         connect(this, SIGNAL(addRecord()), this,
@@ -14,6 +15,43 @@ QObject(parent), ruleCheckerPtr(ruleChecker), m_strForm(strForm){
 void AbstractRuleBinder::init()
 {
     connectSignals();//! Connect the signal for pre trigger rules, *polymorphically* according with the type of widget!
+}
+
+bool AbstractRuleBinder::parseSample(const QString strRule, QMap<QString,QString>& mapLookups)
+{
+    int left=0,right=0;
+    while (left!=-1){
+        left=strRule.indexOf(QString(StrRuleSample+ tr("(")),left,Qt::CaseInsensitive);
+        if (left==-1) break;
+        right=strRule.indexOf(tr(")"),left);
+        if (right==0) break;
+        //parse keyword ///////////////
+        int start=left+ QString(StrRuleSample+ tr("(")).length();
+        int len=right-start;
+        QString keyword=strRule.mid(start,len);
+        if (m_sample==0) return false;// check, just in case...
+        if (keyword.compare(tr("frameId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->frameId).toString());
+        else if (keyword.compare(tr("frameTimeId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->frameTimeId).toString());
+        else if (keyword.compare(tr("minorStrataId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->minorStrataId).toString());
+        else if (keyword.compare(tr("cellId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->cellId).toString());
+        else if (keyword.compare(tr("vesselTypeId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->vesselTypeId).toString());
+        else if (keyword.compare(tr("sampVesselId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->sampVesselId).toString());
+        else if (keyword.compare(tr("tripId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->tripId).toString());
+        else if (keyword.compare(tr("operationId"))==0)
+            mapLookups.insert(keyword,QVariant(m_sample->operationId).toString());
+        else return false;
+
+        left=start+len;//found next occurrence
+    }
+
+    return true;
 }
 
 bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
@@ -43,6 +81,23 @@ bool AbstractRuleBinder::parseRuleReferences(QString& strRule)
          }
 
     }
+
+    //search for references to the current sample
+    QMap<QString, QString> mapSample;
+    if (!parseSample(strRule,mapSample)) return false;
+
+    QMap<QString, QString>::iterator j = mapSample.begin();
+     while (j != mapSample.end()) {
+
+             QString searchStr=StrRuleSample + tr("(") + QVariant(j.key()).toString() + tr(")");
+             strRule=strRule.replace(searchStr,
+                 j.value());
+
+             //qDebug() << strRule << endl;
+
+         ++j;
+     }
+
     return true;
 }
 

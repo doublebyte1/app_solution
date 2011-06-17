@@ -139,7 +139,7 @@ class GenericTab : public QWidget
         NullRelationalDelegate* nullDellegate;
         QLabel*                 lbHead;
         RuleChecker*            m_ruleCheckerPtr;
-        //MapperRuleBinder*       m_mapperBinderPtr;
+        MapperRuleBinder*       m_mapperBinderPtr;
 
     private slots:
         void                    goBack();

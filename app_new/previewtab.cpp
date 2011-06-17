@@ -5,6 +5,8 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
 
     m_model=0;
     m_table=0;
+    m_buttonBox=0;
+    m_groupDetails=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
 
@@ -28,6 +30,8 @@ void PreviewTab::setTips(const bool bLogbook)
 
 bool PreviewTab::onButtonClick(QAbstractButton* button)
 {
+    if (m_buttonBox==0 || m_groupDetails==0) return false;
+
     if ( m_buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
         m_groupDetails->hide();

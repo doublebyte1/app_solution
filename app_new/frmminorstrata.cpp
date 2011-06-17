@@ -148,8 +148,6 @@ void FrmMinorStrata::previewRow(QModelIndex index)
 
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-
-    pushNext->setEnabled(true);
 }
 
 void FrmMinorStrata::uI4NewRecord()
@@ -211,7 +209,6 @@ void FrmMinorStrata::beforeShow()
     this->groupDetails->setVisible(false);
     setSourceText(lbSource);
     toolButton->setVisible(m_sample->bLogBook);
-
 }
 
 void FrmMinorStrata::createRecord()
@@ -451,6 +448,8 @@ void FrmMinorStrata::initUI()
     buttonGroup->addButton(radioInactive,1);
 
     initPreviewTable(tableView,viewMinorStrata);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
 
     m_lWidgets << lineNew;
     m_lWidgets << label_3;
@@ -474,7 +473,7 @@ void FrmMinorStrata::initUI()
 
 void FrmMinorStrata::onItemSelection()
 {
-    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection() && radioActive->isChecked());
 }
 
 void FrmMinorStrata::setPreviewQuery()
@@ -559,12 +558,12 @@ void FrmMinorStrata::initMappers()
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapperStartDt << mapperEndDt;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
-        emit showError(tr("Could not init binder!"));*/
+        emit showError(tr("Could not init binder!"));
 }
 
 void FrmMinorStrata::blockCustomDateCtrls()

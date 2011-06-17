@@ -1,9 +1,10 @@
 #include "mapperrulebinder.h"
 #include "customtimectrl.h"
 #include "sql.h"
+//#include "generictab.h"
 
-MapperRuleBinder::MapperRuleBinder( RuleChecker* ruleChecker, QList<QDataWidgetMapper*> aLMapper, const QString strForm, QWidget *parent): 
-AbstractRuleBinder(ruleChecker, strForm, parent), lMapper(aLMapper){
+MapperRuleBinder::MapperRuleBinder( RuleChecker* ruleChecker, Sample* sample, QList<QDataWidgetMapper*> aLMapper, const QString strForm, QWidget *parent): 
+AbstractRuleBinder(ruleChecker, sample, strForm, parent), lMapper(aLMapper){
 
 }
 
@@ -183,8 +184,8 @@ bool MapperRuleBinder::fetchRules(const MapRules& map, const RuleChecker::Type e
                         }
 
         }
-        ++it;
         }
+        ++it;
     }
 
     return true;
