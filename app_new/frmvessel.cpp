@@ -13,7 +13,7 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,flags){
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     tAVessel=0;
     tCellVessels=0;
     tStrataVessels=0;
@@ -26,8 +26,6 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,flags){
     initUI();
     initMappers();
 
-    //signal for the rule checker default values
-    //emit addRecord();
 }
 
 FrmVessel::~FrmVessel()
@@ -35,7 +33,7 @@ FrmVessel::~FrmVessel()
     if (tAVessel!=0) delete tAVessel;
     if (viewVessel!=0) delete viewVessel;
     if (nullDelegate!=0) delete nullDelegate;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
     if (tCellVessels!=0) delete tCellVessels;
@@ -215,12 +213,12 @@ void FrmVessel::initMapper1()
     mapper1->addMapping(cmbOrigin, 3);
     mapper1->addMapping(cmbStatus, 4);
     mapper1->addMapping(textComments,7);
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapper2;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
-        emit showError(tr("Could not init binder!"));*/
+        emit showError(tr("Could not init binder!"));
 }
 
 void FrmVessel::initMappers()
@@ -492,6 +490,11 @@ void FrmVessel::uI4NewRecord()
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     textComments->clear();
+
+    //if there are records, defaults for the first one
+    if (cmbVessel->count()>0)
+        cmbVessel->setCurrentIndex(0);
+
 }
 
 void FrmVessel::createRecord()
@@ -508,6 +511,9 @@ void FrmVessel::createRecord()
     }
 
     uI4NewRecord();//init UI*/
+
+    //signal for the rule checker default values
+    emit addRecord();
 }
 
 void FrmVessel::initVesselModel()

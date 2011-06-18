@@ -99,6 +99,6 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         QSqlQueryModel*                        viewVessel;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;
-        MapperRuleBinder*                      m_mapperBinderPtr;
+        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMVESSEL_H

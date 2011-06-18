@@ -46,6 +46,8 @@ bool AbstractRuleBinder::parseSample(const QString strRule, QMap<QString,QString
             mapLookups.insert(keyword,QVariant(m_sample->tripId).toString());
         else if (keyword.compare(tr("operationId"))==0)
             mapLookups.insert(keyword,QVariant(m_sample->operationId).toString());
+        else if (keyword.compare(tr("bLogBook"))==0)//cast the bool to int, b4 converting into string!
+            mapLookups.insert(keyword,QVariant(QVariant(m_sample->bLogBook).toInt()).toString());
         else return false;
 
         left=start+len;//found next occurrence

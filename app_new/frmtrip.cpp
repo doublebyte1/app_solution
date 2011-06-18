@@ -18,7 +18,7 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, fl
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     tTrips=0;
     tRefGears=0;
     tTripGears=0;
@@ -32,12 +32,6 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, fl
     initModels();
     initUI();
     initMappers();
-
-    //connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
-      //  SLOT(unblockCustomDateCtrls()));
-
-    //signal for the rule checker default values
-    //emit addRecord();
 }
 
 FrmTrip::~FrmTrip()
@@ -47,7 +41,7 @@ FrmTrip::~FrmTrip()
     if (tTripGears!=0) delete tTripGears;
     if (viewTrips!=0) delete viewTrips;
     if (nullDelegate!=0) delete nullDelegate;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (multiModelI!=0) delete multiModelI;
     if (mapperStartDt!=0) delete mapperStartDt;
@@ -193,6 +187,8 @@ void FrmTrip::initUI()
 
     this->groupDetails->setVisible(false);
     initPreviewTable(tableView,viewTrips);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbSampler;
@@ -295,13 +291,16 @@ void FrmTrip::initMapper1()
     mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 21);
 
     mapper1->addMapping(cmbFishingZone, 22);
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapperStartDt << mapperEndDt;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
-*/
+
+    connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
+        SLOT(unblockCustomDateCtrls()));
+
     emit blockCatchUISignals(false);
 }
 
@@ -571,6 +570,10 @@ void FrmTrip::uI4NewRecord()
     textComments->clear();
     listGears->clearSelection();
 
+    if (cmbFishingZone->count()> 0) cmbFishingZone->setCurrentIndex(0);
+    if (cmbSampler->count()> 0) cmbSampler->setCurrentIndex(0);
+    if (cmbSite->count()> 0) cmbSite->setCurrentIndex(0);
+
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
@@ -627,6 +630,9 @@ void FrmTrip::createRecord()
     tTripGears->setFilter(tr(""));
 
     uI4NewRecord();//init UI
+
+    //signal for the rule checker default values
+    emit addRecord();
 
     emit blockCatchUISignals(false);
 }

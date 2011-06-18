@@ -12,7 +12,7 @@ PreviewTab(3,inSample,inTDateTime,tr("Vessel Type"), ruleCheckerPtr, parent, fla
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     mapper1=0;
     tSVesselTypes=0;
     viewVesselTypes=0;
@@ -21,16 +21,13 @@ PreviewTab(3,inSample,inTDateTime,tr("Vessel Type"), ruleCheckerPtr, parent, fla
     initModels();
     initUI();
     initMappers();
-
-    //signal for the rule checker default values
-//    emit addRecord();
 }
 
 FrmVesselType::~FrmVesselType()
 {
     if (tSVesselTypes!=0) delete tSVesselTypes;
     if (nullDellegate!=0) delete nullDellegate;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (viewVesselTypes!=0) delete viewVesselTypes;
 }
@@ -78,12 +75,12 @@ void FrmVesselType::initMapper1()
     mapper1->addMapping(spinOC, 10);
 
     mapper1->addMapping(textComments,11);
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
-        emit showError(tr("Could not init binder!"));*/
+        emit showError(tr("Could not init binder!"));
 }
 
 void FrmVesselType::previewRow(QModelIndex index)
@@ -234,6 +231,9 @@ void FrmVesselType::createRecord()
     tSVesselTypes->setData(idx,m_sample->cellId);//id_cell
 
     uI4NewRecord();//init UI
+
+    //signal for the rule checker default values
+    emit addRecord();
 }
 
 void FrmVesselType::filterModel4Combo()
@@ -297,6 +297,8 @@ void FrmVesselType::initUI()
 {
     setHeader();
     initPreviewTable(tableView,viewVesselTypes);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
 
     //initializing the container for the readonly!
     m_lWidgets << cmbTypes;

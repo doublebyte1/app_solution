@@ -92,6 +92,6 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         QSqlRelationalTableModel*              tSVesselTypes;
         NullRelationalDelegate*                nullDellegate;
         QDataWidgetMapper*                     mapper1;
-        MapperRuleBinder*                      m_mapperBinderPtr;
+        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMVESSELTYPE_H
