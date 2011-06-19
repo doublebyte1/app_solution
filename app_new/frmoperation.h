@@ -99,6 +99,6 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
-        MapperRuleBinder*                      m_mapperBinderPtr;
+        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMOPERATION_H

@@ -199,7 +199,7 @@ void FrmTrip::initUI()
     m_lWidgets << catchInputCtrl;
     m_lWidgets << textComments;
     m_lWidgets << spinNOE;
-    m_lWidgets << spinNOC;
+    //m_lWidgets << spinNOC;
     m_lWidgets << cmbFishingZone;
     m_lWidgets << listGears;
 
@@ -557,6 +557,7 @@ void FrmTrip::uI4NewRecord()
     customDtStart->setIsDateTime(true,true,true);
     customDtEnd->setIsDateTime(true,true,true);
 
+    /*
     //TODO: remove this initialization later, when we put the BL layer
     catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
         qApp->translate("null_replacements", strNa)));
@@ -566,7 +567,7 @@ void FrmTrip::uI4NewRecord()
 
     catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
         qApp->translate("null_replacements", strNa)));
-
+*/
     textComments->clear();
     listGears->clearSelection();
 

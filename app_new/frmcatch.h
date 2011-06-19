@@ -93,6 +93,6 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         QSqlRelationalTableModel*              tCatch;
         QSqlQueryModel*                        viewCatch;
         QDataWidgetMapper*                     mapper1;
-        MapperRuleBinder*                      m_mapperBinderPtr;
+        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMCATCH_H

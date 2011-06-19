@@ -137,7 +137,8 @@ bool MapperRuleBinder::getCurrentWidgetValue(QWidget* aWidget, QVariant& val)
         val=qobject_cast<ButtonGroup*>(aWidget)->getCheckedId();//TODO: TEST THIS!
     else if ( qobject_cast<QSpinBox*>(aWidget)!=0 )
         val=qobject_cast<QSpinBox*>(aWidget)->value();
-    //TODO: add catch control
+    else if ( qobject_cast<QDoubleSpinBox*>(aWidget)!=0 )
+        val=qobject_cast<QDoubleSpinBox*>(aWidget)->value();
     else return false;
 
     return true;

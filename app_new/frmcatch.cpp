@@ -11,7 +11,7 @@ PreviewTab(7,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     tCatch=0;
     viewCatch=0;
     mapper1=0;
@@ -20,9 +20,6 @@ PreviewTab(7,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
     initModels();
     initUI();
     initMappers();
-
-    //signal for the rule checker default values
-    //emit addRecord();
 }
 
 FrmCatch::~FrmCatch()
@@ -30,7 +27,7 @@ FrmCatch::~FrmCatch()
     if (tCatch!=0) delete tCatch;
     if (viewCatch!=0) delete viewCatch;
     if (nullDelegate!=0) delete nullDelegate;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
 }
 
@@ -111,6 +108,8 @@ void FrmCatch::initUI()
 
     this->groupDetails->setVisible(false);
     initPreviewTable(tableView,viewCatch);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbCategory;
@@ -185,13 +184,13 @@ void FrmCatch::initMapper1()
     mapper1->addMapping(cmbUnits, 14);
 
     mapper1->addMapping(textComments,15);
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
-*/
+
 }
 
 void FrmCatch::initMappers()
@@ -288,6 +287,7 @@ void FrmCatch::uI4NewRecord()
 
     textComments->clear();
 
+    /*
     //TODO: remove this initialization later, when we put the BL layer
     catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
         qApp->translate("null_replacements", strNa)));
@@ -300,6 +300,10 @@ void FrmCatch::uI4NewRecord()
 
     cmbUnits->setCurrentIndex(cmbUnits->findText(
         qApp->translate("null_replacements", strNa)));
+
+    */
+
+    if (cmbCategory->count()>0) cmbCategory->setCurrentIndex(0);
 
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
@@ -320,6 +324,9 @@ void FrmCatch::createRecord()
     tCatch->setData(idx,m_sample->operationId);//id_fishing_operation
 
     uI4NewRecord();//init UI
+
+    //signal for the rule checker default values
+    emit addRecord();
 
     emit blockCatchUISignals(false);
 }

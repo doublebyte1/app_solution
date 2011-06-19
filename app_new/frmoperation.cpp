@@ -17,7 +17,7 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"), ruleCheckerPtr, paren
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
-    m_mapperBinderPtr=0;
+    //m_mapperBinderPtr=0;
     tOperations=0;
     tOpCat=0;
     tRefCat=0;
@@ -32,11 +32,6 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"), ruleCheckerPtr, paren
     initUI();
     initMappers();
 
-    //connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
-      //  SLOT(unblockCustomDateCtrls()));
-
-    //signal for the rule checker default values
-    //emit addRecord();
 }
 
 FrmOperation::~FrmOperation()
@@ -47,7 +42,7 @@ FrmOperation::~FrmOperation()
     if (tOperations!=0) delete tOperations;
     if (viewOperations!=0) delete viewOperations;
     if (nullDelegate!=0) delete nullDelegate;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
@@ -190,6 +185,8 @@ void FrmOperation::initUI()
 
     this->groupDetails->setVisible(false);
     initPreviewTable(tableView,viewOperations);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
 
     //initializing the container for the readonly!S
     m_lWidgets << spinOrder;
@@ -280,13 +277,16 @@ void FrmOperation::initMapper1()
     mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 20);
 
     mapper1->addMapping(textComments,19);
-/*
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapperStartDt << mapperEndDt;
-    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, lMapper, this->objectName());
+    m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
-*/
+
+    connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
+        SLOT(unblockCustomDateCtrls()));
+
     emit blockCatchUISignals(false);
 }
 
@@ -545,6 +545,7 @@ void FrmOperation::uI4NewRecord()
     textComments->clear();
     listCategories->clearSelection();
 
+    /*
     //TODO: remove this initialization later, when we put the BL layer
     catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
         qApp->translate("null_replacements", strNa)));
@@ -554,6 +555,10 @@ void FrmOperation::uI4NewRecord()
 
     catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
         qApp->translate("null_replacements", strNa)));
+*/
+
+    if (cmbFishingZone->count()) cmbFishingZone->setCurrentIndex(0);
+    if (cmbGear->count()) cmbGear->setCurrentIndex(0);
 
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
@@ -602,6 +607,9 @@ void FrmOperation::createRecord()
     tOperations->setData(idx,m_sample->tripId);//id_fishing_trip
 
     uI4NewRecord();//init UI
+
+    //signal for the rule checker default values
+    emit addRecord();
 
     emit blockCatchUISignals(false);
 }
