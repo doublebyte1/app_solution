@@ -31,7 +31,6 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
     private slots:
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
-        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
 
@@ -42,6 +41,10 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   onShowFrameDetails();
 
     private:
+        //! Really Apply
+        /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
+        bypassing the binder validation;
+        */
         bool                                   reallyApply();
         void                                   setPreviewQuery();
         void                                   filterModel4Combo();
@@ -68,6 +71,5 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         ButtonGroup*                           buttonGroup;
-        MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMMINORSTRATA_H

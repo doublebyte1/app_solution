@@ -48,8 +48,8 @@ class MultiModelI
 
         int                 m_parentId;/**< parent ID for  the multiple records on the output table */
         QListView*          m_listView;
-        QSqlQueryModel*     m_source;
-        QSqlTableModel*     m_output;
+        QSqlQueryModel*     m_source;/**< table to feed the widget */
+        QSqlTableModel*     m_output;/**< table to write the choices */
 
 };
 #endif //MULTIMODELI_H

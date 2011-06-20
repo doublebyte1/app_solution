@@ -18,7 +18,6 @@ PreviewTab(2,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent, flags){
     connect(toolButton, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));
 
-    //m_mapperBinderPtr=0;
     tSampCell=0;
     viewCell=0;
     mapper1=0;
@@ -33,7 +32,6 @@ PreviewTab(2,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent, flags){
 
 FrmCell::~FrmCell()
 {
-    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
@@ -347,7 +345,6 @@ bool FrmCell::reallyApply()
                 }else bError=true;
             }
         }
-        //button->setEnabled(bError);
         buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
 
         emit lockControls(!bError,m_lWidgets);
@@ -372,107 +369,6 @@ bool FrmCell::reallyApply()
         }
         return !bError;
 }
-/*
-bool FrmCell::onButtonClick(QAbstractButton* button)
-{
-    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-    {
-        this->groupDetails->hide();
-        this->tSampCell->revertAll();
-        return true;
-
-    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
-
-        bool bError=false;
-
-        //First insert the dates...
-        if (!mapperStartDt->submit() 
-            || !mapperEndDt->submit()){
-            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                emit showError(m_tDateTime->lastError().text());
-            else
-                emit showError(tr("Could not submit mapper!"));
-            bError=true;
-        }
-        else{
-            if (!m_tDateTime->submitAll()){
-                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                    emit showError(m_tDateTime->lastError().text());
-                else
-                    emit showError(tr("Could not write DateTime in the database!"));
-
-                bError=true;
-            }
-        }
-
-        while(m_tDateTime->canFetchMore())
-            m_tDateTime->fetchMore();
-
-        int startIdx=m_tDateTime->rowCount()-2;
-        int endIdx=m_tDateTime->rowCount()-1;
-
-        mapperStartDt->setCurrentIndex(startIdx);
-        mapperEndDt->setCurrentIndex(endIdx);
-
-        if (bError) {
-            emit showError(tr("Could not create dates in the database!"));
-        }else{
-
-            int idStart;
-            if (getDtId(startIdx,idStart)){
-                QModelIndex idxStart=tSampCell->index(tSampCell->rowCount()-1,2);
-                if (idxStart.isValid()){
-                    tSampCell->setData(idxStart,idStart);
-                }else bError=true;
-            }else bError=true;
-
-            int idEnd;
-            if (getDtId(endIdx,idEnd)){
-                QModelIndex idxEnd=tSampCell->index(tSampCell->rowCount()-1,3);
-                if (idxEnd.isValid()){
-                    tSampCell->setData(idxEnd,idEnd);
-                }else bError=true;
-            }else bError=true;
-
-            if (!bError){
-                if (mapper1->submit()){
-                    bError=!
-                        tSampCell->submitAll();
-                    if (bError){
-                        if (tSampCell->lastError().type()!=QSqlError::NoError)
-                            emit showError(tSampCell->lastError().text());
-                        else
-                            emit showError(tr("Could not write cell in the database!"));
-                    }//mapper1->toLast();
-                }else bError=true;
-            }
-        }
-        button->setEnabled(bError);
-
-        emit lockControls(!bError,m_lWidgets);
-        if (!bError){
-            buttonBox->button(QDialogButtonBox::Apply)->hide();
-        }else{
-            buttonBox->button(QDialogButtonBox::Apply)->show();
-        }
-
-        if (!bError){
-            if (!afterApply()) bError=false;
-            else{
-                toolButton->setEnabled(true);
-
-                while(tSampCell->canFetchMore())
-                    tSampCell->fetchMore();
-
-                QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
-                if (!idx.isValid()) bError=false;
-                else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
-            }
-        }
-        return !bError;
-    }else return false;
-}
-*/
 
 void FrmCell::uI4NewRecord()
 {

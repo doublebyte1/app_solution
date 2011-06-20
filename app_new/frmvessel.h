@@ -34,15 +34,13 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   previewRow(QModelIndex index);
-        //! On Button Click
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   onItemSelection();
 
-        //void                                   onShowFrameDetails();
-
     private:
+        //! Really Apply
+        /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
+        bypassing the binder validation;
+        */
         bool                                   reallyApply();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
@@ -99,6 +97,5 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         QSqlQueryModel*                        viewVessel;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;
-        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMVESSEL_H

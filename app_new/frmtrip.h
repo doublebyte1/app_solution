@@ -35,15 +35,15 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   previewRow(QModelIndex index);
-        //! On Button Click
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
 
     private:
+        //! Really Apply
+        /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
+        bypassing the binder validation;
+        */
         bool                                   reallyApply();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
@@ -100,6 +100,5 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
-        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMTRIP_H

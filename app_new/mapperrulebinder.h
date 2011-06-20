@@ -119,7 +119,6 @@ class MapperRuleBinder : public AbstractRuleBinder
           \return QDataWidgetMapper a pointer to a QDataWidgetMapper;
         */
         QDataWidgetMapper*                      getMapperFromTable(const QString strTableName);
-
         QList<QDataWidgetMapper*>               lMapper;//!< Pointer to a collection of QDataWidgetMappers
 };
 

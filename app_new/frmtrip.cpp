@@ -18,7 +18,6 @@ PreviewTab(5,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, parent, fl
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
-    //m_mapperBinderPtr=0;
     tTrips=0;
     tRefGears=0;
     tTripGears=0;
@@ -41,7 +40,6 @@ FrmTrip::~FrmTrip()
     if (tTripGears!=0) delete tTripGears;
     if (viewTrips!=0) delete viewTrips;
     if (nullDelegate!=0) delete nullDelegate;
-    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (multiModelI!=0) delete multiModelI;
     if (mapperStartDt!=0) delete mapperStartDt;
@@ -441,112 +439,6 @@ bool FrmTrip::reallyApply()
     return false;
 }
 
-/*
-bool FrmTrip::onButtonClick(QAbstractButton* button)
-{
-    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-    {
-        this->groupDetails->hide();
-        this->tTrips->revertAll();
-        return true;
-
-    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
-
-        bool bError=false;
-
-        if (!listGears->selectionModel()->hasSelection()){
-            emit showError(tr("You must select one or more gears for this trip!"));
-            bError=true;
-        }else{
-
-            //First insert the dates...
-            if (!mapperStartDt->submit() 
-                || !mapperEndDt->submit()){
-                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                    emit showError(m_tDateTime->lastError().text());
-                else
-                    emit showError(tr("Could not submit mapper!"));
-                bError=true;
-            }
-            else{
-                if (!m_tDateTime->submitAll()){
-                    if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                        emit showError(m_tDateTime->lastError().text());
-                    else
-                        emit showError(tr("Could not write DateTime in the database!"));
-
-                    bError=true;
-                }
-            }
-
-            while(m_tDateTime->canFetchMore())
-                m_tDateTime->fetchMore();
-
-            int startIdx=m_tDateTime->rowCount()-2;
-            int endIdx=m_tDateTime->rowCount()-1;
-
-            mapperStartDt->setCurrentIndex(startIdx);
-            mapperEndDt->setCurrentIndex(endIdx);
-
-            if (bError) {
-                emit showError(tr("Could not create dates in the database!"));
-            }else{
-
-                int idStart;
-                if (getDtId(startIdx,idStart)){
-                    QModelIndex idxStart=tTrips->index(tTrips->rowCount()-1,2);
-                    if (idxStart.isValid()){
-                        tTrips->setData(idxStart,idStart);
-                    }else bError=true;
-                }else bError=true;
-
-                int idEnd;
-                if (getDtId(endIdx,idEnd)){
-                    QModelIndex idxEnd=tTrips->index(tTrips->rowCount()-1,3);
-                    if (idxEnd.isValid()){
-                        tTrips->setData(idxEnd,idEnd);
-                    }else bError=true;
-                }else bError=true;
-
-            if (mapper1->submit()){
-                bError=!
-                        tTrips->submitAll();
-                if (bError){
-                        if (tTrips->lastError().type()!=QSqlError::NoError)
-                            emit showError(tTrips->lastError().text());
-                        else
-                            emit showError(tr("Could not write cell in the database!"));
-                }else{
-                    //Comiting Sampled_Fishing_Trips_Gears
-                    QModelIndex idd=tTrips->index(tTrips->rowCount()-1,0);
-                    multiModelI->setParentId(idd.data().toInt());
-                    if (!multiModelI->list2Model()){
-                        emit showError(tr("Could not associate gears to this fishing trip!"));
-                        bError=true;
-                    }
-                }
-            }
-            }
-        }
-
-        button->setEnabled(bError);
-
-        emit lockControls(!bError,m_lWidgets);
-        if (!bError){
-            buttonBox->button(QDialogButtonBox::Apply)->hide();
-        }else{
-            buttonBox->button(QDialogButtonBox::Apply)->show();
-        }
-
-        if (!bError)
-            return afterApply();
-
-    }
-
-    return false;
-}
-*/
-
 void FrmTrip::uI4NewRecord()
 {
     if (!this->groupDetails->isVisible())
@@ -557,17 +449,6 @@ void FrmTrip::uI4NewRecord()
     customDtStart->setIsDateTime(true,true,true);
     customDtEnd->setIsDateTime(true,true,true);
 
-    /*
-    //TODO: remove this initialization later, when we put the BL layer
-    catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    catchInputCtrl->cmbUnitUnits->setCurrentIndex(this->catchInputCtrl->cmbUnitUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-*/
     textComments->clear();
     listGears->clearSelection();
 

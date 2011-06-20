@@ -12,7 +12,6 @@ PreviewTab(3,inSample,inTDateTime,tr("Vessel Type"), ruleCheckerPtr, parent, fla
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
-    //m_mapperBinderPtr=0;
     mapper1=0;
     tSVesselTypes=0;
     viewVesselTypes=0;
@@ -27,7 +26,6 @@ FrmVesselType::~FrmVesselType()
 {
     if (tSVesselTypes!=0) delete tSVesselTypes;
     if (nullDellegate!=0) delete nullDellegate;
-    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (viewVesselTypes!=0) delete viewVesselTypes;
 }
@@ -162,47 +160,6 @@ bool FrmVesselType::reallyApply()
         }
         return !bError;
 }
-/*
-bool FrmVesselType::onButtonClick(QAbstractButton* button)
-{
-    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-    {
-        this->groupDetails->hide();
-        this->tSVesselTypes->revertAll();
-        return true;
-
-    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
-
-        bool bError=false;
-
-        if (mapper1->submit()){
-                    bError=!
-                        tSVesselTypes->submitAll();
-                    if (bError){
-                        if (tSVesselTypes->lastError().type()!=QSqlError::NoError)
-                            emit showError(tSVesselTypes->lastError().text());
-                        else
-                            emit showError(tr("Could not write vessel type in the database!"));
-                    }//mapper1->toLast();
-        }else bError=true;
-
-        button->setEnabled(bError);
-
-        emit lockControls(!bError,m_lWidgets);
-        if (!bError){
-            buttonBox->button(QDialogButtonBox::Apply)->hide();
-        }else{
-            buttonBox->button(QDialogButtonBox::Apply)->show();
-        }
-
-        if (!bError){
-            bError=afterApply();
-        }
-        return !bError;
-    }else return false;
-    return false;
-}
-*/
 
 void FrmVesselType::uI4NewRecord()
 {
@@ -351,12 +308,10 @@ void FrmVesselType::initVesselTypeModel()
     tSVesselTypes->select();
 
     setPreviewModel(tSVesselTypes);
-
 }
 
 void FrmVesselType::initModels()
 {
     if (viewVesselTypes!=0) delete viewVesselTypes;
     viewVesselTypes = new QSqlQueryModel;
-
 }

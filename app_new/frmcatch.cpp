@@ -11,7 +11,6 @@ PreviewTab(7,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
-    //m_mapperBinderPtr=0;
     tCatch=0;
     viewCatch=0;
     mapper1=0;
@@ -27,7 +26,6 @@ FrmCatch::~FrmCatch()
     if (tCatch!=0) delete tCatch;
     if (viewCatch!=0) delete viewCatch;
     if (nullDelegate!=0) delete nullDelegate;
-    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
 }
 
@@ -237,47 +235,6 @@ bool FrmCatch::reallyApply()
     return false;
 }
 
-/*
-bool FrmCatch::onButtonClick(QAbstractButton* button)
-{
-    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-    {
-        this->groupDetails->hide();
-        this->tCatch->revertAll();
-        return true;
-
-    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
-
-        bool bError=false;
-
-        if (mapper1->submit()){
-            bError=!
-                tCatch->submitAll();
-                if (bError){
-                    if (tCatch->lastError().type()!=QSqlError::NoError)
-                        emit showError(tCatch->lastError().text());
-                    else
-                        emit showError(tr("Could not write operation in the database!"));
-                }
-        }else bError=true;
-
-        button->setEnabled(bError);
-
-        emit lockControls(!bError,m_lWidgets);
-        if (!bError){
-            buttonBox->button(QDialogButtonBox::Apply)->hide();
-        }else{
-            buttonBox->button(QDialogButtonBox::Apply)->show();
-        }
-
-        if (!bError)
-            return afterApply();
-
-    }
-
-    return false;
-}
-*/
 void FrmCatch::uI4NewRecord()
 {
     if (!this->groupDetails->isVisible())
@@ -286,22 +243,6 @@ void FrmCatch::uI4NewRecord()
     emit lockControls(false,m_lWidgets);
 
     textComments->clear();
-
-    /*
-    //TODO: remove this initialization later, when we put the BL layer
-    catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    catchInputCtrl->cmbUnitUnits->setCurrentIndex(this->catchInputCtrl->cmbUnitUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    cmbUnits->setCurrentIndex(cmbUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    */
 
     if (cmbCategory->count()>0) cmbCategory->setCurrentIndex(0);
 

@@ -36,13 +36,16 @@ class FrmFrame : public GenericTab, public Ui::frmframe
     private slots:
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
-//        void                                   apply();
 
     signals:
         void                                   isLogBook(bool bLogBook);
         void                                   submitted(int index, bool bOk);
 
     private:
+        //! Really Apply
+        /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
+        bypassing the binder validation;
+        */
         bool                                   reallyApply();
         void                                   setReadOnly(const bool bRO);
         bool                                   updateSample();
@@ -59,6 +62,5 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         FrmFrameDetails::Mode                  m_curMode;
         bool                                   m_submitted;
         bool                                   m_tabsDefined;
-        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMFRAME_H

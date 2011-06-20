@@ -30,60 +30,94 @@ class PreviewTab : public GenericTab
         ~PreviewTab();
 
     protected:
-    //! A pure virtual member.
-    /*! In this function we set the query that displays the records on the preview container;
-      \sa setPreviewTable(QTableView* aTable), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
-    */
+        //! Set preview model
+        /*! In this function we assign the model that allows us to preview records
+        \par aModel pointer to a relational tableModel
+          \sa setGroupDetails(QGroupBox* aGroupDetails),setButtonBox(QDialogButtonBox* aButtonBox)
+        */
         void                                  setPreviewModel(QSqlRelationalTableModel* aModel){m_model=aModel;}
-
+        //! Set group details
+        /*! In this function we store a pointer for the QGroupBox with the details of the record.
+        \par aGroupDetails pointer to a QGroupBox
+          \sa setPreviewModel(QSqlRelationalTableModel* aModel),setButtonBox(QDialogButtonBox* aButtonBox)
+        */
         void                                  setGroupDetails(QGroupBox* aGroupDetails){m_groupDetails=aGroupDetails;}
+        //! Set button box
+        /*! In this function we store a pointer for the buttonBox, with close and apply buttons;
+        \par aButtonBox pointer to a QDialogButtonBox
+          \sa setGroupDetails(QGroupBox* aGroupDetails),setPreviewModel(QSqlRelationalTableModel* aModel)
+          */
         void                                  setButtonBox(QDialogButtonBox* aButtonBox){m_buttonBox=aButtonBox;}
-
-    //! A pure virtual member.
-    /*! In this function we set the table that displays the records;
-      \sa setPreviewModel(QSqlRelationalTableModel* aModel), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
-    */
+        //! Init preview table
+        /*! In this function we initialize the table that displays the records, connecting it to a model
+        \par aTable pointer to a table widget
+        \par view pointer to a read-only model
+        */
         void                                  initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
-
-    //! A pure virtual member.
-    /*! In this function we set the query that displays the records on the preview container;
-      \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), filterModel4Combo(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
-    */
+        //! A pure virtual member.
+        /*! In this function we set the query that displays the records on the preview container;
+         /sa filterModel4Combo(), uI4NewRecord(), genericCreateRecord()
+        */
         virtual void                          setPreviewQuery()=0;
-    //! A pure virtual member.
-    /*! In this function we set the query that filters the combobox for the selected top-level id;
-      \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), setReadOnly(const bool bRO), uI4NewRecord(), genericCreateRecord()
-    */
+        //! A pure virtual member.
+        /*! In this function we set the query that filters the combobox for the selected top-level id;
+         /sa setPreviewQuery(), uI4NewRecord(), genericCreateRecord()
+        */
         virtual void                          filterModel4Combo()=0;
-    //! A pure virtual member.
-    /*! In this function we initialize the UI values for a new record;
-      \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), setReadOnly(const bool bRO), filterModel4Combo(), genericCreateRecord()
-    */
+        //! A pure virtual member.
+        /*! In this function we initialize the UI values for a new record;
+         /sa setPreviewQuery(), filterModel4Combo(), genericCreateRecord()
+        */
         virtual void                          uI4NewRecord()=0;
-    //! A pure virtual member.
-    /*! In this function we initialize some values (UI, models, etc) that need to be set before calling the onShowForm;
-      \sa onShowForm()
-    */
+        //! A pure virtual member.
+        /*! In this function we initialize some values (UI, models, etc) that need to be set before calling the onShowForm;
+          \sa onShowForm()
+        */
         virtual void                          beforeShow()=0;
-    /*! generic create record;
-      \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), setReadOnly(const bool bRO), filterModel4Combo(), uI4NewRecord()
-    */
+        /*! generic create record;
+          \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), filterModel4Combo(), uI4NewRecord()
+        */
         virtual void                          setHeader()=0;
-
+        //! Generic Create Record
+        /*! Method called, wach time we create a new record; it does some "household" stuff like
+        resetting the filters of the models, and then it actually inserts an empry record on the "resident" model in this class;
+        */
         void                                  genericCreateRecord();
+        //! Reimplementation of the virtual method on QWidget class
+        /*! Here we adjust the table to the new dimensions of the form;
+        /par event we don't actually use this parameter!
+        */
         void                                  resizeEvent ( QResizeEvent * event );
+        //! After apply
+        /*! Slot called after a successfully submission of the record into the database;
+        we just update the preview query to show the inserted record on the table, and select this record;
+        */
         bool                                  afterApply();
+        //! Set Source Text
+        /*! Here we format the header label, and fill its text according to the fact that it is
+        \par label pointer to a label
+        a sampling or a logbook form;
+        */
         void                                  setSourceText(QLabel* label);
-        QList<QWidget*>                       m_lWidgets;
+
+        QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 
     signals:
-        void                                  isLogBook(const bool bIsLogbook);
-        void                                  blockCatchUISignals(const bool bBlock);
+        void                                  isLogBook(const bool bIsLogbook);/**< signal to indicate if this is a logbook or sampling form*/
+        void                                  blockCatchUISignals(const bool bBlock);/**< signal to block/unblock the CatchInputCtrl signals*/
 
     public slots:
+        /*! Reimplemented from the GenericTab class
+        This is the slot that we call, when the form is displayed.
+        */
         void                                  onShowForm();
 
     private slots:
+        //! Set Header Label Tips
+        /*! In this function we set the tooltip, status tip and WhatsThis text,
+        regarding the fact that it is a logbook or sampling form;
+        /par bLogBook boolean to indicate whether it is a logbook or sampling form
+        */
         void                                  setTips(const bool bLogbook);
         //! Go to the next step
         /*! The next is the slot that actually passes the information to the next tab (and adds it

@@ -17,7 +17,6 @@ PreviewTab(6,inSample,inTDateTime,tr("Fishing Operation"), ruleCheckerPtr, paren
     connect(this, SIGNAL(blockCatchUISignals(const bool)), catchInputCtrl,
     SIGNAL(blockWidgetsSignals(const bool)));
 
-    //m_mapperBinderPtr=0;
     tOperations=0;
     tOpCat=0;
     tRefCat=0;
@@ -42,7 +41,6 @@ FrmOperation::~FrmOperation()
     if (tOperations!=0) delete tOperations;
     if (viewOperations!=0) delete viewOperations;
     if (nullDelegate!=0) delete nullDelegate;
-    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
@@ -154,11 +152,6 @@ void FrmOperation::initModels()
 {
     if (viewOperations!=0) delete viewOperations;
     viewOperations = new QSqlQueryModel;
-
-    //n.b.: this is *WRONG*!
-    //viewOperations->setHeaderData(0, Qt::Horizontal, tr("Start Time"));
-    //viewOperations->setHeaderData(1, Qt::Horizontal, tr("End Time"));
-    //viewOperations->setHeaderData(2, Qt::Horizontal, tr("Gear Used"));
 
     if (tRefCat!=0) delete tRefCat;
 
@@ -426,113 +419,6 @@ bool FrmOperation::reallyApply()
     return false;
 }
 
-/*
-bool FrmOperation::onButtonClick(QAbstractButton* button)
-{
-    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-    {
-        this->groupDetails->hide();
-        this->tOperations->revertAll();
-        return true;
-
-    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
-
-        bool bError=false;
-
-        if (!listCategories->selectionModel()->hasSelection()){
-            emit showError(tr("You must select one or more commercial categories for this trip!"));
-            bError=true;
-        }else{
-
-            //First insert the dates...
-            if (!mapperStartDt->submit() 
-                || !mapperEndDt->submit()){
-                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                    emit showError(m_tDateTime->lastError().text());
-                else
-                    emit showError(tr("Could not submit mapper!"));
-                bError=true;
-            }
-            else{
-                if (!m_tDateTime->submitAll()){
-                    if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                        emit showError(m_tDateTime->lastError().text());
-                    else
-                        emit showError(tr("Could not write DateTime in the database!"));
-
-                    bError=true;
-                }
-            }
-
-            while(m_tDateTime->canFetchMore())
-                m_tDateTime->fetchMore();
-
-            int startIdx=m_tDateTime->rowCount()-2;
-            int endIdx=m_tDateTime->rowCount()-1;
-
-            mapperStartDt->setCurrentIndex(startIdx);
-            mapperEndDt->setCurrentIndex(endIdx);
-
-            if (bError) {
-                emit showError(tr("Could not create dates in the database!"));
-            }else{
-
-                int idStart;
-                if (getDtId(startIdx,idStart)){
-                    QModelIndex idxStart=tOperations->index(tOperations->rowCount()-1,2);
-                    if (idxStart.isValid()){
-                        tOperations->setData(idxStart,idStart);
-                    }else bError=true;
-                }else bError=true;
-
-                int idEnd;
-                if (getDtId(endIdx,idEnd)){
-                    QModelIndex idxEnd=tOperations->index(tOperations->rowCount()-1,3);
-                    if (idxEnd.isValid()){
-                        tOperations->setData(idxEnd,idEnd);
-                    }else bError=true;
-                }else bError=true;
-
-            if (mapper1->submit()){
-                bError=!
-                    tOperations->submitAll();
-                    if (bError){
-                        if (tOperations->lastError().type()!=QSqlError::NoError)
-                            emit showError(tOperations->lastError().text());
-                        else
-                            emit showError(tr("Could not write operation in the database!"));
-                    }else{
-                        //Comiting Sampled_Fishing_Operations_Categories
-                        QModelIndex idd=tOperations->index(tOperations->rowCount()-1,0);
-                        multiModelI->setParentId(idd.data().toInt());
-                        if (!multiModelI->list2Model()){
-                            emit showError(tr("Could not associate commercial categories to this fishing operation!"));
-                            bError=true;
-                        }
-
-                    }
-            }
-
-            }
-        }
-        button->setEnabled(bError);
-
-        emit lockControls(!bError,m_lWidgets);
-        if (!bError){
-            buttonBox->button(QDialogButtonBox::Apply)->hide();
-        }else{
-            buttonBox->button(QDialogButtonBox::Apply)->show();
-        }
-
-        if (!bError)
-            return afterApply();
-
-    }
-
-    return false;
-}
-*/
-
 void FrmOperation::uI4NewRecord()
 {
     if (!this->groupDetails->isVisible())
@@ -544,18 +430,6 @@ void FrmOperation::uI4NewRecord()
     customDtEnd->setIsDateTime(true,true,true);
     textComments->clear();
     listCategories->clearSelection();
-
-    /*
-    //TODO: remove this initialization later, when we put the BL layer
-    catchInputCtrl->cmbBoxUnits->setCurrentIndex(this->catchInputCtrl->cmbBoxUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    catchInputCtrl->cmbUnitUnits->setCurrentIndex(this->catchInputCtrl->cmbUnitUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-
-    catchInputCtrl->cmbWeightUnits->setCurrentIndex(this->catchInputCtrl->cmbWeightUnits->findText(
-        qApp->translate("null_replacements", strNa)));
-*/
 
     if (cmbFishingZone->count()) cmbFishingZone->setCurrentIndex(0);
     if (cmbGear->count()) cmbGear->setCurrentIndex(0);

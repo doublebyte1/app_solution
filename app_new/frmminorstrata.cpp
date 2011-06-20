@@ -9,7 +9,6 @@ PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"), ruleCheckerPtr, parent, fl
 
     blockCustomDateCtrls();
 
-    m_mapperBinderPtr=0;
     viewMinorStrata=0;
     tRefMinorStrata=0;
     buttonGroup=0;
@@ -38,7 +37,6 @@ FrmMinorStrata::~FrmMinorStrata()
 {
     if (tRefMinorStrata!=0) delete tRefMinorStrata;
     if (buttonGroup!=0) delete buttonGroup;
-    if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;

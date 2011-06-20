@@ -35,13 +35,13 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   previewRow(QModelIndex index);
-        //! On Button Click
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   onButtonClick(QAbstractButton * button);
         void                                   onItemSelection();
 
     private:
+        //! Really Apply
+        /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
+        bypassing the binder validation;
+        */
         bool                                   reallyApply();
         //! Set Header widget
         /*! Reimplemented from the genericTab base class
@@ -92,6 +92,5 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         QSqlRelationalTableModel*              tSVesselTypes;
         NullRelationalDelegate*                nullDellegate;
         QDataWidgetMapper*                     mapper1;
-        //MapperRuleBinder*                      m_mapperBinderPtr;
 };
 #endif //FRMVESSELTYPE_H
