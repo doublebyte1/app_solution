@@ -176,6 +176,7 @@ void FrmCatch::initMapper1()
     mapper1->addMapping(catchInputCtrl->pSpinUnitsE(), 10);
     mapper1->addMapping(catchInputCtrl->pSpinUnitsC(), 16);
     mapper1->addMapping(catchInputCtrl->pCmbUnitUnits(), 11);
+    mapper1->addMapping(catchInputCtrl->pDoubleSpinWeightUnit(), 17);
 
     mapper1->addMapping(spinNoInd, 12);
     mapper1->addMapping(doubleSpinWeight, 13);
