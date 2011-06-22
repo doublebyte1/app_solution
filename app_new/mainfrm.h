@@ -13,6 +13,7 @@
 #include "frmoperation.h"
 #include "frmcatch.h"
 #include "frmprjpage.h"
+#include "frmreports.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -109,6 +110,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    initRules();
 
     private:
+        bool                    initDateModel();
         void                    resetTabs();
         void                    initPreviewTab(PreviewTab* tab);
         void                    initUi();
@@ -131,6 +133,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmOperation            *pFrmOperation;
         FrmCatch                *pFrmCatch;
         FrmPrjPage              *pFrmPrjPage;
+        FrmReports              *pFrmReports;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
@@ -155,6 +158,9 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    rulesInitialized(bool bReady);
 
         void                    loadFile();
+        void                    closeFile();
         void                    writeFile();
+        void                    loadReports();
+        void                    closeReports();
 };
 #endif //MAINFRM_H

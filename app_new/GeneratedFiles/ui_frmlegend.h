@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmlegend.ui'
 **
-** Created: Thu 16. Jun 16:12:56 2011
+** Created: Wed 22. Jun 15:57:22 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

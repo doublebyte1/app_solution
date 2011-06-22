@@ -19,13 +19,12 @@ QMainWindow(parent, flags){
     pFrmPrjPage=0;
     toolbar=0;
     ruleCheckerPtr=0;
+    pFrmReports=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
-
     setupUi(this);
 
     initUi();
-    //initTabs();
 }
 
 MainFrm::~MainFrm()
@@ -42,6 +41,7 @@ MainFrm::~MainFrm()
         delete workerThread; workerThread=0;
     }
 
+    if (pFrmReports!=0) delete pFrmReports;
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
@@ -100,8 +100,8 @@ void MainFrm::initUi()
     //read this from the app settings
     this->setWindowTitle(qApp->applicationName() + qApp->applicationVersion());
 
-     connect(actionAbout_Qt, SIGNAL(triggered()),qApp,
-        SLOT(aboutQt () ),Qt::UniqueConnection);
+     //connect(actionAbout_Qt, SIGNAL(triggered()),qApp,
+        //SLOT(aboutQt () ),Qt::UniqueConnection);
 
      connect(actionAbout_this_project, SIGNAL(triggered()),this,
         SLOT(aboutThisProject () ),Qt::UniqueConnection);
@@ -109,18 +109,34 @@ void MainFrm::initUi()
      connect(actionLoad, SIGNAL(triggered()),this,
         SLOT(loadFile () ),Qt::UniqueConnection);
 
+     connect(actionClose, SIGNAL(triggered()),this,
+        SLOT(closeFile () ),Qt::UniqueConnection);
+
      connect(actionSave, SIGNAL(triggered()),this,
         SLOT(writeFile () ),Qt::UniqueConnection);
+
+     connect(actionReports, SIGNAL(triggered()),this,
+        SLOT(loadReports() ),Qt::UniqueConnection);
 
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
     toolbar->addAction(this->actionNew);
     toolbar->addAction(this->actionLoad);
+    toolbar->addAction(this->actionClose);
     toolbar->addAction(this->actionSave);
     toolbar->addSeparator();
+    toolbar->addAction(this->actionReports);
+    toolbar->addSeparator();
     toolbar->addAction(this->actionAbout_this_project);
-    toolbar->addAction(this->actionAbout_Qt);
+    toolbar->addSeparator();
+    toolbar->addAction(this->actionExit);
+
+    pFrmReports=new FrmReports();
+    pFrmReports->hide();
+
+     connect(pFrmReports, SIGNAL(hideFrmReports()), this,
+    SLOT(closeReports()),Qt::UniqueConnection);
 }
 
 bool MainFrm::readXMLFile(const QString strFileName)
@@ -151,6 +167,10 @@ void MainFrm::loadTabs()
     statusShow(tr("Wait..."));
 
         resetTabs();
+
+        if (!initDateModel())
+            emit displayError(tr("Could not initialize date model!"),false);
+
         initTabs();
 
         if (pFrmFrame==0) return;
@@ -199,8 +219,47 @@ void MainFrm::loadTabs()
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
+void MainFrm::loadReports()
+{
+    if (!pFrmReports->isVisible()){
+        tabWidget->hide();
+        gridLayout->removeWidget(tabWidget);
+        gridLayout->addWidget(pFrmReports, 0, 0, 1, 1);
+        pFrmReports->show();
+    }
+}
+
+void MainFrm::closeReports()
+{
+    if (pFrmReports->isVisible()){
+        gridLayout->removeWidget(pFrmReports);
+        pFrmReports->hide();
+        gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
+        tabWidget->show();
+    }
+}
+
+void MainFrm::closeFile()
+{
+    if (pFrmReports->isVisible())
+        closeReports();
+
+    if ( tabWidget->count() <1 ){
+        QMessageBox::information(this, tr("Medfisis"),
+                                        tr("There is nothing to close."),
+                                        QMessageBox::Ok);
+         return;
+    }
+
+    //TODO: Ask if you want to save the changes (also on the load file)
+    resetTabs();
+}
+
 void MainFrm::loadFile()
 {
+    if (pFrmReports->isVisible())
+        closeReports();
+
     QString fileName = QFileDialog::getOpenFileName(this,
      tr("Open Project"), tr(""), tr("Project Files (*.xml)"));
 
@@ -310,16 +369,8 @@ void MainFrm::resetTabs()
         if (pFrmVessel!=0) {delete pFrmVessel; pFrmVessel=0;}
         if (pFrmTrip!=0) {delete pFrmTrip; pFrmTrip=0;}
         if (pFrmOperation!=0) {delete pFrmOperation; pFrmOperation=0;}
-        if (pFrmCatch!=0) {delete pFrmCatch; pFrmOperation=0;}
+        if (pFrmCatch!=0) {delete pFrmCatch; pFrmCatch=0;}
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
-
-        //Dates
-        tDateTime= new DateModel();
-        tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
-            QSqlDriver::TableName));
-        tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
-        tDateTime->setAuto(false);
-        tDateTime->select();
 
 }
 
@@ -328,12 +379,33 @@ void MainFrm::initPreviewTab(PreviewTab* tab)
     vTabs.push_back(tab);
 }
 
+bool MainFrm::initDateModel()
+{
+    if (tDateTime!=0) return false;//must be empty!!!!
+
+    //Dates
+    tDateTime= new DateModel();
+    tDateTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("GL_Dates"),
+        QSqlDriver::TableName));
+    tDateTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tDateTime->setAuto(false);
+    tDateTime->select();
+
+    return true;
+}
+
 void MainFrm::newTabs()
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     statusShow(tr("Wait..."));
 
+        if (pFrmReports->isVisible())
+            closeReports();
+
         resetTabs();
+        if (!initDateModel())
+            emit displayError(tr("Could not initialize date model!"),false);
+
         if (sSample!=0) {delete sSample; sSample=0;}
         sSample=new Sample;
         initTabs();

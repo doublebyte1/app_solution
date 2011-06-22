@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Thu 16. Jun 16:13:01 2011
+** Created: Wed 22. Jun 18:25:29 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainFrm[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -45,6 +45,9 @@ static const uint qt_meta_data_MainFrm[] = {
      425,  418,    8,    8, 0x08,
      448,    8,    8,    8, 0x08,
      459,    8,    8,    8, 0x08,
+     471,    8,    8,    8, 0x08,
+     483,    8,    8,    8, 0x08,
+     497,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -61,7 +64,8 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "bLogBook\0rearrangeTabs(bool)\0"
     "aboutThisProject()\0bReady\0"
     "rulesInitialized(bool)\0loadFile()\0"
-    "writeFile()\0"
+    "closeFile()\0writeFile()\0loadReports()\0"
+    "closeReports()\0"
 };
 
 const QMetaObject MainFrm::staticMetaObject = {
@@ -108,10 +112,13 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 10: aboutThisProject(); break;
         case 11: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 12: loadFile(); break;
-        case 13: writeFile(); break;
+        case 13: closeFile(); break;
+        case 14: writeFile(); break;
+        case 15: loadReports(); break;
+        case 16: closeReports(); break;
         default: ;
         }
-        _id -= 14;
+        _id -= 17;
     }
     return _id;
 }
