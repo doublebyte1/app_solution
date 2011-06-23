@@ -1,5 +1,5 @@
 #include <QtXml>
-
+#include "reportengine.h"
 #include "frmreports.h"
 #include "globaldefs.h"
 
@@ -57,10 +57,16 @@ void FrmReports::previewItem(QListWidgetItem* item)
     }else{
 
         //TODO: add label for name and code herer
+        if (!strName.isEmpty()) 
+            this->lbName->setText(strName);
+        else 
+            this->lbName->setText(qApp->translate("empty", strEmpty));
+
         if (!strAuthor.isEmpty()) 
             this->lbAuthor->setText(strAuthor);
         else 
-        this->lbAuthor->setText(qApp->translate("empty", strEmpty));
+            this->lbAuthor->setText(qApp->translate("empty", strEmpty));
+
         if (!strPixmap.isEmpty()){
             QPixmap pm;
             if (!pm.loadFromData(QByteArray::fromBase64(strPixmap.toAscii())) || pm.isNull())
@@ -69,7 +75,8 @@ void FrmReports::previewItem(QListWidgetItem* item)
                 this->lbPixmap->setPixmap(pm);
         }
         else 
-            this->lbPixmap->setText(qApp->translate("empty", strEmpty));
+            this->lbPixmap->clear();
+
         if (!strDescription.isEmpty())
             this->textDescription->setText(strDescription);
         else
@@ -126,24 +133,40 @@ bool FrmReports::readProperties(QXmlStreamReader& xml, QString& strName, QString
             else if (xml.name().toString()==tr("description")) strDescription=xml.readElementText();
             else ct--;
 
-            /*
-            if (xml.name().toString()==tr("queries") || xml.name().toString()==tr("menus"))
-                xml.skipCurrentElement();
-            else{
-                qDebug() << xml.name().toString() << endl;
-                qDebug() << xml.readElementText() << endl;
-            }*/
-
         }
      }
 
-    /*
-    while (!xml.isEndDocument() && !xml.hasError() ){
-        xml.readNext();
-                tableList << xml.attributes().value(tr("name")).toString();
-                xml.skipCurrentElement();
-        }
-    }
-*/
     return true;
+}
+
+void FrmReports::loadItem(QListWidgetItem* item)
+{
+    //qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+        //emit showStatus(tr("Wait..."));
+
+        Report::ReportInterface*    report;
+        Report::ReportEngine        reportEngine;
+
+        QString strFileName(qApp->translate("dir", strReportsDir) + tr("\\") + item->text() + tr(".bdrt"));
+
+        //opening the report
+        report = reportEngine.loadReport(strFileName); // open report
+        if (!report)
+        {
+            emit showError(tr("Error: Can't open the report"));
+            return;
+        }
+
+        report->setDatabase(QSqlDatabase::database()); // sets the report database
+
+        //qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+
+        if (!report->exec()) // and finaly, exec report
+        {
+            emit showError(tr("Error: Can't exec the report"));
+            delete report;
+            return;
+        }
+        delete report;
+
 }

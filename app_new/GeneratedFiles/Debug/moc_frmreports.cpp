@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmreports.h'
 **
-** Created: Thu 23. Jun 11:56:08 2011
+** Created: Thu 23. Jun 15:56:09 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmReports[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -38,6 +38,7 @@ static const uint qt_meta_data_FrmReports[] = {
 
  // slots: signature, parameters, type, tag, flags
      117,  112,   11,   11, 0x08,
+     147,  112,   11,   11, 0x08,
 
        0        // eod
 };
@@ -47,6 +48,7 @@ static const char qt_meta_stringdata_FrmReports[] = {
     "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
     "item\0previewItem(QListWidgetItem*)\0"
+    "loadItem(QListWidgetItem*)\0"
 };
 
 const QMetaObject FrmReports::staticMetaObject = {
@@ -85,9 +87,10 @@ int FrmReports::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 4: previewItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 5: loadItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }

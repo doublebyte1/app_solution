@@ -31,6 +31,7 @@ class FrmReports : public QWidget, public Ui::frmreports
 
     private slots:
         void                        previewItem(QListWidgetItem* item);
+        void                        loadItem(QListWidgetItem* item);
 
     private:
         void                        showEvent ( QShowEvent * event );

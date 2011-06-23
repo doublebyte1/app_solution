@@ -99,43 +99,19 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Author:</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Icon:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lbAuthor">
-        <property name="toolTip">
-         <string>Report Author</string>
-        </property>
-        <property name="statusTip">
-         <string>Report Author</string>
-        </property>
-        <property name="whatsThis">
-         <string>Report Author</string>
-        </property>
-        <property name="text">
-         <string>-&gt; TYPE SOMETHING HERE</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
        <widget class="QLabel" name="lbPixmap">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>51</width>
+          <height>51</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>Report Icon</string>
@@ -157,7 +133,64 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbName">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>-&gt; TYPE SOMETHING HERE</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Author:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbAuthor">
+          <property name="toolTip">
+           <string>Report Author</string>
+          </property>
+          <property name="statusTip">
+           <string>Report Author</string>
+          </property>
+          <property name="whatsThis">
+           <string>Report Author</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(255, 255, 255);</string>
+          </property>
+          <property name="text">
+           <string>-&gt; TYPE SOMETHING HERE</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Description:</string>
@@ -167,7 +200,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="QTextBrowser" name="textDescription">
         <property name="toolTip">
          <string>Report description</string>
@@ -219,6 +252,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>listWidget</tabstop>
   <tabstop>textDescription</tabstop>
   <tabstop>lineOpen</tabstop>
   <tabstop>pushOpen</tabstop>
@@ -244,8 +278,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>listWidget</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>frmreports</receiver>
+   <slot>loadItem(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>387</x>
+     <y>222</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>previewItem(QListWidgetItem*)</slot>
+  <slot>loadItem(QListWidgetItem*)</slot>
  </slots>
 </ui>

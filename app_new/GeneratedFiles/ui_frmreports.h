@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmreports.ui'
 **
-** Created: Thu 23. Jun 10:52:13 2011
+** Created: Thu 23. Jun 15:55:57 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -42,10 +42,13 @@ public:
     QPushButton *pushOpen;
     QFrame *frame;
     QGridLayout *gridLayout;
-    QLabel *label_4;
-    QLabel *label_5;
-    QLabel *lbAuthor;
     QLabel *lbPixmap;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label;
+    QLabel *lbName;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_4;
+    QLabel *lbAuthor;
     QLabel *label_6;
     QTextBrowser *textDescription;
     QHBoxLayout *horizontalLayout_2;
@@ -116,39 +119,62 @@ public:
         frame->setFrameShadow(QFrame::Sunken);
         gridLayout = new QGridLayout(frame);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        label_4 = new QLabel(frame);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
-
-        gridLayout->addWidget(label_4, 0, 0, 1, 1);
-
-        label_5 = new QLabel(frame);
-        label_5->setObjectName(QString::fromUtf8("label_5"));
-
-        gridLayout->addWidget(label_5, 0, 1, 1, 1);
-
-        lbAuthor = new QLabel(frame);
-        lbAuthor->setObjectName(QString::fromUtf8("lbAuthor"));
-
-        gridLayout->addWidget(lbAuthor, 1, 0, 1, 1);
-
         lbPixmap = new QLabel(frame);
         lbPixmap->setObjectName(QString::fromUtf8("lbPixmap"));
         sizePolicy.setHeightForWidth(lbPixmap->sizePolicy().hasHeightForWidth());
         lbPixmap->setSizePolicy(sizePolicy);
+        lbPixmap->setMaximumSize(QSize(51, 51));
         lbPixmap->setPixmap(QPixmap(QString::fromUtf8(":/app_new/kpresenter.png")));
         lbPixmap->setScaledContents(true);
 
-        gridLayout->addWidget(lbPixmap, 1, 1, 1, 1);
+        gridLayout->addWidget(lbPixmap, 0, 1, 1, 1);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        label = new QLabel(frame);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        horizontalLayout_4->addWidget(label);
+
+        lbName = new QLabel(frame);
+        lbName->setObjectName(QString::fromUtf8("lbName"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lbName->sizePolicy().hasHeightForWidth());
+        lbName->setSizePolicy(sizePolicy1);
+        lbName->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+
+        horizontalLayout_4->addWidget(lbName);
+
+
+        gridLayout->addLayout(horizontalLayout_4, 1, 0, 1, 2);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label_4 = new QLabel(frame);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        horizontalLayout_3->addWidget(label_4);
+
+        lbAuthor = new QLabel(frame);
+        lbAuthor->setObjectName(QString::fromUtf8("lbAuthor"));
+        lbAuthor->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255);"));
+
+        horizontalLayout_3->addWidget(lbAuthor);
+
+
+        gridLayout->addLayout(horizontalLayout_3, 2, 0, 1, 2);
 
         label_6 = new QLabel(frame);
         label_6->setObjectName(QString::fromUtf8("label_6"));
 
-        gridLayout->addWidget(label_6, 2, 0, 1, 1);
+        gridLayout->addWidget(label_6, 3, 0, 1, 1);
 
         textDescription = new QTextBrowser(frame);
         textDescription->setObjectName(QString::fromUtf8("textDescription"));
 
-        gridLayout->addWidget(textDescription, 3, 0, 1, 2);
+        gridLayout->addWidget(textDescription, 4, 0, 1, 2);
 
 
         gridLayout_2->addWidget(frame, 0, 1, 1, 1);
@@ -171,12 +197,14 @@ public:
         label_3->setBuddy(lineOpen);
         label_6->setBuddy(textDescription);
 #endif // QT_NO_SHORTCUT
+        QWidget::setTabOrder(listWidget, textDescription);
         QWidget::setTabOrder(textDescription, lineOpen);
         QWidget::setTabOrder(lineOpen, pushOpen);
         QWidget::setTabOrder(pushOpen, pushClose);
 
         retranslateUi(frmreports);
         QObject::connect(listWidget, SIGNAL(itemClicked(QListWidgetItem*)), frmreports, SLOT(previewItem(QListWidgetItem*)));
+        QObject::connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), frmreports, SLOT(loadItem(QListWidgetItem*)));
 
         QMetaObject::connectSlotsByName(frmreports);
     } // setupUi
@@ -196,18 +224,6 @@ public:
         pushOpen->setWhatsThis(QApplication::translate("frmreports", "Browse files to load a report from non-standard location", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushOpen->setText(QString());
-        label_4->setText(QApplication::translate("frmreports", "Author:", 0, QApplication::UnicodeUTF8));
-        label_5->setText(QApplication::translate("frmreports", "Icon:", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        lbAuthor->setToolTip(QApplication::translate("frmreports", "Report Author", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        lbAuthor->setStatusTip(QApplication::translate("frmreports", "Report Author", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        lbAuthor->setWhatsThis(QApplication::translate("frmreports", "Report Author", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        lbAuthor->setText(QApplication::translate("frmreports", "-> TYPE SOMETHING HERE", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         lbPixmap->setToolTip(QApplication::translate("frmreports", "Report Icon", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -218,6 +234,19 @@ public:
         lbPixmap->setWhatsThis(QApplication::translate("frmreports", "Report Icon", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         lbPixmap->setText(QString());
+        label->setText(QApplication::translate("frmreports", "Name:", 0, QApplication::UnicodeUTF8));
+        lbName->setText(QApplication::translate("frmreports", "-> TYPE SOMETHING HERE", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("frmreports", "Author:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        lbAuthor->setToolTip(QApplication::translate("frmreports", "Report Author", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        lbAuthor->setStatusTip(QApplication::translate("frmreports", "Report Author", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        lbAuthor->setWhatsThis(QApplication::translate("frmreports", "Report Author", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        lbAuthor->setText(QApplication::translate("frmreports", "-> TYPE SOMETHING HERE", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmreports", "Description:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         textDescription->setToolTip(QApplication::translate("frmreports", "Report description", 0, QApplication::UnicodeUTF8));
