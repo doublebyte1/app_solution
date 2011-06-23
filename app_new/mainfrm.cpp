@@ -137,6 +137,12 @@ void MainFrm::initUi()
 
      connect(pFrmReports, SIGNAL(hideFrmReports()), this,
     SLOT(closeReports()),Qt::UniqueConnection);
+
+     connect(pFrmReports, SIGNAL(showStatus(QString)), this,
+    SLOT(statusShow(QString)));
+
+     connect(pFrmReports, SIGNAL(showError(QString, const bool)), this,
+    SLOT(displayError(QString, const bool)));
 }
 
 bool MainFrm::readXMLFile(const QString strFileName)

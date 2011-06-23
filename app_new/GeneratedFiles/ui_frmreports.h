@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmreports.ui'
 **
-** Created: Wed 22. Jun 18:16:36 2011
+** Created: Thu 23. Jun 10:52:13 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -20,7 +20,7 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QListView>
+#include <QtGui/QListWidget>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QTextBrowser>
@@ -32,16 +32,14 @@ QT_BEGIN_NAMESPACE
 class Ui_frmreports
 {
 public:
-    QHBoxLayout *horizontalLayout_3;
+    QGridLayout *gridLayout_2;
     QVBoxLayout *verticalLayout;
     QLabel *label_2;
-    QListView *listView;
+    QListWidget *listWidget;
     QLabel *label_3;
     QHBoxLayout *horizontalLayout;
     QLineEdit *lineOpen;
     QPushButton *pushOpen;
-    QVBoxLayout *verticalLayout_2;
-    QLabel *label;
     QFrame *frame;
     QGridLayout *gridLayout;
     QLabel *label_4;
@@ -63,8 +61,8 @@ public:
         font.setBold(false);
         font.setWeight(50);
         frmreports->setFont(font);
-        horizontalLayout_3 = new QHBoxLayout(frmreports);
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        gridLayout_2 = new QGridLayout(frmreports);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         label_2 = new QLabel(frmreports);
@@ -72,12 +70,14 @@ public:
 
         verticalLayout->addWidget(label_2);
 
-        listView = new QListView(frmreports);
-        listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        listView->setAlternatingRowColors(true);
+        listWidget = new QListWidget(frmreports);
+        listWidget->setObjectName(QString::fromUtf8("listWidget"));
+        listWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        listWidget->setAlternatingRowColors(true);
+        listWidget->setWordWrap(true);
+        listWidget->setSortingEnabled(true);
 
-        verticalLayout->addWidget(listView);
+        verticalLayout->addWidget(listWidget);
 
         label_3 = new QLabel(frmreports);
         label_3->setObjectName(QString::fromUtf8("label_3"));
@@ -108,19 +108,7 @@ public:
         verticalLayout->addLayout(horizontalLayout);
 
 
-        horizontalLayout_3->addLayout(verticalLayout);
-
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        label = new QLabel(frmreports);
-        label->setObjectName(QString::fromUtf8("label"));
-        QFont font1;
-        font1.setPointSize(10);
-        font1.setBold(true);
-        font1.setWeight(75);
-        label->setFont(font1);
-
-        verticalLayout_2->addWidget(label);
+        gridLayout_2->addLayout(verticalLayout, 0, 0, 2, 1);
 
         frame = new QFrame(frmreports);
         frame->setObjectName(QString::fromUtf8("frame"));
@@ -163,7 +151,7 @@ public:
         gridLayout->addWidget(textDescription, 3, 0, 1, 2);
 
 
-        verticalLayout_2->addWidget(frame);
+        gridLayout_2->addWidget(frame, 0, 1, 1, 1);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
@@ -177,22 +165,18 @@ public:
         horizontalLayout_2->addWidget(pushClose);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_2);
-
-
-        horizontalLayout_3->addLayout(verticalLayout_2);
+        gridLayout_2->addLayout(horizontalLayout_2, 1, 1, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
-        label_2->setBuddy(listView);
         label_3->setBuddy(lineOpen);
         label_6->setBuddy(textDescription);
 #endif // QT_NO_SHORTCUT
-        QWidget::setTabOrder(listView, textDescription);
         QWidget::setTabOrder(textDescription, lineOpen);
         QWidget::setTabOrder(lineOpen, pushOpen);
         QWidget::setTabOrder(pushOpen, pushClose);
 
         retranslateUi(frmreports);
+        QObject::connect(listWidget, SIGNAL(itemClicked(QListWidgetItem*)), frmreports, SLOT(previewItem(QListWidgetItem*)));
 
         QMetaObject::connectSlotsByName(frmreports);
     } // setupUi
@@ -201,15 +185,6 @@ public:
     {
         frmreports->setWindowTitle(QApplication::translate("frmreports", "Form", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmreports", "Choose one report from the list:", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        listView->setToolTip(QApplication::translate("frmreports", "Available reports", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        listView->setStatusTip(QApplication::translate("frmreports", "Available reports on the report directory", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        listView->setWhatsThis(QApplication::translate("frmreports", "Lists the available reports on the report directory", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
         label_3->setText(QApplication::translate("frmreports", "Browse to load a report:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushOpen->setToolTip(QApplication::translate("frmreports", "Open report", 0, QApplication::UnicodeUTF8));
@@ -221,7 +196,6 @@ public:
         pushOpen->setWhatsThis(QApplication::translate("frmreports", "Browse files to load a report from non-standard location", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushOpen->setText(QString());
-        label->setText(QApplication::translate("frmreports", "Report Properties", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmreports", "Author:", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("frmreports", "Icon:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP

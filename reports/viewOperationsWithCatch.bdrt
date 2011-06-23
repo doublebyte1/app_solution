@@ -1,0 +1,630 @@
+<!DOCTYPE report>
+<StdReport>
+    <properties>
+        <objectName type="QString">report</objectName>
+        <name type="QString">Nome report</name>
+        <author type="QString">(c) 2009 BogDan</author>
+        <script type="QString">ViewCatchByGear.exec();
+</script>
+        <queries type="QVariantMap">
+            <ViewCatchByGear type="QString">SELECT     dbo.Ref_Gears.Name AS Gear, SUM(dbo.Sampled_Fishing_Operations.catch_weight_estimated) AS Catch
+FROM         dbo.Sampled_Fishing_Operations INNER JOIN
+                      dbo.Ref_Gears ON dbo.Sampled_Fishing_Operations.id_gear = dbo.Ref_Gears.ID
+GROUP BY dbo.Sampled_Fishing_Operations.id_gear, dbo.Ref_Gears.Name ORDER BY Catch DESC</ViewCatchByGear>
+        </queries>
+        <uis type="QVariantMap"/>
+        <printerName type="QString"></printerName>
+        <showPrintDialog type="bool">true</showPrintDialog>
+        <showPrintPreview type="bool">true</showPrintPreview>
+        <showSplashScreen type="bool">true</showSplashScreen>
+        <splashScreenPixmap type="QPixmap"></splashScreenPixmap>
+        <showExitConfirm type="bool">true</showExitConfirm>
+        <menuGroup type="int">90</menuGroup>
+        <order type="int">90</order>
+        <menus type="QStringList">
+            <string type="QString">/Program/Reports</string>
+        </menus>
+        <icon type="QPixmap"></icon>
+        <description type="QString"></description>
+        <recommends type="QString"></recommends>
+    </properties>
+    <children>
+        <Page>
+            <properties>
+                <objectName type="QString">page_1</objectName>
+                <backgroundBrush type="QBrush">
+                    <color type="QColor">0,0,0,255</color>
+                    <style type="int">0</style>
+                    <texture type="QPixmap"></texture>
+                </backgroundBrush>
+                <foregroundBrush type="QBrush">
+                    <color type="QColor">0,0,0,255</color>
+                    <style type="int">0</style>
+                    <texture type="QPixmap"></texture>
+                </foregroundBrush>
+                <itemIndexMethod type=""/>
+                <sceneRect type="QRectF">0,0,2098.15,2971.27</sceneRect>
+                <bspTreeDepth type="int">5</bspTreeDepth>
+                <palette type="QPalette"/>
+                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                <sortCacheEnabled type="bool">false</sortCacheEnabled>
+                <stickyFocus type="bool">false</stickyFocus>
+                <pageSize type="int">0</pageSize>
+                <orientation type="int">0</orientation>
+                <geometry type="QRectF">150,100,1798,2771</geometry>
+                <paperRect type="QRectF">0,0,2098.15,2971.27</paperRect>
+                <magnetArea type="int">1</magnetArea>
+                <showGrid type="bool">false</showGrid>
+            </properties>
+            <children>
+                <Title>
+                    <properties>
+                        <objectName type="QString">titile_page_1</objectName>
+                        <geometry type="QRectF">150,100,1798,676</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">1</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                    </properties>
+                    <children>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">title_caption</objectName>
+                                <geometry type="QRectF">50,50,1698,50</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,4.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">132</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">Catch by Gear: Summary</text>
+                            </properties>
+                        </Text>
+                        <Text>
+                            <properties>
+                                <objectName type="QString">text</objectName>
+                                <geometry type="QRectF">59.2708,162.417,933,64</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <textFlags type="int">0</textFlags>
+                                <sizePolicy type="int">0</sizePolicy>
+                                <text type="QString">This report shows the catch (in Kg), grouped by gear used.</text>
+                            </properties>
+                        </Text>
+                        <ChartContainer>
+                            <properties>
+                                <objectName type="QString">chartcontainer</objectName>
+                                <geometry type="QRectF">1016.81,142.375,723,497</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <chartColorOpacity type="int">100</chartColorOpacity>
+                                <chartDataSource type="int">1</chartDataSource>
+                                <staticData type="QStringList"/>
+                                <query type="QString">ViewCatchByGear</query>
+                                <keyScript type="QString"></keyScript>
+                                <valueScript type="QString"></valueScript>
+                                <colorScript type="QString"></colorScript>
+                                <keyField type="QString">Gear</keyField>
+                                <valueField type="QString">Catch</valueField>
+                                <colorField type="QString"></colorField>
+                                <showOnlyFirstValues type="int">-1</showOnlyFirstValues>
+                                <showOtherValue type="bool">true</showOtherValue>
+                                <otherKey type="QString">Altro</otherKey>
+                                <sortDirection type="int">0</sortDirection>
+                            </properties>
+                            <children>
+                                <PieChart>
+                                    <properties>
+                                        <objectName type="QString">piechart</objectName>
+                                        <geometry type="QRectF">49.3958,13.5625,209,200</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <showLabels type="bool">false</showLabels>
+                                        <showGrid type="bool">true</showGrid>
+                                        <drawBorder type="bool">false</drawBorder>
+                                        <toColorFactor type="double">1</toColorFactor>
+                                    </properties>
+                                </PieChart>
+                                <Legend>
+                                    <properties>
+                                        <objectName type="QString">legend</objectName>
+                                        <geometry type="QRectF">302.125,19.4375,400,460</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <legendColorRectWidth type="int">50</legendColorRectWidth>
+                                    </properties>
+                                </Legend>
+                            </children>
+                        </ChartContainer>
+                    </children>
+                </Title>
+                <DetailContainer>
+                    <properties>
+                        <objectName type="QString">DetailContainer_ViewCatchByGear</objectName>
+                        <geometry type="QRectF">150,776,1798,276</geometry>
+                        <pen type="QPen">
+                            <brush type="QBrush">
+                                <color type="QColor">0,0,0,255</color>
+                                <style type="int">1</style>
+                                <texture type="QPixmap"></texture>
+                            </brush>
+                            <capStyle type="int">16</capStyle>
+                            <color type="QColor">0,0,0,255</color>
+                            <isCosmetic type="bool">true</isCosmetic>
+                            <joinStyle type="int">64</joinStyle>
+                            <miterLimit type="double">2</miterLimit>
+                            <style type="int">1</style>
+                            <width type="int">0</width>
+                        </pen>
+                        <brush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </brush>
+                        <backgroundBrush type="QBrush">
+                            <color type="QColor">0,0,0,255</color>
+                            <style type="int">0</style>
+                            <texture type="QPixmap"></texture>
+                        </backgroundBrush>
+                        <backgroundMode type="int">0</backgroundMode>
+                        <opacity type="int">100</opacity>
+                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                        <bandType type="int">2</bandType>
+                        <order type="int">0</order>
+                        <indentation type="int">0</indentation>
+                        <frame type="int">0</frame>
+                        <query type="QString">ViewCatchByGear</query>
+                    </properties>
+                    <children>
+                        <DetailHeader>
+                            <properties>
+                                <objectName type="QString">DetailHeader</objectName>
+                                <geometry type="QRectF">0,0,1798,92</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">255,255,255,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">255,255,255,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">153,153,153,255</color>
+                                    <style type="int">1</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int">3</bandType>
+                                <order type="int">0</order>
+                                <indentation type="int">0</indentation>
+                                <frame type="int">-1</frame>
+                                <groupField type="QString"></groupField>
+                                <reprintOnNewPage type="bool">true</reprintOnNewPage>
+                                <resetDetailNumber type="bool">false</resetDetailNumber>
+                                <forceNewPage type="bool">false</forceNewPage>
+                            </properties>
+                            <children>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString">Gear_ViewCatchByGear_text</objectName>
+                                        <geometry type="QRectF">40,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">255,255,255,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">255,255,255,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">153,153,153,255</color>
+                                            <style type="int">1</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">129</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <text type="QString">Gear</text>
+                                    </properties>
+                                </Text>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString">line_0</objectName>
+                                        <geometry type="QRectF">889,0,20,92</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">255,255,255,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">255,255,255,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">153,153,153,255</color>
+                                            <style type="int">1</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int">0</lineStyle>
+                                    </properties>
+                                </LineItem>
+                                <Text>
+                                    <properties>
+                                        <objectName type="QString">Catch_ViewCatchByGear_text</objectName>
+                                        <geometry type="QRectF">929,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">255,255,255,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">255,255,255,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">153,153,153,255</color>
+                                            <style type="int">1</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">130</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <text type="QString">Catch</text>
+                                    </properties>
+                                </Text>
+                            </children>
+                        </DetailHeader>
+                        <Detail>
+                            <properties>
+                                <objectName type="QString">Detail</objectName>
+                                <geometry type="QRectF">0,92,1798,92</geometry>
+                                <pen type="QPen">
+                                    <brush type="QBrush">
+                                        <color type="QColor">0,0,0,255</color>
+                                        <style type="int">1</style>
+                                        <texture type="QPixmap"></texture>
+                                    </brush>
+                                    <capStyle type="int">16</capStyle>
+                                    <color type="QColor">0,0,0,255</color>
+                                    <isCosmetic type="bool">true</isCosmetic>
+                                    <joinStyle type="int">64</joinStyle>
+                                    <miterLimit type="double">2</miterLimit>
+                                    <style type="int">1</style>
+                                    <width type="int">0</width>
+                                </pen>
+                                <brush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </brush>
+                                <backgroundBrush type="QBrush">
+                                    <color type="QColor">0,0,0,255</color>
+                                    <style type="int">0</style>
+                                    <texture type="QPixmap"></texture>
+                                </backgroundBrush>
+                                <backgroundMode type="int">0</backgroundMode>
+                                <opacity type="int">100</opacity>
+                                <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                <bandType type="int">4</bandType>
+                                <order type="int">0</order>
+                                <indentation type="int">0</indentation>
+                                <frame type="int">-1</frame>
+                            </properties>
+                            <children>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString">Gear_ViewCatchByGear_field</objectName>
+                                        <geometry type="QRectF">40,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">129</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <queryName type="QString">ViewCatchByGear</queryName>
+                                        <fieldName type="QString">Gear</fieldName>
+                                    </properties>
+                                </Field>
+                                <LineItem>
+                                    <properties>
+                                        <objectName type="QString">line_1</objectName>
+                                        <geometry type="QRectF">889,0,20,92</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">Serif,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <lineStyle type="int">0</lineStyle>
+                                    </properties>
+                                </LineItem>
+                                <Field>
+                                    <properties>
+                                        <objectName type="QString">Catch_ViewCatchByGear_field</objectName>
+                                        <geometry type="QRectF">929,20,849,52</geometry>
+                                        <pen type="QPen">
+                                            <brush type="QBrush">
+                                                <color type="QColor">0,0,0,255</color>
+                                                <style type="int">1</style>
+                                                <texture type="QPixmap"></texture>
+                                            </brush>
+                                            <capStyle type="int">16</capStyle>
+                                            <color type="QColor">0,0,0,255</color>
+                                            <isCosmetic type="bool">true</isCosmetic>
+                                            <joinStyle type="int">64</joinStyle>
+                                            <miterLimit type="double">2</miterLimit>
+                                            <style type="int">1</style>
+                                            <width type="int">0</width>
+                                        </pen>
+                                        <brush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </brush>
+                                        <backgroundBrush type="QBrush">
+                                            <color type="QColor">0,0,0,255</color>
+                                            <style type="int">0</style>
+                                            <texture type="QPixmap"></texture>
+                                        </backgroundBrush>
+                                        <backgroundMode type="int">0</backgroundMode>
+                                        <opacity type="int">100</opacity>
+                                        <font type="QFont">MS Shell Dlg 2,3.5,-1,5,50,0,0,0,0,0</font>
+                                        <textFlags type="int">130</textFlags>
+                                        <sizePolicy type="int">0</sizePolicy>
+                                        <queryName type="QString">ViewCatchByGear</queryName>
+                                        <fieldName type="QString">Catch</fieldName>
+                                    </properties>
+                                </Field>
+                            </children>
+                        </Detail>
+                    </children>
+                </DetailContainer>
+            </children>
+        </Page>
+    </children>
+</StdReport>

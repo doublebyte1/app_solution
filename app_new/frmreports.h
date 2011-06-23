@@ -26,8 +26,18 @@ class FrmReports : public QWidget, public Ui::frmreports
 
     signals:
         void                        hideFrmReports();
+        void                        showStatus(QString str);//!< signal for showing messages in the status bar
+        void                        showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     private slots:
+        void                        previewItem(QListWidgetItem* item);
 
+    private:
+        void                        showEvent ( QShowEvent * event );
+        bool                        readReportNames ();
+        bool                        parseXMLFile(const QString itemName, QString& strName, QString& strAuthor,
+                                                        QString& strPixmap, QString& strDescription);
+        bool                        readProperties(QXmlStreamReader& xml, QString& strName, QString& strAuthor, QString& 
+                                                        strPixmap, QString& strDescription);
 };
 #endif //FRMREPORTS_H

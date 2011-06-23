@@ -37,4 +37,10 @@ static const char *strLogbook =
 static const char *strSampling = 
      QT_TRANSLATE_NOOP("frame", "Sampling");
 
+static const char *strReportsDir = 
+     QT_TRANSLATE_NOOP("dir", "C:\\projects\\VS\\app_solution\\reports");
+
+static const char *strEmpty = 
+     QT_TRANSLATE_NOOP("empty", "empty");
+
 #endif// GLOBALDEFS_H
