@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmreports.ui'
 **
-** Created: Thu 23. Jun 15:55:57 2011
+** Created: Fri 24. Jun 15:04:43 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -205,6 +205,7 @@ public:
         retranslateUi(frmreports);
         QObject::connect(listWidget, SIGNAL(itemClicked(QListWidgetItem*)), frmreports, SLOT(previewItem(QListWidgetItem*)));
         QObject::connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), frmreports, SLOT(loadItem(QListWidgetItem*)));
+        QObject::connect(pushOpen, SIGNAL(clicked()), frmreports, SLOT(browseFiles()));
 
         QMetaObject::connectSlotsByName(frmreports);
     } // setupUi

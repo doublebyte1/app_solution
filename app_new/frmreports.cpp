@@ -17,6 +17,15 @@ FrmReports::~FrmReports()
 
 }
 
+void FrmReports::browseFiles()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+     tr("Open Report"), "", tr("Report Files (*.bdrt)"));
+
+    lineOpen->setText(fileName);
+    loadItem(fileName);
+}
+
 void FrmReports::showEvent ( QShowEvent * event )
 {
     this->frame->hide();
@@ -141,32 +150,29 @@ bool FrmReports::readProperties(QXmlStreamReader& xml, QString& strName, QString
 
 void FrmReports::loadItem(QListWidgetItem* item)
 {
-    //qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
-        //emit showStatus(tr("Wait..."));
+    loadItem(qApp->translate("dir", strReportsDir) + tr("\\") + item->text() + tr(".bdrt"));
+}
 
-        Report::ReportInterface*    report;
-        Report::ReportEngine        reportEngine;
+void FrmReports::loadItem(const QString strFilename)
+{
+    Report::ReportInterface*    report;
+    Report::ReportEngine        reportEngine;
 
-        QString strFileName(qApp->translate("dir", strReportsDir) + tr("\\") + item->text() + tr(".bdrt"));
+    //opening the report
+    report = reportEngine.loadReport(strFilename); // open report
+    if (!report)
+    {
+        emit showError(tr("Error: Can't open the report"));
+        return;
+    }
 
-        //opening the report
-        report = reportEngine.loadReport(strFileName); // open report
-        if (!report)
-        {
-            emit showError(tr("Error: Can't open the report"));
-            return;
-        }
+    report->setDatabase(QSqlDatabase::database()); // sets the report database
 
-        report->setDatabase(QSqlDatabase::database()); // sets the report database
-
-        //qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-
-        if (!report->exec()) // and finaly, exec report
-        {
-            emit showError(tr("Error: Can't exec the report"));
-            delete report;
-            return;
-        }
+    if (!report->exec()) // and finaly, exec report
+    {
+        emit showError(tr("Error: Can't exec the report"));
         delete report;
-
+        return;
+    }
+    delete report;
 }

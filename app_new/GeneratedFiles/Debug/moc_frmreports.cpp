@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmreports.h'
 **
-** Created: Thu 23. Jun 15:56:09 2011
+** Created: Fri 24. Jun 15:22:11 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmReports[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,8 +37,10 @@ static const uint qt_meta_data_FrmReports[] = {
       93,   29,   11,   11, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     117,  112,   11,   11, 0x08,
-     147,  112,   11,   11, 0x08,
+     112,   11,   11,   11, 0x08,
+     131,  126,   11,   11, 0x08,
+     161,  126,   11,   11, 0x08,
+     200,  188,   11,   11, 0x08,
 
        0        // eod
 };
@@ -47,8 +49,9 @@ static const char qt_meta_stringdata_FrmReports[] = {
     "FrmReports\0\0hideFrmReports()\0str\0"
     "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
-    "item\0previewItem(QListWidgetItem*)\0"
-    "loadItem(QListWidgetItem*)\0"
+    "browseFiles()\0item\0previewItem(QListWidgetItem*)\0"
+    "loadItem(QListWidgetItem*)\0strFilename\0"
+    "loadItem(QString)\0"
 };
 
 const QMetaObject FrmReports::staticMetaObject = {
@@ -86,11 +89,13 @@ int FrmReports::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: previewItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 5: loadItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 4: browseFiles(); break;
+        case 5: previewItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 6: loadItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 7: loadItem((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 8;
     }
     return _id;
 }

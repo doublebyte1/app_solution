@@ -30,8 +30,10 @@ class FrmReports : public QWidget, public Ui::frmreports
         void                        showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     private slots:
+        void                        browseFiles();
         void                        previewItem(QListWidgetItem* item);
         void                        loadItem(QListWidgetItem* item);
+        void                        loadItem(const QString strFilename);
 
     private:
         void                        showEvent ( QShowEvent * event );

@@ -51,7 +51,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;.\GeneratedFiles&quot;;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include\QtSql&quot;;&quot;$(QTDIR)\include\QtXmlPatterns&quot;;&quot;$(QTDIR)\include\QtTest&quot;;&quot;.\&quot;;&quot;$(BOOSTDIR)&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot;;&quot;$(QTDIR)\include\QtWebKit&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot;;&quot;$(EXARO_INCLUDE_DIR)&quot;;&quot;$(QTDIR)\include\QtScript&quot;"
+				AdditionalIncludeDirectories=".\GeneratedFiles;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include\QtSql&quot;;&quot;$(QTDIR)\include\QtXmlPatterns&quot;;&quot;$(QTDIR)\include\QtTest&quot;;.\;&quot;$(BOOSTDIR)&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot;;&quot;$(QTDIR)\include\QtWebKit&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot;;&quot;$(EXARO_INCLUDE_DIR)&quot;;&quot;$(QTDIR)\include\QtScript&quot;"
 				PreprocessorDefinitions=",UNICODE,WIN32,QT_LARGEFILE_SUPPORT;QT_NO_DEBUG,NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_XML_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_SCRIPT_LIB"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="false"
@@ -129,7 +129,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;.\GeneratedFiles&quot;;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include\QtSql&quot;;&quot;$(QTDIR)\include\QtXmlPatterns&quot;;&quot;$(QTDIR)\include\QtTest&quot;;&quot;.\&quot;;&quot;$(BOOSTDIR)&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot;;&quot;$(QTDIR)\include\QtWebKit&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot;;&quot;$(EXARO_INCLUDE_DIR)&quot;;&quot;$(QTDIR)\include\QtScript&quot;"
+				AdditionalIncludeDirectories=".\GeneratedFiles;&quot;$(QTDIR)\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;$(QTDIR)\include\qtmain&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include\QtSql&quot;;&quot;$(QTDIR)\include\QtXmlPatterns&quot;;&quot;$(QTDIR)\include\QtTest&quot;;.\;&quot;$(BOOSTDIR)&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl&quot;;&quot;$(PROJDIR)\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot;;&quot;$(QTDIR)\include\QtWebKit&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl&quot;;&quot;$(PROJDIR)\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot;;&quot;$(EXARO_INCLUDE_DIR)&quot;;&quot;$(QTDIR)\include\QtScript&quot;"
 				PreprocessorDefinitions=",UNICODE,WIN32,QT_LARGEFILE_SUPPORT;QT_CORE_LIB;QT_GUI_LIB;QT_XML_LIB;QT_SQL_LIB;QT_XMLPATTERNS_LIB;QT_SCRIPT_LIB"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="false"
@@ -146,7 +146,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib QtXmld4.lib QtSqld4.lib QtXmlPatternsd4.lib QtTestd4.lib customtimectrld.lib QtWebKitd4.lib CatchInputCtrld.lib Report.lib QtScriptd4.lib"
+				AdditionalDependencies="qtmaind.lib QtCored4.lib QtGuid4.lib QtXmld4.lib QtSqld4.lib QtXmlPatternsd4.lib QtTestd4.lib customtimectrld.lib QtWebKitd4.lib CatchInputCtrld.lib Reportd.lib QtScriptd4.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				AdditionalLibraryDirectories="&quot;$(QTDIR)\lib&quot;;&quot;$(QTDIR)\plugins\designer&quot;;&quot;$(EXARO_LIBRARIES)&quot;"
 				GenerateDebugInformation="true"
