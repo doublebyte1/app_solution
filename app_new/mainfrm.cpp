@@ -20,6 +20,8 @@ QMainWindow(parent, flags){
     toolbar=0;
     ruleCheckerPtr=0;
     pFrmReports=0;
+    pFrmImport=0;
+    pFrmExport=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
     setupUi(this);
@@ -42,6 +44,8 @@ MainFrm::~MainFrm()
     }
 
     if (pFrmReports!=0) delete pFrmReports;
+    if (pFrmImport!=0) delete pFrmImport;
+    if (pFrmExport!=0) delete pFrmExport;
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
@@ -95,6 +99,26 @@ void MainFrm::rulesInitialized(bool bReady)
     //m_bGotRules=bReady;
 }
 
+void MainFrm::LoadExportFrm()
+{
+    if (!pFrmExport->isVisible()){
+        tabWidget->hide();
+        gridLayout->removeWidget(tabWidget);
+        gridLayout->addWidget(pFrmExport, 0, 0, 1, 1);
+        pFrmExport->show();
+    }
+}
+
+void MainFrm::LoadImportFrm()
+{
+    if (!pFrmImport->isVisible()){
+        tabWidget->hide();
+        gridLayout->removeWidget(tabWidget);
+        gridLayout->addWidget(pFrmImport, 0, 0, 1, 1);
+        pFrmImport->show();
+    }
+}
+
 void MainFrm::initUi()
 {
     //read this from the app settings
@@ -118,6 +142,12 @@ void MainFrm::initUi()
      connect(actionReports, SIGNAL(triggered()),this,
         SLOT(loadReports() ),Qt::UniqueConnection);
 
+     connect(actionImport, SIGNAL(triggered()),this,
+        SLOT(LoadImportFrm() ),Qt::UniqueConnection);
+
+     connect(actionExport, SIGNAL(triggered()),this,
+        SLOT(LoadExportFrm() ),Qt::UniqueConnection);
+
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
@@ -128,6 +158,9 @@ void MainFrm::initUi()
     toolbar->addSeparator();
     toolbar->addAction(this->actionReports);
     toolbar->addSeparator();
+    toolbar->addAction(this->actionImport);
+    toolbar->addAction(this->actionExport);
+    toolbar->addSeparator();
     toolbar->addAction(this->actionAbout_this_project);
     toolbar->addSeparator();
     toolbar->addAction(this->actionExit);
@@ -136,12 +169,36 @@ void MainFrm::initUi()
     pFrmReports->hide();
 
      connect(pFrmReports, SIGNAL(hideFrmReports()), this,
-    SLOT(closeReports()),Qt::UniqueConnection);
+    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
 
      connect(pFrmReports, SIGNAL(showStatus(QString)), this,
     SLOT(statusShow(QString)));
 
      connect(pFrmReports, SIGNAL(showError(QString, const bool)), this,
+    SLOT(displayError(QString, const bool)));
+
+    pFrmImport=new FrmImport();
+    pFrmImport->hide();
+
+    pFrmExport=new FrmExport();
+    pFrmExport->hide();
+
+     connect(pFrmImport, SIGNAL(hideFrm()), this,
+    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
+
+     connect(pFrmImport, SIGNAL(showStatus(QString)), this,
+    SLOT(statusShow(QString)));
+
+     connect(pFrmImport, SIGNAL(showError(QString, const bool)), this,
+    SLOT(displayError(QString, const bool)));
+
+     connect(pFrmExport, SIGNAL(hideFrm()), this,
+    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
+
+     connect(pFrmExport, SIGNAL(showStatus(QString)), this,
+    SLOT(statusShow(QString)));
+
+     connect(pFrmExport, SIGNAL(showError(QString, const bool)), this,
     SLOT(displayError(QString, const bool)));
 }
 
@@ -235,20 +292,26 @@ void MainFrm::loadReports()
     }
 }
 
-void MainFrm::closeReports()
+void MainFrm::closeSecondaryFrm(QWidget* frm)
 {
-    if (pFrmReports->isVisible()){
-        gridLayout->removeWidget(pFrmReports);
-        pFrmReports->hide();
+    if (frm->isVisible()){
+        gridLayout->removeWidget(frm);
+        frm->hide();
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
         tabWidget->show();
     }
 }
 
+void MainFrm::closeSecondaryFrm()
+{
+    QWidget *frm = (QWidget *)sender();
+    if (frm!=0) closeSecondaryFrm(frm);
+}
+
 void MainFrm::closeFile()
 {
     if (pFrmReports->isVisible())
-        closeReports();
+        closeSecondaryFrm(pFrmReports);
 
     if ( tabWidget->count() <1 ){
         QMessageBox::information(this, tr("Medfisis"),
@@ -264,7 +327,7 @@ void MainFrm::closeFile()
 void MainFrm::loadFile()
 {
     if (pFrmReports->isVisible())
-        closeReports();
+        closeSecondaryFrm(pFrmReports);
 
     QString fileName = QFileDialog::getOpenFileName(this,
      tr("Open Project"), tr(""), tr("Project Files (*.xml)"));
@@ -406,7 +469,7 @@ void MainFrm::newTabs()
     statusShow(tr("Wait..."));
 
         if (pFrmReports->isVisible())
-            closeReports();
+            closeSecondaryFrm(pFrmReports);
 
         resetTabs();
         if (!initDateModel())

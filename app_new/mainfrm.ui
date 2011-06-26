@@ -57,8 +57,22 @@
     </property>
     <addaction name="actionReports"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="menuMaintenance_Tasks">
+     <property name="title">
+      <string>Maintenance Tasks</string>
+     </property>
+     <addaction name="actionImport"/>
+     <addaction name="actionExport"/>
+    </widget>
+    <addaction name="menuMaintenance_Tasks"/>
+   </widget>
    <addaction name="menuSampling_Operation"/>
    <addaction name="menuView"/>
+   <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -200,6 +214,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/folder_inbox.png</normaloff>:/app_new/folder_inbox.png</iconset>
+   </property>
+   <property name="text">
+    <string>Import</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/folder_outbox.png</normaloff>:/app_new/folder_outbox.png</iconset>
+   </property>
+   <property name="text">
+    <string>Export</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

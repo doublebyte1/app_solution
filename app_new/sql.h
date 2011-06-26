@@ -1304,7 +1304,7 @@ static bool getMappedTMPName(const QString inStrName, const QMap<QString,QString
 
 static bool getNullReplacements(QStringList& list){
 
-    QString strQuery=QObject::tr("Select internal_name from Null_Replacements WHERE internal_name <> 'misc'");
+    QString strQuery=QObject::tr("Select internal_name from GL_Null_Replacements WHERE internal_name <> 'misc'");
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmreports.ui'
 **
-** Created: Fri 24. Jun 15:04:43 2011
+** Created: Sun 26. Jun 15:39:59 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

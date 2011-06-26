@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Fri 24. Jun 14:32:21 2011
+** Created: Sun 26. Jun 16:13:29 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -37,6 +37,8 @@ public:
     QAction *actionAbout_this_project;
     QAction *actionClose;
     QAction *actionReports;
+    QAction *actionImport;
+    QAction *actionExport;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -44,6 +46,8 @@ public:
     QMenu *menuSampling_Operation;
     QMenu *menuHelp;
     QMenu *menuView;
+    QMenu *menuTools;
+    QMenu *menuMaintenance_Tasks;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -96,6 +100,16 @@ public:
         QIcon icon8;
         icon8.addFile(QString::fromUtf8(":/app_new/kpresenter.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionReports->setIcon(icon8);
+        actionImport = new QAction(MainWindow);
+        actionImport->setObjectName(QString::fromUtf8("actionImport"));
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/app_new/folder_inbox.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionImport->setIcon(icon9);
+        actionExport = new QAction(MainWindow);
+        actionExport->setObjectName(QString::fromUtf8("actionExport"));
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/app_new/folder_outbox.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionExport->setIcon(icon10);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -115,6 +129,10 @@ public:
         menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
         menuView = new QMenu(menubar);
         menuView->setObjectName(QString::fromUtf8("menuView"));
+        menuTools = new QMenu(menubar);
+        menuTools->setObjectName(QString::fromUtf8("menuTools"));
+        menuMaintenance_Tasks = new QMenu(menuTools);
+        menuMaintenance_Tasks->setObjectName(QString::fromUtf8("menuMaintenance_Tasks"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -122,6 +140,7 @@ public:
 
         menubar->addAction(menuSampling_Operation->menuAction());
         menubar->addAction(menuView->menuAction());
+        menubar->addAction(menuTools->menuAction());
         menubar->addAction(menuHelp->menuAction());
         menuSampling_Operation->addAction(actionNew);
         menuSampling_Operation->addAction(actionLoad);
@@ -132,6 +151,9 @@ public:
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_this_project);
         menuView->addAction(actionReports);
+        menuTools->addAction(menuMaintenance_Tasks->menuAction());
+        menuMaintenance_Tasks->addAction(actionImport);
+        menuMaintenance_Tasks->addAction(actionExport);
 
         retranslateUi(MainWindow);
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
@@ -197,9 +219,15 @@ public:
         actionReports->setWhatsThis(QApplication::translate("MainWindow", "Shows the reports", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionReports->setShortcut(QApplication::translate("MainWindow", "Ctrl+R", 0, QApplication::UnicodeUTF8));
+        actionImport->setText(QApplication::translate("MainWindow", "Import", 0, QApplication::UnicodeUTF8));
+        actionImport->setShortcut(QApplication::translate("MainWindow", "Ctrl+I", 0, QApplication::UnicodeUTF8));
+        actionExport->setText(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
+        actionExport->setShortcut(QApplication::translate("MainWindow", "Ctrl+E", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
+        menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
+        menuMaintenance_Tasks->setTitle(QApplication::translate("MainWindow", "Maintenance Tasks", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

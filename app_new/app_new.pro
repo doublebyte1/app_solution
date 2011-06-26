@@ -10,9 +10,9 @@ message("You are running qmake on a generated .pro file. This may not work!")
 TEMPLATE = app
 TARGET = app_new
 DESTDIR = ../Debug
-QT += core gui sql xml xmlpatterns qtmain webkit
+QT += core gui sql xml script xmlpatterns qtmain webkit
 CONFIG += qtestlib debug
-DEFINES += QT_LARGEFILE_SUPPORT QT_XML_LIB QT_SQL_LIB QT_XMLPATTERNS_LIB
+DEFINES += QT_LARGEFILE_SUPPORT QT_XML_LIB QT_SQL_LIB QT_XMLPATTERNS_LIB QT_SCRIPT_LIB
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     . \
@@ -20,10 +20,13 @@ INCLUDEPATH += ./GeneratedFiles \
     $(PROJDIR)/customctrl_solution/CustomTimeCtrl \
     $(PROJDIR)/customctrl_solution/CustomTimeCtrl/GeneratedFiles \
     $(PROJDIR)/CatchInputCtrl/CatchInputCtrl \
-    $(PROJDIR)/CatchInputCtrl/CatchInputCtrl/GeneratedFiles
+    $(PROJDIR)/CatchInputCtrl/CatchInputCtrl/GeneratedFiles \
+    $(EXARO_INCLUDE_DIR)
 LIBS += -L"$(QTDIR)/plugins/designer" \
+    -L"$(EXARO_LIBRARIES)" \
     -lcustomtimectrld \
-    -lCatchInputCtrld
+    -lCatchInputCtrld \
+    -lReportd
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug

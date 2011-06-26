@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmreports.h'
 **
-** Created: Fri 24. Jun 15:22:11 2011
+** Created: Sun 26. Jun 15:40:07 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

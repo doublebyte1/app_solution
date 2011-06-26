@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>folder_inbox.png</file>
+    <file>folder_outbox.png</file>
     <file>kpresenter.png</file>
     <file>taskbar.png</file>
     <file>exit.png</file>

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Fri 24. Jun 14:11:39 2011
+** Created: Sun 26. Jun 18:36:43 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainFrm[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,30 +31,34 @@ static const uint qt_meta_data_MainFrm[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      17,    9,    8,    8, 0x08,
-      34,    8,    8,    8, 0x08,
-      54,   44,    8,    8, 0x08,
-     126,   84,    8,    8, 0x08,
-     240,    8,    8,    8, 0x08,
-     263,  259,    8,    8, 0x08,
-     283,  259,    8,    8, 0x08,
-     325,  304,    8,    8, 0x08,
-     352,    8,    8,    8, 0x08,
-     379,  370,    8,    8, 0x08,
-     399,    8,    8,    8, 0x08,
-     425,  418,    8,    8, 0x08,
-     448,    8,    8,    8, 0x08,
-     459,    8,    8,    8, 0x08,
-     471,    8,    8,    8, 0x08,
-     483,    8,    8,    8, 0x08,
-     497,    8,    8,    8, 0x08,
+       9,    8,    8,    8, 0x08,
+      25,    8,    8,    8, 0x08,
+      49,   41,    8,    8, 0x08,
+      66,    8,    8,    8, 0x08,
+      86,   76,    8,    8, 0x08,
+     158,  116,    8,    8, 0x08,
+     272,    8,    8,    8, 0x08,
+     295,  291,    8,    8, 0x08,
+     315,  291,    8,    8, 0x08,
+     357,  336,    8,    8, 0x08,
+     384,    8,    8,    8, 0x08,
+     411,  402,    8,    8, 0x08,
+     431,    8,    8,    8, 0x08,
+     457,  450,    8,    8, 0x08,
+     480,    8,    8,    8, 0x08,
+     491,    8,    8,    8, 0x08,
+     503,    8,    8,    8, 0x08,
+     515,    8,    8,    8, 0x08,
+     529,    8,    8,    8, 0x08,
+     553,  549,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainFrm[] = {
-    "MainFrm\0\0idx,bOk\0addTab(int,bool)\0"
-    "newTabs()\0bNext,idx\0navigateThroughTabs(bool,int)\0"
+    "MainFrm\0\0LoadExportFrm()\0LoadImportFrm()\0"
+    "idx,bOk\0addTab(int,bool)\0newTabs()\0"
+    "bNext,idx\0navigateThroughTabs(bool,int)\0"
     "mode,persistence,sample,blackList,options\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,Sa"
     "mple*,QList<int>&,FrmFrameDetails::Options)\0"
@@ -65,7 +69,8 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "aboutThisProject()\0bReady\0"
     "rulesInitialized(bool)\0loadFile()\0"
     "closeFile()\0writeFile()\0loadReports()\0"
-    "closeReports()\0"
+    "closeSecondaryFrm()\0frm\0"
+    "closeSecondaryFrm(QWidget*)\0"
 };
 
 const QMetaObject MainFrm::staticMetaObject = {
@@ -99,26 +104,29 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: addTab((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 1: newTabs(); break;
-        case 2: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
-        case 3: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const FrmFrameDetails::Options(*)>(_a[5]))); break;
-        case 4: hideFrameDetails(); break;
-        case 5: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 6: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 7: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 8: cleanupMsgBoxes(); break;
-        case 9: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 10: aboutThisProject(); break;
-        case 11: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 12: loadFile(); break;
-        case 13: closeFile(); break;
-        case 14: writeFile(); break;
-        case 15: loadReports(); break;
-        case 16: closeReports(); break;
+        case 0: LoadExportFrm(); break;
+        case 1: LoadImportFrm(); break;
+        case 2: addTab((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 3: newTabs(); break;
+        case 4: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
+        case 5: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const FrmFrameDetails::Options(*)>(_a[5]))); break;
+        case 6: hideFrameDetails(); break;
+        case 7: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 8: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 9: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 10: cleanupMsgBoxes(); break;
+        case 11: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: aboutThisProject(); break;
+        case 13: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 14: loadFile(); break;
+        case 15: closeFile(); break;
+        case 16: writeFile(); break;
+        case 17: loadReports(); break;
+        case 18: closeSecondaryFrm(); break;
+        case 19: closeSecondaryFrm((*reinterpret_cast< QWidget*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 17;
+        _id -= 20;
     }
     return _id;
 }

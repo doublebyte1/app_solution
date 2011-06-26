@@ -14,6 +14,8 @@
 #include "frmcatch.h"
 #include "frmprjpage.h"
 #include "frmreports.h"
+#include "frmimport.h"
+#include "frmexport.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -134,6 +136,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmCatch                *pFrmCatch;
         FrmPrjPage              *pFrmPrjPage;
         FrmReports              *pFrmReports;
+        FrmImport               *pFrmImport;
+        FrmExport               *pFrmExport;
         QVector<GenericTab*>    vTabs;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
@@ -142,6 +146,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         InitRulesThread*        workerThread;//!< Thread that initializes the rule containers
 
     private slots:
+        void                    LoadExportFrm();
+        void                    LoadImportFrm();
         void                    addTab(int idx, bool bOk);
         void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
@@ -161,6 +167,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    closeFile();
         void                    writeFile();
         void                    loadReports();
-        void                    closeReports();
+        void                    closeSecondaryFrm();
+        void                    closeSecondaryFrm(QWidget* frm);
+
 };
 #endif //MAINFRM_H

@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmTables</class>
+ <widget class="QWidget" name="frmTables">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>650</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" rowspan="3">
+    <widget class="QListWidget" name="listWidget"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="groupType">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Type of Operation</string>
+     </property>
+     <property name="statusTip">
+      <string>Type of Operation</string>
+     </property>
+     <property name="whatsThis">
+      <string>Type of Operation</string>
+     </property>
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QRadioButton" name="radioDefinition">
+        <property name="toolTip">
+         <string>Table Definition</string>
+        </property>
+        <property name="statusTip">
+         <string>Table Definition</string>
+        </property>
+        <property name="whatsThis">
+         <string>Table Definition</string>
+        </property>
+        <property name="text">
+         <string>Definition</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioData">
+        <property name="toolTip">
+         <string>Table Contents</string>
+        </property>
+        <property name="statusTip">
+         <string>Table Contents</string>
+        </property>
+        <property name="whatsThis">
+         <string>Table Contents</string>
+        </property>
+        <property name="text">
+         <string>Data</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="groupOptions">
+     <property name="toolTip">
+      <string>Import Options</string>
+     </property>
+     <property name="statusTip">
+      <string>Import Options</string>
+     </property>
+     <property name="whatsThis">
+      <string>Import Options</string>
+     </property>
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkShowViews">
+        <property name="toolTip">
+         <string>Show Views</string>
+        </property>
+        <property name="statusTip">
+         <string>Show Views</string>
+        </property>
+        <property name="whatsThis">
+         <string>Show Views</string>
+        </property>
+        <property name="text">
+         <string>Show Views</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkShowInternal">
+        <property name="toolTip">
+         <string>Show Internal Tables</string>
+        </property>
+        <property name="statusTip">
+         <string>Show Internal Tables</string>
+        </property>
+        <property name="whatsThis">
+         <string>Show Internal Tables</string>
+        </property>
+        <property name="text">
+         <string>Show Internal Tables</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkValidate">
+        <property name="toolTip">
+         <string>Schema validation before import</string>
+        </property>
+        <property name="statusTip">
+         <string>Schema validation before import</string>
+        </property>
+        <property name="whatsThis">
+         <string>Schema validation before import</string>
+        </property>
+        <property name="text">
+         <string>Schema Validation</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkVerify">
+        <property name="toolTip">
+         <string>Verify Table Structure in the Database</string>
+        </property>
+        <property name="statusTip">
+         <string>Verify Table Structure in the Database</string>
+        </property>
+        <property name="whatsThis">
+         <string>Verifies Table Structure in the Database</string>
+        </property>
+        <property name="text">
+         <string>Enforce Table Structure Policies</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>14</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkCreate">
+        <property name="toolTip">
+         <string>Create new table(s), deleting existing one(s)</string>
+        </property>
+        <property name="statusTip">
+         <string>Create new table(s), deleting existing one(s)</string>
+        </property>
+        <property name="whatsThis">
+         <string>Create new table(s), deleting existing one(s)</string>
+        </property>
+        <property name="text">
+         <string>Create Table(s)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBackups">
+        <property name="text">
+         <string>Backup Table(s)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkAppend">
+        <property name="toolTip">
+         <string>Append data, keeping existing one</string>
+        </property>
+        <property name="statusTip">
+         <string>Append data, keeping existing one</string>
+        </property>
+        <property name="whatsThis">
+         <string>Append data, keeping existing one</string>
+        </property>
+        <property name="text">
+         <string>Append Data to Existing Table(s)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QToolButton" name="toolButton">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbFile">
+          <property name="toolTip">
+           <string>Select File to Import From</string>
+          </property>
+          <property name="statusTip">
+           <string>Select File to Import From</string>
+          </property>
+          <property name="whatsThis">
+           <string>Select File to Import From</string>
+          </property>
+          <property name="text">
+           <string>Choose File</string>
+          </property>
+          <property name="buddy">
+           <cstring>toolButton</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>14</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QTableView" name="previewTable"/>
+   </item>
+   <item row="3" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushAll">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Select All</string>
+       </property>
+       <property name="statusTip">
+        <string>Select All</string>
+       </property>
+       <property name="whatsThis">
+        <string>Selects All</string>
+       </property>
+       <property name="text">
+        <string>Select &amp;All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushNone">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Select None</string>
+       </property>
+       <property name="statusTip">
+        <string>Select None</string>
+       </property>
+       <property name="whatsThis">
+        <string>Selects None</string>
+       </property>
+       <property name="text">
+        <string>Select &amp;None</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushOk">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Apply Changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Apply Changes</string>
+       </property>
+       <property name="whatsThis">
+        <string>Applies Changes</string>
+       </property>
+       <property name="text">
+        <string>&amp;Ok</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushClose">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Cancel Changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Cancel Changes</string>
+       </property>
+       <property name="whatsThis">
+        <string>Cancels Changes</string>
+       </property>
+       <property name="text">
+        <string>&amp;Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="1">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>260</width>
+       <height>25</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>listWidget</tabstop>
+  <tabstop>radioDefinition</tabstop>
+  <tabstop>radioData</tabstop>
+  <tabstop>checkShowViews</tabstop>
+  <tabstop>checkShowInternal</tabstop>
+  <tabstop>checkValidate</tabstop>
+  <tabstop>checkVerify</tabstop>
+  <tabstop>checkCreate</tabstop>
+  <tabstop>checkBackups</tabstop>
+  <tabstop>checkAppend</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>previewTable</tabstop>
+  <tabstop>pushAll</tabstop>
+  <tabstop>pushNone</tabstop>
+  <tabstop>pushOk</tabstop>
+  <tabstop>pushClose</tabstop>
+ </tabstops>
+ <resources>
+  <include location="app_new.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushAll</sender>
+   <signal>clicked()</signal>
+   <receiver>listWidget</receiver>
+   <slot>selectAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushNone</sender>
+   <signal>clicked()</signal>
+   <receiver>listWidget</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>297</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidget</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>frmTables</receiver>
+   <slot>preview(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>323</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushNone</sender>
+   <signal>clicked()</signal>
+   <receiver>previewTable</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>520</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushAll</sender>
+   <signal>clicked()</signal>
+   <receiver>previewTable</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>520</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushOk</sender>
+   <signal>clicked()</signal>
+   <receiver>frmTables</receiver>
+   <slot>Ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>282</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>323</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>frmTables</receiver>
+   <slot>chooseFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkCreate</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>frmTables</receiver>
+   <slot>hideAppend(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkShowInternal</sender>
+   <signal>clicked()</signal>
+   <receiver>frmTables</receiver>
+   <slot>readTableNames()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkShowViews</sender>
+   <signal>clicked()</signal>
+   <receiver>frmTables</receiver>
+   <slot>readTableNames()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkCreate</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>checkBackups</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>522</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>preview(QListWidgetItem*)</slot>
+  <slot>Ok()</slot>
+  <slot>Cancel()</slot>
+  <slot>chooseFile()</slot>
+  <slot>hideAppend(bool)</slot>
+  <slot>readTableNames()</slot>
+ </slots>
+</ui>
