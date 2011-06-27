@@ -690,6 +690,9 @@ static bool getSchemaType(const QVariant type, const QMap<QString,QString>& mapQ
     //! Return schema type from a Qt Type
     /*!
     This function maps the Qt data types into xml schema types
+    n.b.: do not use tinyint types in the database, as they come converted as uint and will
+    be mixed with booleans by qt! (maybe in the future we need to take the translation layer of
+    types from Qt's "shoulders" and use a more precise method (for instance, query the database!)
     \param type in: QVariant type
     \par mapQt2Xs in: reference of a map, containing the conversion from Qt to Schema types
     \param strType out: string with a xs type
@@ -758,8 +761,11 @@ static bool getNullForType(const QString strType, const QString strInternalName,
     else if (strType.compare(QObject::tr("bit"))==0 || strType.compare(QObject::tr("tinyint"))==0){
         strPar=QObject::tr("bit");
     }
-    else if (strType.compare(QObject::tr("decimal"))==0 || strType.compare(QObject::tr("float"))==0){
+    else if (strType.compare(QObject::tr("decimal"))==0/* || strType.compare(QObject::tr("float"))==0*/){
         strPar=QObject::tr("float");
+    }
+    else if ( strType.compare(QObject::tr("float"))==0 ){//we currently *DO NOT* support floats: only decimals!!!!
+        return false;
     }
     else return false;
 

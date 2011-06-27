@@ -144,10 +144,11 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QToolBar*               toolbar;
         RuleChecker*            ruleCheckerPtr;//!< Pointer to a Rule Checker
         InitRulesThread*        workerThread;//!< Thread that initializes the rule containers
+        QVector<QWidget*>       vSecondaryFrms;
 
     private slots:
-        void                    LoadExportFrm();
-        void                    LoadImportFrm();
+        //void                    LoadExportFrm();
+        //void                    LoadImportFrm();
         void                    addTab(int idx, bool bOk);
         void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
@@ -166,9 +167,10 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    loadFile();
         void                    closeFile();
         void                    writeFile();
-        void                    loadReports();
+        //void                    loadReports();
         void                    closeSecondaryFrm();
         void                    closeSecondaryFrm(QWidget* frm);
-
+        void                    loadSecondaryFrm();
+        void                    loadSecondaryFrm(QWidget* frm);
 };
 #endif //MAINFRM_H

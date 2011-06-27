@@ -99,6 +99,7 @@ void MainFrm::rulesInitialized(bool bReady)
     //m_bGotRules=bReady;
 }
 
+/*
 void MainFrm::LoadExportFrm()
 {
     if (!pFrmExport->isVisible()){
@@ -118,6 +119,7 @@ void MainFrm::LoadImportFrm()
         pFrmImport->show();
     }
 }
+*/
 
 void MainFrm::initUi()
 {
@@ -140,13 +142,13 @@ void MainFrm::initUi()
         SLOT(writeFile () ),Qt::UniqueConnection);
 
      connect(actionReports, SIGNAL(triggered()),this,
-        SLOT(loadReports() ),Qt::UniqueConnection);
+        SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
 
      connect(actionImport, SIGNAL(triggered()),this,
-        SLOT(LoadImportFrm() ),Qt::UniqueConnection);
+        SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
 
      connect(actionExport, SIGNAL(triggered()),this,
-        SLOT(LoadExportFrm() ),Qt::UniqueConnection);
+        SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
 
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
@@ -167,6 +169,7 @@ void MainFrm::initUi()
 
     pFrmReports=new FrmReports();
     pFrmReports->hide();
+    vSecondaryFrms.push_back(pFrmReports);
 
      connect(pFrmReports, SIGNAL(hideFrmReports()), this,
     SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
@@ -179,9 +182,11 @@ void MainFrm::initUi()
 
     pFrmImport=new FrmImport();
     pFrmImport->hide();
+    vSecondaryFrms.push_back(pFrmImport);
 
     pFrmExport=new FrmExport();
     pFrmExport->hide();
+    vSecondaryFrms.push_back(pFrmExport);
 
      connect(pFrmImport, SIGNAL(hideFrm()), this,
     SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
@@ -282,16 +287,63 @@ void MainFrm::loadTabs()
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
+void MainFrm::loadSecondaryFrm()
+{
+    QAction *frm = (QAction *)sender();
+
+    if (frm==0) return;
+
+    if (frm==actionReports)loadSecondaryFrm(pFrmReports);
+    else if (frm==actionImport)loadSecondaryFrm(pFrmImport);
+    else if (frm==actionExport)loadSecondaryFrm(pFrmExport);
+}
+
+void MainFrm::loadSecondaryFrm(QWidget* frm)
+{
+    if (!frm->isVisible()){
+
+        //hide the tabwidget
+        if (tabWidget->isVisible()){
+            tabWidget->hide();
+            gridLayout->removeWidget(tabWidget);
+        }
+
+        //now hide the other frms
+        QVector<QWidget*>::iterator it;
+        for (it = vSecondaryFrms.begin(); it != vSecondaryFrms.end(); ++it){
+            if ((*it)!= frm && (*it)->isVisible()){
+                (*it)->hide();
+                gridLayout->removeWidget(*it);
+            }
+        }
+
+        gridLayout->addWidget(frm, 0, 0, 1, 1);
+        frm->show();
+    }
+}
+/*
 void MainFrm::loadReports()
 {
     if (!pFrmReports->isVisible()){
-        tabWidget->hide();
-        gridLayout->removeWidget(tabWidget);
+
+        if (tabWidget->isVisible()){
+            tabWidget->hide();
+            gridLayout->removeWidget(tabWidget);
+        }
+
+        QVector<QWidget*>::iterator it;
+        for (it = vSecondaryFrms.begin(); it != vSecondaryFrms.end(); ++it){
+            if ((*it)->isVisible()){
+                (*it)->hide();
+                gridLayout->removeWidget(*it);
+            }
+        }
+
         gridLayout->addWidget(pFrmReports, 0, 0, 1, 1);
         pFrmReports->show();
     }
 }
-
+*/
 void MainFrm::closeSecondaryFrm(QWidget* frm)
 {
     if (frm->isVisible()){

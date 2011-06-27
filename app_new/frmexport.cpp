@@ -78,12 +78,16 @@ FrmExport::~FrmExport()
 bool FrmExport::readTableNames()
 {
     QSqlDatabase db = QSqlDatabase::database();
+
     listWidget->clear();
     listWidget->addItems(db.tables());
-    if (checkShowViews->isChecked())
+    if (checkShowViews->isChecked()){
         listWidget->addItems(db.tables(QSql::Views));
-    if (checkShowInternal->isChecked())
+    }
+    /*//n.b.: this code DOES NOT work! (Qts fault!)
+    if (checkShowInternal->isChecked()){
         listWidget->addItems(db.tables(QSql::SystemTables));
+    }*/
 
     return true;
 }

@@ -867,7 +867,7 @@ bool TableAdapter::verifyTableXML(const QString strTable, QXmlStreamReader& xml)
 
 bool TableAdapter::addVendorFiles(const QString strPath, QStringList& strFiles)
 {
-    QFile inputFile(":/app/msdata.xsd");
+    QFile inputFile(":/app_new/msdata.xsd");
     if (!inputFile.open(QIODevice::ReadOnly)) return false;
 
     //Read
@@ -1122,7 +1122,8 @@ bool TableAdapter::addExtraAttributes(const QString strTable, const QString strF
             //IDENTITY COLUMN = TRUE
             //AUTOINCREMENT COLUMN = TRUE
              if (!getAutoIncrementInfo(objectID, query)) return false;
-             if (query.numRowsAffected()!=1) return false;
+            //Sometimes this query is returning -1, so lets ignore the size()!
+             if (query.size()!=-1 && query.size()!=1) return false;
              query.first();
              seed=query.value(0).toString();//Casted seed value
              increment=query.value(1).toString(); //Casted increment value
@@ -1134,7 +1135,9 @@ bool TableAdapter::addExtraAttributes(const QString strTable, const QString strF
             xml.writeAttribute(strMsdata,tr("AutoIncrementStep"), increment);
          }
         if (!getIsNullableAndDefault(strTable, strField, query)) return false;
-         if (query.numRowsAffected()!=1) return false;
+
+        //Sometimes this query is returning -1, so lets ignore the size()!
+        if (query.size()!=-1 && query.size()!=1) return false;
          query.first();
          query.value(query.record().indexOf(tr("IS_NULLABLE"))).toString().compare(
              tr("NO"),Qt::CaseInsensitive)==0? bIsNull=false: bIsNull=true;
@@ -1190,7 +1193,7 @@ bool TableAdapter::exportFieldDefs(const QString strTable, QXmlStreamWriter& xml
                     }
                     else{
                         if (strType.compare(tr("xs:boolean"))==0 || strType.compare(tr("xs:integer"))==0 || strType.compare(tr("xs:int"))==0
-                            /*|| strType.compare(tr("xs:decimal"))==0*/ || strType.compare(tr("xs:double"))==0 || 
+                            || strType.compare(tr("xs:double"))==0 || 
                             strType.compare(tr("xs:long"))==0 || strType.compare(tr("xs:dateTime"))==0){
                             xml.writeAttribute(tr("type"),strType);
 

@@ -18,7 +18,7 @@ QWidget(parent, flags){
 
     //UI initializes
     groupType->setVisible(false);
-    checkShowInternal->setVisible(false);
+    //checkShowInternal->setVisible(false);
     checkShowViews->setVisible(false);
 
     checkAppend->setVisible(!checkCreate->isChecked());

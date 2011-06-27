@@ -690,7 +690,8 @@ bool XmlTable::applySchema(const QString strInstance, const QString strSchema)
             errorOccurred=true;
 
         if (errorOccurred) {
-            emit showError(messageHandler.statusMessage());
+            emit showError(tr("Error at line ")+ QVariant(messageHandler.line()).toString() + 
+                tr(", column ") + QVariant(messageHandler.column()).toString() + tr(": ") + messageHandler.statusMessage());
             return false;
         } else {
             emit showStatus(tr("instance is valid"));

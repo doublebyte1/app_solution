@@ -118,31 +118,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkShowInternal">
-        <property name="toolTip">
-         <string>Show Internal Tables</string>
-        </property>
-        <property name="statusTip">
-         <string>Show Internal Tables</string>
-        </property>
-        <property name="whatsThis">
-         <string>Show Internal Tables</string>
-        </property>
-        <property name="text">
-         <string>Show Internal Tables</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="checkValidate">
         <property name="toolTip">
-         <string>Schema validation before import</string>
+         <string>Schema validation (may not work for extremely large files!)</string>
         </property>
         <property name="statusTip">
-         <string>Schema validation before import</string>
+         <string>Schema validation (may not work for extremely large files!)</string>
         </property>
         <property name="whatsThis">
-         <string>Schema validation before import</string>
+         <string>Schema validation (may not work for extremely large files!)</string>
         </property>
         <property name="text">
          <string>Schema Validation</string>
@@ -423,7 +407,6 @@
   <tabstop>radioDefinition</tabstop>
   <tabstop>radioData</tabstop>
   <tabstop>checkShowViews</tabstop>
-  <tabstop>checkShowInternal</tabstop>
   <tabstop>checkValidate</tabstop>
   <tabstop>checkVerify</tabstop>
   <tabstop>checkCreate</tabstop>
@@ -561,22 +544,6 @@
     <hint type="sourcelabel">
      <x>522</x>
      <y>168</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>324</x>
-     <y>248</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkShowInternal</sender>
-   <signal>clicked()</signal>
-   <receiver>frmTables</receiver>
-   <slot>readTableNames()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>522</x>
-     <y>154</y>
     </hint>
     <hint type="destinationlabel">
      <x>324</x>

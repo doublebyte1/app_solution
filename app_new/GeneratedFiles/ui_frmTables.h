@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmTables.ui'
 **
-** Created: Sun 26. Jun 18:36:40 2011
+** Created: Mon 27. Jun 22:51:00 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -44,7 +44,6 @@ public:
     QGroupBox *groupOptions;
     QVBoxLayout *verticalLayout;
     QCheckBox *checkShowViews;
-    QCheckBox *checkShowInternal;
     QCheckBox *checkValidate;
     QCheckBox *checkVerify;
     QCheckBox *checkCreate;
@@ -112,11 +111,6 @@ public:
         checkShowViews->setObjectName(QString::fromUtf8("checkShowViews"));
 
         verticalLayout->addWidget(checkShowViews);
-
-        checkShowInternal = new QCheckBox(groupOptions);
-        checkShowInternal->setObjectName(QString::fromUtf8("checkShowInternal"));
-
-        verticalLayout->addWidget(checkShowInternal);
 
         checkValidate = new QCheckBox(groupOptions);
         checkValidate->setObjectName(QString::fromUtf8("checkValidate"));
@@ -233,8 +227,7 @@ public:
         QWidget::setTabOrder(listWidget, radioDefinition);
         QWidget::setTabOrder(radioDefinition, radioData);
         QWidget::setTabOrder(radioData, checkShowViews);
-        QWidget::setTabOrder(checkShowViews, checkShowInternal);
-        QWidget::setTabOrder(checkShowInternal, checkValidate);
+        QWidget::setTabOrder(checkShowViews, checkValidate);
         QWidget::setTabOrder(checkValidate, checkVerify);
         QWidget::setTabOrder(checkVerify, checkCreate);
         QWidget::setTabOrder(checkCreate, checkBackups);
@@ -255,7 +248,6 @@ public:
         QObject::connect(pushOk, SIGNAL(clicked()), frmTables, SLOT(Ok()));
         QObject::connect(toolButton, SIGNAL(clicked()), frmTables, SLOT(chooseFile()));
         QObject::connect(checkCreate, SIGNAL(clicked(bool)), frmTables, SLOT(hideAppend(bool)));
-        QObject::connect(checkShowInternal, SIGNAL(clicked()), frmTables, SLOT(readTableNames()));
         QObject::connect(checkShowViews, SIGNAL(clicked()), frmTables, SLOT(readTableNames()));
         QObject::connect(checkCreate, SIGNAL(clicked(bool)), checkBackups, SLOT(setVisible(bool)));
 
@@ -316,23 +308,13 @@ public:
 #endif // QT_NO_WHATSTHIS
         checkShowViews->setText(QApplication::translate("frmTables", "Show Views", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        checkShowInternal->setToolTip(QApplication::translate("frmTables", "Show Internal Tables", 0, QApplication::UnicodeUTF8));
+        checkValidate->setToolTip(QApplication::translate("frmTables", "Schema validation (may not work for extremely large files!)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        checkShowInternal->setStatusTip(QApplication::translate("frmTables", "Show Internal Tables", 0, QApplication::UnicodeUTF8));
+        checkValidate->setStatusTip(QApplication::translate("frmTables", "Schema validation (may not work for extremely large files!)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        checkShowInternal->setWhatsThis(QApplication::translate("frmTables", "Show Internal Tables", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
-        checkShowInternal->setText(QApplication::translate("frmTables", "Show Internal Tables", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        checkValidate->setToolTip(QApplication::translate("frmTables", "Schema validation before import", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        checkValidate->setStatusTip(QApplication::translate("frmTables", "Schema validation before import", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        checkValidate->setWhatsThis(QApplication::translate("frmTables", "Schema validation before import", 0, QApplication::UnicodeUTF8));
+        checkValidate->setWhatsThis(QApplication::translate("frmTables", "Schema validation (may not work for extremely large files!)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         checkValidate->setText(QApplication::translate("frmTables", "Schema Validation", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
