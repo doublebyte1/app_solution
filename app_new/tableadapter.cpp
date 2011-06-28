@@ -120,7 +120,7 @@ bool TableAdapter::insertDataIntoTable(const QString strTableName, QXmlStreamRea
                 QSqlRecord rec;
                 mapFieldValue.insert(tr("table_name"),strImportedName);
                 mapFieldValue.insert(tr("field_name"),strName);
-                bool bTransformedIdColumn=selectValue(tr("change2AutoIncrement"),tr("CAS_Fields"),mapFieldValue,rec)
+                bool bTransformedIdColumn=selectValue(tr("change2AutoIncrement"),tr("Info_Fields"),mapFieldValue,rec)
                     && rec.value(0).toBool();
 
                 if (!bIdentity || strIdentity.compare(xml.name().toString())!=0 || bTransformedIdColumn){
@@ -131,11 +131,11 @@ bool TableAdapter::insertDataIntoTable(const QString strTableName, QXmlStreamRea
 
                     if (bTransformedIdColumn){
                         strName=strOldCode;
-                        if (!selectValue(tr("original_type"), tr("CAS_Fields"), mapFieldValue, rec)) return false;
+                        if (!selectValue(tr("original_type"), tr("Info_Fields"), mapFieldValue, rec)) return false;
                         strType=rec.value(0).toString();
                     }else{
-                        if (!selectValue(tr("reviewed_type"), tr("CAS_Fields"), mapFieldValue, rec))
-                        {//Could not get type from CAS_Fields (it;s not listed! So let's try this:)
+                        if (!selectValue(tr("reviewed_type"), tr("Info_Fields"), mapFieldValue, rec))
+                        {//Could not get type from Info_Fields (it;s not listed! So let's try this:)
                             if (!getFieldType(strTMPname,strName,strType))
                                 return false;
                         }
@@ -466,7 +466,7 @@ bool TableAdapter::search4FK(const QStringList strTables, QXmlStreamReader& xml,
                     QHash<QString,QString> mapFieldValue;
                     QSqlRecord rec;
                     mapFieldValue.insert(tr("imported_name"),bottomLevelTable);
-                    if (!selectValue(tr("original_name"),tr("CAS_Tables_Import"),mapFieldValue,rec)) return false;
+                    if (!selectValue(tr("original_name"),tr("Info_Tables_Import"),mapFieldValue,rec)) return false;
                     QString ObottomLevelTable=rec.value(0).toString();
                     strFkName=strFkName.replace(ObottomLevelTable,tr("tree"));
                     strSql.append( tr("ALTER TABLE ")+ strChild +
@@ -643,7 +643,10 @@ bool TableAdapter::getFieldTypeXML(QXmlStreamReader& xml, QString& strType, int&
             }
 
         }
-
+        else{
+            emit showError(tr("Unkown field type!"));
+            return false;
+        }
 
     }
 
@@ -745,7 +748,7 @@ bool TableAdapter::readTableXML(const QString strTable, QXmlStreamReader& xml, c
     QHash<QString,QString> mapFieldValue;
     QSqlRecord rec;
     mapFieldValue.insert(tr("imported_name"),strImportedName);
-    if (selectValue(tr("convertPK2Int"),tr("CAS_Tables_Import"),mapFieldValue,rec) &&
+    if (selectValue(tr("convertPK2Int"),tr("Info_Tables_Import"),mapFieldValue,rec) &&
         rec.value(0).toBool()){
             QString strNull;
             if (!getNullForType(strOldType,tr("Missing"),strNull)){
@@ -819,7 +822,7 @@ bool TableAdapter::verifyTableXML(const QString strTable, QXmlStreamReader& xml)
                     }
         }//while
 
-        //It has to find *exactly* the same items promised on the CAS_Fields table!
+        //It has to find *exactly* the same items promised on the Info_Fields table!
         if (mapXMLTypes.size()!=mapTypes.size()){//n.b.: it does not matter if we compare the mapTypes or mapSizes as they should be the same!
             emit showError(tr("The field count on the XML file does not match the field count expected on the database!"),true);
             return false;

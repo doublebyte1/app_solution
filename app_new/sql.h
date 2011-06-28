@@ -100,7 +100,7 @@ static bool getImportedName(const QString inName, QString& outName, bool& bExist
     //if (inName.isEmpty()) return false;
 
     QSqlQuery query;
-    QString strQuery=QObject::tr("SELECT original_name, imported_name FROM CAS_Tables_Import WHERE original_name=:table");
+    QString strQuery=QObject::tr("SELECT original_name, imported_name FROM Info_Tables_Import WHERE original_name=:table");
     if (!query.prepare(strQuery)) return false;
     query.bindValue(QObject::tr(":table"),inName);
     query.setForwardOnly(true);
@@ -715,7 +715,7 @@ static QString listCASImportTables(const QString strTable=QString())
     \return query string
     */
 
-    return QObject::tr("SELECT original_name, imported_name FROM CAS_Tables_Import") + 
+    return QObject::tr("SELECT original_name, imported_name FROM Info_Tables_Import") + 
         (strTable.isEmpty()?QObject::tr(""): QObject::tr(" WHERE original_name='")
         +strTable + QObject::tr("'"));
 }
@@ -833,7 +833,7 @@ static bool getImportedFieldsDescription(const QString strTable, QMap<QString,QS
 {
     //TODO: Describe this!
     QSqlQuery query;
-    QString strQuery=QObject::tr("select field_name,original_type,original_size FROM CAS_FIELDS where table_name = :table");
+    QString strQuery=QObject::tr("select field_name,original_type,original_size FROM Info_Fields where table_name = :table");
     if (!query.prepare(strQuery)) return false;
     query.bindValue(QObject::tr(":table"),strTable);
     query.setForwardOnly(true);
@@ -1059,7 +1059,7 @@ static bool getFieldDescriptionFromDB(const QString strTable, const QString strF
 {
     //! Get Field Description
     /*!
-    This function selects one record on CAS_Fields, providing the information to import a certain field
+    This function selects one record on Info_Fields, providing the information to import a certain field
     into the DB;
     N.b: This function affects one record *only*!
     \par strTable table name
@@ -1068,7 +1068,7 @@ static bool getFieldDescriptionFromDB(const QString strTable, const QString strF
     \return booleans as success or failure
     */
 
-    QString strQuery=QObject::tr("SELECT * FROM CAS_Fields WHERE table_name LIKE :table and field_name LIKE :field");
+    QString strQuery=QObject::tr("SELECT * FROM Info_Fields WHERE table_name LIKE :table and field_name LIKE :field");
     if (!query.prepare(strQuery)) return false;
     query.bindValue(QObject::tr(":table"),strTable);
     query.bindValue(QObject::tr(":field"),strField);
@@ -1082,7 +1082,7 @@ static bool findNullReplacementFields(const QString strTable,
 {
     //TODO: add description
     QSqlQuery query;
-    QString strSql=QObject::tr("SELECT field_name,NullValue from CAS_Fields WHERE table_name=:table AND replaceNulls=1");
+    QString strSql=QObject::tr("SELECT field_name,NullValue from Info_Fields WHERE table_name=:table AND replaceNulls=1");
     if (!query.prepare(strSql)) return false;
     query.bindValue(QObject::tr(":table"),strTable);
     query.setForwardOnly(true);
@@ -1149,7 +1149,7 @@ static bool convert2PK(const QString strTable)
     \return booleans boolean indicating whether this table contains or not a "converted" ID field.
     */
 
-    QString strQuery=QObject::tr("SELECT convertPK2Int FROM CAS_TABLES_IMPORT WHERE imported_name=:table");
+    QString strQuery=QObject::tr("SELECT convertPK2Int FROM Info_Tables_Import WHERE imported_name=:table");
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.bindValue(QObject::tr(":table"),strTable);

@@ -165,7 +165,17 @@ void FrmImport::Ok()
         return;
     }
 
-    QFileInfo fi(m_fileName);
+    import(m_fileName);
+}
+
+void FrmImport::loadItem(QListWidgetItem* item)
+{//TODO: this is not working - Find out why!!
+    Ok();
+}
+
+void FrmImport::import(QString strFilename)
+{
+    QFileInfo fi(strFilename);
 
     AbstractFormat* aFormat=AbstractFormat::findFormat(fi.completeSuffix(),
         m_listFormats);

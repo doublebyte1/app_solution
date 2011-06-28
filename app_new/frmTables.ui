@@ -583,6 +583,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>listWidget</sender>
+   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
+   <receiver>frmTables</receiver>
+   <slot>loadItem(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>324</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>preview(QListWidgetItem*)</slot>
@@ -591,5 +607,6 @@
   <slot>chooseFile()</slot>
   <slot>hideAppend(bool)</slot>
   <slot>readTableNames()</slot>
+  <slot>loadItem(QListWidgetItem*)</slot>
  </slots>
 </ui>

@@ -40,7 +40,7 @@ bool XmlTable::replaceNullValues(const QString strTable, const QMap<QString,QStr
         QHash<QString,QString> mapFieldValue;
         mapFieldValue.insert(tr("field_name"), i.key());
         QSqlRecord rec;
-        if (!selectValue(tr("reviewed_type"), tr("CAS_Fields"),mapFieldValue,rec))
+        if (!selectValue(tr("reviewed_type"), tr("Info_Fields"),mapFieldValue,rec))
             return false;
         QString strNullRep, strSql;
         if (!getNullForType(rec.value(0).toString(), tr("missing"), strNullRep)) return false;
@@ -160,7 +160,7 @@ bool XmlTable::importNow()
     if (!file.open(QFile::ReadOnly | QFile::Text)) return false;
     QXmlStreamReader xml(&file);
 
-     //Enforce table structure policies, according to what is expressed in [CAS_Fields] table
+     //Enforce table structure policies, according to what is expressed in [Info_Fields] table
      if (m_bVerify){
         verifyTables2Import(m_strTables,xml);
         //Don't forget to reset the xml reader
@@ -186,7 +186,7 @@ bool XmlTable::importNow()
         QHash<QString,QString> mapFieldValue;
         mapFieldValue.insert(tr("original_name"), *constIterator);
         QSqlRecord rec;
-        if (!selectValue(tr("appendNullFields"), tr("CAS_Tables_Import"),mapFieldValue,rec))
+        if (!selectValue(tr("appendNullFields"), tr("Info_Tables_Import"),mapFieldValue,rec))
             bAppendNull=false;//if it is an unkown table, we don't append the extra record
         else
             bAppendNull=rec.value(0).toBool();

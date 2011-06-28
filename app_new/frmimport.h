@@ -38,6 +38,7 @@ typedef shared_ptr<AbstractFormat>                        formatPtr;
         void                        showError(QString str, const bool bShowMsgBox=true);
 
     private:
+        void                        import(QString strFilename);
         bool                        loadTable();
         bool                        loadFields();
         QSqlTableModel*             tableModel;
@@ -47,13 +48,14 @@ typedef shared_ptr<AbstractFormat>                        formatPtr;
         QString                     m_fileName;
 
     private slots:
-        bool        readTableNames(){return false;}//This slot is not implemented in this class!
-        bool        readTableNames(AbstractTableFormat* aFormat);
-        void        hideAppend(bool bHide);
-        void        Ok();
-        void        Cancel();
-        void        preview(QListWidgetItem* item);
-        void        preview();
-        void        chooseFile();
+        void                        loadItem(QListWidgetItem* item);
+        bool                        readTableNames(){return false;}//This slot is not implemented in this class!
+        bool                        readTableNames(AbstractTableFormat* aFormat);
+        void                        hideAppend(bool bHide);
+        void                        Ok();
+        void                        Cancel();
+        void                        preview(QListWidgetItem* item);
+        void                        preview();
+        void                        chooseFile();
 };
 #endif // FRMIMPORT_H

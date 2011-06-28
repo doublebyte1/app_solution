@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmimport.h'
 **
-** Created: Sun 26. Jun 18:36:42 2011
+** Created: Tue 28. Jun 09:49:43 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmImport[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -38,14 +38,15 @@ static const uint qt_meta_data_FrmImport[] = {
      102,   38,   10,   10, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     126,   10,  121,   10, 0x08,
-     151,  143,  121,   10, 0x08,
-     194,  188,   10,   10, 0x08,
-     211,   10,   10,   10, 0x08,
-     216,   10,   10,   10, 0x08,
-     230,  225,   10,   10, 0x08,
-     256,   10,   10,   10, 0x08,
-     266,   10,   10,   10, 0x08,
+     126,  121,   10,   10, 0x08,
+     158,   10,  153,   10, 0x08,
+     183,  175,  153,   10, 0x08,
+     226,  220,   10,   10, 0x08,
+     243,   10,   10,   10, 0x08,
+     248,   10,   10,   10, 0x08,
+     257,  121,   10,   10, 0x08,
+     283,   10,   10,   10, 0x08,
+     293,   10,   10,   10, 0x08,
 
        0        // eod
 };
@@ -54,10 +55,11 @@ static const char qt_meta_stringdata_FrmImport[] = {
     "FrmImport\0\0hideFrm()\0rollbackImport()\0"
     "str\0showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
-    "bool\0readTableNames()\0aFormat\0"
+    "item\0loadItem(QListWidgetItem*)\0bool\0"
+    "readTableNames()\0aFormat\0"
     "readTableNames(AbstractTableFormat*)\0"
     "bHide\0hideAppend(bool)\0Ok()\0Cancel()\0"
-    "item\0preview(QListWidgetItem*)\0preview()\0"
+    "preview(QListWidgetItem*)\0preview()\0"
     "chooseFile()\0"
 };
 
@@ -97,19 +99,20 @@ int FrmImport::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 2: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 4: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 5: { bool _r = readTableNames();
+        case 5: loadItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 6: { bool _r = readTableNames();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 6: { bool _r = readTableNames((*reinterpret_cast< AbstractTableFormat*(*)>(_a[1])));
+        case 7: { bool _r = readTableNames((*reinterpret_cast< AbstractTableFormat*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 7: hideAppend((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 8: Ok(); break;
-        case 9: Cancel(); break;
-        case 10: preview((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 11: preview(); break;
-        case 12: chooseFile(); break;
+        case 8: hideAppend((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 9: Ok(); break;
+        case 10: Cancel(); break;
+        case 11: preview((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 12: preview(); break;
+        case 13: chooseFile(); break;
         default: ;
         }
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }

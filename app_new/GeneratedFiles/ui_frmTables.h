@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmTables.ui'
 **
-** Created: Mon 27. Jun 22:51:00 2011
+** Created: Tue 28. Jun 09:54:35 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -250,6 +250,7 @@ public:
         QObject::connect(checkCreate, SIGNAL(clicked(bool)), frmTables, SLOT(hideAppend(bool)));
         QObject::connect(checkShowViews, SIGNAL(clicked()), frmTables, SLOT(readTableNames()));
         QObject::connect(checkCreate, SIGNAL(clicked(bool)), checkBackups, SLOT(setVisible(bool)));
+        QObject::connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), frmTables, SLOT(loadItem(QListWidgetItem*)));
 
         QMetaObject::connectSlotsByName(frmTables);
     } // setupUi
