@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmRegions</class>
+ <widget class="QWidget" name="frmRegions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>559</width>
+    <height>431</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="toolTip">
+      <string>This widget allows to view and edit the Regions model; this is a nested set representation of the regions, and therefore it supports an infinite number of levels; to edit any item property, just double-click over it;</string>
+     </property>
+     <property name="statusTip">
+      <string>This widget allows to view and edit the Regions model;</string>
+     </property>
+     <property name="whatsThis">
+      <string>This widget allows to view and edit the Regions model; this is a nested set representation of the regions, and therefore it supports an infinite number of levels; to edit any item property, just double-click over it;</string>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>268</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushRefresh">
+       <property name="toolTip">
+        <string>Reload Tree</string>
+       </property>
+       <property name="statusTip">
+        <string>Reloads Tree from the Database</string>
+       </property>
+       <property name="text">
+        <string>&amp;Reload</string>
+       </property>
+       <property name="icon">
+        <iconset resource="app_new.qrc">
+         <normaloff>:/app_new/reload.png</normaloff>:/app_new/reload.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushOk">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Accept Changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Accept Changes</string>
+       </property>
+       <property name="whatsThis">
+        <string>Accepts Changes</string>
+       </property>
+       <property name="text">
+        <string>&amp;Ok</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushClose">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Cancel Changes</string>
+       </property>
+       <property name="statusTip">
+        <string>Cancel Changes</string>
+       </property>
+       <property name="whatsThis">
+        <string>Cancels Changes</string>
+       </property>
+       <property name="text">
+        <string>&amp;Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>treeWidget</tabstop>
+  <tabstop>pushRefresh</tabstop>
+  <tabstop>pushOk</tabstop>
+  <tabstop>pushClose</tabstop>
+ </tabstops>
+ <resources>
+  <include location="app_new.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushOk</sender>
+   <signal>clicked()</signal>
+   <receiver>frmRegions</receiver>
+   <slot>Ok()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>430</x>
+     <y>409</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>215</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushRefresh</sender>
+   <signal>clicked()</signal>
+   <receiver>frmRegions</receiver>
+   <slot>reload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>407</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>215</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>Ok()</slot>
+  <slot>reload()</slot>
+ </slots>
+</ui>

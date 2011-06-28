@@ -140,6 +140,13 @@ void NullRelationalDelegate::setEditorData(QWidget *editor, const QModelIndex &i
         }
     }
 }
+//////////////////////////////////////////////////////////////////////
+
+SecondaryFrm::SecondaryFrm(QWidget *parent, Qt::WFlags flags):
+QWidget(parent, flags){
+
+}
+
 
 ////////////////////////////////////////// static
 

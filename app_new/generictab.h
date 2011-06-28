@@ -259,3 +259,32 @@ Q_DECLARE_METATYPE( QList<QWidget*>);
 Q_DECLARE_METATYPE( Sample*);
 
 #endif //GENERICTAB_H
+
+//////////////////////////////////////////////////////////////////////
+#ifndef SECONDARYFRM_H
+#define SECONDARYFRM_H
+
+//! Secondary Frm
+/*!
+This is a base class for all the forms, that are *not* tabs;
+we call them "secondary forms", as opposal to the main form, and they are generally modules.
+The need of this class basically arise from the signals that communicate with the main 
+class, to send messages (status and error strings)
+*/
+
+class SecondaryFrm : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        SecondaryFrm(QWidget *parent = 0, Qt::WFlags flags = 0);
+
+    signals:
+        void        hideFrm();
+        void        showStatus(QString str);
+        void        showError(QString str, const bool bShowMsgBox=true);
+
+};
+
+#endif //SECONDARYFRM_H
+//////////////////////////////////////////////////////////////////////

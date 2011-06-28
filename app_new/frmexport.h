@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_frmTables.h"
-//#include "customform.h"
+#include "generictab.h"
 #include "fieldlistmodel.h"
 #include <boost/shared_ptr.hpp>
 
@@ -15,6 +15,8 @@
 
 using namespace boost;
 
+class SecondaryFrm;
+
 //! Export Tables Class
 /*!
 This form derives from the form tables class and it has a list of tables and a preview;
@@ -22,7 +24,7 @@ The list of tables is loaded from the database; The purpose of this UI is to all
 select which tables to export.
 */
 
-class FrmExport : public QWidget, public Ui::frmTables
+class FrmExport : public SecondaryFrm, public Ui::frmTables
 {
 //! Typedef for a shared pointer, containing an abstract table format
 typedef shared_ptr<AbstractFormat>                        formatPtr;
@@ -41,12 +43,8 @@ typedef shared_ptr<AbstractFormat>                        formatPtr;
         bool                        initFactory();
         QList<formatPtr>            m_listFormats;
 
-    signals:
-        void        hideFrm();
-        void        showStatus(QString str);
-        void        showError(QString str, const bool bShowMsgBox=true);
-
     private slots:
+        void        loadItem(QListWidgetItem* item);
         void        Ok();
         void        Cancel();
         void        preview(QListWidgetItem* item);

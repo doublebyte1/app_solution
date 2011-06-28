@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Sun 26. Jun 16:13:29 2011
+** Created: Tue 28. Jun 16:46:12 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -39,6 +39,7 @@ public:
     QAction *actionReports;
     QAction *actionImport;
     QAction *actionExport;
+    QAction *actionRegions;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -110,6 +111,11 @@ public:
         QIcon icon10;
         icon10.addFile(QString::fromUtf8(":/app_new/folder_outbox.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionExport->setIcon(icon10);
+        actionRegions = new QAction(MainWindow);
+        actionRegions->setObjectName(QString::fromUtf8("actionRegions"));
+        QIcon icon11;
+        icon11.addFile(QString::fromUtf8(":/app_new/tree.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionRegions->setIcon(icon11);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -151,6 +157,7 @@ public:
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_this_project);
         menuView->addAction(actionReports);
+        menuView->addAction(actionRegions);
         menuTools->addAction(menuMaintenance_Tasks->menuAction());
         menuMaintenance_Tasks->addAction(actionImport);
         menuMaintenance_Tasks->addAction(actionExport);
@@ -223,6 +230,18 @@ public:
         actionImport->setShortcut(QApplication::translate("MainWindow", "Ctrl+I", 0, QApplication::UnicodeUTF8));
         actionExport->setText(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         actionExport->setShortcut(QApplication::translate("MainWindow", "Ctrl+E", 0, QApplication::UnicodeUTF8));
+        actionRegions->setText(QApplication::translate("MainWindow", "Regions", 0, QApplication::UnicodeUTF8));
+        actionRegions->setIconText(QApplication::translate("MainWindow", "View tree-model of regions", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        actionRegions->setToolTip(QApplication::translate("MainWindow", "View tree-model of regions", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        actionRegions->setStatusTip(QApplication::translate("MainWindow", "View tree-model of regions", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionRegions->setWhatsThis(QApplication::translate("MainWindow", "View tree-model of regions", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionRegions->setShortcut(QApplication::translate("MainWindow", "Ctrl+R", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));

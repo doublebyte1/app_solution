@@ -2,7 +2,7 @@
 #include "xmltable.h"
 
 FrmExport::FrmExport(QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags){
+SecondaryFrm(parent, flags){
 
     setupUi(this);
 
@@ -158,6 +158,11 @@ void FrmExport::Ok()
         QApplication::restoreOverrideCursor();
 
     }
+}
+
+void FrmExport::loadItem(QListWidgetItem* item)
+{
+    Ok();
 }
 
 void FrmExport::Cancel()

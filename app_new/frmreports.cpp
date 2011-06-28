@@ -4,12 +4,13 @@
 #include "globaldefs.h"
 
 FrmReports::FrmReports(QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags){
+SecondaryFrm(parent, flags){
 
     setupUi(this);
 
-     connect(pushClose, SIGNAL(clicked()), this,
-    SIGNAL(hideFrmReports()),Qt::UniqueConnection);
+    connect(pushClose, SIGNAL(clicked()), this,
+    SIGNAL(hideFrm()));
+
 }
 
 FrmReports::~FrmReports()

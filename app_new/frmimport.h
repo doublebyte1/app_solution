@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_frmTables.h"
-//#include "customform.h"
+#include "generictab.h"
 #include "fieldlistmodel.h"
 #include <boost/shared_ptr.hpp>
 
@@ -15,12 +15,14 @@
 
 using namespace boost;
 
+class SecondaryFrm;
+
 //! Import Tables Class
 /*!
 //TODO: add a description here later
 */
 
-class FrmImport : public QWidget, public Ui::frmTables
+class FrmImport : public SecondaryFrm, public Ui::frmTables
 {
 //! Typedef for a shared pointer, containing an abstract table format
 typedef shared_ptr<AbstractFormat>                        formatPtr;
@@ -32,10 +34,7 @@ typedef shared_ptr<AbstractFormat>                        formatPtr;
         ~FrmImport();
 
     signals:
-        void                        hideFrm();
         void                        rollbackImport();
-        void                        showStatus(QString str);
-        void                        showError(QString str, const bool bShowMsgBox=true);
 
     private:
         void                        import(QString strFilename);

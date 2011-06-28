@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QtSql>
+#include "generictab.h"
 #include "ui_frmreports.h"
 
   #if defined(WIN32) && defined(_DEBUG)
@@ -11,23 +12,20 @@
 #ifndef FRMREPORTS_H
 #define FRMREPORTS_H
 
+class SecondaryFrm;
+
 //! Frm Reports Class
 /*!
 This class implements a form where we can load reports, using the Exaro report engine;
 */
 
-class FrmReports : public QWidget, public Ui::frmreports
+class FrmReports : public SecondaryFrm, public Ui::frmreports
 {
     Q_OBJECT
 
     public:
         FrmReports(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmReports();
-
-    signals:
-        void                        hideFrmReports();
-        void                        showStatus(QString str);//!< signal for showing messages in the status bar
-        void                        showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     private slots:
         void                        browseFiles();

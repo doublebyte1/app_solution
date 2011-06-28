@@ -862,16 +862,16 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     if (!dropTableIfExists(QObject::tr("##List_Conversion"))) return false;
 
     MapFK mapFK;
-    if (!storeFKConstraints(QObject::tr("Tree"),false,mapFK)) return false;//We must store existing FK referencing this table, since we are going to remove them!
-    if (!dropFKConstraints(QObject::tr("Tree"),false)) return false;
+    if (!storeFKConstraints(QObject::tr("Fr_Tree"),false,mapFK)) return false;//We must store existing FK referencing this table, since we are going to remove them!
+    if (!dropFKConstraints(QObject::tr("Fr_Tree"),false)) return false;
 
-    if (!clearDBTable(QObject::tr("Tree"))) return false;
-    if (!clearDBTable(QObject::tr("Node_Description"))) return false;
+    if (!clearDBTable(QObject::tr("Fr_Tree"))) return false;
+    if (!clearDBTable(QObject::tr("Fr_Node_Description"))) return false;
 
     QSqlQuery query, query2;
     QString strQuery;
     //Initialize Root on Node_description
-    if (!query.prepare(QObject::tr("INSERT INTO Node_Description (name,name_eng) VALUES('Root','Root')"))) return false;
+    if (!query.prepare(QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng) VALUES('Root','Root')"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
 
@@ -906,8 +906,8 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     query.first();
     QString strNull=query.value(0).toString();
 
-    //Initialize Root on Tree
-    if (!query.prepare(QObject::tr("INSERT INTO Tree (parent,lft,rgt,depth) VALUES(-1,") + strNull +
+    //Initialize Root on Fr_Tree
+    if (!query.prepare(QObject::tr("INSERT INTO Fr_Tree (parent,lft,rgt,depth) VALUES(-1,") + strNull +
         QObject::tr(",") + strNull + QObject::tr(",") + strNull + QObject::tr(")"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
@@ -921,18 +921,18 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     QStringList::const_iterator constIterator;
     for (constIterator = treeFields.constBegin(); constIterator != treeFields.constEnd();
         ++constIterator){
-        if (!getFieldType(QObject::tr("Tree"),*constIterator,strType)) return false;
-        strQuery=alterNull(QObject::tr("Tree"),*constIterator,strType,true);
+        if (!getFieldType(QObject::tr("Fr_Tree"),*constIterator,strType)) return false;
+        strQuery=alterNull(QObject::tr("Fr_Tree"),*constIterator,strType,true);
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
     }
 
-    //Fill node_description
+    //Fill Fr_Node_Description
     i = mapTablesFields.constBegin();
     while (i != mapTablesFields.constEnd()) {
              strQuery=
-             QObject::tr("INSERT INTO node_description (name,name_eng,description,OLD_CODE) ")+
+             QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng,description,OLD_CODE) ")+
              QObject::tr("SELECT Name,NameENG,Description,ID FROM ") +
             i.value()->m_strTable;
              if (!query.prepare(strQuery)) return false;
@@ -941,7 +941,7 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
              ++i;
     }
 
-    //Fill Tree
+    //Fill Fr_Tree
     size_t ct=0;
     i = mapTablesFields.constBegin();
     while (i != mapTablesFields.constEnd()) {
@@ -954,11 +954,11 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
                     if (ct>0){
                         HashNodeRef::const_iterator ii = i;
                         ii--;
-                        strQuery=QObject::tr("INSERT INTO Tree (parent) SELECT id FROM ##List_Conversion WHERE CODE=")+
+                        strQuery=QObject::tr("INSERT INTO Fr_Tree (parent) SELECT id FROM ##List_Conversion WHERE CODE=")+
                             query.record().value(i.value()->m_strField).toString() + QObject::tr(" AND table_name like '") +
                             ii.value()->m_strTable + QObject::tr("'");
                     }else{
-                        strQuery=QObject::tr("INSERT INTO Tree (parent) VALUES(1)");
+                        strQuery=QObject::tr("INSERT INTO Fr_Tree (parent) VALUES(1)");
                     }
                     if (!query2.prepare(strQuery)) return false;
                     query2.setForwardOnly(true);
@@ -973,14 +973,14 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     for (constIterator = treeFields.constBegin(); constIterator != treeFields.constEnd();
         ++constIterator){
 
-            strQuery=QObject::tr("UPDATE Tree set ") + *constIterator + QObject::tr("='") + strNull + QObject::tr("' WHERE ") + *constIterator 
+            strQuery=QObject::tr("UPDATE Fr_Tree set ") + *constIterator + QObject::tr("='") + strNull + QObject::tr("' WHERE ") + *constIterator 
             + QObject::tr(" IS NULL");
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
 
-        if (!getFieldType(QObject::tr("Tree"),*constIterator,strType)) return false;
-        strQuery=alterNull(QObject::tr("Tree"),*constIterator,strType,false);
+        if (!getFieldType(QObject::tr("Fr_Tree"),*constIterator,strType)) return false;
+        strQuery=alterNull(QObject::tr("Fr_Tree"),*constIterator,strType,false);
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
@@ -1016,7 +1016,7 @@ static bool updateDepth(const int id)
 
     QSqlQuery query;
     //Query for Depth
-    QString strQuery=QObject::tr("SELECT COUNT(t2.id)-1 as depth, T1.id from Tree as T1, Tree as T2 WHERE ( (T1.lft BETWEEN t2.lft AND T2.rgt) AND T1.id=? ) GROUP BY T1.lft, T1.id");
+    QString strQuery=QObject::tr("SELECT COUNT(t2.id)-1 as depth, T1.id from Fr_Tree as T1, Fr_Tree as T2 WHERE ( (T1.lft BETWEEN t2.lft AND T2.rgt) AND T1.id=? ) GROUP BY T1.lft, T1.id");
     query.prepare(strQuery);
     query.addBindValue(id);
     query.setForwardOnly(true);
@@ -1027,7 +1027,7 @@ static bool updateDepth(const int id)
     int result=query.value(query.record().indexOf(QObject::tr("depth"))).toInt();
 
     //Update
-    strQuery=QObject::tr("UPDATE Tree Set depth=? WHERE id=?");
+    strQuery=QObject::tr("UPDATE Fr_Tree Set depth=? WHERE id=?");
     query.prepare(strQuery);
     query.addBindValue(result);
     query.addBindValue(id);
@@ -1044,7 +1044,7 @@ static bool list2Nested()
     if (!query.exec()) return false;
 
     //update depth
-    if (!query.prepare(QObject::tr("SELECT id from TREE"))) return false;
+    if (!query.prepare(QObject::tr("SELECT id from Fr_Tree"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     if (query.numRowsAffected()<1) return false;

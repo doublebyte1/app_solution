@@ -22,6 +22,7 @@ QMainWindow(parent, flags){
     pFrmReports=0;
     pFrmImport=0;
     pFrmExport=0;
+    pFrmRegions=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
     setupUi(this);
@@ -44,6 +45,7 @@ MainFrm::~MainFrm()
     }
 
     if (pFrmReports!=0) delete pFrmReports;
+    if (pFrmRegions!=0) delete pFrmRegions;
     if (pFrmImport!=0) delete pFrmImport;
     if (pFrmExport!=0) delete pFrmExport;
     if (pFrmFrame!=0) delete pFrmFrame;
@@ -99,35 +101,10 @@ void MainFrm::rulesInitialized(bool bReady)
     //m_bGotRules=bReady;
 }
 
-/*
-void MainFrm::LoadExportFrm()
-{
-    if (!pFrmExport->isVisible()){
-        tabWidget->hide();
-        gridLayout->removeWidget(tabWidget);
-        gridLayout->addWidget(pFrmExport, 0, 0, 1, 1);
-        pFrmExport->show();
-    }
-}
-
-void MainFrm::LoadImportFrm()
-{
-    if (!pFrmImport->isVisible()){
-        tabWidget->hide();
-        gridLayout->removeWidget(tabWidget);
-        gridLayout->addWidget(pFrmImport, 0, 0, 1, 1);
-        pFrmImport->show();
-    }
-}
-*/
-
 void MainFrm::initUi()
 {
     //read this from the app settings
     this->setWindowTitle(qApp->applicationName() + qApp->applicationVersion());
-
-     //connect(actionAbout_Qt, SIGNAL(triggered()),qApp,
-        //SLOT(aboutQt () ),Qt::UniqueConnection);
 
      connect(actionAbout_this_project, SIGNAL(triggered()),this,
         SLOT(aboutThisProject () ),Qt::UniqueConnection);
@@ -150,6 +127,9 @@ void MainFrm::initUi()
      connect(actionExport, SIGNAL(triggered()),this,
         SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
 
+     connect(actionRegions, SIGNAL(triggered()),this,
+        SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
+
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
@@ -159,6 +139,7 @@ void MainFrm::initUi()
     toolbar->addAction(this->actionSave);
     toolbar->addSeparator();
     toolbar->addAction(this->actionReports);
+    toolbar->addAction(this->actionRegions);
     toolbar->addSeparator();
     toolbar->addAction(this->actionImport);
     toolbar->addAction(this->actionExport);
@@ -168,44 +149,30 @@ void MainFrm::initUi()
     toolbar->addAction(this->actionExit);
 
     pFrmReports=new FrmReports();
-    pFrmReports->hide();
-    vSecondaryFrms.push_back(pFrmReports);
-
-     connect(pFrmReports, SIGNAL(hideFrmReports()), this,
-    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
-
-     connect(pFrmReports, SIGNAL(showStatus(QString)), this,
-    SLOT(statusShow(QString)));
-
-     connect(pFrmReports, SIGNAL(showError(QString, const bool)), this,
-    SLOT(displayError(QString, const bool)));
-
+    initSecondaryFrm(pFrmReports);
     pFrmImport=new FrmImport();
-    pFrmImport->hide();
-    vSecondaryFrms.push_back(pFrmImport);
-
+    initSecondaryFrm(pFrmImport);
     pFrmExport=new FrmExport();
-    pFrmExport->hide();
-    vSecondaryFrms.push_back(pFrmExport);
-
-     connect(pFrmImport, SIGNAL(hideFrm()), this,
-    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
-
-     connect(pFrmImport, SIGNAL(showStatus(QString)), this,
-    SLOT(statusShow(QString)));
-
-     connect(pFrmImport, SIGNAL(showError(QString, const bool)), this,
-    SLOT(displayError(QString, const bool)));
-
-     connect(pFrmExport, SIGNAL(hideFrm()), this,
-    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
-
-     connect(pFrmExport, SIGNAL(showStatus(QString)), this,
-    SLOT(statusShow(QString)));
-
-     connect(pFrmExport, SIGNAL(showError(QString, const bool)), this,
-    SLOT(displayError(QString, const bool)));
+    initSecondaryFrm(pFrmExport);
+    pFrmRegions=new FrmRegions();
+    initSecondaryFrm(pFrmRegions);
 }
+
+void MainFrm::initSecondaryFrm(SecondaryFrm* frm)
+{
+    frm->hide();
+    vSecondaryFrms.push_back(frm);
+
+     connect(frm, SIGNAL(showStatus(QString)), this,
+    SLOT(statusShow(QString)));
+
+     connect(frm, SIGNAL(showError(QString, const bool)), this,
+    SLOT(displayError(QString, const bool)));
+
+     connect(frm, SIGNAL(hideFrm()), this,
+    SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
+}
+
 
 bool MainFrm::readXMLFile(const QString strFileName)
 {
@@ -296,9 +263,10 @@ void MainFrm::loadSecondaryFrm()
     if (frm==actionReports)loadSecondaryFrm(pFrmReports);
     else if (frm==actionImport)loadSecondaryFrm(pFrmImport);
     else if (frm==actionExport)loadSecondaryFrm(pFrmExport);
+    else if (frm==actionRegions)loadSecondaryFrm(pFrmRegions);
 }
 
-void MainFrm::loadSecondaryFrm(QWidget* frm)
+void MainFrm::loadSecondaryFrm(SecondaryFrm* frm)
 {
     if (!frm->isVisible()){
 
@@ -309,7 +277,7 @@ void MainFrm::loadSecondaryFrm(QWidget* frm)
         }
 
         //now hide the other frms
-        QVector<QWidget*>::iterator it;
+        QVector<SecondaryFrm*>::iterator it;
         for (it = vSecondaryFrms.begin(); it != vSecondaryFrms.end(); ++it){
             if ((*it)!= frm && (*it)->isVisible()){
                 (*it)->hide();
@@ -321,30 +289,8 @@ void MainFrm::loadSecondaryFrm(QWidget* frm)
         frm->show();
     }
 }
-/*
-void MainFrm::loadReports()
-{
-    if (!pFrmReports->isVisible()){
 
-        if (tabWidget->isVisible()){
-            tabWidget->hide();
-            gridLayout->removeWidget(tabWidget);
-        }
-
-        QVector<QWidget*>::iterator it;
-        for (it = vSecondaryFrms.begin(); it != vSecondaryFrms.end(); ++it){
-            if ((*it)->isVisible()){
-                (*it)->hide();
-                gridLayout->removeWidget(*it);
-            }
-        }
-
-        gridLayout->addWidget(pFrmReports, 0, 0, 1, 1);
-        pFrmReports->show();
-    }
-}
-*/
-void MainFrm::closeSecondaryFrm(QWidget* frm)
+void MainFrm::closeSecondaryFrm(SecondaryFrm* frm)
 {
     if (frm->isVisible()){
         gridLayout->removeWidget(frm);
@@ -356,8 +302,8 @@ void MainFrm::closeSecondaryFrm(QWidget* frm)
 
 void MainFrm::closeSecondaryFrm()
 {
-    QWidget *frm = (QWidget *)sender();
-    if (frm!=0) closeSecondaryFrm(frm);
+    if ( qobject_cast<SecondaryFrm*>(sender())!=0)
+        closeSecondaryFrm(qobject_cast<SecondaryFrm*>(sender()));
 }
 
 void MainFrm::closeFile()

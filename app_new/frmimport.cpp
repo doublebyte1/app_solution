@@ -2,7 +2,7 @@
 #include "xmltable.h"
 
 FrmImport::FrmImport(QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags){
+SecondaryFrm(parent, flags){
 
     setupUi(this);
 

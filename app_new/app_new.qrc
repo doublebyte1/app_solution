@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/app_new">
+        <file>kget.png</file>
+        <file>tree.png</file>
+        <file>reload.png</file>
+        <file>bt.png</file>
         <file>folder_inbox.png</file>
         <file>folder_outbox.png</file>
         <file>kpresenter.png</file>
@@ -38,5 +42,6 @@
         <file>stylesheet.qss</file>
         <file>mail_find.png</file>
         <file>msdata.xsd</file>
+        <file>konqueror.png</file>
     </qresource>
 </RCC>

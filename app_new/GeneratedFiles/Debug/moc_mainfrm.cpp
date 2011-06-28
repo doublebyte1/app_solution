@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Mon 27. Jun 09:38:12 2011
+** Created: Tue 28. Jun 16:04:01 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -48,8 +48,8 @@ static const uint qt_meta_data_MainFrm[] = {
      471,    8,    8,    8, 0x08,
      483,    8,    8,    8, 0x08,
      507,  503,    8,    8, 0x08,
-     535,    8,    8,    8, 0x08,
-     554,  503,    8,    8, 0x08,
+     540,    8,    8,    8, 0x08,
+     559,  503,    8,    8, 0x08,
 
        0        // eod
 };
@@ -67,8 +67,8 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "aboutThisProject()\0bReady\0"
     "rulesInitialized(bool)\0loadFile()\0"
     "closeFile()\0writeFile()\0closeSecondaryFrm()\0"
-    "frm\0closeSecondaryFrm(QWidget*)\0"
-    "loadSecondaryFrm()\0loadSecondaryFrm(QWidget*)\0"
+    "frm\0closeSecondaryFrm(SecondaryFrm*)\0"
+    "loadSecondaryFrm()\0loadSecondaryFrm(SecondaryFrm*)\0"
 };
 
 const QMetaObject MainFrm::staticMetaObject = {
@@ -118,9 +118,9 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 13: closeFile(); break;
         case 14: writeFile(); break;
         case 15: closeSecondaryFrm(); break;
-        case 16: closeSecondaryFrm((*reinterpret_cast< QWidget*(*)>(_a[1]))); break;
+        case 16: closeSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
         case 17: loadSecondaryFrm(); break;
-        case 18: loadSecondaryFrm((*reinterpret_cast< QWidget*(*)>(_a[1]))); break;
+        case 18: loadSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 19;

@@ -16,6 +16,7 @@
 #include "frmreports.h"
 #include "frmimport.h"
 #include "frmexport.h"
+#include "frmregions.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -80,10 +81,10 @@ class SessionFileParser : public QXmlDefaultHandler
 
         int               m_ct;
 };
-
 #endif //SESSIONFILEPARSER_H
 
 //////////////////////////////////////////////////////////////////////
+
 #ifndef MAINFRM_H
 #define MAINFRM_H
 
@@ -112,6 +113,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    initRules();
 
     private:
+        void                    initSecondaryFrm(SecondaryFrm* frm);
         bool                    initDateModel();
         void                    resetTabs();
         void                    initPreviewTab(PreviewTab* tab);
@@ -138,17 +140,16 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmReports              *pFrmReports;
         FrmImport               *pFrmImport;
         FrmExport               *pFrmExport;
-        QVector<GenericTab*>    vTabs;
+        FrmRegions              *pFrmRegions;
+        QVector<GenericTab*>    vTabs;//!< container for storing pointers to the tabs;
+        QVector<SecondaryFrm*>  vSecondaryFrms;//!< container for storing pointers to the secondary forms;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
         QToolBar*               toolbar;
         RuleChecker*            ruleCheckerPtr;//!< Pointer to a Rule Checker
         InitRulesThread*        workerThread;//!< Thread that initializes the rule containers
-        QVector<QWidget*>       vSecondaryFrms;
 
     private slots:
-        //void                    LoadExportFrm();
-        //void                    LoadImportFrm();
         void                    addTab(int idx, bool bOk);
         void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
@@ -167,10 +168,9 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    loadFile();
         void                    closeFile();
         void                    writeFile();
-        //void                    loadReports();
         void                    closeSecondaryFrm();
-        void                    closeSecondaryFrm(QWidget* frm);
+        void                    closeSecondaryFrm(SecondaryFrm* frm);
         void                    loadSecondaryFrm();
-        void                    loadSecondaryFrm(QWidget* frm);
+        void                    loadSecondaryFrm(SecondaryFrm* frm);
 };
 #endif //MAINFRM_H

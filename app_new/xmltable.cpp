@@ -345,9 +345,9 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
                  tr(" ON ") + strTMPname + tr(".") + i.value().m_childkey + tr("=") + i.value().m_parent + tr(".") + 
                  strOldCode + tr(") AS TH WHERE TH.") + strOldCode + tr("=") + strTMPname + tr(".") + i.value().m_childkey;
          }else{
-             //Special query to update Tree references
+             //Special query to update Fr_Tree references
             strQuery=tr("UPDATE ") + strTMPname + tr(" SET ") + strTmpCol + 
-                tr("=( SELECT dbo.Tree.id FROM dbo.Tree INNER JOIN dbo.Node_Description ON dbo.Tree.id = dbo.Node_Description.id WHERE (dbo.Node_Description.") + strOldCode + tr("=") + i.value().m_childkey + tr(") AND (dbo.Tree.depth = (SELECT MAX(depth) AS Expr1 FROM dbo.Tree AS Tree_1)))");
+                tr("=( SELECT dbo.Fr_Tree.id FROM dbo.Fr_Tree INNER JOIN dbo.Fr_Node_Description ON dbo.Fr_Tree.id = dbo.Fr_Node_Description.id WHERE (dbo.Fr_Node_Description.") + strOldCode + tr("=") + i.value().m_childkey + tr(") AND (dbo.Fr_Tree.depth = (SELECT MAX(depth) AS Expr1 FROM dbo.Fr_Tree AS Fr_Tree_1)))");
          }
          if (!query.prepare(strQuery))return false;
          if (!query.exec()){

@@ -770,7 +770,7 @@ bool TableAdapter::readTableXML(const QString strTable, QXmlStreamReader& xml, c
 
     if (!query.prepare(strCreateTable)) return false;
     if (!query.exec()) {
-        qDebug() << strCreateTable << endl;
+        //qDebug() << strCreateTable << endl;
         emit showError(query.lastError().text(),true);
         return false;
     }
