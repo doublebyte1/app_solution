@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmImportRegions</class>
+ <widget class="QWidget" name="frmImportRegions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>458</width>
+    <height>326</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="lbTables">
+       <property name="text">
+        <string>Choose Node Table</string>
+       </property>
+       <property name="buddy">
+        <cstring>cmbTables</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbTables">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbField">
+       <property name="text">
+        <string>Choose Parent Field</string>
+       </property>
+       <property name="buddy">
+        <cstring>cmbFields</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbFields">
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushMore">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="app_new.qrc">
+         <normaloff>:/app_new/add.png</normaloff>:/app_new/add.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushApply">
+       <property name="toolTip">
+        <string>Ok</string>
+       </property>
+       <property name="statusTip">
+        <string>Ok</string>
+       </property>
+       <property name="whatsThis">
+        <string>Ok</string>
+       </property>
+       <property name="text">
+        <string>&amp;Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushCancel">
+       <property name="text">
+        <string>&amp;Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushClose">
+       <property name="toolTip">
+        <string>Cancel</string>
+       </property>
+       <property name="statusTip">
+        <string>Cancel</string>
+       </property>
+       <property name="whatsThis">
+        <string>Cancel</string>
+       </property>
+       <property name="text">
+        <string>&amp;Close</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QListWidget" name="listWidget">
+     <property name="toolTip">
+      <string>This widget allows us to define an adjacency list model, from a set of tables with reference fields. 
+ We start from the bottom, by indicating the first-level table and the field that references the parent table, and then the parent table, and the field that references the parent of the parent, etc.
+ On the last level, we do *not* need to indicate a field, since this is a non-referenced table! 
+ By pressing apply, there is a transformation from this into a nested set model, that is stored in the db inside a tree-like structure. 
+ this model can be inspected in this application, by choosing View-&gt;Regions, from the main menu.</string>
+     </property>
+     <property name="statusTip">
+      <string>This widget allows us to define an adjacency list model, from a set of tables with reference fields;</string>
+     </property>
+     <property name="whatsThis">
+      <string>This widget allows us to define an adjacency list model, from a set of tables with reference fields. 
+ We start from the bottom, by indicating the first-level table and the field that references the parent table, and then the parent table, and the field that references the parent of the parent, etc.
+ On the last level, we do *not* need to indicate a field, since this is a non-referenced table! 
+ By pressing apply, there is a transformation from this into a nested set model, that is stored in the db inside a tree-like structure. 
+ this model can be inspected in this application, by choosing View-&gt;Regions, from the main menu.</string>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>cmbTables</tabstop>
+  <tabstop>cmbFields</tabstop>
+  <tabstop>pushMore</tabstop>
+  <tabstop>pushApply</tabstop>
+  <tabstop>pushClose</tabstop>
+ </tabstops>
+ <resources>
+  <include location="app_new.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushClose</sender>
+   <signal>clicked()</signal>
+   <receiver>frmImportRegions</receiver>
+   <slot>Cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>303</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>203</x>
+     <y>163</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbTables</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>frmImportRegions</receiver>
+   <slot>refreshFields(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>46</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushMore</sender>
+   <signal>clicked()</signal>
+   <receiver>frmImportRegions</receiver>
+   <slot>addItems2List()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>386</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushApply</sender>
+   <signal>clicked()</signal>
+   <receiver>frmImportRegions</receiver>
+   <slot>Apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>329</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>frmImportRegions</receiver>
+   <slot>Cancel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>329</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushMore</sender>
+   <signal>clicked()</signal>
+   <receiver>frmImportRegions</receiver>
+   <slot>adjustButtons()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>384</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>228</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>Apply()</slot>
+  <slot>Cancel()</slot>
+  <slot>refreshFields(QString)</slot>
+  <slot>addItems2List()</slot>
+  <slot>adjustButtons()</slot>
+ </slots>
+</ui>

@@ -23,6 +23,7 @@ QMainWindow(parent, flags){
     pFrmImport=0;
     pFrmExport=0;
     pFrmRegions=0;
+    pFrmImportRegions=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
     setupUi(this);
@@ -46,6 +47,7 @@ MainFrm::~MainFrm()
 
     if (pFrmReports!=0) delete pFrmReports;
     if (pFrmRegions!=0) delete pFrmRegions;
+    if (pFrmImportRegions!=0) delete pFrmImportRegions;
     if (pFrmImport!=0) delete pFrmImport;
     if (pFrmExport!=0) delete pFrmExport;
     if (pFrmFrame!=0) delete pFrmFrame;
@@ -130,6 +132,12 @@ void MainFrm::initUi()
      connect(actionRegions, SIGNAL(triggered()),this,
         SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
 
+     connect(actionGeneralize_Regions, SIGNAL(triggered()),this,
+        SLOT(loadSecondaryFrm() ),Qt::UniqueConnection);
+
+     connect(actionRebuild_Indexes, SIGNAL(triggered()),this,
+        SLOT(RebuildIndexes() ),Qt::UniqueConnection);
+
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
@@ -143,6 +151,8 @@ void MainFrm::initUi()
     toolbar->addSeparator();
     toolbar->addAction(this->actionImport);
     toolbar->addAction(this->actionExport);
+    toolbar->addAction(actionRebuild_Indexes);
+    toolbar->addAction(actionGeneralize_Regions);
     toolbar->addSeparator();
     toolbar->addAction(this->actionAbout_this_project);
     toolbar->addSeparator();
@@ -156,6 +166,22 @@ void MainFrm::initUi()
     initSecondaryFrm(pFrmExport);
     pFrmRegions=new FrmRegions();
     initSecondaryFrm(pFrmRegions);
+    pFrmImportRegions=new FrmImportRegions();
+    initSecondaryFrm(pFrmImportRegions);
+}
+
+void MainFrm::RebuildIndexes()
+{
+    //Rebuilding indexes on a separate thread...
+    RebuildIndexesThread t;
+
+    connect(&t, SIGNAL(showStatus(QString)), this,
+        SLOT(statusShow(QString)));
+
+    connect(&t, SIGNAL(showError(QString,bool)), this,
+        SLOT(displayError(QString,bool)));
+
+    t.run();
 }
 
 void MainFrm::initSecondaryFrm(SecondaryFrm* frm)
@@ -264,6 +290,7 @@ void MainFrm::loadSecondaryFrm()
     else if (frm==actionImport)loadSecondaryFrm(pFrmImport);
     else if (frm==actionExport)loadSecondaryFrm(pFrmExport);
     else if (frm==actionRegions)loadSecondaryFrm(pFrmRegions);
+    else if (frm==actionGeneralize_Regions)loadSecondaryFrm(pFrmImportRegions);
 }
 
 void MainFrm::loadSecondaryFrm(SecondaryFrm* frm)
@@ -775,3 +802,24 @@ bool SessionFileParser::endDocument()
 {
     return m_ct==3;
 }
+////////////////////////
+
+ void RebuildIndexesThread::run()
+ {
+    QSqlQuery query;
+    if (!query.prepare(
+        rebuildIndexesSql())) {
+            emit showError(tr("Could not rebuild indexes on the database!"));
+            return;
+    }
+
+    query.setForwardOnly(true);
+    if (!query.exec()){
+        emit showError(tr("Could not rebuild indexes on the database!"));
+        return;
+    }
+    else showStatus(tr("Database indexes successfully rebuild!"));
+
+     exec();
+ }
+

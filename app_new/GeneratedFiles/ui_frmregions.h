@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmregions.ui'
 **
-** Created: Tue 28. Jun 16:54:21 2011
+** Created: Wed 29. Jun 13:42:40 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -32,7 +32,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushRefresh;
-    QPushButton *pushOk;
+    QPushButton *pushApply;
     QPushButton *pushClose;
 
     void setupUi(QWidget *frmRegions)
@@ -65,15 +65,15 @@ public:
 
         horizontalLayout->addWidget(pushRefresh);
 
-        pushOk = new QPushButton(frmRegions);
-        pushOk->setObjectName(QString::fromUtf8("pushOk"));
+        pushApply = new QPushButton(frmRegions);
+        pushApply->setObjectName(QString::fromUtf8("pushApply"));
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(pushOk->sizePolicy().hasHeightForWidth());
-        pushOk->setSizePolicy(sizePolicy);
+        sizePolicy.setHeightForWidth(pushApply->sizePolicy().hasHeightForWidth());
+        pushApply->setSizePolicy(sizePolicy);
 
-        horizontalLayout->addWidget(pushOk);
+        horizontalLayout->addWidget(pushApply);
 
         pushClose = new QPushButton(frmRegions);
         pushClose->setObjectName(QString::fromUtf8("pushClose"));
@@ -86,12 +86,13 @@ public:
         gridLayout->addLayout(horizontalLayout, 1, 0, 1, 1);
 
         QWidget::setTabOrder(treeWidget, pushRefresh);
-        QWidget::setTabOrder(pushRefresh, pushOk);
-        QWidget::setTabOrder(pushOk, pushClose);
+        QWidget::setTabOrder(pushRefresh, pushApply);
+        QWidget::setTabOrder(pushApply, pushClose);
 
         retranslateUi(frmRegions);
-        QObject::connect(pushOk, SIGNAL(clicked()), frmRegions, SLOT(Ok()));
+        QObject::connect(pushApply, SIGNAL(clicked()), frmRegions, SLOT(Apply()));
         QObject::connect(pushRefresh, SIGNAL(clicked()), frmRegions, SLOT(reload()));
+        QObject::connect(treeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), frmRegions, SLOT(treeEdited()));
 
         QMetaObject::connectSlotsByName(frmRegions);
     } // setupUi
@@ -116,15 +117,15 @@ public:
 #endif // QT_NO_STATUSTIP
         pushRefresh->setText(QApplication::translate("frmRegions", "&Reload", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        pushOk->setToolTip(QApplication::translate("frmRegions", "Accept Changes", 0, QApplication::UnicodeUTF8));
+        pushApply->setToolTip(QApplication::translate("frmRegions", "Accept Changes", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        pushOk->setStatusTip(QApplication::translate("frmRegions", "Accept Changes", 0, QApplication::UnicodeUTF8));
+        pushApply->setStatusTip(QApplication::translate("frmRegions", "Accept Changes", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        pushOk->setWhatsThis(QApplication::translate("frmRegions", "Accepts Changes", 0, QApplication::UnicodeUTF8));
+        pushApply->setWhatsThis(QApplication::translate("frmRegions", "Accepts Changes", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        pushOk->setText(QApplication::translate("frmRegions", "&Ok", 0, QApplication::UnicodeUTF8));
+        pushApply->setText(QApplication::translate("frmRegions", "&Apply", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushClose->setToolTip(QApplication::translate("frmRegions", "Cancel Changes", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

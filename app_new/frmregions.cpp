@@ -19,12 +19,25 @@ FrmRegions::~FrmRegions()
     if (treePtr!=0) delete treePtr;
 }
 
-void FrmRegions::Ok()
+void FrmRegions::showEvent ( QShowEvent * event )
+{
+    pushApply->setEnabled(false);
+}
+
+void FrmRegions::treeEdited()
+{
+    pushApply->setEnabled(true);
+}
+
+void FrmRegions::Apply()
 {
     if (!treePtr) return;
 
     if (!writeXML()) emit showError(tr("Could not write XML document from tree!"));
-    else emit showStatus(tr("Finished writing XML Tree from application"));
+    else {
+        pushApply->setEnabled(false);
+        emit showStatus(tr("Finished writing XML Tree from application"));
+    }
 }
 
 void FrmRegions::reload()
@@ -184,8 +197,19 @@ bool FrmRegions::createDBModel(MapNodes& mapNodes, MapProperties& mapProperties,
     \sa updateDBModel(MapNodes& mapNodes, MapProperties& mapProperties, MapProperties& mapFields)
     */
 
+    MapFK mapFK;
+
+    //temporary turn off constraints on dependencies...
+    if (!disableAllConstraints4Table(tr("Ref_Ports"),true)) return false;
+    if (!disableAllConstraints4Table(tr("Ref_Vessels"),true))         return false;
+
     //clean Table(s)
     if (!clearDBTable(tr("Fr_Tree"))) return false;
+
+    //and put them back
+    if (!disableAllConstraints4Table(tr("Ref_Vessels"),false)) return false;
+    if (!disableAllConstraints4Table(tr("Ref_Ports"),false)) return false;
+
     if (!clearDBTable(tr("Fr_Node_Description"))) return false;
 
     QString strQuery;

@@ -252,6 +252,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\frmimportregions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\frmlegend.cpp"
 				>
 			</File>
@@ -753,6 +757,32 @@
 			</File>
 			<File
 				RelativePath=".\frmimport.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-I$(BOOSTDIR)\.&quot; &quot;-I$(EXARO_INCLUDE_DIR)\.&quot; &quot;-I$(PROJDIR)\CatchInputCtrl\CatchInputCtrl&quot; &quot;-I$(PROJDIR)\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot; &quot;-I$(PROJDIR)\customctrl_solution\CustomTimeCtrl&quot; &quot;-I$(PROJDIR)\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtScript&quot; &quot;-I$(QTDIR)\include\QtSql&quot; &quot;-I$(QTDIR)\include\QtTest&quot; &quot;-I$(QTDIR)\include\QtWebKit&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include\QtXmlPatterns&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DUNICODE -DWIN32&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-I$(BOOSTDIR)\.&quot; &quot;-I$(EXARO_INCLUDE_DIR)\.&quot; &quot;-I$(PROJDIR)\CatchInputCtrl\CatchInputCtrl&quot; &quot;-I$(PROJDIR)\CatchInputCtrl\CatchInputCtrl\GeneratedFiles&quot; &quot;-I$(PROJDIR)\customctrl_solution\CustomTimeCtrl&quot; &quot;-I$(PROJDIR)\customctrl_solution\CustomTimeCtrl\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtScript&quot; &quot;-I$(QTDIR)\include\QtSql&quot; &quot;-I$(QTDIR)\include\QtTest&quot; &quot;-I$(QTDIR)\include\QtWebKit&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include\QtXmlPatterns&quot; &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; -DQT_CORE_LIB -DQT_GUI_LIB -DQT_LARGEFILE_SUPPORT -DQT_SCRIPT_LIB -DQT_SQL_LIB -DQT_XML_LIB -DQT_XMLPATTERNS_LIB -DUNICODE -DWIN32&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\frmimportregions.h"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1354,6 +1384,10 @@
 						QtUicExt=".h"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\frmImportRegions.ui"
+				>
 			</File>
 			<File
 				RelativePath=".\frmlegend.ui"
@@ -2595,6 +2629,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Release\moc_frmimportregions.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Release\moc_frmlegend.cpp"
 					>
 					<FileConfiguration
@@ -3021,6 +3067,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_frmimportregions.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_frmlegend.cpp"
 					>
 					<FileConfiguration
@@ -3249,6 +3307,17 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Translation Files"
+			Filter="ts"
+			UniqueIdentifier="{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}"
+			ParseFiles="false"
+			>
+			<File
+				RelativePath=".\app_new_pt.ts"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

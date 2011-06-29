@@ -48,7 +48,6 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAbout"/>
     <addaction name="actionAbout_this_project"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -68,8 +67,16 @@
      </property>
      <addaction name="actionImport"/>
      <addaction name="actionExport"/>
+     <addaction name="actionRebuild_Indexes"/>
+    </widget>
+    <widget class="QMenu" name="menuTransform_Data">
+     <property name="title">
+      <string>Transform Data</string>
+     </property>
+     <addaction name="actionGeneralize_Regions"/>
     </widget>
     <addaction name="menuMaintenance_Tasks"/>
+    <addaction name="menuTransform_Data"/>
    </widget>
    <addaction name="menuSampling_Operation"/>
    <addaction name="menuView"/>
@@ -214,7 +221,7 @@
     <string>Shows the reports</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string>Ctrl+P</string>
    </property>
   </action>
   <action name="actionImport">
@@ -263,6 +270,54 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionRebuild_Indexes">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/configure_toolbars.png</normaloff>:/app_new/configure_toolbars.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rebuild Indexes</string>
+   </property>
+   <property name="iconText">
+    <string>Compact the Database, by rebuilding the indexes</string>
+   </property>
+   <property name="toolTip">
+    <string>Compact the Database, by rebuilding the indexes</string>
+   </property>
+   <property name="statusTip">
+    <string>Compact the Database, by rebuilding the indexes</string>
+   </property>
+   <property name="whatsThis">
+    <string>Compacts the Database, by rebuilding the indexes</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionGeneralize_Regions">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/launch.png</normaloff>:/app_new/launch.png</iconset>
+   </property>
+   <property name="text">
+    <string>Generalize Regions</string>
+   </property>
+   <property name="iconText">
+    <string>Convert regions on an adjacency list, to a nested set representation</string>
+   </property>
+   <property name="toolTip">
+    <string>Convert regions on an adjacency list, to a nested set representation</string>
+   </property>
+   <property name="statusTip">
+    <string>Convert regions on an adjacency list, to a nested set representation</string>
+   </property>
+   <property name="whatsThis">
+    <string>Converts regions on an adjacency list, to a nested set representation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
  </widget>

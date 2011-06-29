@@ -68,7 +68,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushOk">
+      <widget class="QPushButton" name="pushApply">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -85,7 +85,7 @@
         <string>Accepts Changes</string>
        </property>
        <property name="text">
-        <string>&amp;Ok</string>
+        <string>&amp;Apply</string>
        </property>
       </widget>
      </item>
@@ -118,7 +118,7 @@
  <tabstops>
   <tabstop>treeWidget</tabstop>
   <tabstop>pushRefresh</tabstop>
-  <tabstop>pushOk</tabstop>
+  <tabstop>pushApply</tabstop>
   <tabstop>pushClose</tabstop>
  </tabstops>
  <resources>
@@ -126,10 +126,10 @@
  </resources>
  <connections>
   <connection>
-   <sender>pushOk</sender>
+   <sender>pushApply</sender>
    <signal>clicked()</signal>
    <receiver>frmRegions</receiver>
-   <slot>Ok()</slot>
+   <slot>Apply()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>430</x>
@@ -157,9 +157,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>treeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>frmRegions</receiver>
+   <slot>treeEdited()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>279</x>
+     <y>198</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>279</x>
+     <y>215</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>Ok()</slot>
+  <slot>Apply()</slot>
   <slot>reload()</slot>
+  <slot>treeEdited()</slot>
  </slots>
 </ui>

@@ -17,6 +17,7 @@
 #include "frmimport.h"
 #include "frmexport.h"
 #include "frmregions.h"
+#include "frmimportregions.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -24,6 +25,31 @@
   #endif
 
 using namespace boost;
+
+
+//////////////////////////////////////////////////////////////////////
+#ifndef REBUILDINDEXESTHREAD_H
+#define REBUILDINDEXESTHREAD_H
+
+//! RebuildIndexesThread Class
+/*!
+This thread serves the only purpose of rebuilding the indexes in the database;
+There is no one waiting for the results, so we can run it paralelly to other tasks...
+*/
+
+ class RebuildIndexesThread : public QThread
+ {
+    Q_OBJECT
+
+    public:
+        void run();
+
+    signals:
+        void showStatus(const QString str);//!< For showing messages on the main window status bar
+        void showError(QString str, const bool bShowMsgBox=true);
+ };
+#endif //REBUILDINDEXESTHREAD_H
+
 
 //////////////////////////////////////////////////////////////////////
 #ifndef SESSIONFILEPARSER_H
@@ -141,6 +167,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmImport               *pFrmImport;
         FrmExport               *pFrmExport;
         FrmRegions              *pFrmRegions;
+        FrmImportRegions        *pFrmImportRegions;
         QVector<GenericTab*>    vTabs;//!< container for storing pointers to the tabs;
         QVector<SecondaryFrm*>  vSecondaryFrms;//!< container for storing pointers to the secondary forms;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
@@ -172,5 +199,6 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    closeSecondaryFrm(SecondaryFrm* frm);
         void                    loadSecondaryFrm();
         void                    loadSecondaryFrm(SecondaryFrm* frm);
+        void                    RebuildIndexes();
 };
 #endif //MAINFRM_H

@@ -30,6 +30,7 @@ class FrmRegions : public SecondaryFrm, public Ui::frmRegions
         ~FrmRegions();
 
     private:
+        void        showEvent ( QShowEvent * event );
         bool        readXML();
         bool        writeXML();
         bool        updateDBModel(MapNodes& mapNodes, MapProperties& mapProperties, MapProperties& mapFields);
@@ -41,10 +42,10 @@ class FrmRegions : public SecondaryFrm, public Ui::frmRegions
         Tree*       treePtr;
 
     private slots:
-        void        Ok();
+        void        Apply();
         //TODO: maybe implement and undo later
         void        reload();
-
+        void        treeEdited();
 };
 
 #endif // FRMREGIONS_H

@@ -308,6 +308,25 @@ static bool dropTableIfExists(const QString strTableName)
     return query.exec();
 }
 
+static bool getObjectID4Table(int& outId, const QString strField, const QString strTable)
+{
+    QString strQuery=
+QObject::tr("SELECT obj.[name], col.[name], col.[colstat], col.* FROM [syscolumns] col JOIN [sysobjects] obj") +
+QObject::tr(" ON obj.[id] = col.[id] WHERE obj.type = 'U' AND col.[status] = 0x80") +
+QObject::tr(" AND (obj.[name]=:table AND col.[name]=:field) ORDER BY obj.[name] ")
+;
+    QSqlQuery query;
+    if (!query.prepare(strQuery)) return false;
+    query.bindValue(QObject::tr(":table"), strTable);
+    query.bindValue(QObject::tr(":field"), strField);
+    query.setForwardOnly(true);
+    if (!query.exec()) return false;
+
+    query.first();
+    outId=query.value(4).toInt();
+    return true;
+}
+
 static bool getObjects(QSqlQuery& query, const QString strTable=QString())
 {
     //! Get Object Ids
@@ -429,6 +448,41 @@ static bool identityName(const QString strTableName, QString& strField)
     return true;
 }
 
+static bool disableAllConstraints4Table(const QString strTableName, bool bNoCheck){
+    QSqlQuery query;
+    QString strQuery;
+    if (bNoCheck){
+        strQuery=QObject::tr(
+            "ALTER TABLE ") + strTableName + QObject::tr(" NOCHECK CONSTRAINT ALL");
+    }else{
+        strQuery=QObject::tr(
+            "ALTER TABLE ") + strTableName + QObject::tr(" CHECK CONSTRAINT ALL");
+    }
+
+    if (!query.prepare(strQuery)) return false;
+    query.setForwardOnly(true);
+    return (query.exec());
+
+}
+
+static bool disableAllTriggers4Table(const QString strTableName, bool bDisable)
+{
+    QSqlQuery query;
+    QString strQuery;
+    if (bDisable){
+        strQuery=QObject::tr(
+            "ALTER TABLE ") + strTableName + QObject::tr(" DISABLE TRIGGER ALL");
+    }else{
+        strQuery=QObject::tr(
+            "ALTER TABLE ") + strTableName + QObject::tr(" ENABLE TRIGGER ALL");
+    }
+
+    if (!query.prepare(strQuery)) return false;
+    query.setForwardOnly(true);
+    return (query.exec());
+
+}
+
 static bool clearDBTable(const QString strTableName, bool bReseed=true)
 {
     //! Delete Rows from Table
@@ -440,6 +494,8 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
     \return bool as success or failure of the two operations
     */
 
+    if (!disableAllTriggers4Table(strTableName,true)) return false;
+
     QSqlQuery query;
     QString strQuery=QObject::tr("DELETE FROM ");
     strQuery.append(strTableName);
@@ -447,6 +503,8 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
     query.setForwardOnly(true);
 
     bool bOk=query.exec();
+
+    if (!disableAllTriggers4Table(strTableName,false)) return false;
 
     if (bReseed){
         //Reseed columns
@@ -462,11 +520,13 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
             //Check identity field
             if (!identityName(strTableName,strField)) return false;
 
+/*
             //Grabbing the object id
             QSqlQuery idQuery;
             if (!getObjects(idQuery)) return false;
 
             int objectID=-1;
+
              while (idQuery.next()) {
                  if (idQuery.value(idQuery.record().indexOf(QObject::tr("TableName"))).toString()==strTableName
                      && idQuery.value(idQuery.record().indexOf(QObject::tr("name"))).toString()==strField){
@@ -474,7 +534,14 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
                         break;
                  }
              }
-             if (objectID==-1) return false;
+*/
+             
+            int objectID;
+            if (!getObjectID4Table(objectID, strField, strTableName))
+                return false;
+            
+
+             //if (objectID==-1) return false;
 
             //Get autoincrementinfo
              QSqlQuery seedQuery;
@@ -874,14 +941,18 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     if (!query.prepare(QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng) VALUES('Root','Root')"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
+    query.finish();
 
     //Create TMP table and fill with the mapping between old codes and new codes
     if (!query.prepare(QObject::tr("CREATE TABLE ##List_Conversion( [id] [int] IDENTITY(1,1) NOT NULL, [table_name] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, [code] [int] NULL, CONSTRAINT [PK_List_Conversion] PRIMARY KEY CLUSTERED ( [id] ASC )WITH (PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY] ) ON [PRIMARY]"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
+    query.finish();
+
     if (!query.prepare(QObject::tr("INSERT INTO ##List_Conversion (table_name,code) VALUES('Root',0)"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
+    query.finish();
 
      HashNodeRef::const_iterator i = mapTablesFields.constBegin();
      while (i != mapTablesFields.constEnd()) {
@@ -889,28 +960,45 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
+        QVector<QString> vQueries;
+
         while (query.next()){
             strQuery=QObject::tr("INSERT INTO ##List_Conversion (table_name,code) VALUES('") + 
              i.value()->m_strTable + QObject::tr("',CAST(") + query.record().value(QObject::tr("id")).toString()+
              QObject::tr(" AS INT))");
-            if (!query2.prepare(strQuery)) return false;
-            query2.setForwardOnly(true);
-            if (!query2.exec()) return false;
+            //if (!query2.prepare(strQuery)) return false;
+            //if (!query2.exec()) return false;
+            //query2.finish();
+            vQueries.append(strQuery);
         }
+        query.finish();
+
+        QVector<QString>::const_iterator queriesIterator;
+        //now batch execute queries!
+        for (queriesIterator = vQueries.constBegin(); queriesIterator != vQueries.constEnd();
+            ++queriesIterator){
+            if (!query.prepare(*queriesIterator)) return false;
+            query.setForwardOnly(true);
+            if (!query.exec()) return false;
+            query.finish();
+        }
+
         ++i;
      }
 
-    query.prepare(QObject::tr("SELECT int FROM Null_Replacements WHERE internal_name='Missing'"));
+    query.prepare(QObject::tr("SELECT int FROM GL_Null_Replacements WHERE internal_name='Missing'"));
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.first();
     QString strNull=query.value(0).toString();
 
+    query.finish();
     //Initialize Root on Fr_Tree
     if (!query.prepare(QObject::tr("INSERT INTO Fr_Tree (parent,lft,rgt,depth) VALUES(-1,") + strNull +
         QObject::tr(",") + strNull + QObject::tr(",") + strNull + QObject::tr(")"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
+    query.finish();
 
     //First check nulls
     QString strType;
@@ -926,18 +1014,27 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
+        query.finish();
     }
+
+     if (!disableAllTriggers4Table(QObject::tr("Fr_Node_Description"),true)) return false;
+     if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),true)) return false;
 
     //Fill Fr_Node_Description
     i = mapTablesFields.constBegin();
     while (i != mapTablesFields.constEnd()) {
              strQuery=
-             QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng,description,OLD_CODE) ")+
-             QObject::tr("SELECT Name,NameENG,Description,ID FROM ") +
+             QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng,description,OLD_CODE) ")+ //n.b.: removing nulls from description and name_eng
+             QObject::tr(
+             //"SELECT Name,NameENG,Description,ID FROM ") +
+             "SELECT Name,CASE WHEN NameENG IS NULL THEN 'missing' ELSE NameENG END as NameENG, CASE WHEN Description IS NULL THEN 'missing' ELSE Description END as Description, ID FROM ") +
             i.value()->m_strTable;
+
              if (!query.prepare(strQuery)) return false;
              query.setForwardOnly(true);
              if (!query.exec()) return false;
+             query.finish();
+
              ++i;
     }
 
@@ -950,6 +1047,9 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
                 if (!query.prepare(strQuery)) return false;
                 query.setForwardOnly(true);
                 if (!query.exec()) return false;
+
+                QVector<QString> vQueries;
+
                 while (query.next()){
                     if (ct>0){
                         HashNodeRef::const_iterator ii = i;
@@ -960,9 +1060,18 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
                     }else{
                         strQuery=QObject::tr("INSERT INTO Fr_Tree (parent) VALUES(1)");
                     }
-                    if (!query2.prepare(strQuery)) return false;
-                    query2.setForwardOnly(true);
-                    if (!query2.exec()) return false;
+                    vQueries.append(strQuery);
+                }
+                query.finish();
+
+                QVector<QString>::const_iterator queriesIterator;
+                //now batch execute queries!
+                for (queriesIterator = vQueries.constBegin(); queriesIterator != vQueries.constEnd();
+                    ++queriesIterator){
+                    if (!query.prepare(*queriesIterator)) return false;
+                    query.setForwardOnly(true);
+                    if (!query.exec()) return false;
+                    query.finish();
                 }
 
             ct++;
@@ -978,12 +1087,15 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
+        query.finish();
 
         if (!getFieldType(QObject::tr("Fr_Tree"),*constIterator,strType)) return false;
         strQuery=alterNull(QObject::tr("Fr_Tree"),*constIterator,strType,false);
+
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
+        query.finish();
     }
 
     //Don't forget to remove the Temp Table!
@@ -994,6 +1106,10 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
 
     //Don't forget to put the constraints back
     if (!createFKConstraint(mapFK)) return false;
+
+    if (!disableAllTriggers4Table(QObject::tr("Fr_Node_Description"),false)) return false;
+    if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),false)) return false;
+
     return true;
 }
 
@@ -1039,6 +1155,8 @@ static bool updateDepth(const int id)
 
 static bool list2Nested()
 {
+    if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),true)) return false;
+
     QSqlQuery query;
     if (!query.prepare("list2Nested")) return false;
     if (!query.exec()) return false;
@@ -1052,6 +1170,7 @@ static bool list2Nested()
     {
         if (!updateDepth(query.record().value(QObject::tr("id")).toInt())) return false;
     }
+     if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),false)) return false;
     return true;
 }
 

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Tue 28. Jun 16:46:12 2011
+** Created: Wed 29. Jun 17:41:11 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -40,6 +40,8 @@ public:
     QAction *actionImport;
     QAction *actionExport;
     QAction *actionRegions;
+    QAction *actionRebuild_Indexes;
+    QAction *actionGeneralize_Regions;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -49,6 +51,7 @@ public:
     QMenu *menuView;
     QMenu *menuTools;
     QMenu *menuMaintenance_Tasks;
+    QMenu *menuTransform_Data;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -116,6 +119,16 @@ public:
         QIcon icon11;
         icon11.addFile(QString::fromUtf8(":/app_new/tree.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionRegions->setIcon(icon11);
+        actionRebuild_Indexes = new QAction(MainWindow);
+        actionRebuild_Indexes->setObjectName(QString::fromUtf8("actionRebuild_Indexes"));
+        QIcon icon12;
+        icon12.addFile(QString::fromUtf8(":/app_new/configure_toolbars.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionRebuild_Indexes->setIcon(icon12);
+        actionGeneralize_Regions = new QAction(MainWindow);
+        actionGeneralize_Regions->setObjectName(QString::fromUtf8("actionGeneralize_Regions"));
+        QIcon icon13;
+        icon13.addFile(QString::fromUtf8(":/app_new/launch.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionGeneralize_Regions->setIcon(icon13);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -139,6 +152,8 @@ public:
         menuTools->setObjectName(QString::fromUtf8("menuTools"));
         menuMaintenance_Tasks = new QMenu(menuTools);
         menuMaintenance_Tasks->setObjectName(QString::fromUtf8("menuMaintenance_Tasks"));
+        menuTransform_Data = new QMenu(menuTools);
+        menuTransform_Data->setObjectName(QString::fromUtf8("menuTransform_Data"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -154,13 +169,15 @@ public:
         menuSampling_Operation->addAction(actionSave);
         menuSampling_Operation->addSeparator();
         menuSampling_Operation->addAction(actionExit);
-        menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_this_project);
         menuView->addAction(actionReports);
         menuView->addAction(actionRegions);
         menuTools->addAction(menuMaintenance_Tasks->menuAction());
+        menuTools->addAction(menuTransform_Data->menuAction());
         menuMaintenance_Tasks->addAction(actionImport);
         menuMaintenance_Tasks->addAction(actionExport);
+        menuMaintenance_Tasks->addAction(actionRebuild_Indexes);
+        menuTransform_Data->addAction(actionGeneralize_Regions);
 
         retranslateUi(MainWindow);
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
@@ -225,7 +242,7 @@ public:
 #ifndef QT_NO_WHATSTHIS
         actionReports->setWhatsThis(QApplication::translate("MainWindow", "Shows the reports", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        actionReports->setShortcut(QApplication::translate("MainWindow", "Ctrl+R", 0, QApplication::UnicodeUTF8));
+        actionReports->setShortcut(QApplication::translate("MainWindow", "Ctrl+P", 0, QApplication::UnicodeUTF8));
         actionImport->setText(QApplication::translate("MainWindow", "Import", 0, QApplication::UnicodeUTF8));
         actionImport->setShortcut(QApplication::translate("MainWindow", "Ctrl+I", 0, QApplication::UnicodeUTF8));
         actionExport->setText(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
@@ -242,11 +259,36 @@ public:
         actionRegions->setWhatsThis(QApplication::translate("MainWindow", "View tree-model of regions", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionRegions->setShortcut(QApplication::translate("MainWindow", "Ctrl+R", 0, QApplication::UnicodeUTF8));
+        actionRebuild_Indexes->setText(QApplication::translate("MainWindow", "Rebuild Indexes", 0, QApplication::UnicodeUTF8));
+        actionRebuild_Indexes->setIconText(QApplication::translate("MainWindow", "Compact the Database, by rebuilding the indexes", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        actionRebuild_Indexes->setToolTip(QApplication::translate("MainWindow", "Compact the Database, by rebuilding the indexes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        actionRebuild_Indexes->setStatusTip(QApplication::translate("MainWindow", "Compact the Database, by rebuilding the indexes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionRebuild_Indexes->setWhatsThis(QApplication::translate("MainWindow", "Compacts the Database, by rebuilding the indexes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionRebuild_Indexes->setShortcut(QApplication::translate("MainWindow", "Ctrl+I", 0, QApplication::UnicodeUTF8));
+        actionGeneralize_Regions->setText(QApplication::translate("MainWindow", "Generalize Regions", 0, QApplication::UnicodeUTF8));
+        actionGeneralize_Regions->setIconText(QApplication::translate("MainWindow", "Convert regions on an adjacency list, to a nested set representation", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        actionGeneralize_Regions->setToolTip(QApplication::translate("MainWindow", "Convert regions on an adjacency list, to a nested set representation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        actionGeneralize_Regions->setStatusTip(QApplication::translate("MainWindow", "Convert regions on an adjacency list, to a nested set representation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionGeneralize_Regions->setWhatsThis(QApplication::translate("MainWindow", "Converts regions on an adjacency list, to a nested set representation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionGeneralize_Regions->setShortcut(QApplication::translate("MainWindow", "Ctrl+G", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
         menuMaintenance_Tasks->setTitle(QApplication::translate("MainWindow", "Maintenance Tasks", 0, QApplication::UnicodeUTF8));
+        menuTransform_Data->setTitle(QApplication::translate("MainWindow", "Transform Data", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

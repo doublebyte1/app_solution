@@ -30,13 +30,24 @@ int main(int argc, char *argv[])
     a.setStyleSheet(qss.readAll());
     qss.close();
 
-    //TODO: language stuff
+    /*
+    QTranslator qtTranslator;
+    qtTranslator.load(("app_new_pt"),
+         QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
+*/
+    QTranslator myappTranslator;
+    myappTranslator.load("app_new_pt");
+    a.installTranslator(&myappTranslator);
+
+    //arabic layout
+    //a.setLayoutDirection(Qt::RightToLeft);
 
     //app details
     a.setApplicationName(QObject::tr("Medfisis"));
     a.setOrganizationName(QObject::tr("FAO-FIRF"));
     a.setOrganizationDomain(QObject::tr("http://www.fao.org/"));
-    a.setApplicationVersion(QObject::tr("2-a"));
+    a.setApplicationVersion(QObject::tr("1-alpha"));
 
     Login l;
     l.show();
