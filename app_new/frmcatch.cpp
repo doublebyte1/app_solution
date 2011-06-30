@@ -136,10 +136,10 @@ void FrmCatch::initMapper1()
 
     if (nullDellegate!=0) delete nullDellegate;
     QList<int> lOthers;
-    for (int i=2; i < 15; ++i){
-        lOthers << i;
+    for (int i=2; i < 18; ++i){
+        if (i!=15)
+            lOthers << i;
     }
-    lOthers << 16;
     QList<int> lText;
     lText << 15;
     nullDellegate=new NullRelationalDelegate(lOthers,lText);
