@@ -35,11 +35,11 @@ int main(int argc, char *argv[])
     qtTranslator.load(("app_new_pt"),
          QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     a.installTranslator(&qtTranslator);
-*/
+
     QTranslator myappTranslator;
     myappTranslator.load("app_new_pt");
     a.installTranslator(&myappTranslator);
-
+*/
     //arabic layout
     //a.setLayoutDirection(Qt::RightToLeft);
 

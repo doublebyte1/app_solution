@@ -1030,7 +1030,7 @@ bool ModelInterface::readOneVS(const int inRow, const int outRow, const bool bBi
     treeModel->insertRow(outRow,parent);
 
     QVariant var;
-    if (!mapData(inRow,outRow,10,0,parent,tRefVessels,var))
+    if (!mapData(inRow,outRow,7,0,parent,tRefVessels,var))
         return false;//Name
 
     if (!mapData(inRow,outRow,7,3,parent,tRefVessels,var))

@@ -472,7 +472,13 @@ void FrmVessel::filterModel4Combo()
         tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
         tr("                                                       (SELECT     ID") +
         tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
-        tr("                                                         WHERE      (Name = 'outside')))))") +
+        tr("                                                         WHERE      (Name = 'outside'))))) AND ") +
+
+        //filter by vessel types here
+        tr(" dbo.Ref_Vessels.VesselType=(SELECT id_vessel_type ") +
+        tr(" FROM         dbo.Sampled_Cell_Vessel_Types ") +
+        tr(" WHERE     (ID =") + QVariant(m_sample->vesselTypeId).toString() + tr("))") +
+
         tr(" UNION") +
         tr(" SELECT     Ref_Vessels_1.VesselID") +
         tr(" FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN")+
