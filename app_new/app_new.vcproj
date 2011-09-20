@@ -3319,6 +3319,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\app_new.rc"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global
