@@ -99,7 +99,7 @@ bool TableAdapter::insertDataIntoTable(const QString strTableName, QXmlStreamRea
             QSqlQuery query;
             query.prepare(strQuery);
             if (!query.exec()){
-                qDebug() << strQuery << endl;
+                //qDebug() << strQuery << endl;
                 emit showError(query.lastError().text(),true);
                 return false;
             }
@@ -209,7 +209,7 @@ bool TableAdapter::insertDataIntoTable(const QString strTableName, QXmlStreamRea
                 strQuery=tr("INSERT INTO ") + strTMPname + tr("(Name) VALUES('") + *constIterator + tr("')");
                 query.prepare(strQuery);
                 if (!query.exec()){
-                        qDebug() << strQuery << endl;
+                        //qDebug() << strQuery << endl;
                         emit showError(query.lastError().text(),true);
                 return false;
                 }
@@ -497,7 +497,7 @@ bool TableAdapter::search4FK(const QStringList strTables, QXmlStreamReader& xml,
 
                 if (!query.prepare(strSql)) return false;
                 if (!query.exec()) {
-                    qDebug() << strSql << endl;
+                    //qDebug() << strSql << endl;
                     emit showError(query.lastError().text(),true);
                     return false;
                 }

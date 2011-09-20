@@ -1290,7 +1290,7 @@ static bool renameColumn(const QString strTable, const QString strField, const Q
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
     if (!query.exec()){
-        qDebug() << strQuery << endl;
+        //qDebug() << strQuery << endl;
         return false;
     }
     return true;

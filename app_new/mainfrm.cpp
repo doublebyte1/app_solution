@@ -138,6 +138,19 @@ void MainFrm::initUi()
      connect(actionRebuild_Indexes, SIGNAL(triggered()),this,
         SLOT(RebuildIndexes() ),Qt::UniqueConnection);
 
+     for (int i = 0; i < MaxRecentFiles; ++i) {
+         recentFileActs[i] = new QAction(this);
+         recentFileActs[i]->setVisible(false);
+         connect(recentFileActs[i], SIGNAL(triggered()),
+                 this, SLOT(openRecentFile()));
+     }
+
+    separatorAct = menuSampling_Operation->addSeparator();
+    for (int i = 0; i < MaxRecentFiles; ++i)
+        menuSampling_Operation->addAction(recentFileActs[i]);
+    menuSampling_Operation->addSeparator();
+    updateRecentFileActions();
+
     toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
@@ -360,6 +373,58 @@ void MainFrm::closeFile()
     resetTabs();
 }
 
+void MainFrm::openRecentFile()
+{
+     QAction *action = qobject_cast<QAction *>(sender());
+     if (action){
+        if (!readXMLFile(action->data().toString()))
+            this->displayError(tr("Could not parse XML file! Are you sure this is a valid project file?"),true);
+        else
+            loadTabs();
+     }
+}
+
+ void MainFrm::setCurrentFile(const QString &fileName)
+ {
+     curFile = fileName;
+     setWindowFilePath(curFile);
+
+     QSettings settings;
+     QStringList files = settings.value("recentFileList").toStringList();
+     files.removeAll(fileName);
+     files.prepend(fileName);
+     while (files.size() > MaxRecentFiles)
+         files.removeLast();
+
+     settings.setValue("recentFileList", files);
+    updateRecentFileActions();
+
+}
+
+void MainFrm::updateRecentFileActions()
+{
+     QSettings settings;
+     QStringList files = settings.value("recentFileList").toStringList();
+
+     int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);
+
+     for (int i = 0; i < numRecentFiles; ++i) {
+         QString text = tr("&%1 %2").arg(i + 1).arg(strippedName(files[i]));
+         recentFileActs[i]->setText(text);
+         recentFileActs[i]->setData(files[i]);
+         recentFileActs[i]->setVisible(true);
+     }
+     for (int j = numRecentFiles; j < MaxRecentFiles; ++j)
+         recentFileActs[j]->setVisible(false);
+
+     separatorAct->setVisible(numRecentFiles > 0);
+}
+
+QString MainFrm::strippedName(const QString &fullFileName)
+{
+     return QFileInfo(fullFileName).fileName();
+}
+
 void MainFrm::loadFile()
 {
     if (pFrmReports->isVisible())
@@ -373,6 +438,8 @@ void MainFrm::loadFile()
             this->displayError(tr("Could not parse XML file! Are you sure this is a valid project file?"),true);
         else
             loadTabs();
+            setCurrentFile(fileName);
+            statusShow(tr("File loaded"));
     }
 }
 

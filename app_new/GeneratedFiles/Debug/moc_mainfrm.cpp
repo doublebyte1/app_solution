@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Wed 29. Jun 17:36:40 2011
+** Created: Tue 20. Sep 10:51:40 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -102,7 +102,7 @@ static const uint qt_meta_data_MainFrm[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      21,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -124,12 +124,13 @@ static const uint qt_meta_data_MainFrm[] = {
      425,  418,    8,    8, 0x08,
      448,    8,    8,    8, 0x08,
      459,    8,    8,    8, 0x08,
-     471,    8,    8,    8, 0x08,
-     483,    8,    8,    8, 0x08,
-     507,  503,    8,    8, 0x08,
-     540,    8,    8,    8, 0x08,
-     559,  503,    8,    8, 0x08,
-     591,    8,    8,    8, 0x08,
+     476,    8,    8,    8, 0x08,
+     488,    8,    8,    8, 0x08,
+     500,    8,    8,    8, 0x08,
+     524,  520,    8,    8, 0x08,
+     557,    8,    8,    8, 0x08,
+     576,  520,    8,    8, 0x08,
+     608,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -146,8 +147,9 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "bLogBook\0rearrangeTabs(bool)\0"
     "aboutThisProject()\0bReady\0"
     "rulesInitialized(bool)\0loadFile()\0"
-    "closeFile()\0writeFile()\0closeSecondaryFrm()\0"
-    "frm\0closeSecondaryFrm(SecondaryFrm*)\0"
+    "openRecentFile()\0closeFile()\0writeFile()\0"
+    "closeSecondaryFrm()\0frm\0"
+    "closeSecondaryFrm(SecondaryFrm*)\0"
     "loadSecondaryFrm()\0loadSecondaryFrm(SecondaryFrm*)\0"
     "RebuildIndexes()\0"
 };
@@ -196,16 +198,17 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 10: aboutThisProject(); break;
         case 11: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 12: loadFile(); break;
-        case 13: closeFile(); break;
-        case 14: writeFile(); break;
-        case 15: closeSecondaryFrm(); break;
-        case 16: closeSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
-        case 17: loadSecondaryFrm(); break;
-        case 18: loadSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
-        case 19: RebuildIndexes(); break;
+        case 13: openRecentFile(); break;
+        case 14: closeFile(); break;
+        case 15: writeFile(); break;
+        case 16: closeSecondaryFrm(); break;
+        case 17: closeSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
+        case 18: loadSecondaryFrm(); break;
+        case 19: loadSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
+        case 20: RebuildIndexes(); break;
         default: ;
         }
-        _id -= 20;
+        _id -= 21;
     }
     return _id;
 }

@@ -176,6 +176,17 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         RuleChecker*            ruleCheckerPtr;//!< Pointer to a Rule Checker
         InitRulesThread*        workerThread;//!< Thread that initializes the rule containers
 
+        enum { MaxRecentFiles = 5 };
+        QAction *recentFileActs[MaxRecentFiles];
+
+        QMenu *recentFilesMenu;
+        void setCurrentFile(const QString &fileName);
+        void updateRecentFileActions();
+        QString strippedName(const QString &fullFileName);
+
+        QString curFile;
+        QAction* separatorAct;
+
     private slots:
         void                    addTab(int idx, bool bOk);
         void                    newTabs();
@@ -193,6 +204,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    rulesInitialized(bool bReady);
 
         void                    loadFile();
+        void                    openRecentFile();
         void                    closeFile();
         void                    writeFile();
         void                    closeSecondaryFrm();

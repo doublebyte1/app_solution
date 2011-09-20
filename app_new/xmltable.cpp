@@ -351,7 +351,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
          }
          if (!query.prepare(strQuery))return false;
          if (!query.exec()){
-            qDebug() << strQuery << endl;
+            //qDebug() << strQuery << endl;
              return false;
          }
 
@@ -379,7 +379,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
              strQuery=tr("SELECT * FROM ") + i.value().m_parent + tr(" WHERE NAME='") + strNA + tr("'");
              if (!query.prepare(strQuery))return false;
              if (!query.exec()){
-                qDebug() << strQuery << endl;
+                //qDebug() << strQuery << endl;
                  return false;
              }
              if (query.numRowsAffected()>0){
@@ -389,7 +389,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
                      + tr(" FROM ") + i.value().m_parent + tr(" WHERE [Name]='") + strNA + tr("') WHERE ") + strTmpCol + tr(" IS NULL");
                  if (!query.prepare(strQuery))return false;
                  if (!query.exec()){
-                    qDebug() << strQuery << endl;
+                    //qDebug() << strQuery << endl;
                      return false;
                  }
                 bMakeNullable=true;
@@ -401,7 +401,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
          strQuery=getDefaultCstrt(strTMPname,i.value().m_childkey);
          if (!query.prepare(strQuery))return false;
          if (!query.exec()){
-            qDebug() << strQuery << endl;
+            //qDebug() << strQuery << endl;
              return false;
          }
          QString strCtsrtName;
@@ -422,7 +422,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
              tr("  DEFAULT ") + var.toString() + tr(" FOR ") + i.value().m_childkey;
              if (!query.prepare(strQuery)) return false;
              if (!query.exec()){
-                 qDebug() << strQuery << endl;
+                 //qDebug() << strQuery << endl;
                  return false;
              }
          }
