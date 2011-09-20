@@ -29,6 +29,14 @@ class PreviewTab : public GenericTab
             RuleChecker* ruleCheckerPtr=0, QWidget *parent=0, Qt::WFlags flags=0);
         ~PreviewTab();
 
+        //! Select in Table
+        /*! This is a function, provided for the convenience of the file loader.
+        It searches for a row in the table, with a certain id, and if it finds it (selects this row)!
+        \par id record id (on the database) as an integer
+          \return boolean indication if it found or not the record with this id
+        */
+        bool                                  tableSelect(const int id);
+
     protected:
         //! Set preview model
         /*! In this function we assign the model that allows us to preview records

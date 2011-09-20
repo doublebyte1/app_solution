@@ -28,6 +28,19 @@ void PreviewTab::setTips(const bool bLogbook)
     lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
+bool PreviewTab::tableSelect(const int id)
+{
+    for (int i=0; i < m_table->model()->rowCount();++i){
+        if (m_table->model()->index(i,0).data().toInt()==id){
+            m_table->selectRow(i);
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
 bool PreviewTab::onButtonClick(QAbstractButton* button)
 {
     if (m_buttonBox==0 || m_groupDetails==0) return false;

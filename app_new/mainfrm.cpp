@@ -258,11 +258,22 @@ void MainFrm::loadTabs()
                 }else{
 
                     bool bOk=true;
-                    int ct=0;
+                    int ct=1;//n.b.: we start on 1, because we already loaded the frame!
                     QVector<int>::const_iterator it;
                      for (it = vSample.begin(); it != vSample.end(); ++it){
+
+                         if ( qobject_cast<PreviewTab*>(vTabs.at(ct))!=0){
+                            PreviewTab* pTab=qobject_cast<PreviewTab*>(vTabs.at(ct));
+                            if (!pTab->tableSelect(*it)){
+                                displayError(tr("Could not find the saved record on form ") +
+                                    vTabs.at(ct)->title(),true);
+                                bOk=false;
+                                break;
+                            }
+                         }
+
                          if (!vTabs.at(ct)->next()){
-                             bOk=false;
+                            bOk=false;
                             break;
                          }
                          ct++;
