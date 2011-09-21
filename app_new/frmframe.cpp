@@ -8,7 +8,6 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 
-    tRefFrame=0;
     tFrameTime=0;
     viewFrameTime=0;
     mapper1=0;
@@ -45,7 +44,6 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
 FrmFrame::~FrmFrame()
 {
-    if (tRefFrame!=0) delete tRefFrame;
     if (tFrameTime!=0) delete tFrameTime;
     if (viewFrameTime!=0) delete viewFrameTime;
     if (mapper1!=0) delete mapper1;
@@ -57,8 +55,8 @@ FrmFrame::~FrmFrame()
 void FrmFrame::setPreviewQuery()
 {
     viewFrameTime->setQuery(
-        tr("SELECT     dbo.FR_Time.ID, dbo.FR_Frame.Name, CONVERT(CHAR(10), A.Date_Local, 103) AS [Upper Limit], CONVERT(CHAR(10), B.Date_Local, 103) AS [Lower Limit]")+
-//        tr("                  dbo.FR_Time.comments") +
+        tr("SELECT     dbo.FR_Time.ID, dbo.FR_Frame.Name, CONVERT(CHAR(10), A.Date_Local, 103) AS [Lower Limit], CONVERT(CHAR(10), B.Date_Local, 103) AS [Upper Limit],")+
+        tr("                  dbo.FR_Time.id_frame") +
         tr(" FROM         dbo.FR_Time INNER JOIN") +
         tr("                  dbo.GL_Dates AS A ON dbo.FR_Time.id_start_dt = A.ID INNER JOIN")+
         tr("                 dbo.GL_Dates AS B ON dbo.FR_Time.id_end_dt = B.ID INNER JOIN")+
@@ -68,6 +66,7 @@ void FrmFrame::setPreviewQuery()
     );
 
     tableView->hideColumn(0);
+    tableView->hideColumn(4);
     resizeToVisibleColumns(tableView);
 }
 
@@ -90,6 +89,8 @@ void FrmFrame::createRecord()
 {
     genericCreateRecord();
 
+    mapper2->toLast();
+
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
     m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
@@ -109,36 +110,6 @@ void FrmFrame::createRecord()
 
     //signal for the rule checker default values
     emit addRecord();
-
-    /*
-    mapper1->toLast();
-
-    //TODO: put dates from the frame as default
-
-    if(!m_tDateTime) return;
-    m_tDateTime->select();
-
-    bool bDate, bTime;
-    customDtStart->getIsDateTime(bDate,bTime);
-    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
-        emit showError(tr("Could not insert start date!"));
-        return;
-    }
-    customDtEnd->getIsDateTime(bDate,bTime);
-    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
-        emit showError(tr("Could not insert start date!"));
-        return;
-    }
-
-    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
-    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
-
-    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
-    tRefMinorStrata->setData(idx,m_sample->frameTimeId);//id_frame_time
-*/
-
-    //signal for the rule checker default values
-    //emit addRecord();
 }
 
 void FrmFrame::previewRow(QModelIndex index)
@@ -148,31 +119,37 @@ void FrmFrame::previewRow(QModelIndex index)
 
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
-/*
-    QModelIndex idx=viewMinorStrata->index(index.row(),0);
+
+    QModelIndex idx=viewFrameTime->index(index.row(),0);
     if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
+        emit showError (tr("Could not preview this sampling frame!"));
         return;
     }
 
     QString id=idx.data().toString();
 
-    tRefMinorStrata->setFilter(tr("Ref_Minor_Strata.ID=")+id);
-    if (tRefMinorStrata->rowCount()!=1)
+    tFrameTime->setFilter(tr("Fr_Time.ID=")+id);
+    if (tFrameTime->rowCount()!=1)
         return;
+
+    idx=tFrameTime->index(0,1);
+    tFrameTime->relationModel(1)->setFilter(tr("Name='")+idx.data().toString()+tr("'"));
 
     mapper1->toLast();
+    mapper2->toLast();
 
     //Now fix the dates
-    idx=tRefMinorStrata->index(0,1);
+    idx=tFrameTime->index(0,2);
     if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
+        emit showError (tr("Could not preview start date of this sampling frame!"));
         return;
     }
+
     QString strStartDt=idx.data().toString();
-    idx=tRefMinorStrata->index(0,2);
+
+    idx=tFrameTime->index(0,3);
     if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
+        emit showError (tr("Could not preview end date of this sampling frame!"));
         return;
     }
     QString strEndDt=idx.data().toString();
@@ -184,7 +161,7 @@ void FrmFrame::previewRow(QModelIndex index)
 
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-    */
+
 }
 
 void FrmFrame::onItemSelection()
@@ -214,24 +191,19 @@ void FrmFrame::showEvent ( QShowEvent * event )
 
 void FrmFrame::initModels()
 {
-    //Frame
-    tRefFrame=new QSqlRelationalTableModel();
-    tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Frame"),
-        QSqlDriver::TableName));
-    tRefFrame->setRelation(0, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
-    tRefFrame->sort(0,Qt::AscendingOrder);
-    tRefFrame->select();
-    filterTable(tRefFrame->relationModel(0));
-
     //Frame_Time (Physical frame + time frame!)
-    tFrameTime=new QSqlTableModel();
+    tFrameTime=new QSqlRelationalTableModel();
     tFrameTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Time"),
         QSqlDriver::TableName));
+
+    tFrameTime->setRelation(1, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
+
     tFrameTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tFrameTime->sort(0,Qt::AscendingOrder);
     tFrameTime->select();
+    filterTable(tFrameTime->relationModel(1));
 
-    setPreviewModel(tRefFrame);
+    setPreviewModel(tFrameTime);
 
      viewFrameTime = new QSqlQueryModel;
 }
@@ -255,7 +227,7 @@ void FrmFrame::onHideFrameDetails()
     int curP=cmbPrexistent->currentIndex();
     int curC=cmbCopy->currentIndex();
 
-    tRefFrame->relationModel(0)->select();
+    tFrameTime->relationModel(1)->select();
 
     if (m_curMode==FrmFrameDetails::VIEW){
         cmbPrexistent->setCurrentIndex(curP);
@@ -294,32 +266,32 @@ void FrmFrame::onShowFrameDetails()
 
 void FrmFrame::initMappers()
 {
-    if (tRefFrame==0) return ;
+    if (tFrameTime==0) return ;
     if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
     if (mapper1!=0) delete mapper1;
 
     mapper1= new QDataWidgetMapper(this);
-    mapper1->setModel(tRefFrame);
+    mapper1->setModel(tFrameTime);
     mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper1->setItemDelegate(new QSqlRelationalDelegate(this));
 
-    cmbCopy->setModel(tRefFrame->relationModel(0));
+    cmbCopy->setModel(tFrameTime->relationModel(1));
     cmbCopy->setModelColumn(
-        tRefFrame->relationModel(0)->fieldIndex(tr("Name")));
+        tFrameTime->relationModel(1)->fieldIndex(tr("Name")));
 
     if (mapper2!=0) delete mapper2;
 
     mapper2= new QDataWidgetMapper(this);
-    mapper2->setModel(tRefFrame);
+    mapper2->setModel(tFrameTime);
     mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper2->setItemDelegate(new QSqlRelationalDelegate(this));
 
-    cmbPrexistent->setModel(tRefFrame->relationModel(0));
+    cmbPrexistent->setModel(tFrameTime->relationModel(1));
     cmbPrexistent->setModelColumn(
-        tRefFrame->relationModel(0)->fieldIndex(tr("Name")));
+        tFrameTime->relationModel(1)->fieldIndex(tr("Name")));
 
-    mapper1->addMapping(this->cmbPrexistent, 0, tr("currentIndex").toAscii());
-    mapper2->addMapping(this->cmbCopy, 0, tr("currentIndex").toAscii());
+    mapper1->addMapping(this->cmbPrexistent, 1, tr("currentIndex").toAscii());
+    mapper2->addMapping(this->cmbCopy, 1, tr("currentIndex").toAscii());
 
     if (m_tDateTime==0) return;
 
@@ -349,14 +321,6 @@ void FrmFrame::initMappers()
         emit showError(tr("Could not init binder!"));
 }
 
-bool FrmFrame::getCurrentFrame(int& id)
-{
-    QModelIndex idx= tRefFrame->relationModel(0)->index(cmbPrexistent->currentIndex(),0);
-    if (!idx.isValid()) return false;
-    id=tRefFrame->relationModel(0)->data(idx).toInt();
-    return true;
-}
-
 bool FrmFrame::reallyApply()
 {
     bool bError=false;
@@ -365,7 +329,9 @@ bool FrmFrame::reallyApply()
      QSqlQuery query;
      query.setForwardOnly(true);
 
-     int id= cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt();
+     int id= tFrameTime->relationModel(1)->index(cmbPrexistent->currentIndex(),0).data().toInt();
+
+     //int id= cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),1).data().toInt();
 
     int n=0;
     query.prepare("{CALL spCountGLS4Frame(?,?)}");
@@ -420,30 +386,38 @@ bool FrmFrame::reallyApply()
         while(tFrameTime->canFetchMore())
             tFrameTime->fetchMore();
 
-        tFrameTime->insertRow(tFrameTime->rowCount());
+        //tFrameTime->insertRow(tFrameTime->rowCount());
         QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);//id frame
         if (idx.isValid()){
-                int idFrame;
-                if (getCurrentFrame(idFrame)){
-                    tFrameTime->setData(idx,idFrame);
-                    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,2);//start dt
-                    if (idx.isValid()){
-                        int idStart;
-                        if (getDtId(startIdx,idStart)){
-                            tFrameTime->setData(idx,idStart);
-                            idx=tFrameTime->index(tFrameTime->rowCount()-1,3);//end dt
-                            if (idx.isValid()){
-                                int idEnd;
-                                if (getDtId(endIdx,idEnd)){
-                                    tFrameTime->setData(idx,idEnd);
-                                }else bError=true;
-                            }
-                        }else bError=true;
+                tFrameTime->setData(idx,id);
+                QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,2);//start dt
+                if (idx.isValid()){
+                    int idStart;
+                    if (getDtId(startIdx,idStart)){
+                        tFrameTime->setData(idx,idStart);
+                        idx=tFrameTime->index(tFrameTime->rowCount()-1,3);//end dt
+                        if (idx.isValid()){
+                            int idEnd;
+                            if (getDtId(endIdx,idEnd)){
+                                tFrameTime->setData(idx,idEnd);
+                            }else bError=true;
+                        }
                     }else bError=true;
                 }else bError=true;
             }else bError=true;
         }
-        bError=!tFrameTime->submitAll();
+
+                if (mapper2->submit()){
+                    bError=!
+                        tFrameTime->submitAll();
+                    if (bError){
+                        if (tFrameTime->lastError().type()!=QSqlError::NoError)
+                            emit showError(tFrameTime->lastError().text());
+                        else
+                            emit showError(tr("Could not write Sampling Frame in the database!"));
+                    }//mapper1->toLast();
+                }else bError=true;
+
     }
 
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
@@ -455,7 +429,6 @@ bool FrmFrame::reallyApply()
         if (!afterApply()){
             bError=false;
         }else{
-            //toolButton->setEnabled(true);
 
             /*
             while(tRefMinorStrata->canFetchMore())
@@ -466,6 +439,7 @@ bool FrmFrame::reallyApply()
             else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details*/
         }
     }
+
     return !bError;
 
 /*
@@ -501,8 +475,64 @@ void FrmFrame::setReadOnly(const bool bRO)
     //pushApply->setEnabled(!bRO);
 }
 
+bool FrmFrame::isLogBook(const int frameId, bool& bLogbook)
+{
+    //check which type of frame we have...
+    QString strQuery=
+    tr("SELECT     dbo.Ref_Source.Name") +
+    tr(" FROM         dbo.FR_Frame INNER JOIN") +
+    tr("                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID") +
+    tr(" WHERE     (dbo.FR_Frame.ID = ?)");
+
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.bindValue(0,frameId);
+    if (!query.exec()){
+        emit showError(query.lastError().text());
+        return false;
+    }
+    if (query.numRowsAffected()<1){
+        emit showError(tr("Could not determine the type of this frame!"));
+        return false;
+    }
+
+    query.first();
+    QString strSource=query.value(0).toString();
+    if (strSource.compare(qApp->translate("frame", strLogbook),Qt::CaseInsensitive)==0)
+        bLogbook=true;
+    else if (strSource.compare(qApp->translate("frame", strSampling),Qt::CaseInsensitive)==0)
+        bLogbook=false;
+    else{
+        emit showError(tr("The type of this frame is not usable! (not logbook and not sampling)!"));
+        return false;
+    }
+
+    return true;
+}
+
 bool FrmFrame::updateSample()
 {
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
+    //updating the sample structure
+    QModelIndex idx=viewFrameTime->index(tableView->selectionModel()->currentIndex().row(),0);
+
+    if (!idx.isValid()) return false;
+    m_sample->frameTimeId=idx.data().toInt();
+
+    idx=viewFrameTime->index(tableView->selectionModel()->currentIndex().row(),4);
+
+    if (!idx.isValid()) return false;
+    m_sample->frameId=idx.data().toInt();
+
+    bool bLogbook;
+    if (!isLogBook(m_sample->frameId,bLogbook)) return false;
+    m_sample->bLogBook=bLogbook;
+
+    return true;
+
+/*
     while(tFrameTime->canFetchMore())
     tFrameTime->fetchMore();
 
@@ -550,9 +580,9 @@ bool FrmFrame::updateSample()
         return false;
     }
 
-    return true;
+    return true;*/
 }
-
+/*
 bool FrmFrame::next()
 {
     //We force a submitted record on this session, unless its coming here later...
@@ -573,17 +603,18 @@ bool FrmFrame::next()
     emit showError(tr("It was not defined any time frame for this frame!"));
     return false;
 }
-
+*/
 bool FrmFrame::loadFrameFromSample()
 {
-    tRefFrame->relationModel(0)->setFilter(tr("FR_Frame.ID=") + QVariant(m_sample->frameId).toString());
+    /*
+    tFrameTime->relationModel(1)->setFilter(tr("FR_Time.id_frame=") + QVariant(m_sample->frameId).toString());
     //n.b.: do NOT forget to cast the integers on the filters to *strings*!!!!!
 
-    if (tRefFrame->relationModel(0)->rowCount()!=1){
+    if (tFrameTime->relationModel(1)->rowCount()!=1){
         emit showError (tr("Could not find this frame!"));
         return false;
     }
-
+*/
     tFrameTime->setFilter(tr("FR_Time.ID=") + QVariant(m_sample->frameTimeId).toString());
     if (tFrameTime->rowCount()!=1){
         emit showError (tr("Could not find this frame time!"));

@@ -264,14 +264,14 @@ void MainFrm::loadTabs()
             //TODO: add catch?
 
             if (vSample.size()>1){//We need to read more information
-                pFrmFrame->next();
+                //pFrmFrame->next();
 
                 if (vSample.size() > vTabs.size()){
                     displayError(tr("Could not load project file!"),true);//TODO: improve errors!
                 }else{
 
                     bool bOk=true;
-                    int ct=1;//n.b.: we start on 1, because we already loaded the frame!
+                    int ct=0;
                     QVector<int>::const_iterator it;
                      for (it = vSample.begin(); it != vSample.end(); ++it){
 

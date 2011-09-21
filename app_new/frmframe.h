@@ -28,7 +28,7 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         bool                                   loadFrameFromSample();
 
     public slots:
-        bool                                   next();
+        //bool                                   next();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
 
@@ -45,16 +45,16 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   submitted(int index, bool bOk);
 
     protected:
-        void                                    showEvent ( QShowEvent * event );
+        void                                   showEvent ( QShowEvent * event );
 
     private:
-
+        bool                                   isLogBook(const int frameId, bool& bLogbook);
         void                                   setPreviewQuery();
         void                                   filterModel4Combo(){;}
         void                                   uI4NewRecord();
         void                                   setHeader(){}
         void                                   beforeShow();
-        bool                                   getNextLabel(QString& strLabel){return false;}
+        bool                                   getNextLabel(QString& strLabel){return true;}
 
         //! Really Apply
         /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
@@ -63,14 +63,12 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         bool                                   reallyApply();
         void                                   setReadOnly(const bool bRO);
         bool                                   updateSample();
-        bool                                   getCurrentFrame(int& id);
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
 
         QSqlQueryModel*                        viewFrameTime;
-        QSqlRelationalTableModel*              tRefFrame;
-        QSqlTableModel*                        tFrameTime;
+        QSqlRelationalTableModel*              tFrameTime;
         QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;
         QDataWidgetMapper*                     mapperStartDt;

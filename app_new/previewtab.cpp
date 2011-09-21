@@ -152,7 +152,8 @@ bool PreviewTab::next()
     QString strLabel;
     if (!getNextLabel(strLabel)) return false;
 
-    emit forward(lbHead->text()+ tr("-> ") + strLabel);
+    if (lbHead!=0) emit forward(lbHead->text()+ tr("-> ") + strLabel);
+    else emit forward(":-)");
     return true;
 }
 

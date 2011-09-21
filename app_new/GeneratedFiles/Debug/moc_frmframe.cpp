@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Wed 21. Sep 11:35:45 2011
+** Created: Wed 21. Sep 17:43:26 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,25 +35,23 @@ static const uint qt_meta_data_FrmFrame[] = {
       45,   35,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      70,    9,   65,    9, 0x0a,
-      77,    9,    9,    9, 0x0a,
-     100,    9,    9,    9, 0x0a,
-     125,    9,    9,    9, 0x08,
-     146,    9,    9,    9, 0x08,
-     167,    9,    9,    9, 0x08,
-     188,  182,    9,    9, 0x08,
-     212,    9,    9,    9, 0x08,
+      65,    9,    9,    9, 0x0a,
+      88,    9,    9,    9, 0x0a,
+     113,    9,    9,    9, 0x08,
+     134,    9,    9,    9, 0x08,
+     155,    9,    9,    9, 0x08,
+     176,  170,    9,    9, 0x08,
+     200,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0bLogBook\0isLogBook(bool)\0"
-    "index,bOk\0submitted(int,bool)\0bool\0"
-    "next()\0blockCustomDateCtrls()\0"
-    "unblockCustomDateCtrls()\0onHideFrameDetails()\0"
-    "onShowFrameDetails()\0createRecord()\0"
-    "index\0previewRow(QModelIndex)\0"
+    "index,bOk\0submitted(int,bool)\0"
+    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
+    "onHideFrameDetails()\0onShowFrameDetails()\0"
+    "createRecord()\0index\0previewRow(QModelIndex)\0"
     "onItemSelection()\0"
 };
 
@@ -90,18 +88,16 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: isLogBook((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: submitted((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 2: { bool _r = next();
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 3: blockCustomDateCtrls(); break;
-        case 4: unblockCustomDateCtrls(); break;
-        case 5: onHideFrameDetails(); break;
-        case 6: onShowFrameDetails(); break;
-        case 7: createRecord(); break;
-        case 8: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 9: onItemSelection(); break;
+        case 2: blockCustomDateCtrls(); break;
+        case 3: unblockCustomDateCtrls(); break;
+        case 4: onHideFrameDetails(); break;
+        case 5: onShowFrameDetails(); break;
+        case 6: createRecord(); break;
+        case 7: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 8: onItemSelection(); break;
         default: ;
         }
-        _id -= 10;
+        _id -= 9;
     }
     return _id;
 }
