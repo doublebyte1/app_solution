@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Sun 26. Jun 15:40:00 2011
+** Created: Wed 21. Sep 12:19:10 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -15,6 +15,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
@@ -23,6 +24,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSplitter>
+#include <QtGui/QTableView>
 #include <QtGui/QToolButton>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
@@ -33,7 +36,19 @@ QT_BEGIN_NAMESPACE
 class Ui_frmframe
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_3;
+    QSplitter *splitter;
+    QWidget *layoutWidget3;
+    QVBoxLayout *verticalLayout_2;
+    QLabel *label_6;
+    QSpacerItem *verticalSpacer_3;
+    QTableView *tableView;
+    QWidget *layoutWidget1;
+    QVBoxLayout *verticalLayout_4;
+    QSpacerItem *verticalSpacer_2;
+    QPushButton *pushNew;
+    QGroupBox *groupDetails;
+    QGridLayout *gridLayout_4;
     QGroupBox *groupPhysical;
     QGridLayout *gridLayout_2;
     QLabel *label_4;
@@ -47,27 +62,90 @@ public:
     QRadioButton *radioCopy;
     QComboBox *cmbCopy;
     QToolButton *toolEdit;
+    QSplitter *splitter_2;
     QGroupBox *groupTime;
     QGridLayout *gridLayout_3;
     QLabel *label;
     QLabel *label_2;
     CustomTimeCtrl *customDtStart;
     CustomTimeCtrl *customDtEnd;
+    QWidget *layoutWidget2;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer;
+    QDialogButtonBox *buttonBox;
     QGroupBox *groupBackNext;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushPrevious;
-    QPushButton *pushApply;
     QPushButton *pushNext;
 
     void setupUi(QWidget *frmframe)
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
-        frmframe->resize(770, 479);
-        verticalLayout = new QVBoxLayout(frmframe);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        groupPhysical = new QGroupBox(frmframe);
+        frmframe->resize(814, 499);
+        verticalLayout_3 = new QVBoxLayout(frmframe);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        splitter = new QSplitter(frmframe);
+        splitter->setObjectName(QString::fromUtf8("splitter"));
+        splitter->setOrientation(Qt::Horizontal);
+        layoutWidget3 = new QWidget(splitter);
+        layoutWidget3->setObjectName(QString::fromUtf8("layoutWidget3"));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget3);
+        verticalLayout_2->setSpacing(2);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        label_6 = new QLabel(layoutWidget3);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
+        label_6->setSizePolicy(sizePolicy);
+
+        verticalLayout_2->addWidget(label_6);
+
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_2->addItem(verticalSpacer_3);
+
+        splitter->addWidget(layoutWidget3);
+        tableView = new QTableView(splitter);
+        tableView->setObjectName(QString::fromUtf8("tableView"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
+        tableView->setSizePolicy(sizePolicy1);
+        splitter->addWidget(tableView);
+        layoutWidget1 = new QWidget(splitter);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        verticalLayout_4 = new QVBoxLayout(layoutWidget1);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_4->addItem(verticalSpacer_2);
+
+        pushNew = new QPushButton(layoutWidget1);
+        pushNew->setObjectName(QString::fromUtf8("pushNew"));
+        sizePolicy.setHeightForWidth(pushNew->sizePolicy().hasHeightForWidth());
+        pushNew->setSizePolicy(sizePolicy);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNew->setIcon(icon);
+
+        verticalLayout_4->addWidget(pushNew);
+
+        splitter->addWidget(layoutWidget1);
+
+        verticalLayout_3->addWidget(splitter);
+
+        groupDetails = new QGroupBox(frmframe);
+        groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
+        gridLayout_4 = new QGridLayout(groupDetails);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        groupPhysical = new QGroupBox(groupDetails);
         groupPhysical->setObjectName(QString::fromUtf8("groupPhysical"));
         gridLayout_2 = new QGridLayout(groupPhysical);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
@@ -90,7 +168,7 @@ public:
         label_3->setObjectName(QString::fromUtf8("label_3"));
         label_3->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout_2->addWidget(label_3, 2, 0, 1, 1);
+        gridLayout_2->addWidget(label_3, 1, 0, 1, 1);
 
         groupNew = new QGroupBox(groupPhysical);
         groupNew->setObjectName(QString::fromUtf8("groupNew"));
@@ -116,64 +194,89 @@ public:
         gridLayout->addWidget(cmbCopy, 1, 1, 1, 1);
 
 
-        gridLayout_2->addWidget(groupNew, 2, 1, 1, 2);
+        gridLayout_2->addWidget(groupNew, 1, 1, 2, 1);
 
         toolEdit = new QToolButton(groupPhysical);
         toolEdit->setObjectName(QString::fromUtf8("toolEdit"));
 
-        gridLayout_2->addWidget(toolEdit, 3, 2, 1, 1);
+        gridLayout_2->addWidget(toolEdit, 2, 2, 1, 1);
 
 
-        verticalLayout->addWidget(groupPhysical);
+        gridLayout_4->addWidget(groupPhysical, 0, 0, 1, 1);
 
-        groupTime = new QGroupBox(frmframe);
+        splitter_2 = new QSplitter(groupDetails);
+        splitter_2->setObjectName(QString::fromUtf8("splitter_2"));
+        splitter_2->setOrientation(Qt::Horizontal);
+        groupTime = new QGroupBox(splitter_2);
         groupTime->setObjectName(QString::fromUtf8("groupTime"));
         gridLayout_3 = new QGridLayout(groupTime);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         label = new QLabel(groupTime);
         label->setObjectName(QString::fromUtf8("label"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy2);
 
         gridLayout_3->addWidget(label, 0, 0, 1, 1);
 
         label_2 = new QLabel(groupTime);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        sizePolicy.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
-        label_2->setSizePolicy(sizePolicy);
+        sizePolicy2.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy2);
 
         gridLayout_3->addWidget(label_2, 0, 1, 1, 1);
 
         customDtStart = new CustomTimeCtrl(groupTime);
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
-        customDtStart->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
+        customDtStart->setSizePolicy(sizePolicy3);
 
         gridLayout_3->addWidget(customDtStart, 1, 0, 1, 1);
 
         customDtEnd = new CustomTimeCtrl(groupTime);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
-        sizePolicy1.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
-        customDtEnd->setSizePolicy(sizePolicy1);
+        sizePolicy3.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
+        customDtEnd->setSizePolicy(sizePolicy3);
 
         gridLayout_3->addWidget(customDtEnd, 1, 1, 1, 1);
 
+        splitter_2->addWidget(groupTime);
+        layoutWidget2 = new QWidget(splitter_2);
+        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
+        verticalLayout = new QVBoxLayout(layoutWidget2);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout->addWidget(groupTime);
+        verticalLayout->addItem(verticalSpacer);
+
+        buttonBox = new QDialogButtonBox(layoutWidget2);
+        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(buttonBox->sizePolicy().hasHeightForWidth());
+        buttonBox->setSizePolicy(sizePolicy4);
+        buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
+
+        verticalLayout->addWidget(buttonBox);
+
+        splitter_2->addWidget(layoutWidget2);
+
+        gridLayout_4->addWidget(splitter_2, 1, 0, 1, 1);
+
+
+        verticalLayout_3->addWidget(groupDetails);
 
         groupBackNext = new QGroupBox(frmframe);
         groupBackNext->setObjectName(QString::fromUtf8("groupBackNext"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
-        groupBackNext->setSizePolicy(sizePolicy2);
+        sizePolicy4.setHeightForWidth(groupBackNext->sizePolicy().hasHeightForWidth());
+        groupBackNext->setSizePolicy(sizePolicy4);
         horizontalLayout_2 = new QHBoxLayout(groupBackNext);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -183,40 +286,33 @@ public:
         pushPrevious = new QPushButton(groupBackNext);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
         pushPrevious->setEnabled(false);
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon1);
 
         horizontalLayout_2->addWidget(pushPrevious);
 
-        pushApply = new QPushButton(groupBackNext);
-        pushApply->setObjectName(QString::fromUtf8("pushApply"));
-
-        horizontalLayout_2->addWidget(pushApply);
-
         pushNext = new QPushButton(groupBackNext);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon1);
+        pushNext->setEnabled(false);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon2);
 
         horizontalLayout_2->addWidget(pushNext);
 
 
-        verticalLayout->addWidget(groupBackNext);
+        verticalLayout_3->addWidget(groupBackNext);
 
-        QWidget::setTabOrder(cmbPrexistent, toolView);
-        QWidget::setTabOrder(toolView, radioCreate);
-        QWidget::setTabOrder(radioCreate, radioCopy);
-        QWidget::setTabOrder(radioCopy, cmbCopy);
-        QWidget::setTabOrder(cmbCopy, toolEdit);
-        QWidget::setTabOrder(toolEdit, pushPrevious);
+#ifndef QT_NO_SHORTCUT
+        label_6->setBuddy(tableView);
+#endif // QT_NO_SHORTCUT
 
         retranslateUi(frmframe);
-        QObject::connect(radioCreate, SIGNAL(clicked(bool)), cmbCopy, SLOT(setDisabled(bool)));
-        QObject::connect(radioCopy, SIGNAL(clicked(bool)), cmbCopy, SLOT(setEnabled(bool)));
-        QObject::connect(pushApply, SIGNAL(clicked()), frmframe, SLOT(apply()));
         QObject::connect(pushNext, SIGNAL(clicked()), frmframe, SLOT(next()));
+        QObject::connect(pushNew, SIGNAL(clicked()), frmframe, SLOT(createRecord()));
+        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmframe, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmframe, SLOT(previewRow(QModelIndex)));
 
         QMetaObject::connectSlotsByName(frmframe);
     } // setupUi
@@ -224,6 +320,18 @@ public:
     void retranslateUi(QWidget *frmframe)
     {
         frmframe->setWindowTitle(QApplication::translate("frmframe", "Form", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("frmframe", "Choose Sampling Frame:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushNew->setToolTip(QApplication::translate("frmframe", "Create new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushNew->setStatusTip(QApplication::translate("frmframe", "Create new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushNew->setWhatsThis(QApplication::translate("frmframe", "Creates new record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushNew->setText(QString());
+        groupDetails->setTitle(QApplication::translate("frmframe", "Details", 0, QApplication::UnicodeUTF8));
         groupPhysical->setTitle(QApplication::translate("frmframe", "Physical Frame", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmframe", "Choose frame", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -255,7 +363,6 @@ public:
         label_2->setText(QApplication::translate("frmframe", "End Date", 0, QApplication::UnicodeUTF8));
         groupBackNext->setTitle(QString());
         pushPrevious->setText(QApplication::translate("frmframe", "Previous", 0, QApplication::UnicodeUTF8));
-        pushApply->setText(QApplication::translate("frmframe", "Apply", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmframe", "Next", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

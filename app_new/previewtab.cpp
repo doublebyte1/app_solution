@@ -23,9 +23,11 @@ PreviewTab::~PreviewTab()
 
 void PreviewTab::setTips(const bool bLogbook)
 {
-    lbHead->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-    lbHead->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-    lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    if (lbHead!=0){
+        lbHead->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+        lbHead->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+        lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    }
 }
 
 bool PreviewTab::tableSelect(const int id)
@@ -38,7 +40,6 @@ bool PreviewTab::tableSelect(const int id)
     }
 
     return false;
-
 }
 
 bool PreviewTab::onButtonClick(QAbstractButton* button)

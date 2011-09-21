@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_frmframe.h"
-#include "generictab.h"
+#include "previewtab.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -17,7 +17,7 @@
 This class implements the widget that corresponds to the frame definition tab
 */
 
-class FrmFrame : public GenericTab, public Ui::frmframe
+class FrmFrame : public PreviewTab, public Ui::frmframe
 {
     Q_OBJECT
 
@@ -28,7 +28,6 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         bool                                   loadFrameFromSample();
 
     public slots:
-        void                                   onShowForm(){;}//does nothing
         bool                                   next();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
@@ -37,11 +36,26 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
 
+        void                                   createRecord();
+        void                                   previewRow(QModelIndex index);
+        void                                   onItemSelection();
+
     signals:
         void                                   isLogBook(bool bLogBook);
         void                                   submitted(int index, bool bOk);
 
+    protected:
+        void                                    showEvent ( QShowEvent * event );
+
     private:
+
+        void                                   setPreviewQuery();
+        void                                   filterModel4Combo(){;}
+        void                                   uI4NewRecord();
+        void                                   setHeader(){}
+        void                                   beforeShow();
+        bool                                   getNextLabel(QString& strLabel){return false;}
+
         //! Really Apply
         /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
         bypassing the binder validation;
@@ -53,6 +67,8 @@ class FrmFrame : public GenericTab, public Ui::frmframe
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();
+
+        QSqlQueryModel*                        viewFrameTime;
         QSqlRelationalTableModel*              tRefFrame;
         QSqlTableModel*                        tFrameTime;
         QDataWidgetMapper*                     mapper1;

@@ -4,12 +4,19 @@
 #include "globaldefs.h"
 
 FrmFrame::FrmFrame(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
-GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
+PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 
     tRefFrame=0;
     tFrameTime=0;
+    viewFrameTime=0;
+    mapper1=0;
+    mapper2=0;
+    mapperStartDt=0;
+    mapperEndDt=0;
+    m_submitted=false;
+
     m_tabsDefined=false;
 
     blockCustomDateCtrls();
@@ -32,21 +39,62 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
         SLOT(onHideFrameDetails()));
 
     initModels();
+    initUI();
+    initMappers();
+}
+
+FrmFrame::~FrmFrame()
+{
+    if (tRefFrame!=0) delete tRefFrame;
+    if (tFrameTime!=0) delete tFrameTime;
+    if (viewFrameTime!=0) delete viewFrameTime;
+    if (mapper1!=0) delete mapper1;
+    if (mapper2!=0) delete mapper2;
+    if (mapperStartDt!=0) delete mapperStartDt;
+    if (mapperEndDt!=0) delete mapperEndDt;
+}
+
+void FrmFrame::setPreviewQuery()
+{
+    viewFrameTime->setQuery(
+        tr("SELECT     dbo.FR_Time.ID, dbo.FR_Frame.Name, CONVERT(CHAR(10), A.Date_Local, 103) AS [Upper Limit], CONVERT(CHAR(10), B.Date_Local, 103) AS [Lower Limit]")+
+//        tr("                  dbo.FR_Time.comments") +
+        tr(" FROM         dbo.FR_Time INNER JOIN") +
+        tr("                  dbo.GL_Dates AS A ON dbo.FR_Time.id_start_dt = A.ID INNER JOIN")+
+        tr("                 dbo.GL_Dates AS B ON dbo.FR_Time.id_end_dt = B.ID INNER JOIN")+
+        tr("                  dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID")+
+        tr(" WHERE     (dbo.FR_Time.comments NOT LIKE '%n/a%')")
+        //Important: do not show the n/a record!
+    );
+
+    tableView->hideColumn(0);
+    resizeToVisibleColumns(tableView);
+}
+
+void FrmFrame::uI4NewRecord()
+{
+    if (!this->groupDetails->isVisible())
+        this->groupDetails->setVisible(true);
+
+    emit lockControls(false,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+}
+
+void FrmFrame::beforeShow()
+{
+    this->groupDetails->setVisible(false);
+}
+
+void FrmFrame::createRecord()
+{
+    genericCreateRecord();
 
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
     m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
     customDtEnd->getIsDateTime(bDate,bTime);
     m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime);
-
-    mapper1=0;
-    mapper2=0;
-    mapperStartDt=0;
-    mapperEndDt=0;
-    m_submitted=false;
-
-    initUI();
-    initMappers();
 
     while(m_tDateTime->canFetchMore())
         m_tDateTime->fetchMore();
@@ -57,18 +105,91 @@ GenericTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     connect(m_mapperBinderPtr, SIGNAL(defaultValuesRead()), this,
         SLOT(unblockCustomDateCtrls()));
 
+    uI4NewRecord();//init UI
+
     //signal for the rule checker default values
     emit addRecord();
+
+    /*
+    mapper1->toLast();
+
+    //TODO: put dates from the frame as default
+
+    if(!m_tDateTime) return;
+    m_tDateTime->select();
+
+    bool bDate, bTime;
+    customDtStart->getIsDateTime(bDate,bTime);
+    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
+        emit showError(tr("Could not insert start date!"));
+        return;
+    }
+    customDtEnd->getIsDateTime(bDate,bTime);
+    if (!m_tDateTime->insertNewRecord(customDtStart->getIsAuto(),bDate,bTime)){
+        emit showError(tr("Could not insert start date!"));
+        return;
+    }
+
+    mapperStartDt->setCurrentIndex(m_tDateTime->rowCount()-2);
+    mapperEndDt->setCurrentIndex(m_tDateTime->rowCount()-1);
+
+    QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,3);
+    tRefMinorStrata->setData(idx,m_sample->frameTimeId);//id_frame_time
+*/
+
+    //signal for the rule checker default values
+    //emit addRecord();
 }
 
-FrmFrame::~FrmFrame()
+void FrmFrame::previewRow(QModelIndex index)
 {
-    if (tRefFrame!=0) delete tRefFrame;
-    if (tFrameTime!=0) delete tFrameTime;
-    if (mapper1!=0) delete mapper1;
-    if (mapper2!=0) delete mapper2;
-    if (mapperStartDt!=0) delete mapperStartDt;
-    if (mapperEndDt!=0) delete mapperEndDt;
+    if (!this->groupDetails->isVisible())
+        this->groupDetails->setVisible(true);
+
+    emit lockControls(true,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
+/*
+    QModelIndex idx=viewMinorStrata->index(index.row(),0);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+
+    QString id=idx.data().toString();
+
+    tRefMinorStrata->setFilter(tr("Ref_Minor_Strata.ID=")+id);
+    if (tRefMinorStrata->rowCount()!=1)
+        return;
+
+    mapper1->toLast();
+
+    //Now fix the dates
+    idx=tRefMinorStrata->index(0,1);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+    QString strStartDt=idx.data().toString();
+    idx=tRefMinorStrata->index(0,2);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+    QString strEndDt=idx.data().toString();
+
+    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+    if (m_tDateTime->rowCount()!=2)
+        return;
+
+    mapperEndDt->toLast();
+    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+    */
+}
+
+void FrmFrame::onItemSelection()
+{
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmFrame::blockCustomDateCtrls()
@@ -83,6 +204,12 @@ void FrmFrame::unblockCustomDateCtrls()
     //block signals here because of the rule binder!
     customDtStart->blockSignals(false);
     customDtEnd->blockSignals(false);
+}
+
+void FrmFrame::showEvent ( QShowEvent * event )
+{
+    //Since this is the first form, we have to force the call here!
+    onShowForm();
 }
 
 void FrmFrame::initModels()
@@ -103,13 +230,24 @@ void FrmFrame::initModels()
     tFrameTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tFrameTime->sort(0,Qt::AscendingOrder);
     tFrameTime->select();
+
+    setPreviewModel(tRefFrame);
+
+     viewFrameTime = new QSqlQueryModel;
 }
 
 void FrmFrame::initUI()
 {
     radioCopy->setChecked(true);
-    pushApply->setEnabled(true);
-    pushNext->setEnabled(!pushApply);
+    //pushApply->setEnabled(true);
+    //pushNext->setEnabled(!pushApply);
+
+    initPreviewTable(tableView,viewFrameTime);
+    setButtonBox(buttonBox);
+    setGroupDetails(groupDetails);
+
+    m_lWidgets << groupPhysical;
+    m_lWidgets << groupTime;
 }
 
 void FrmFrame::onHideFrameDetails()
@@ -308,6 +446,29 @@ bool FrmFrame::reallyApply()
         bError=!tFrameTime->submitAll();
     }
 
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+
+    emit lockControls(!bError,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
+
+    if (!bError){
+        if (!afterApply()){
+            bError=false;
+        }else{
+            //toolButton->setEnabled(true);
+
+            /*
+            while(tRefMinorStrata->canFetchMore())
+                tRefMinorStrata->fetchMore();
+
+            QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
+            if (!idx.isValid()) bError=false;
+            else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details*/
+        }
+    }
+    return !bError;
+
+/*
     setReadOnly(!bError);
 
     if (!bError)
@@ -318,6 +479,7 @@ bool FrmFrame::reallyApply()
         return true;
     }
     else return false;
+    */
 }
 
 
@@ -335,8 +497,8 @@ void FrmFrame::setReadOnly(const bool bRO)
             emit showError(tr("Could not submit results!"));
     }
 
-    pushNext->setEnabled(bRO);
-    pushApply->setEnabled(!bRO);
+    //pushNext->setEnabled(bRO);
+    //pushApply->setEnabled(!bRO);
 }
 
 bool FrmFrame::updateSample()

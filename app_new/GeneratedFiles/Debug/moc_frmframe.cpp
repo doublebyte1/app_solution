@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 20. Sep 14:57:41 2011
+** Created: Wed 21. Sep 11:35:45 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,26 +35,30 @@ static const uint qt_meta_data_FrmFrame[] = {
       45,   35,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      65,    9,    9,    9, 0x0a,
-      83,    9,   78,    9, 0x0a,
-      90,    9,    9,    9, 0x0a,
-     113,    9,    9,    9, 0x0a,
-     138,    9,    9,    9, 0x08,
-     159,    9,    9,    9, 0x08,
+      70,    9,   65,    9, 0x0a,
+      77,    9,    9,    9, 0x0a,
+     100,    9,    9,    9, 0x0a,
+     125,    9,    9,    9, 0x08,
+     146,    9,    9,    9, 0x08,
+     167,    9,    9,    9, 0x08,
+     188,  182,    9,    9, 0x08,
+     212,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0bLogBook\0isLogBook(bool)\0"
-    "index,bOk\0submitted(int,bool)\0"
-    "onShowForm()\0bool\0next()\0"
-    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
-    "onHideFrameDetails()\0onShowFrameDetails()\0"
+    "index,bOk\0submitted(int,bool)\0bool\0"
+    "next()\0blockCustomDateCtrls()\0"
+    "unblockCustomDateCtrls()\0onHideFrameDetails()\0"
+    "onShowFrameDetails()\0createRecord()\0"
+    "index\0previewRow(QModelIndex)\0"
+    "onItemSelection()\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
-    { &GenericTab::staticMetaObject, qt_meta_stringdata_FrmFrame,
+    { &PreviewTab::staticMetaObject, qt_meta_stringdata_FrmFrame,
       qt_meta_data_FrmFrame, 0 }
 };
 
@@ -74,28 +78,30 @@ void *FrmFrame::qt_metacast(const char *_clname)
         return static_cast<void*>(const_cast< FrmFrame*>(this));
     if (!strcmp(_clname, "Ui::frmframe"))
         return static_cast< Ui::frmframe*>(const_cast< FrmFrame*>(this));
-    return GenericTab::qt_metacast(_clname);
+    return PreviewTab::qt_metacast(_clname);
 }
 
 int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = GenericTab::qt_metacall(_c, _id, _a);
+    _id = PreviewTab::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: isLogBook((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: submitted((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 2: onShowForm(); break;
-        case 3: { bool _r = next();
+        case 2: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: blockCustomDateCtrls(); break;
-        case 5: unblockCustomDateCtrls(); break;
-        case 6: onHideFrameDetails(); break;
-        case 7: onShowFrameDetails(); break;
+        case 3: blockCustomDateCtrls(); break;
+        case 4: unblockCustomDateCtrls(); break;
+        case 5: onHideFrameDetails(); break;
+        case 6: onShowFrameDetails(); break;
+        case 7: createRecord(); break;
+        case 8: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 9: onItemSelection(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 10;
     }
     return _id;
 }

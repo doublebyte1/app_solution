@@ -592,7 +592,7 @@ void MainFrm::newTabs()
 void MainFrm::initTabs()
 {
     pFrmFrame=new FrmFrame(sSample,tDateTime,ruleCheckerPtr);
-
+/*
      connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
     SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
 
@@ -600,6 +600,8 @@ void MainFrm::initTabs()
     SLOT(addTab(int,bool)),Qt::UniqueConnection);
 
     vTabs.push_back(pFrmFrame);
+*/
+    initPreviewTab(pFrmFrame);
 
     pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmMinorStrata);

@@ -2396,6 +2396,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\ui_frmframe.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\ui_frmframedetails.h"
 				>
 			</File>
