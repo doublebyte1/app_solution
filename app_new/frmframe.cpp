@@ -63,7 +63,8 @@ void FrmFrame::setPreviewQuery()
         tr("                  dbo.GL_Dates AS A ON dbo.FR_Time.id_start_dt = A.ID INNER JOIN")+
         tr("                 dbo.GL_Dates AS B ON dbo.FR_Time.id_end_dt = B.ID INNER JOIN")+
         tr("                  dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID")+
-        tr(" WHERE     (dbo.FR_Time.comments NOT LIKE '%n/a%')")
+        tr(" WHERE     (dbo.FR_Time.comments NOT LIKE '%n/a%')") +
+        tr(" ORDER BY dbo.FR_Time.ID DESC")
         //Important: do not show the n/a record!
     );
 
@@ -215,8 +216,6 @@ void FrmFrame::initUI()
     setHeader();
 
     radioCopy->setChecked(true);
-    //pushApply->setEnabled(true);
-    //pushNext->setEnabled(!pushApply);
 
     initPreviewTable(tableView,viewFrameTime);
     setButtonBox(buttonBox);
@@ -335,8 +334,6 @@ bool FrmFrame::reallyApply()
 
      int id= tFrameTime->relationModel(1)->index(cmbPrexistent->currentIndex(),0).data().toInt();
 
-     //int id= cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),1).data().toInt();
-
     int n=0;
     query.prepare("{CALL spCountGLS4Frame(?,?)}");
     query.bindValue(0,id);
@@ -433,31 +430,12 @@ bool FrmFrame::reallyApply()
         if (!afterApply()){
             bError=false;
         }else{
-
-            /*
-            while(tRefMinorStrata->canFetchMore())
-                tRefMinorStrata->fetchMore();
-
-            QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
-            if (!idx.isValid()) bError=false;
-            else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details*/
+            m_submitted=true;
+            updateSample();//update sample here, because of the save
         }
     }
 
     return !bError;
-
-/*
-    setReadOnly(!bError);
-
-    if (!bError)
-    {
-        emit showStatus(tr("Record successfully inserted in the database!"));
-        m_submitted=true;
-        updateSample();//update sample here, because of the save
-        return true;
-    }
-    else return false;
-    */
 }
 
 
@@ -474,9 +452,6 @@ void FrmFrame::setReadOnly(const bool bRO)
         else
             emit showError(tr("Could not submit results!"));
     }
-
-    //pushNext->setEnabled(bRO);
-    //pushApply->setEnabled(!bRO);
 }
 
 bool FrmFrame::isLogBook(const int frameId, bool& bLogbook)
@@ -547,90 +522,10 @@ bool FrmFrame::updateSample()
     m_sample->bLogBook=bLogbook;
 
     return true;
-
-/*
-    while(tFrameTime->canFetchMore())
-    tFrameTime->fetchMore();
-
-    QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,0);
-    if (!idx.isValid()){
-        emit showError(tr("Could not retrieve index of the last inserted frame!"));
-        return false;
-    }
-    m_sample->frameTimeId=idx.data().toInt();
-
-    idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
-    if (!idx.isValid()){
-        emit showError(tr("Could not retrieve index of the last inserted frame!"));
-        return false;
-    }
-    m_sample->frameId=idx.data().toInt();
-
-    //check which type of frame we have...
-    QString strQuery=
-    tr("SELECT     dbo.Ref_Source.Name") +
-    tr(" FROM         dbo.FR_Frame INNER JOIN") +
-    tr("                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID") +
-    tr(" WHERE     (dbo.FR_Frame.ID = ?)");
-
-    QSqlQuery query;
-    query.prepare(strQuery);
-    query.bindValue(0,m_sample->frameId);
-    if (!query.exec()){
-        emit showError(query.lastError().text());
-        return false;
-    }
-    if (query.numRowsAffected()<1){
-        emit showError(tr("Could not determine the type of this frame!"));
-        return false;
-    }
-
-    query.first();
-    QString strSource=query.value(0).toString();
-    if (strSource.compare(qApp->translate("frame", strLogbook),Qt::CaseInsensitive)==0)
-        m_sample->bLogBook=true;
-    else if (strSource.compare(qApp->translate("frame", strSampling),Qt::CaseInsensitive)==0)
-        m_sample->bLogBook=false;
-    else{
-        emit showError(tr("The type of this frame is not usable! (not logbook and not sampling)!"));
-        return false;
-    }
-
-    return true;*/
 }
-/*
-bool FrmFrame::next()
-{
-    //We force a submitted record on this session, unless its coming here later...
-    if (m_tabsDefined){
-        emit forward(cmbPrexistent->currentText());
-        return true;
-    }
 
-    if (m_submitted){
-
-        emit submitted(m_index,true);
-        emit isLogBook(m_sample->bLogBook);
-
-        m_tabsDefined=true;
-        emit forward(cmbPrexistent->currentText());
-        return true;
-    }
-    emit showError(tr("It was not defined any time frame for this frame!"));
-    return false;
-}
-*/
 bool FrmFrame::loadFrameFromSample()
 {
-    /*
-    tFrameTime->relationModel(1)->setFilter(tr("FR_Time.id_frame=") + QVariant(m_sample->frameId).toString());
-    //n.b.: do NOT forget to cast the integers on the filters to *strings*!!!!!
-
-    if (tFrameTime->relationModel(1)->rowCount()!=1){
-        emit showError (tr("Could not find this frame!"));
-        return false;
-    }
-*/
     tFrameTime->setFilter(tr("FR_Time.ID=") + QVariant(m_sample->frameTimeId).toString());
     if (tFrameTime->rowCount()!=1){
         emit showError (tr("Could not find this frame time!"));
