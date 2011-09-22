@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/app_new">
+    <file>pencil.png</file>
     <file>add.png</file>
     <file>launch.png</file>
     <file>configure_toolbars.png</file>
