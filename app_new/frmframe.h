@@ -52,9 +52,9 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   setPreviewQuery();
         void                                   filterModel4Combo(){;}
         void                                   uI4NewRecord();
-        void                                   setHeader(){}
+        void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   beforeShow();
-        bool                                   getNextLabel(QString& strLabel){return true;}
+        bool                                   getNextLabel(QString& strLabel);
 
         //! Really Apply
         /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully

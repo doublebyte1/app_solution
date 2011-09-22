@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Wed 21. Sep 12:19:10 2011
+** Created: Thu 22. Sep 10:01:11 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -71,6 +71,7 @@ public:
     CustomTimeCtrl *customDtEnd;
     QWidget *layoutWidget2;
     QVBoxLayout *verticalLayout;
+    QLabel *lbHeader;
     QSpacerItem *verticalSpacer;
     QDialogButtonBox *buttonBox;
     QGroupBox *groupBackNext;
@@ -251,6 +252,11 @@ public:
         verticalLayout = new QVBoxLayout(layoutWidget2);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        lbHeader = new QLabel(layoutWidget2);
+        lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
+
+        verticalLayout->addWidget(lbHeader);
+
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -361,6 +367,7 @@ public:
         groupTime->setTitle(QApplication::translate("frmframe", "Time Frame", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmframe", "Start Date", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmframe", "End Date", 0, QApplication::UnicodeUTF8));
+        lbHeader->setText(QApplication::translate("frmframe", "LBHEADER", 0, QApplication::UnicodeUTF8));
         groupBackNext->setTitle(QString());
         pushPrevious->setText(QApplication::translate("frmframe", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("frmframe", "Next", 0, QApplication::UnicodeUTF8));

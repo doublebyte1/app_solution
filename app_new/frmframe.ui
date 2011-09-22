@@ -275,6 +275,13 @@
         <widget class="QWidget" name="layoutWidget2">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
+           <widget class="QLabel" name="lbHeader">
+            <property name="text">
+             <string>LBHEADER</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>

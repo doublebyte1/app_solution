@@ -8,6 +8,8 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 
+    lbHeader->setVisible(false);//Always hidden!
+    lbHeader->clear();
     tFrameTime=0;
     viewFrameTime=0;
     mapper1=0;
@@ -210,6 +212,8 @@ void FrmFrame::initModels()
 
 void FrmFrame::initUI()
 {
+    setHeader();
+
     radioCopy->setChecked(true);
     //pushApply->setEnabled(true);
     //pushNext->setEnabled(!pushApply);
@@ -507,6 +511,18 @@ bool FrmFrame::isLogBook(const int frameId, bool& bLogbook)
         return false;
     }
 
+    return true;
+}
+
+bool FrmFrame::getNextLabel(QString& strLabel)
+{
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
+    //sending the name
+    QModelIndex idx=viewFrameTime->index(tableView->selectionModel()->currentIndex().row(),1);
+    if (!idx.isValid()) return false;
+    strLabel=idx.data().toString();
     return true;
 }
 

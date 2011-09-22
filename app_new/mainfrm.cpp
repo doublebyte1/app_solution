@@ -255,6 +255,7 @@ void MainFrm::loadTabs()
         if (pFrmFrame->loadFrameFromSample()){
 
             QVector<int> vSample;
+            if (sSample->frameTimeId!=-1) vSample << sSample->frameTimeId;
             if (sSample->minorStrataId!=-1) vSample << sSample->minorStrataId;
             if (sSample->cellId!=-1) vSample << sSample->cellId;
             if (sSample->vesselTypeId!=-1) vSample << sSample->vesselTypeId;

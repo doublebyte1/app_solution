@@ -23,11 +23,9 @@ PreviewTab::~PreviewTab()
 
 void PreviewTab::setTips(const bool bLogbook)
 {
-    if (lbHead!=0){
-        lbHead->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-        lbHead->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-        lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-    }
+    lbHead->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbHead->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
 bool PreviewTab::tableSelect(const int id)
@@ -152,8 +150,7 @@ bool PreviewTab::next()
     QString strLabel;
     if (!getNextLabel(strLabel)) return false;
 
-    if (lbHead!=0) emit forward(lbHead->text()+ tr("-> ") + strLabel);
-    else emit forward(":-)");
+    emit forward(lbHead->text().isEmpty()? strLabel :lbHead->text()+ tr("-> ") + strLabel);
     return true;
 }
 
