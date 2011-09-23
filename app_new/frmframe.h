@@ -37,6 +37,7 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   onShowFrameDetails();
 
         void                                   createRecord();
+        void                                   editRecord(bool on);
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
 

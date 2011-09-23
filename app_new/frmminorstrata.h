@@ -30,6 +30,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
 
     private slots:
         void                                   createRecord();
+        void                                   editRecord(bool on){;}
         void                                   previewRow(QModelIndex index);
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();

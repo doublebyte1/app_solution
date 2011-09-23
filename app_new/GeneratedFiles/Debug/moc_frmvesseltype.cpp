@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmvesseltype.h'
 **
-** Created: Tue 20. Sep 14:57:30 2011
+** Created: Fri 23. Sep 10:17:28 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmVesselType[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,15 +32,17 @@ static const uint qt_meta_data_FrmVesselType[] = {
 
  // slots: signature, parameters, type, tag, flags
       15,   14,   14,   14, 0x08,
-      36,   30,   14,   14, 0x08,
-      60,   14,   14,   14, 0x08,
+      33,   30,   14,   14, 0x08,
+      56,   50,   14,   14, 0x08,
+      80,   14,   14,   14, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmVesselType[] = {
-    "FrmVesselType\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0onItemSelection()\0"
+    "FrmVesselType\0\0createRecord()\0on\0"
+    "editRecord(bool)\0index\0previewRow(QModelIndex)\0"
+    "onItemSelection()\0"
 };
 
 const QMetaObject FrmVesselType::staticMetaObject = {
@@ -75,11 +77,12 @@ int FrmVesselType::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: createRecord(); break;
-        case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: onItemSelection(); break;
+        case 1: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 3: onItemSelection(); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

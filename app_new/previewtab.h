@@ -91,6 +91,8 @@ class PreviewTab : public GenericTab
         resetting the filters of the models, and then it actually inserts an empry record on the "resident" model in this class;
         */
         void                                  genericCreateRecord();
+        //TODO: add a description here later! ///////////////////////////////////////
+        bool                                  genericEditRecord(bool on, bool& bCancel);
         //! Reimplementation of the virtual method on QWidget class
         /*! Here we adjust the table to the new dimensions of the form;
         /par event we don't actually use this parameter!
@@ -139,6 +141,11 @@ class PreviewTab : public GenericTab
           \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button), onItemSelection()
         */
         virtual void                          createRecord()=0;
+        //! A pure virtual member.
+        /*! Slot that edits a record
+          \sa createRecord()
+        */
+        virtual void                          editRecord(bool on)=0;
         //! A pure virtual member.
         /*! Slot that previews a selected row
           \sa createRecord(), onButtonClick(QAbstractButton * button), onItemSelection()

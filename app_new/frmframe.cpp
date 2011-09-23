@@ -17,6 +17,7 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     mapperStartDt=0;
     mapperEndDt=0;
     m_submitted=false;
+    m_curMode=FrmFrameDetails::VIEW;
 
     m_tabsDefined=false;
 
@@ -79,6 +80,7 @@ void FrmFrame::uI4NewRecord()
         this->groupDetails->setVisible(true);
 
     emit lockControls(false,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
@@ -88,9 +90,23 @@ void FrmFrame::beforeShow()
     this->groupDetails->setVisible(false);
 }
 
+void FrmFrame::editRecord(bool on)
+{
+    bool bCancel;
+    if (!genericEditRecord(on,bCancel)){
+        emit showError(tr("Could not edit record!"));
+    }else{
+        if (bCancel)
+            pushEdit->setChecked(true);
+
+    }
+}
+
 void FrmFrame::createRecord()
 {
     genericCreateRecord();
+
+    filterTable(tFrameTime->relationModel(1));
 
     mapper2->toLast();
 
@@ -122,6 +138,7 @@ void FrmFrame::previewRow(QModelIndex index)
 
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
+    buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
     QModelIndex idx=viewFrameTime->index(index.row(),0);
     if (!idx.isValid()){
@@ -189,7 +206,8 @@ void FrmFrame::unblockCustomDateCtrls()
 void FrmFrame::showEvent ( QShowEvent * event )
 {
     //Since this is the first form, we have to force the call here!
-    onShowForm();
+    if (m_curMode != FrmFrameDetails::CREATE && m_curMode != FrmFrameDetails::EDIT)
+        onShowForm();
 }
 
 void FrmFrame::initModels()

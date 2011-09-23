@@ -33,6 +33,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   createRecord();
+        void                                   editRecord(bool on){;}
         //! Preview Row
         /*! Reimplemented from the PreviewTab base class
         */

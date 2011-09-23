@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcatch.h'
 **
-** Created: Tue 20. Sep 14:57:45 2011
+** Created: Fri 23. Sep 10:17:32 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmCatch[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,15 +32,17 @@ static const uint qt_meta_data_FrmCatch[] = {
 
  // slots: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x08,
-      31,   25,    9,    9, 0x08,
-      55,    9,    9,    9, 0x08,
+      28,   25,    9,    9, 0x08,
+      51,   45,    9,    9, 0x08,
+      75,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmCatch[] = {
-    "FrmCatch\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0onItemSelection()\0"
+    "FrmCatch\0\0createRecord()\0on\0"
+    "editRecord(bool)\0index\0previewRow(QModelIndex)\0"
+    "onItemSelection()\0"
 };
 
 const QMetaObject FrmCatch::staticMetaObject = {
@@ -75,11 +77,12 @@ int FrmCatch::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: createRecord(); break;
-        case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: onItemSelection(); break;
+        case 1: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 3: onItemSelection(); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

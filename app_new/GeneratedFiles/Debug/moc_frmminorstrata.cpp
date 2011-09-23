@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Tue 20. Sep 14:57:37 2011
+** Created: Fri 23. Sep 10:26:00 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,23 +32,25 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
 
  // slots: signature, parameters, type, tag, flags
       16,   15,   15,   15, 0x08,
-      37,   31,   15,   15, 0x08,
-      61,   15,   15,   15, 0x08,
-      84,   15,   15,   15, 0x08,
-     117,  109,   15,   15, 0x08,
-     139,   15,   15,   15, 0x08,
-     160,   15,   15,   15, 0x08,
-     178,   15,   15,   15, 0x08,
+      34,   31,   15,   15, 0x08,
+      57,   51,   15,   15, 0x08,
+      81,   15,   15,   15, 0x08,
+     104,   15,   15,   15, 0x08,
+     137,  129,   15,   15, 0x08,
+     159,   15,   15,   15, 0x08,
+     180,   15,   15,   15, 0x08,
+     198,   15,   15,   15, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmMinorStrata[] = {
-    "FrmMinorStrata\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0blockCustomDateCtrls()\0"
-    "unblockCustomDateCtrls()\0bActive\0"
-    "setActiveReason(bool)\0disableReasonCombo()\0"
-    "onItemSelection()\0onShowFrameDetails()\0"
+    "FrmMinorStrata\0\0createRecord()\0on\0"
+    "editRecord(bool)\0index\0previewRow(QModelIndex)\0"
+    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
+    "bActive\0setActiveReason(bool)\0"
+    "disableReasonCombo()\0onItemSelection()\0"
+    "onShowFrameDetails()\0"
 };
 
 const QMetaObject FrmMinorStrata::staticMetaObject = {
@@ -83,16 +85,17 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: createRecord(); break;
-        case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: blockCustomDateCtrls(); break;
-        case 3: unblockCustomDateCtrls(); break;
-        case 4: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 5: disableReasonCombo(); break;
-        case 6: onItemSelection(); break;
-        case 7: onShowFrameDetails(); break;
+        case 1: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 3: blockCustomDateCtrls(); break;
+        case 4: unblockCustomDateCtrls(); break;
+        case 5: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 6: disableReasonCombo(); break;
+        case 7: onItemSelection(); break;
+        case 8: onShowFrameDetails(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

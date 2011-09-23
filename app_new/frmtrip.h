@@ -31,6 +31,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   createRecord();
+        void                                   editRecord(bool on){;}
         //! Preview Row
         /*! Reimplemented from the PreviewTab base class
         */

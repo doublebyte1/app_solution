@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Thu 22. Sep 16:58:01 2011
+** Created: Fri 23. Sep 10:15:24 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -137,6 +137,7 @@ public:
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/app_new/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushEdit->setIcon(icon1);
+        pushEdit->setCheckable(true);
 
         verticalLayout_3->addWidget(pushEdit);
 
@@ -330,6 +331,7 @@ public:
         QObject::connect(pushNew, SIGNAL(clicked()), frmframe, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmframe, SLOT(onButtonClick(QAbstractButton*)));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmframe, SLOT(previewRow(QModelIndex)));
+        QObject::connect(pushEdit, SIGNAL(clicked(bool)), frmframe, SLOT(editRecord(bool)));
 
         QMetaObject::connectSlotsByName(frmframe);
     } // setupUi

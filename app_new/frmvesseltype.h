@@ -31,6 +31,7 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   createRecord();
+        void                                   editRecord(bool on){;}
         //! Preview Row
         /*! Reimplemented from the PreviewTab base class
         */

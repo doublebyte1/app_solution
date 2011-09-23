@@ -154,6 +154,46 @@ bool PreviewTab::next()
     return true;
 }
 
+bool PreviewTab::genericEditRecord(bool on, bool& bCancel)
+{
+    bCancel=false;
+
+    //removing filters
+    if (m_model==0) return false;
+    if (m_tDateTime==0) return false;
+
+    if (!on){
+        QMessageBox msgBox;
+        msgBox.setText("The record has been modified.");
+        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+     switch (ret) {
+       case QMessageBox::Save:
+           break;
+       case QMessageBox::Discard:
+           m_model->revertAll();
+           //for the date, we dont need to to anything
+           break;
+       case QMessageBox::Cancel:
+           bCancel=true;
+           return true;
+           break;
+       default:
+           // should never be reached
+           break;
+     }
+    }
+
+   m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
+   emit lockControls(!on,m_lWidgets);
+
+    return true;
+
+}
+
 void PreviewTab::genericCreateRecord()
 {
     //removing filters

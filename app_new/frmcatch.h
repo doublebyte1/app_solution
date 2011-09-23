@@ -30,6 +30,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   createRecord();
+        void                                   editRecord(bool on){;}
         //! Preview Row
         /*! Reimplemented from the PreviewTab base class
         */
