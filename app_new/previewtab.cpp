@@ -28,6 +28,24 @@ void PreviewTab::setTips(const bool bLogbook)
     lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
+bool PreviewTab::submitMapperAndModel(QDataWidgetMapper* aMapper)
+{
+    bool bError=false;
+
+    if (aMapper->submit()){
+        bError=!
+            m_model->submitAll();
+        if (bError){
+            if (m_model->lastError().type()!=QSqlError::NoError)
+                emit showError(m_model->lastError().text());
+            else
+                emit showError(tr("Could not write Sampling Frame in the database!"));
+        }
+    }else bError=true;
+
+    return !bError;
+}
+
 bool PreviewTab::tableSelect(const int id)
 {
     for (int i=0; i < m_table->model()->rowCount();++i){
@@ -74,6 +92,8 @@ void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
     m_table->setSelectionBehavior( QAbstractItemView::SelectRows );
     m_table->horizontalHeader()->setClickable(false);
     m_table->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+
+    m_table->setItemDelegate(new QSqlRelationalDelegate(m_table));
 }
 
 bool PreviewTab::afterApply()
@@ -154,10 +174,8 @@ bool PreviewTab::next()
     return true;
 }
 
-bool PreviewTab::genericEditRecord(bool on, bool& bCancel)
+bool PreviewTab::genericEditRecord(bool on, int& ret)
 {
-    bCancel=false;
-
     //removing filters
     if (m_model==0) return false;
     if (m_tDateTime==0) return false;
@@ -168,23 +186,22 @@ bool PreviewTab::genericEditRecord(bool on, bool& bCancel)
         msgBox.setInformativeText("Do you want to save your changes?");
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
-        int ret = msgBox.exec();
+        ret = msgBox.exec();
 
-     switch (ret) {
-       case QMessageBox::Save:
-           break;
-       case QMessageBox::Discard:
-           m_model->revertAll();
-           //for the date, we dont need to to anything
-           break;
-       case QMessageBox::Cancel:
-           bCancel=true;
-           return true;
-           break;
-       default:
-           // should never be reached
-           break;
-     }
+         switch (ret) {
+           case QMessageBox::Save:
+               break;
+           case QMessageBox::Discard:
+               m_model->revertAll();
+               //for the date, we dont need to to anything
+               break;
+           case QMessageBox::Cancel:
+               return true;
+               break;
+           default:
+               // should never be reached
+               break;
+         }
     }
 
    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);

@@ -57,6 +57,9 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   beforeShow();
         bool                                   getNextLabel(QString& strLabel);
 
+
+        bool                                   applyChanges();
+
         //! Really Apply
         /*! Reimplemented from the GenericTab base class; this is where we effectively apply the changes, after successfully
         bypassing the binder validation;
@@ -65,17 +68,21 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   setReadOnly(const bool bRO);
         bool                                   updateSample();
         void                                   initModels();
+        void                                   initFrModel();
         void                                   initMappers();
+        void                                   initMapper2();
         void                                   initUI();
 
         QSqlQueryModel*                        viewFrameTime;
         QSqlRelationalTableModel*              tFrameTime;
-        QDataWidgetMapper*                     mapper1;
+        QSqlTableModel*                        frModel;
+        //QDataWidgetMapper*                     mapper1;
         QDataWidgetMapper*                     mapper2;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         FrmFrameDetails::Mode                  m_curMode;
         bool                                   m_submitted;
         bool                                   m_tabsDefined;
+        bool                                   m_bInsert;
 };
 #endif //FRMFRAME_H

@@ -83,7 +83,7 @@ class PreviewTab : public GenericTab
         */
         virtual void                          beforeShow()=0;
         /*! generic create record;
-          \sa setPreviewTable(QTableView* aTable), setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), filterModel4Combo(), uI4NewRecord()
+          \sa setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), filterModel4Combo(), uI4NewRecord()
         */
         virtual void                          setHeader()=0;
         //! Generic Create Record
@@ -92,7 +92,7 @@ class PreviewTab : public GenericTab
         */
         void                                  genericCreateRecord();
         //TODO: add a description here later! ///////////////////////////////////////
-        bool                                  genericEditRecord(bool on, bool& bCancel);
+        bool                                  genericEditRecord(bool on, int& ret);
         //! Reimplementation of the virtual method on QWidget class
         /*! Here we adjust the table to the new dimensions of the form;
         /par event we don't actually use this parameter!
@@ -109,6 +109,7 @@ class PreviewTab : public GenericTab
         a sampling or a logbook form;
         */
         void                                  setSourceText(QLabel* label);
+        bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
 
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 

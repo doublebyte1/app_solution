@@ -35,7 +35,8 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         */
         enum Mode { VIEW, /*!< Enum value for viewing the frame. */
                     CREATE, /*!< Enum value for creating a new frame. */
-                    EDIT /*!< Enum value for editing an existent frame. */
+                    EDIT, /*!< Enum value for editing an existent frame. */
+                    NONE
                     };
 
         //! An enum for assigning the changes on the framedetails form.

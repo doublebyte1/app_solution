@@ -476,22 +476,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>tableView</sender>
-   <signal>clicked(QModelIndex)</signal>
-   <receiver>frmframe</receiver>
-   <slot>previewRow(QModelIndex)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>491</x>
-     <y>44</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>249</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushEdit</sender>
    <signal>clicked(bool)</signal>
    <receiver>frmframe</receiver>
