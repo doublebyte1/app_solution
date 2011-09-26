@@ -198,7 +198,12 @@ void FrmFrame::previewRow(QModelIndex index)
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
     buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
-    //TODO: query model to find correspondence between the viewindex and the model index
+    QModelIndex pIdx;
+    if (!translateIndex(index,pIdx)) return;
+
+    QModelIndex idx=viewFrameTime->index(index.row(),0);
+
+    /*
     QModelIndex idx=viewFrameTime->index(index.row(),0);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this sampling frame!"));
@@ -211,11 +216,14 @@ void FrmFrame::previewRow(QModelIndex index)
     if (list.count()!=1) return;
 
     mapper2->setCurrentModelIndex(list.at(0));
+    */
+
+    mapper2->setCurrentModelIndex(pIdx);
 
     blockCustomDateCtrls();
 
     //Now fix the dates
-    idx=tFrameTime->index(list.at(0).row(),2);
+    idx=tFrameTime->index(pIdx.row(),2);
     if (!idx.isValid()){
         emit showError (tr("Could not preview start date of this sampling frame!"));
         return;
@@ -223,7 +231,7 @@ void FrmFrame::previewRow(QModelIndex index)
 
     QString strStartDt=idx.data().toString();
 
-    idx=tFrameTime->index(list.at(0).row(),3);
+    idx=tFrameTime->index(pIdx.row(),3);
     if (!idx.isValid()){
         emit showError (tr("Could not preview end date of this sampling frame!"));
         return;

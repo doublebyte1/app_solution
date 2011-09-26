@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Fri 23. Sep 13:53:35 2011
+** Created: Mon 26. Sep 10:56:14 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -331,6 +331,7 @@ public:
         QObject::connect(pushNew, SIGNAL(clicked()), frmframe, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmframe, SLOT(onButtonClick(QAbstractButton*)));
         QObject::connect(pushEdit, SIGNAL(clicked(bool)), frmframe, SLOT(editRecord(bool)));
+        QObject::connect(pushRemove, SIGNAL(clicked()), frmframe, SLOT(removeRecord()));
 
         QMetaObject::connectSlotsByName(frmframe);
     } // setupUi

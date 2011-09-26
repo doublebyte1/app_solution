@@ -111,6 +111,7 @@ class PreviewTab : public GenericTab
         void                                  setSourceText(QLabel* label);
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
+        bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);
 
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 
@@ -148,6 +149,8 @@ class PreviewTab : public GenericTab
           \sa createRecord()
         */
         virtual void                          editRecord(bool on)=0;
+        void                                  removeRecord();
+
         //! A pure virtual member.
         /*! Slot that previews a selected row
           \sa createRecord(), onButtonClick(QAbstractButton * button), onItemSelection()

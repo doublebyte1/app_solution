@@ -205,8 +205,8 @@ bool PreviewTab::genericEditRecord(bool on, int& ret)
 
     if (!on){
         QMessageBox msgBox;
-        msgBox.setText("The record has been modified.");
-        msgBox.setInformativeText("Do you want to save your changes?");
+        msgBox.setText(tr("The record has been modified."));
+        msgBox.setInformativeText(tr("Do you want to save your changes?"));
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
         ret = msgBox.exec();
@@ -231,6 +231,89 @@ bool PreviewTab::genericEditRecord(bool on, int& ret)
    emit lockControls(!on,m_lWidgets);
 
     return true;
+
+}
+
+bool PreviewTab::translateIndex(const QModelIndex inIdx, QModelIndex& outIdx)
+{
+    //TODO: query model to find correspondence between the viewindex and the model index
+    QModelIndex idx=m_table->model()->index(inIdx.row(),0);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this row!"));
+        return false;
+    }
+
+    QModelIndex start=m_model->index(0,0);
+    QModelIndexList list=m_model->match(start,0,idx.data());
+
+    if (list.count()!=1) return false;
+    outIdx=list.at(0);
+
+    return true;
+}
+
+void PreviewTab::removeRecord()
+{
+    if (!m_table->selectionModel()->hasSelection()){
+        emit showError(tr("You have not selected any record to removed!"));
+        return;
+    }
+
+    if (!m_table->selectionModel()->currentIndex().isValid()){
+        emit showError(tr("You have not selected a valid record!"));
+        return;
+    }
+
+    QModelIndex idx;
+    if (!translateIndex(m_table->selectionModel()->currentIndex(), idx)){
+        emit showError(tr("Could not preview this record!"));
+        return;
+    }
+
+    QModelIndex idName=m_table->model()->index(m_table->selectionModel()->currentIndex().row(),1);
+
+    QMessageBox msgBox;
+    msgBox.setText(tr("You have selected record '") + idName.data().toString() +
+        tr("' for deletion."));
+    msgBox.setInformativeText(tr("Are you sure you want to remove this record?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+
+     switch (ret) {
+       case QMessageBox::Yes:
+
+            if ( !m_model->removeRow(idx.row()) ){
+
+                if (m_model->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_model->lastError().text());
+                else
+                    emit showError(tr("Could not remove this record!"));
+
+            }else{
+                if (!m_model->submitAll()){
+
+                    if (m_model->lastError().type()!=QSqlError::NoError)
+                        emit showError(m_model->lastError().text());
+                    else
+                        emit showError(tr("Could not remove this record!"));
+
+                }
+                else{
+                    showStatus(tr("Record successfully removed from the database!"));
+                    setPreviewQuery();
+                    m_table->selectRow(0);//to avoid a selection on a non existent row!
+                }
+            }
+
+           break;
+       case QMessageBox::No:
+           return;
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 
 }
 

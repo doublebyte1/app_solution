@@ -491,6 +491,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>frmframe</receiver>
+   <slot>removeRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>787</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onChoosePreExistent()</slot>
@@ -501,5 +517,6 @@
   <slot>onButtonClick(QAbstractButton*)</slot>
   <slot>previewRow(QModelIndex)</slot>
   <slot>editRecord(bool)</slot>
+  <slot>removeRecord()</slot>
  </slots>
 </ui>
