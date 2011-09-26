@@ -28,6 +28,29 @@ void PreviewTab::setTips(const bool bLogbook)
     lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
+bool PreviewTab::submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper)
+{
+    bool bError=false;
+    if (!startMapper->submit() || !endMapper->submit()){
+        if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+            emit showError(m_tDateTime->lastError().text());
+        else
+            emit showError(tr("Could not submit dates(s)!!"));
+        bError=true;
+    }
+    else{
+        if (!m_tDateTime->submitAll()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
+            else
+                emit showError(tr("Could not write DateTime in the database!"));
+
+            bError=true;
+        }
+    }
+    return bError;
+}
+
 bool PreviewTab::submitMapperAndModel(QDataWidgetMapper* aMapper)
 {
     bool bError=false;

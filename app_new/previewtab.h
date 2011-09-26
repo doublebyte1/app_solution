@@ -110,6 +110,7 @@ class PreviewTab : public GenericTab
         */
         void                                  setSourceText(QLabel* label);
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
+        bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
 
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 

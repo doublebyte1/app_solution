@@ -95,10 +95,23 @@ void FrmFrame::beforeShow()
 
 bool FrmFrame::applyChanges()
 {
-    //here using mapper1
     int cur= mapper2->currentIndex();
     bool bError=!submitMapperAndModel(mapper2);
-    if (!bError) mapper2->setCurrentIndex(cur);
+    if (!bError){
+        mapper2->setCurrentIndex(cur);
+        int curStart, curEnd;
+        curStart=mapperStartDt->currentIndex();
+        curEnd=mapperEndDt->currentIndex();
+
+        bError=submitDates(mapperStartDt, mapperEndDt);
+
+        if (!bError){
+            mapperStartDt->setCurrentIndex(curStart);
+            mapperEndDt->setCurrentIndex(curEnd);
+        }
+
+    }
+
     return !bError;
 }
 
@@ -106,12 +119,6 @@ void FrmFrame::editRecord(bool on)
 {
     bool bCancel;
     int ret=-1;
-
-    /*
-    QModelIndex idx=tFrameTime->index(0,0);
-    if (idx.isValid()){
-        qDebug() << idx.data() << endl;
-    }*/
 
     if (!genericEditRecord(on,ret)){
         emit showError(tr("Could not edit record!"));
@@ -187,6 +194,7 @@ void FrmFrame::previewRow(QModelIndex index)
         this->groupDetails->setVisible(true);
 
     emit lockControls(true,m_lWidgets);
+
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
     buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
@@ -203,16 +211,8 @@ void FrmFrame::previewRow(QModelIndex index)
     if (list.count()!=1) return;
 
     mapper2->setCurrentModelIndex(list.at(0));
-    //mapper1->setCurrentModelIndex(list.at(0));
 
-    /*
-
-    idx=tFrameTime->index(0,1);
-    tFrameTime->relationModel(1)->setFilter(tr("Name='")+idx.data().toString()+tr("'"));
-
-    mapper1->toLast();
-    mapper2->toLast();
-*/
+    blockCustomDateCtrls();
 
     //Now fix the dates
     idx=tFrameTime->index(list.at(0).row(),2);
@@ -238,6 +238,7 @@ void FrmFrame::previewRow(QModelIndex index)
     mapperEndDt->toLast();
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 
+    unblockCustomDateCtrls();
 }
 
 void FrmFrame::onItemSelection()
@@ -479,6 +480,9 @@ bool FrmFrame::reallyApply()
             bError=true;
         }else{
 
+            bError=submitDates(mapperStartDt, mapperEndDt);
+
+            /*
             //First insert the dates...
             if (!mapperStartDt->submit() || !mapperEndDt->submit()){
                 if (m_tDateTime->lastError().type()!=QSqlError::NoError)
@@ -496,7 +500,7 @@ bool FrmFrame::reallyApply()
 
                     bError=true;
                 }
-            }
+            }*/
 
             while(m_tDateTime->canFetchMore())
                 m_tDateTime->fetchMore();
