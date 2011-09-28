@@ -31,7 +31,6 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   createRecord();
-        void                                   editRecord(bool on){;}
         //! Preview Row
         /*! Reimplemented from the PreviewTab base class
         */
@@ -44,6 +43,10 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         bypassing the binder validation;
         */
         bool                                   reallyApply();
+        //! Apply Changes
+        /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
+        */
+        bool                                   applyChanges(){return false;}//TODO: implement this!
         //! Set Header widget
         /*! Reimplemented from the genericTab base class
         */

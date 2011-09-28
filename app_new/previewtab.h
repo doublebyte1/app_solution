@@ -8,7 +8,6 @@
      #define new DEBUG_NEW
   #endif
 
-
 void                                  insertRecordIntoModel(QSqlTableModel* m);
 
 //////////////////////////////////////////////////////////////////////
@@ -56,6 +55,24 @@ class PreviewTab : public GenericTab
           \sa setGroupDetails(QGroupBox* aGroupDetails),setPreviewModel(QSqlRelationalTableModel* aModel)
           */
         void                                  setButtonBox(QDialogButtonBox* aButtonBox){m_buttonBox=aButtonBox;}
+        //! Set new button
+        /*! In this function we store a pointer for the "new" pushbutton.
+        \par aButtonBox pointer to a pushbutton
+          \sa setEditButton(QPushButton* apushButton),setRemoveButton(QPushButton* apushButton)
+          */
+        void                                  setNewButton(QPushButton* apushButton){m_pushNew=apushButton;}
+        //! Set edit button
+        /*! In this function we store a pointer for the "edit" pushbutton.
+        \par aButtonBox pointer to a pushbutton
+          \sa setNewButton(QPushButton* apushButton),setRemoveButton(QPushButton* apushButton)
+          */
+        void                                  setEditButton(QPushButton* apushButton){m_pushEdit=apushButton;}
+        //! Set remove button
+        /*! In this function we store a pointer for the "remove" pushbutton.
+        \par aButtonBox pointer to a pushbutton
+          \sa setEditButton(QPushButton* apushButton),setNewButton(QPushButton* apushButton)
+          */
+        void                                  setRemoveButton(QPushButton* apushButton){m_pushRemove=apushButton;}
         //! Init preview table
         /*! In this function we initialize the table that displays the records, connecting it to a model
         \par aTable pointer to a table widget
@@ -72,9 +89,14 @@ class PreviewTab : public GenericTab
          /sa setPreviewQuery(), uI4NewRecord(), genericCreateRecord()
         */
         virtual void                          filterModel4Combo()=0;
+        //! Generic UI for new record
+        /*! This is a generic function for the UI of a new record, called by the virtual uI4NewRecord
+         /sa uI4NewRecord()
+        */
+        void                                  genericUI4NewRecord();
         //! A pure virtual member.
         /*! In this function we initialize the UI values for a new record;
-         /sa setPreviewQuery(), filterModel4Combo(), genericCreateRecord()
+         /sa genericUI4NewRecord()
         */
         virtual void                          uI4NewRecord()=0;
         //! A pure virtual member.
@@ -86,13 +108,17 @@ class PreviewTab : public GenericTab
           \sa setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), filterModel4Combo(), uI4NewRecord()
         */
         virtual void                          setHeader()=0;
+        //! Apply Changes to Record
+        /*! This a pure virtual method, that actually applies the edits on this record.
+        \return boolean as success or failure
+        \sa genericEditRecord(bool on, int& ret)
+        */
+        virtual bool                         applyChanges()=0;
         //! Generic Create Record
-        /*! Method called, wach time we create a new record; it does some "household" stuff like
+        /*! Method called, each time we create a new record; it does some "household" stuff like
         resetting the filters of the models, and then it actually inserts an empry record on the "resident" model in this class;
         */
         void                                  genericCreateRecord();
-        //TODO: add a description here later! ///////////////////////////////////////
-        bool                                  genericEditRecord(bool on, int& ret);
         //! Reimplementation of the virtual method on QWidget class
         /*! Here we adjust the table to the new dimensions of the form;
         /par event we don't actually use this parameter!
@@ -112,6 +138,7 @@ class PreviewTab : public GenericTab
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
         bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);
+        bool                                  discardNewRecord();
 
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 
@@ -124,6 +151,12 @@ class PreviewTab : public GenericTab
         This is the slot that we call, when the form is displayed.
         */
         void                                  onShowForm();
+        //! Edit Record
+        /*! Slot called, each time we edit a record; it checks if the toggle is on/off and triggers appropriated responses like
+        displaying a confirmation dialog.
+        \return boolean to indicate if we want to edit or not
+        */
+        bool                                  editRecord(bool on);
 
     private slots:
         //! Set Header Label Tips
@@ -144,11 +177,6 @@ class PreviewTab : public GenericTab
           \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button), onItemSelection()
         */
         virtual void                          createRecord()=0;
-        //! A pure virtual member.
-        /*! Slot that edits a record
-          \sa createRecord()
-        */
-        virtual void                          editRecord(bool on)=0;
         void                                  removeRecord();
 
         //! A pure virtual member.
@@ -184,6 +212,8 @@ class PreviewTab : public GenericTab
         QTableView*                           m_table;/**< pointer for the table in this form */
         QDialogButtonBox*                     m_buttonBox;/**< pointer for the buttonBox in this form */
         QGroupBox*                            m_groupDetails;/**< pointer for the detail groupbox in this form */
-
+        QPushButton*                          m_pushNew;/**< pointer for the pushNew button in this form */
+        QPushButton*                          m_pushEdit;/**< pointer for the pushEdit button in this form */
+        QPushButton*                          m_pushRemove;/**< pointer for the pushRemove button in this form */
 };
 #endif //PREVIEWTAB_H

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Mon 26. Sep 11:58:48 2011
+** Created: Wed 28. Sep 10:25:03 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -36,13 +36,13 @@ static const uint qt_meta_data_PreviewTab[] = {
 
  // slots: signature, parameters, type, tag, flags
       72,   11,   11,   11, 0x0a,
-      94,   85,   11,   11, 0x08,
-     113,   11,  108,   11, 0x08,
-     120,   11,   11,   11, 0x08,
-     138,  135,   11,   11, 0x08,
+      93,   90,   85,   11, 0x0a,
+     119,  110,   11,   11, 0x08,
+     133,   11,   85,   11, 0x08,
+     140,   11,   11,   11, 0x08,
      155,   11,   11,   11, 0x08,
      176,  170,   11,   11, 0x08,
-     207,  200,  108,   11, 0x08,
+     207,  200,   85,   11, 0x08,
      239,   11,   11,   11, 0x08,
 
        0        // eod
@@ -51,9 +51,9 @@ static const uint qt_meta_data_PreviewTab[] = {
 static const char qt_meta_stringdata_PreviewTab[] = {
     "PreviewTab\0\0bIsLogbook\0isLogBook(bool)\0"
     "bBlock\0blockCatchUISignals(bool)\0"
-    "onShowForm()\0bLogbook\0setTips(bool)\0"
-    "bool\0next()\0createRecord()\0on\0"
-    "editRecord(bool)\0removeRecord()\0index\0"
+    "onShowForm()\0bool\0on\0editRecord(bool)\0"
+    "bLogbook\0setTips(bool)\0next()\0"
+    "createRecord()\0removeRecord()\0index\0"
     "previewRow(QModelIndex)\0button\0"
     "onButtonClick(QAbstractButton*)\0"
     "onItemSelection()\0"
@@ -91,11 +91,12 @@ int PreviewTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: isLogBook((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         case 1: blockCatchUISignals((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         case 2: onShowForm(); break;
-        case 3: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 4: { bool _r = next();
+        case 3: { bool _r = editRecord((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 5: createRecord(); break;
-        case 6: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 4: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 5: { bool _r = next();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 6: createRecord(); break;
         case 7: removeRecord(); break;
         case 8: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
         case 9: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));

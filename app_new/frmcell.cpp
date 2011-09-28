@@ -376,12 +376,12 @@ void FrmCell::uI4NewRecord()
         this->groupDetails->setVisible(true);
 
     emit lockControls(false,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->show();
 
+    buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     customDtStart->setIsDateTime(true,true,true);
-    customDtStart->checkBox()->click();//the click is necessary to imit the relavant signal
+    customDtStart->checkBox()->click();//the click is necessary to imit the relevant signal
 
     customDtEnd->setIsDateTime(true,true,true);
     customDtEnd->checkBox()->click();//the click is necessary to imit the relevant signal

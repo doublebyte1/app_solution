@@ -14,7 +14,7 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     viewFrameTime=0;
     frModel=0;
     //mapper1=0;
-    mapper2=0;
+    mapper=0;
     mapperStartDt=0;
     mapperEndDt=0;
     m_submitted=false;
@@ -53,7 +53,7 @@ FrmFrame::~FrmFrame()
     if (viewFrameTime!=0) delete viewFrameTime;
     if (frModel!=0) delete frModel;
     //if (mapper1!=0) delete mapper1;
-    if (mapper2!=0) delete mapper2;
+    if (mapper!=0) delete mapper;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
 }
@@ -79,13 +79,7 @@ void FrmFrame::setPreviewQuery()
 
 void FrmFrame::uI4NewRecord()
 {
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(false,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
-    buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+    genericUI4NewRecord();
 }
 
 void FrmFrame::beforeShow()
@@ -95,10 +89,10 @@ void FrmFrame::beforeShow()
 
 bool FrmFrame::applyChanges()
 {
-    int cur= mapper2->currentIndex();
-    bool bError=!submitMapperAndModel(mapper2);
+    int cur= mapper->currentIndex();
+    bool bError=!submitMapperAndModel(mapper);
     if (!bError){
-        mapper2->setCurrentIndex(cur);
+        mapper->setCurrentIndex(cur);
         int curStart, curEnd;
         curStart=mapperStartDt->currentIndex();
         curEnd=mapperEndDt->currentIndex();
@@ -115,50 +109,11 @@ bool FrmFrame::applyChanges()
     return !bError;
 }
 
-void FrmFrame::editRecord(bool on)
-{
-    bool bCancel;
-    int ret=-1;
-
-    if (!genericEditRecord(on,ret)){
-        emit showError(tr("Could not edit record!"));
-    }else{
-
-        if (!on){
-             switch (ret) {
-               case QMessageBox::Save:
-                if (!applyChanges())
-                    emit showError(tr("Could not submit changes to this record!"));
-                else
-                    setPreviewQuery();
-
-                 break;
-               case QMessageBox::Discard:
-                   break;
-               case QMessageBox::Cancel:
-                    pushEdit->setChecked(true);
-                   break;
-               default:
-                   // should never be reached
-                   break;
-             }
-        }else{
-            //filterTable(tFrameTime->relationModel(1));
-        }
-    }
-}
-
 void FrmFrame::createRecord()
 {
-    if (pushEdit->isChecked())
-        pushEdit->click();
-
     genericCreateRecord();
 
-    //filterTable(tFrameTime->relationModel(1));
-
-    //mapper1->toLast();
-    mapper2->toLast();
+    mapper->toLast();
 
     bool bDate, bTime;
     customDtStart->getIsDateTime(bDate,bTime);
@@ -187,8 +142,14 @@ void FrmFrame::previewRow(QModelIndex index)
 {
     if (!index.isValid()) return;
 
-    if (pushEdit->isChecked())
-        pushEdit->click();
+    //its on a new record
+    if (!discardNewRecord()) return;
+
+    //its on a edit
+    if (pushEdit->isChecked()){
+        pushEdit->setChecked(false);
+        if (!editRecord(false)) return;
+    }
 
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
@@ -198,27 +159,16 @@ void FrmFrame::previewRow(QModelIndex index)
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
     buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
+    pushNew->setEnabled(true);
+    pushEdit->setEnabled(true);
+    pushRemove->setEnabled(true);
+
     QModelIndex pIdx;
     if (!translateIndex(index,pIdx)) return;
 
     QModelIndex idx=viewFrameTime->index(index.row(),0);
 
-    /*
-    QModelIndex idx=viewFrameTime->index(index.row(),0);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this sampling frame!"));
-        return;
-    }
-
-    QModelIndex start=tFrameTime->index(0,0);
-    QModelIndexList list=mapper2->model()->match(start,0,idx.data());
-
-    if (list.count()!=1) return;
-
-    mapper2->setCurrentModelIndex(list.at(0));
-    */
-
-    mapper2->setCurrentModelIndex(pIdx);
+    mapper->setCurrentModelIndex(pIdx);
 
     blockCustomDateCtrls();
 
@@ -277,21 +227,6 @@ void FrmFrame::showEvent ( QShowEvent * event )
 
 void FrmFrame::initModels()
 {
-    /*
-    //Frame_Time (Physical frame + time frame!)
-    tFrameTime=new QSqlRelationalTableModel();
-    tFrameTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Time"),
-        QSqlDriver::TableName));
-
-    tFrameTime->setRelation(1, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
-
-    tFrameTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    tFrameTime->sort(0,Qt::AscendingOrder);
-    tFrameTime->select();
-    //filterTable(tFrameTime->relationModel(1));
-
-    setPreviewModel(tFrameTime);
-*/
     initFrModel();
 
     viewFrameTime = new QSqlQueryModel;
@@ -309,6 +244,9 @@ void FrmFrame::initUI()
 
     initPreviewTable(tableView,viewFrameTime);
     setButtonBox(buttonBox);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
     setGroupDetails(groupDetails);
 
     m_lWidgets << groupPhysical;
@@ -342,16 +280,12 @@ void FrmFrame::onHideFrameDetails()
         cmbPrexistent->setCurrentIndex(curP);
         cmbCopy->setCurrentIndex(curC);
     }else{
-
-        qDebug() << tFrameTime->rowCount() << endl;
-        //qDebug() << tFrameTime->isDirty() << endl;
-
-        int m=mapper2->currentIndex();
+        int m=mapper->currentIndex();
         //We have to do all this, to reset the model and the relation!!!!
 
-        QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
         if (m_bInsert){
-            tFrameTime->revertAll();
+            QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);
+            if (tFrameTime->isDirty(idx)) tFrameTime->revertAll();
         }
 
         initFrModel();
@@ -360,7 +294,7 @@ void FrmFrame::onHideFrameDetails()
             genericCreateRecord();
 
         initMapper2();
-        mapper2->setCurrentIndex(m);
+        mapper->setCurrentIndex(m);
         cmbPrexistent->setCurrentIndex(cmbPrexistent->count()-1);
 
         frModel->select();
@@ -403,25 +337,25 @@ void FrmFrame::initMapper2()
 
     if (tFrameTime==0) return ;
     if (m_mapperBinderPtr!=0) {delete m_mapperBinderPtr; m_mapperBinderPtr=0;}
-    if (mapper2!=0) delete mapper2;
+    if (mapper!=0) delete mapper;
 
-    mapper2= new QDataWidgetMapper(this);
-    mapper2->setModel(tFrameTime);
-    mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapper2->setItemDelegate(new QSqlRelationalDelegate(this));
+    mapper= new QDataWidgetMapper(this);
+    mapper->setModel(tFrameTime);
+    mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+    mapper->setItemDelegate(new QSqlRelationalDelegate(this));
 
     cmbPrexistent->setModel(tFrameTime->relationModel(1));
     cmbPrexistent->setModelColumn(
         tFrameTime->relationModel(1)->fieldIndex(tr("Name")));
 
-    mapper2->addMapping(this->cmbPrexistent, 1/*, tr("currentIndex").toAscii()*/);
-    //mapper2->toLast();
+    mapper->addMapping(this->cmbPrexistent, 1/*, tr("currentIndex").toAscii()*/);
+    //mapper->toLast();
 
     connect(tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
          this, SLOT(previewRow(QModelIndex)));
 
     QList<QDataWidgetMapper*> lMapper;
-    lMapper << mapper2 << mapperStartDt << mapperEndDt;
+    lMapper << mapper << mapperStartDt << mapperEndDt;
     m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
@@ -453,7 +387,7 @@ void FrmFrame::initMappers()
     mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
 
     initMapper2();
-    mapper2->toLast();
+    mapper->toLast();
 }
 
 bool FrmFrame::reallyApply()
@@ -489,26 +423,6 @@ bool FrmFrame::reallyApply()
         }else{
 
             bError=submitDates(mapperStartDt, mapperEndDt);
-
-            /*
-            //First insert the dates...
-            if (!mapperStartDt->submit() || !mapperEndDt->submit()){
-                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                    emit showError(m_tDateTime->lastError().text());
-                else
-                    emit showError(tr("Could not submit mapper!"));
-                bError=true;
-            }
-            else{
-                if (!m_tDateTime->submitAll()){
-                    if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                        emit showError(m_tDateTime->lastError().text());
-                    else
-                        emit showError(tr("Could not write DateTime in the database!"));
-
-                    bError=true;
-                }
-            }*/
 
             while(m_tDateTime->canFetchMore())
                 m_tDateTime->fetchMore();
@@ -548,18 +462,7 @@ bool FrmFrame::reallyApply()
                 }else bError=true;
             }
 
-            bError=!submitMapperAndModel(mapper2);
-            /*
-                    if (mapper2->submit()){
-                        bError=!
-                            tFrameTime->submitAll();
-                        if (bError){
-                            if (tFrameTime->lastError().type()!=QSqlError::NoError)
-                                emit showError(tFrameTime->lastError().text());
-                            else
-                                emit showError(tr("Could not write Sampling Frame in the database!"));
-                        }//mapper1->toLast();
-                    }else bError=true;*/
+            bError=!submitMapperAndModel(mapper);
 
         }
 
@@ -568,6 +471,8 @@ bool FrmFrame::reallyApply()
 
     emit lockControls(!bError,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
+    pushEdit->setEnabled(!bError);
+    pushRemove->setEnabled(!bError);
 
     if (!bError){
         if (!afterApply()){

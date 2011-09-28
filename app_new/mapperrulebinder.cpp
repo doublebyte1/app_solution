@@ -219,6 +219,7 @@ bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QW
     if (!parseRuleReferences(strRule)) return false;
 
     //qDebug() << strRule << endl;
+    //qDebug() << varPar.toString() << endl;
 
     QSqlQuery query;
     if (!ruleCheckerPtr->applyRule(strRule,query,varPar)) return false;

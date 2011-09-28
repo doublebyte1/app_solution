@@ -31,7 +31,6 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   createRecord();
-        void                                   editRecord(bool on){;}
         //! Preview Row
         /*! Reimplemented from the PreviewTab base class
         */
@@ -46,6 +45,10 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         bypassing the binder validation;
         */
         bool                                   reallyApply();
+        //! Apply Changes
+        /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
+        */
+        bool                                   applyChanges(){return false;}//TODO: implement this!
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

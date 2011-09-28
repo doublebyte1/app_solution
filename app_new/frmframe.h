@@ -28,7 +28,6 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         bool                                   loadFrameFromSample();
 
     public slots:
-        //bool                                   next();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
 
@@ -37,7 +36,6 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   onShowFrameDetails();
 
         void                                   createRecord();
-        void                                   editRecord(bool on);
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
 
@@ -56,8 +54,6 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   beforeShow();
         bool                                   getNextLabel(QString& strLabel);
-
-
         bool                                   applyChanges();
 
         //! Really Apply
@@ -76,8 +72,7 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         QSqlQueryModel*                        viewFrameTime;
         QSqlRelationalTableModel*              tFrameTime;
         QSqlTableModel*                        frModel;
-        //QDataWidgetMapper*                     mapper1;
-        QDataWidgetMapper*                     mapper2;
+        QDataWidgetMapper*                     mapper;
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         FrmFrameDetails::Mode                  m_curMode;

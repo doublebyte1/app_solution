@@ -30,7 +30,6 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
 
     private slots:
         void                                   createRecord();
-        void                                   editRecord(bool on){;}
         void                                   previewRow(QModelIndex index);
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
@@ -47,11 +46,14 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         bypassing the binder validation;
         */
         bool                                   reallyApply();
+        //! Apply Changes
+        /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
+        */
+        bool                                   applyChanges(){return false;}//TODO: implement this!
         void                                   setPreviewQuery();
         void                                   filterModel4Combo();
         void                                   uI4NewRecord();
         void                                   setHeader(){setLbHead(this->lbHeader);}
-
         void                                   initModels();
         void                                   initMappers();
         void                                   initUI();

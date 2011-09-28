@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Fri 23. Sep 19:39:46 2011
+** Created: Wed 28. Sep 10:25:04 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -40,9 +40,8 @@ static const uint qt_meta_data_FrmFrame[] = {
      113,    9,    9,    9, 0x08,
      134,    9,    9,    9, 0x08,
      155,    9,    9,    9, 0x08,
-     173,  170,    9,    9, 0x08,
-     196,  190,    9,    9, 0x08,
-     220,    9,    9,    9, 0x08,
+     176,  170,    9,    9, 0x08,
+     200,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -52,8 +51,7 @@ static const char qt_meta_stringdata_FrmFrame[] = {
     "index,bOk\0submitted(int,bool)\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
     "onHideFrameDetails()\0onShowFrameDetails()\0"
-    "createRecord()\0on\0editRecord(bool)\0"
-    "index\0previewRow(QModelIndex)\0"
+    "createRecord()\0index\0previewRow(QModelIndex)\0"
     "onItemSelection()\0"
 };
 
@@ -95,12 +93,11 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: onHideFrameDetails(); break;
         case 5: onShowFrameDetails(); break;
         case 6: createRecord(); break;
-        case 7: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 8: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 9: onItemSelection(); break;
+        case 7: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 8: onItemSelection(); break;
         default: ;
         }
-        _id -= 10;
+        _id -= 9;
     }
     return _id;
 }

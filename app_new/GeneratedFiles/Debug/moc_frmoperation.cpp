@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmoperation.h'
 **
-** Created: Fri 23. Sep 10:26:39 2011
+** Created: Wed 28. Sep 10:09:20 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmOperation[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,20 +32,18 @@ static const uint qt_meta_data_FrmOperation[] = {
 
  // slots: signature, parameters, type, tag, flags
       14,   13,   13,   13, 0x08,
-      32,   29,   13,   13, 0x08,
-      55,   49,   13,   13, 0x08,
-      79,   13,   13,   13, 0x08,
-      97,   13,   13,   13, 0x08,
-     120,   13,   13,   13, 0x08,
+      35,   29,   13,   13, 0x08,
+      59,   13,   13,   13, 0x08,
+      77,   13,   13,   13, 0x08,
+     100,   13,   13,   13, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmOperation[] = {
-    "FrmOperation\0\0createRecord()\0on\0"
-    "editRecord(bool)\0index\0previewRow(QModelIndex)\0"
-    "onItemSelection()\0blockCustomDateCtrls()\0"
-    "unblockCustomDateCtrls()\0"
+    "FrmOperation\0\0createRecord()\0index\0"
+    "previewRow(QModelIndex)\0onItemSelection()\0"
+    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
 };
 
 const QMetaObject FrmOperation::staticMetaObject = {
@@ -80,14 +78,13 @@ int FrmOperation::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: createRecord(); break;
-        case 1: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 3: onItemSelection(); break;
-        case 4: blockCustomDateCtrls(); break;
-        case 5: unblockCustomDateCtrls(); break;
+        case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 2: onItemSelection(); break;
+        case 3: blockCustomDateCtrls(); break;
+        case 4: unblockCustomDateCtrls(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 5;
     }
     return _id;
 }

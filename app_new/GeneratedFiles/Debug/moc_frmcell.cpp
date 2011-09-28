@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcell.h'
 **
-** Created: Fri 23. Sep 10:17:31 2011
+** Created: Wed 28. Sep 10:09:22 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmCell[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,21 +32,20 @@ static const uint qt_meta_data_FrmCell[] = {
 
  // slots: signature, parameters, type, tag, flags
        9,    8,    8,    8, 0x08,
-      27,   24,    8,    8, 0x08,
-      50,   44,    8,    8, 0x08,
-      74,    8,    8,    8, 0x08,
-      95,    8,    8,    8, 0x08,
-     113,    8,    8,    8, 0x08,
-     136,    8,    8,    8, 0x08,
+      30,   24,    8,    8, 0x08,
+      54,    8,    8,    8, 0x08,
+      75,    8,    8,    8, 0x08,
+      93,    8,    8,    8, 0x08,
+     116,    8,    8,    8, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmCell[] = {
-    "FrmCell\0\0createRecord()\0on\0editRecord(bool)\0"
-    "index\0previewRow(QModelIndex)\0"
-    "onShowFrameDetails()\0onItemSelection()\0"
-    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
+    "FrmCell\0\0createRecord()\0index\0"
+    "previewRow(QModelIndex)\0onShowFrameDetails()\0"
+    "onItemSelection()\0blockCustomDateCtrls()\0"
+    "unblockCustomDateCtrls()\0"
 };
 
 const QMetaObject FrmCell::staticMetaObject = {
@@ -81,15 +80,14 @@ int FrmCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: createRecord(); break;
-        case 1: editRecord((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 2: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 3: onShowFrameDetails(); break;
-        case 4: onItemSelection(); break;
-        case 5: blockCustomDateCtrls(); break;
-        case 6: unblockCustomDateCtrls(); break;
+        case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 2: onShowFrameDetails(); break;
+        case 3: onItemSelection(); break;
+        case 4: blockCustomDateCtrls(); break;
+        case 5: unblockCustomDateCtrls(); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 6;
     }
     return _id;
 }

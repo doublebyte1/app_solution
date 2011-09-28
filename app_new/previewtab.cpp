@@ -6,6 +6,9 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
     m_model=0;
     m_table=0;
     m_buttonBox=0;
+    m_pushNew=0;
+    m_pushEdit=0;
+    m_pushRemove=0;
     m_groupDetails=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
@@ -79,6 +82,21 @@ bool PreviewTab::tableSelect(const int id)
     }
 
     return false;
+}
+
+void PreviewTab::genericUI4NewRecord()
+{
+    if (!m_groupDetails->isVisible())
+        m_groupDetails->setVisible(true);
+
+    emit lockControls(false,m_lWidgets);
+
+    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
+    m_buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
+    m_buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+
+    m_pushEdit->setEnabled(false);
+    m_pushEdit->setEnabled(false);
 }
 
 bool PreviewTab::onButtonClick(QAbstractButton* button)
@@ -197,41 +215,54 @@ bool PreviewTab::next()
     return true;
 }
 
-bool PreviewTab::genericEditRecord(bool on, int& ret)
+bool PreviewTab::editRecord(bool on)
 {
     //removing filters
     if (m_model==0) return false;
     if (m_tDateTime==0) return false;
+    if (m_pushNew==0) return false;
+    if (m_pushEdit==0) return false;
+    if (m_pushRemove==0) return false;
 
     if (!on){
+
         QMessageBox msgBox;
-        msgBox.setText(tr("The record has been modified."));
+        msgBox.setText(tr("You are modifying a record."));
         msgBox.setInformativeText(tr("Do you want to save your changes?"));
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Save);
-        ret = msgBox.exec();
+        int ret = msgBox.exec();
 
          switch (ret) {
            case QMessageBox::Save:
-               break;
+               if (!applyChanges()){
+                    emit showError(tr("Could not submit changes to this record!"));
+                    return false;
+               }
+                else
+                    setPreviewQuery();
+                break;
            case QMessageBox::Discard:
                m_model->revertAll();
                //for the date, we dont need to to anything
                break;
            case QMessageBox::Cancel:
-               return true;
-               break;
+                m_pushEdit->setChecked(true);
+                return true;
+                break;
            default:
                // should never be reached
                break;
          }
+
     }
+        m_pushNew->setEnabled(!m_pushEdit->isChecked());
+        m_pushRemove->setEnabled(!m_pushEdit->isChecked());
 
-   m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
-   emit lockControls(!on,m_lWidgets);
+        m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
+        emit lockControls(!on,m_lWidgets);
 
-    return true;
-
+        return true;
 }
 
 bool PreviewTab::translateIndex(const QModelIndex inIdx, QModelIndex& outIdx)
@@ -326,7 +357,39 @@ void PreviewTab::genericCreateRecord()
     if (m_tDateTime==0) return ;
     if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
 
+    if (!discardNewRecord()) return;
+
     insertRecordIntoModel(m_model);
+}
+
+bool PreviewTab::discardNewRecord()
+{
+    QModelIndex dirtyIdx=m_model->index(m_model->rowCount()-1,0);
+
+    if (m_model->isDirty(dirtyIdx)){
+
+        QMessageBox msgBox;
+        msgBox.setText(tr("You are creating a new record."));
+        msgBox.setInformativeText(tr("Are you sure you want to leave and loose all changes?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+
+         switch (ret) {
+           case QMessageBox::Yes:
+                m_model->revertAll();
+                return true;
+               break;
+           case QMessageBox::No:
+                return false;
+               break;
+           default:
+               // should never be reached
+               break;
+         }
+    }
+
+    return true;
 }
 //////////////////////////////////////////////////////////////
 
@@ -334,11 +397,6 @@ void insertRecordIntoModel(QSqlTableModel* m)
 {
     while(m->canFetchMore())
         m->fetchMore();
-
-    //Check for uncomitted changes
-    QModelIndex idx=m->index(m->rowCount()-1,0);
-    if (idx.isValid() && m->isDirty(idx))
-        m->revertAll();
 
     m->insertRow(m->rowCount());
 }
