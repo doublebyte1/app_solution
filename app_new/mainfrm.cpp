@@ -108,6 +108,9 @@ void MainFrm::initUi()
     //read this from the app settings
     this->setWindowTitle(qApp->applicationName() + qApp->applicationVersion());
 
+     connect(actionMedfisis_Help, SIGNAL(triggered()),this,
+        SLOT(callAssistant() ),Qt::UniqueConnection);
+
      connect(actionAbout_this_project, SIGNAL(triggered()),this,
         SLOT(aboutThisProject () ),Qt::UniqueConnection);
 
@@ -168,6 +171,7 @@ void MainFrm::initUi()
     toolbar->addAction(actionGeneralize_Regions);
     toolbar->addSeparator();
     toolbar->addAction(this->actionAbout_this_project);
+    toolbar->addAction(this->actionMedfisis_Help);
     toolbar->addSeparator();
     toolbar->addAction(this->actionExit);
 
@@ -512,6 +516,36 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
 
     return false;
 }
+void MainFrm::callAssistant()
+{
+///////////////////////// PRODUCTION CODE ///////////////////////////////////////////////
+
+         QProcess *process = new QProcess(this);
+         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath)
+             + QLatin1String("/assistant");
+
+        QStringList args;
+        args << QLatin1String("-collectionFile")
+/*
+            << QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
+        + QLatin1String("/doc.qhc")*/
+         << QLibraryInfo::location(QLibraryInfo::ExamplesPath)
+         + QLatin1String("/help/simpletextviewer/documentation/simpletextviewer.qhc")
+        << QLatin1String("-enableRemoteControl");
+
+         process->start(app, args);
+         if (!process->waitForStarted()) {
+             QMessageBox::critical(this, tr("Remote Control"),
+                 tr("Could not start Qt Assistant from %1.").arg(app));
+             return;
+         }
+
+
+         // show index page
+         QTextStream str(process);
+         str << QLatin1String("SetSource qthelp://mycompany.com/doc/index.html")
+             << QLatin1Char('\0') << endl;
+}
 
 void MainFrm::aboutThisProject()
 {
@@ -593,17 +627,7 @@ void MainFrm::newTabs()
 void MainFrm::initTabs()
 {
     pFrmFrame=new FrmFrame(sSample,tDateTime,ruleCheckerPtr);
-/*
-     connect(pFrmFrame, SIGNAL(isLogBook(bool)), this,
-    SLOT(rearrangeTabs(bool)),Qt::UniqueConnection);
-
-     connect(pFrmFrame, SIGNAL(submitted(int,bool)), this,
-    SLOT(addTab(int,bool)),Qt::UniqueConnection);
-
-    vTabs.push_back(pFrmFrame);
-*/
     initPreviewTab(pFrmFrame);
-
     pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmMinorStrata);
     pFrmCell=new FrmCell(sSample,tDateTime,ruleCheckerPtr);

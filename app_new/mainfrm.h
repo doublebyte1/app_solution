@@ -201,6 +201,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    cleanupMsgBoxes();
         void                    rearrangeTabs(bool bLogBook);
         void                    aboutThisProject();
+        void                    callAssistant();
         void                    rulesInitialized(bool bReady);
 
         void                    loadFile();

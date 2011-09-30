@@ -49,6 +49,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout_this_project"/>
+    <addaction name="actionMedfisis_Help"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -318,6 +319,24 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionMedfisis_Help">
+   <property name="icon">
+    <iconset resource="app_new.qrc">
+     <normaloff>:/app_new/ktip.png</normaloff>:/app_new/ktip.png</iconset>
+   </property>
+   <property name="text">
+    <string>Medfisis Help</string>
+   </property>
+   <property name="statusTip">
+    <string>Help Browser</string>
+   </property>
+   <property name="whatsThis">
+    <string>Calls Help Browser</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+F1</string>
    </property>
   </action>
  </widget>

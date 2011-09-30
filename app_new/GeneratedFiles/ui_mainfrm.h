@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Tue 20. Sep 10:51:39 2011
+** Created: Thu 29. Sep 16:42:31 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -42,6 +42,7 @@ public:
     QAction *actionRegions;
     QAction *actionRebuild_Indexes;
     QAction *actionGeneralize_Regions;
+    QAction *actionMedfisis_Help;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -129,6 +130,11 @@ public:
         QIcon icon13;
         icon13.addFile(QString::fromUtf8(":/app_new/launch.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionGeneralize_Regions->setIcon(icon13);
+        actionMedfisis_Help = new QAction(MainWindow);
+        actionMedfisis_Help->setObjectName(QString::fromUtf8("actionMedfisis_Help"));
+        QIcon icon14;
+        icon14.addFile(QString::fromUtf8(":/app_new/ktip.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionMedfisis_Help->setIcon(icon14);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -170,6 +176,7 @@ public:
         menuSampling_Operation->addSeparator();
         menuSampling_Operation->addAction(actionExit);
         menuHelp->addAction(actionAbout_this_project);
+        menuHelp->addAction(actionMedfisis_Help);
         menuView->addAction(actionReports);
         menuView->addAction(actionRegions);
         menuTools->addAction(menuMaintenance_Tasks->menuAction());
@@ -283,6 +290,14 @@ public:
         actionGeneralize_Regions->setWhatsThis(QApplication::translate("MainWindow", "Converts regions on an adjacency list, to a nested set representation", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionGeneralize_Regions->setShortcut(QApplication::translate("MainWindow", "Ctrl+G", 0, QApplication::UnicodeUTF8));
+        actionMedfisis_Help->setText(QApplication::translate("MainWindow", "Medfisis Help", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionMedfisis_Help->setStatusTip(QApplication::translate("MainWindow", "Help Browser", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionMedfisis_Help->setWhatsThis(QApplication::translate("MainWindow", "Calls Help Browser", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionMedfisis_Help->setShortcut(QApplication::translate("MainWindow", "Ctrl+Alt+F1", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));

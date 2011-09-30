@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mapperrulebinder.h'
 **
-** Created: Tue 20. Sep 14:57:26 2011
+** Created: Thu 29. Sep 12:03:28 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

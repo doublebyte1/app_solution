@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Tue 20. Sep 14:57:27 2011
+** Created: Thu 29. Sep 16:46:41 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -102,7 +102,7 @@ static const uint qt_meta_data_MainFrm[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      21,   14, // methods
+      22,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -121,16 +121,17 @@ static const uint qt_meta_data_MainFrm[] = {
      352,    8,    8,    8, 0x08,
      379,  370,    8,    8, 0x08,
      399,    8,    8,    8, 0x08,
-     425,  418,    8,    8, 0x08,
-     448,    8,    8,    8, 0x08,
-     459,    8,    8,    8, 0x08,
-     476,    8,    8,    8, 0x08,
-     488,    8,    8,    8, 0x08,
-     500,    8,    8,    8, 0x08,
-     524,  520,    8,    8, 0x08,
-     557,    8,    8,    8, 0x08,
-     576,  520,    8,    8, 0x08,
-     608,    8,    8,    8, 0x08,
+     418,    8,    8,    8, 0x08,
+     441,  434,    8,    8, 0x08,
+     464,    8,    8,    8, 0x08,
+     475,    8,    8,    8, 0x08,
+     492,    8,    8,    8, 0x08,
+     504,    8,    8,    8, 0x08,
+     516,    8,    8,    8, 0x08,
+     540,  536,    8,    8, 0x08,
+     573,    8,    8,    8, 0x08,
+     592,  536,    8,    8, 0x08,
+     624,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -145,8 +146,8 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "statusClean(QString)\0strError,bShowMsgBox\0"
     "displayError(QString,bool)\0cleanupMsgBoxes()\0"
     "bLogBook\0rearrangeTabs(bool)\0"
-    "aboutThisProject()\0bReady\0"
-    "rulesInitialized(bool)\0loadFile()\0"
+    "aboutThisProject()\0callAssistant()\0"
+    "bReady\0rulesInitialized(bool)\0loadFile()\0"
     "openRecentFile()\0closeFile()\0writeFile()\0"
     "closeSecondaryFrm()\0frm\0"
     "closeSecondaryFrm(SecondaryFrm*)\0"
@@ -196,19 +197,20 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 8: cleanupMsgBoxes(); break;
         case 9: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 10: aboutThisProject(); break;
-        case 11: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 12: loadFile(); break;
-        case 13: openRecentFile(); break;
-        case 14: closeFile(); break;
-        case 15: writeFile(); break;
-        case 16: closeSecondaryFrm(); break;
-        case 17: closeSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
-        case 18: loadSecondaryFrm(); break;
-        case 19: loadSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
-        case 20: RebuildIndexes(); break;
+        case 11: callAssistant(); break;
+        case 12: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 13: loadFile(); break;
+        case 14: openRecentFile(); break;
+        case 15: closeFile(); break;
+        case 16: writeFile(); break;
+        case 17: closeSecondaryFrm(); break;
+        case 18: closeSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
+        case 19: loadSecondaryFrm(); break;
+        case 20: loadSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
+        case 21: RebuildIndexes(); break;
         default: ;
         }
-        _id -= 21;
+        _id -= 22;
     }
     return _id;
 }
