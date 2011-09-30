@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmsampling.ui'
 **
-** Created: Thu 29. Sep 12:05:25 2011
+** Created: Fri 30. Sep 17:01:12 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,7 +14,6 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -32,7 +31,7 @@ public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
-    QComboBox *cmbSource;
+    QLabel *lbSource;
     QTableView *tableView;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
@@ -53,10 +52,20 @@ public:
 
         horizontalLayout_2->addWidget(label);
 
-        cmbSource = new QComboBox(FrmSampling);
-        cmbSource->setObjectName(QString::fromUtf8("cmbSource"));
+        lbSource = new QLabel(FrmSampling);
+        lbSource->setObjectName(QString::fromUtf8("lbSource"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(lbSource->sizePolicy().hasHeightForWidth());
+        lbSource->setSizePolicy(sizePolicy);
+        lbSource->setStyleSheet(QString::fromUtf8("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));\n"
+"font: 75 10pt \"Fixedsys\";"));
+        lbSource->setFrameShape(QFrame::StyledPanel);
+        lbSource->setFrameShadow(QFrame::Raised);
+        lbSource->setScaledContents(true);
 
-        horizontalLayout_2->addWidget(cmbSource);
+        horizontalLayout_2->addWidget(lbSource);
 
 
         verticalLayout->addLayout(horizontalLayout_2);
@@ -91,6 +100,8 @@ public:
 
 
         retranslateUi(FrmSampling);
+        QObject::connect(pushApply, SIGNAL(clicked()), FrmSampling, SLOT(apply()));
+        QObject::connect(pushBack, SIGNAL(clicked()), FrmSampling, SLOT(back()));
 
         QMetaObject::connectSlotsByName(FrmSampling);
     } // setupUi
@@ -99,6 +110,7 @@ public:
     {
         FrmSampling->setWindowTitle(QApplication::translate("FrmSampling", "Form", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("FrmSampling", "Source", 0, QApplication::UnicodeUTF8));
+        lbSource->setText(QApplication::translate("FrmSampling", "[SOURCE]", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushBack->setToolTip(QApplication::translate("FrmSampling", "Go back", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

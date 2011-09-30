@@ -27,14 +27,19 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
     public slots:
 
     signals:
+        void                    hideFrmSampling(bool bNotSubmitted);
+        void                    showStatus(QString str);//!< signal for showing messages in the status bar
+        void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 
     protected:
+        void                    showEvent ( QShowEvent * event );
 
     private slots:
         void                    back();
         void                    apply();
 
     private:
+        bool                    m_submitted;
 };
 
 #endif //FRMSAMPLING_H

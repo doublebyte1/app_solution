@@ -20,6 +20,7 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     m_submitted=false;
     m_curMode=FrmFrameDetails::NONE;
     m_bInsert=false;
+    m_bSampling=false;
 
     m_tabsDefined=false;
 
@@ -41,6 +42,15 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
 
     connect(this, SIGNAL(hideFrameDetails(bool)), this,
         SLOT(onHideFrameDetails()));
+
+    connect(toolProcess, SIGNAL(clicked()), this,
+        SIGNAL(showFrmSampling()));
+
+    connect(this, SIGNAL(hideFrmSampling(bool)), this,
+        SLOT(onHideFrmSampling(bool)));
+
+    connect(this, SIGNAL(editLeave(const bool)), this,
+        SLOT(onEditLeave(const bool)));
 
     initModels();
     initUI();
@@ -80,11 +90,19 @@ void FrmFrame::setPreviewQuery()
 void FrmFrame::uI4NewRecord()
 {
     genericUI4NewRecord();
+    groupProcess->setEnabled(false);
+    pushNext->setEnabled(false);
 }
 
 void FrmFrame::beforeShow()
 {
     this->groupDetails->setVisible(false);
+}
+
+void FrmFrame::onEditLeave(const bool bFinished)
+{
+    //m_bSampling=!bFinished;
+    groupProcess->setEnabled(!bFinished);
 }
 
 bool FrmFrame::applyChanges()
@@ -111,6 +129,11 @@ bool FrmFrame::applyChanges()
 
 void FrmFrame::createRecord()
 {
+    if (m_bSampling){
+        emit showError(tr("You can not insert a new record, before you have completed this one: \n define the sampling process!"));
+        return;
+    }
+
     genericCreateRecord();
 
     mapper->toLast();
@@ -140,6 +163,8 @@ void FrmFrame::createRecord()
 
 void FrmFrame::previewRow(QModelIndex index)
 {
+    if (m_bSampling) return;
+
     if (!index.isValid()) return;
 
     //its on a new record
@@ -155,6 +180,7 @@ void FrmFrame::previewRow(QModelIndex index)
         this->groupDetails->setVisible(true);
 
     emit lockControls(true,m_lWidgets);
+    groupProcess->setEnabled(false);
 
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
     buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
@@ -201,7 +227,8 @@ void FrmFrame::previewRow(QModelIndex index)
 
 void FrmFrame::onItemSelection()
 {
-    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    if (!m_bSampling)
+        pushNext->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmFrame::blockCustomDateCtrls()
@@ -221,7 +248,7 @@ void FrmFrame::unblockCustomDateCtrls()
 void FrmFrame::showEvent ( QShowEvent * event )
 {
     //Since this is the first form, we have to force the call here!
-    if (m_curMode == FrmFrameDetails::NONE)
+    if (m_curMode == FrmFrameDetails::NONE && !pushEdit->isChecked())
         onShowForm();
 }
 
@@ -329,6 +356,27 @@ void FrmFrame::onShowFrameDetails()
             }
         }
     }
+}
+
+void FrmFrame::onHideFrmSampling(bool bSubmitted)
+{
+    if (pushEdit->isChecked()) return;
+
+    pushEdit->setEnabled(bSubmitted);
+    pushRemove->setEnabled(bSubmitted);
+
+    if (bSubmitted){
+        m_bSampling=false;
+        if (afterApply()){
+            groupProcess->setEnabled(false);
+            m_bInsert=false;
+            m_submitted=true;
+            updateSample();//update sample here, because of the save
+        }
+    }
+
+    if (!groupDetails->isVisible())
+        groupDetails->setVisible(true);
 }
 
 void FrmFrame::initMapper2()
@@ -470,19 +518,10 @@ bool FrmFrame::reallyApply()
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
 
     emit lockControls(!bError,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
-    pushEdit->setEnabled(!bError);
-    pushRemove->setEnabled(!bError);
 
-    if (!bError){
-        if (!afterApply()){
-            bError=false;
-        }else{
-            m_bInsert=false;
-            m_submitted=true;
-            updateSample();//update sample here, because of the save
-        }
-    }
+    setPreviewQuery();
+    groupProcess->setEnabled(true);
+    m_bSampling=true;//waiting for the sampling input...!
 
     return !bError;
 }

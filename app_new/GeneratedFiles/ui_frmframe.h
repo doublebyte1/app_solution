@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Mon 26. Sep 10:56:14 2011
+** Created: Fri 30. Sep 17:36:47 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -24,7 +24,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 #include <QtGui/QSpacerItem>
-#include <QtGui/QSplitter>
 #include <QtGui/QTableView>
 #include <QtGui/QToolButton>
 #include <QtGui/QVBoxLayout>
@@ -61,15 +60,18 @@ public:
     QRadioButton *radioCopy;
     QComboBox *cmbCopy;
     QToolButton *toolEdit;
-    QSplitter *splitter_2;
     QGroupBox *groupTime;
     QGridLayout *gridLayout_3;
     QLabel *label;
     QLabel *label_2;
     CustomTimeCtrl *customDtStart;
     CustomTimeCtrl *customDtEnd;
-    QWidget *layoutWidget2;
     QVBoxLayout *verticalLayout;
+    QGroupBox *groupProcess;
+    QHBoxLayout *horizontalLayout_4;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_5;
+    QToolButton *toolProcess;
     QLabel *lbHeader;
     QSpacerItem *verticalSpacer;
     QDialogButtonBox *buttonBox;
@@ -83,7 +85,7 @@ public:
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
-        frmframe->resize(814, 521);
+        frmframe->resize(814, 536);
         verticalLayout_4 = new QVBoxLayout(frmframe);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         horizontalLayout = new QHBoxLayout();
@@ -110,7 +112,7 @@ public:
 
         tableView = new QTableView(frmframe);
         tableView->setObjectName(QString::fromUtf8("tableView"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
@@ -218,12 +220,9 @@ public:
         gridLayout_2->addWidget(toolEdit, 2, 2, 1, 1);
 
 
-        gridLayout_4->addWidget(groupPhysical, 0, 0, 1, 1);
+        gridLayout_4->addWidget(groupPhysical, 0, 0, 1, 2);
 
-        splitter_2 = new QSplitter(groupDetails);
-        splitter_2->setObjectName(QString::fromUtf8("splitter_2"));
-        splitter_2->setOrientation(Qt::Horizontal);
-        groupTime = new QGroupBox(splitter_2);
+        groupTime = new QGroupBox(groupDetails);
         groupTime->setObjectName(QString::fromUtf8("groupTime"));
         gridLayout_3 = new QGridLayout(groupTime);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
@@ -246,28 +245,47 @@ public:
 
         customDtStart = new CustomTimeCtrl(groupTime);
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
-        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
-        customDtStart->setSizePolicy(sizePolicy3);
+        sizePolicy1.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
+        customDtStart->setSizePolicy(sizePolicy1);
 
         gridLayout_3->addWidget(customDtStart, 1, 0, 1, 1);
 
         customDtEnd = new CustomTimeCtrl(groupTime);
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
-        sizePolicy3.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
-        customDtEnd->setSizePolicy(sizePolicy3);
+        sizePolicy1.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
+        customDtEnd->setSizePolicy(sizePolicy1);
 
         gridLayout_3->addWidget(customDtEnd, 1, 1, 1, 1);
 
-        splitter_2->addWidget(groupTime);
-        layoutWidget2 = new QWidget(splitter_2);
-        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        verticalLayout = new QVBoxLayout(layoutWidget2);
+
+        gridLayout_4->addWidget(groupTime, 1, 0, 1, 1);
+
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
-        lbHeader = new QLabel(layoutWidget2);
+        groupProcess = new QGroupBox(groupDetails);
+        groupProcess->setObjectName(QString::fromUtf8("groupProcess"));
+        groupProcess->setFlat(true);
+        horizontalLayout_4 = new QHBoxLayout(groupProcess);
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label_5 = new QLabel(groupProcess);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        horizontalLayout_3->addWidget(label_5);
+
+        toolProcess = new QToolButton(groupProcess);
+        toolProcess->setObjectName(QString::fromUtf8("toolProcess"));
+
+        horizontalLayout_3->addWidget(toolProcess);
+
+
+        horizontalLayout_4->addLayout(horizontalLayout_3);
+
+
+        verticalLayout->addWidget(groupProcess);
+
+        lbHeader = new QLabel(groupDetails);
         lbHeader->setObjectName(QString::fromUtf8("lbHeader"));
 
         verticalLayout->addWidget(lbHeader);
@@ -276,7 +294,7 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
-        buttonBox = new QDialogButtonBox(layoutWidget2);
+        buttonBox = new QDialogButtonBox(groupDetails);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         sizePolicy.setHeightForWidth(buttonBox->sizePolicy().hasHeightForWidth());
         buttonBox->setSizePolicy(sizePolicy);
@@ -284,9 +302,8 @@ public:
 
         verticalLayout->addWidget(buttonBox);
 
-        splitter_2->addWidget(layoutWidget2);
 
-        gridLayout_4->addWidget(splitter_2, 1, 0, 1, 1);
+        gridLayout_4->addLayout(verticalLayout, 1, 1, 1, 1);
 
 
         verticalLayout_4->addWidget(groupDetails);
@@ -400,6 +417,9 @@ public:
         groupTime->setTitle(QApplication::translate("frmframe", "Time Frame", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmframe", "Start Date", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmframe", "End Date", 0, QApplication::UnicodeUTF8));
+        groupProcess->setTitle(QString());
+        label_5->setText(QApplication::translate("frmframe", "Sampling Process", 0, QApplication::UnicodeUTF8));
+        toolProcess->setText(QApplication::translate("frmframe", "...", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmframe", "LBHEADER", 0, QApplication::UnicodeUTF8));
         groupBackNext->setTitle(QString());
         pushPrevious->setText(QApplication::translate("frmframe", "Previous", 0, QApplication::UnicodeUTF8));

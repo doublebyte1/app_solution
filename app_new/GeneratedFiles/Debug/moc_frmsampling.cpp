@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmsampling.h'
 **
-** Created: Thu 29. Sep 12:05:33 2011
+** Created: Fri 30. Sep 15:31:22 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,22 +23,31 @@ static const uint qt_meta_data_FrmSampling[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       4,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      27,   13,   12,   12, 0x05,
+      53,   49,   12,   12, 0x05,
+      89,   73,   12,   12, 0x05,
+     113,   49,   12,   12, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-      13,   12,   12,   12, 0x08,
-      20,   12,   12,   12, 0x08,
+     132,   12,   12,   12, 0x08,
+     139,   12,   12,   12, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmSampling[] = {
-    "FrmSampling\0\0back()\0apply()\0"
+    "FrmSampling\0\0bNotSubmitted\0"
+    "hideFrmSampling(bool)\0str\0showStatus(QString)\0"
+    "str,bShowMsgBox\0showError(QString,bool)\0"
+    "showError(QString)\0back()\0apply()\0"
 };
 
 const QMetaObject FrmSampling::staticMetaObject = {
@@ -72,12 +81,37 @@ int FrmSampling::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: back(); break;
-        case 1: apply(); break;
+        case 0: hideFrmSampling((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 4: back(); break;
+        case 5: apply(); break;
         default: ;
         }
-        _id -= 2;
+        _id -= 6;
     }
     return _id;
+}
+
+// SIGNAL 0
+void FrmSampling::hideFrmSampling(bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void FrmSampling::showStatus(QString _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void FrmSampling::showError(QString _t1, const bool _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_END_MOC_NAMESPACE

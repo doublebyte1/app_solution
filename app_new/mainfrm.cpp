@@ -9,6 +9,7 @@ QMainWindow(parent, flags){
     pFrmFrame=0;
     pFrmMinorStrata=0;
     pFrmFrameDetails=0;
+    pFrmSampling=0;
     pFrmCell=0;
     sSample=new Sample;
     pFrmVesselType=0;
@@ -53,6 +54,7 @@ MainFrm::~MainFrm()
     if (pFrmFrame!=0) delete pFrmFrame;
     if (pFrmMinorStrata!=0) delete pFrmMinorStrata;
     if (pFrmFrameDetails!=0) delete pFrmFrameDetails;
+    if (pFrmSampling!=0) delete pFrmSampling;
     if (pFrmCell!=0) delete pFrmCell;
     if (pFrmVesselType!=0) delete pFrmVesselType;
     if (pFrmVessel!=0) delete pFrmVessel;
@@ -540,7 +542,6 @@ void MainFrm::callAssistant()
              return;
          }
 
-
          // show index page
          QTextStream str(process);
          str << QLatin1String("SetSource qthelp://mycompany.com/doc/index.html")
@@ -656,6 +657,19 @@ void MainFrm::initTabs()
     gridLayout->addWidget(pFrmFrameDetails);
     pFrmFrameDetails->hide();
 
+    pFrmSampling=new FrmSampling();
+     connect(pFrmSampling, SIGNAL(hideFrmSampling(bool)), this,
+    SLOT(hideFrmSampling()));
+
+     connect(pFrmSampling, SIGNAL(showStatus(QString)), this,
+    SLOT(statusShow(QString)));
+
+     connect(pFrmSampling, SIGNAL(showError(QString, const bool)), this,
+    SLOT(displayError(QString, const bool)));
+
+    gridLayout->addWidget(pFrmSampling);
+    pFrmSampling->hide();
+
     // Connect all the signals
      for (int i = 0; i < vTabs.size(); ++i) {
 
@@ -667,6 +681,12 @@ void MainFrm::initTabs()
 
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), vTabs.at(i),
         SIGNAL(hideFrameDetails(bool)),Qt::UniqueConnection);
+
+         connect(vTabs.at(i), SIGNAL(showFrmSampling()), this,
+        SLOT(showFrmSampling()),Qt::UniqueConnection);
+
+         connect(pFrmSampling, SIGNAL(hideFrmSampling(bool)), vTabs.at(i),
+        SIGNAL(hideFrmSampling(bool)),Qt::UniqueConnection);
 
          connect(vTabs.at(i), SIGNAL(showError(QString,bool)), this,
         SLOT(displayError(QString,bool)),Qt::UniqueConnection);
@@ -754,6 +774,17 @@ void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,
     pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList, options);
     tabWidget->hide();
     pFrmFrameDetails->show();
+}
+
+void MainFrm::hideFrmSampling()
+{
+    pFrmSampling->hide();
+    tabWidget->show();
+}
+
+void MainFrm::showFrmSampling(){
+    tabWidget->hide();
+    pFrmSampling->show();
 }
 
 void MainFrm::displayError(QString strError, const bool bShowMsgBox)

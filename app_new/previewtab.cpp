@@ -91,12 +91,12 @@ void PreviewTab::genericUI4NewRecord()
 
     emit lockControls(false,m_lWidgets);
 
-    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
+    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(false);
     m_buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
     m_buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     m_pushEdit->setEnabled(false);
-    m_pushEdit->setEnabled(false);
+    m_pushRemove->setEnabled(false);
 }
 
 bool PreviewTab::onButtonClick(QAbstractButton* button)
@@ -152,6 +152,8 @@ bool PreviewTab::afterApply()
     if (!cIdx.isValid()) return false;
 
     m_table->selectRow(0);
+
+    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
     return true;
 }
@@ -237,6 +239,7 @@ bool PreviewTab::editRecord(bool on)
            case QMessageBox::Save:
                if (!applyChanges()){
                     emit showError(tr("Could not submit changes to this record!"));
+                    emit editLeave(false);
                     return false;
                }
                 else
@@ -248,6 +251,7 @@ bool PreviewTab::editRecord(bool on)
                break;
            case QMessageBox::Cancel:
                 m_pushEdit->setChecked(true);
+                emit editLeave(false);
                 return true;
                 break;
            default:
@@ -255,14 +259,17 @@ bool PreviewTab::editRecord(bool on)
                break;
          }
 
-    }
-        m_pushNew->setEnabled(!m_pushEdit->isChecked());
-        m_pushRemove->setEnabled(!m_pushEdit->isChecked());
+        emit editLeave(true);
+    }else
+        emit editLeave(false);
 
-        m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
-        emit lockControls(!on,m_lWidgets);
+    m_pushNew->setEnabled(!m_pushEdit->isChecked());
+    m_pushRemove->setEnabled(!m_pushEdit->isChecked());
 
-        return true;
+    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
+    emit lockControls(!on,m_lWidgets);
+
+    return true;
 }
 
 bool PreviewTab::translateIndex(const QModelIndex inIdx, QModelIndex& outIdx)

@@ -4,6 +4,7 @@
 #include "ui_mainfrm.h"
 #include "CustomMsgBox.h"
 #include "frmframedetails.h"
+#include "frmsampling.h"
 #include "frmframe.h"
 #include "frmminorstrata.h"
 #include "frmcell.h"
@@ -156,6 +157,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;
         FrmFrameDetails         *pFrmFrameDetails;
+        FrmSampling             *pFrmSampling;
         FrmCell                 *pFrmCell;
         FrmVesselType           *pFrmVesselType;
         FrmVessel               *pFrmVessel;
@@ -195,6 +197,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
                                         const FrmFrameDetails::Persistence persistence,Sample* sample, 
                                         QList<int>& blackList, const FrmFrameDetails::Options options);
         void                    hideFrameDetails();
+        void                    showFrmSampling();
+        void                    hideFrmSampling();
         void                    statusShow(QString str);
         void                    statusClean(QString str);
         void                    displayError(QString strError, const bool bShowMsgBox);

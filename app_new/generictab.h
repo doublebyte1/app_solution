@@ -159,6 +159,8 @@ class GenericTab : public QWidget
         void                    showFrameDetails(const FrmFrameDetails::Mode mode,
                                     const FrmFrameDetails::Persistence persistence, Sample* sample, 
                                     QList<int>& blackList=QList<int>(), const FrmFrameDetails::Options options=FrmFrameDetails::ALLOW_NEW);/**< signal to show the frame details form */
+        void                    hideFrmSampling(bool bNotSubmitted);/**< signal to hide the frame details form */
+        void                    showFrmSampling();
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
 

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Thu 29. Sep 12:03:45 2011
+** Created: Fri 30. Sep 17:32:08 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,9 +39,11 @@ static const uint qt_meta_data_FrmFrame[] = {
       88,    9,    9,    9, 0x0a,
      113,    9,    9,    9, 0x08,
      134,    9,    9,    9, 0x08,
-     155,    9,    9,    9, 0x08,
-     176,  170,    9,    9, 0x08,
-     200,    9,    9,    9, 0x08,
+     166,  155,    9,    9, 0x08,
+     190,    9,    9,    9, 0x08,
+     211,  205,    9,    9, 0x08,
+     235,    9,    9,    9, 0x08,
+     263,  253,    9,    9, 0x08,
 
        0        // eod
 };
@@ -51,8 +53,10 @@ static const char qt_meta_stringdata_FrmFrame[] = {
     "index,bOk\0submitted(int,bool)\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
     "onHideFrameDetails()\0onShowFrameDetails()\0"
+    "bSubmitted\0onHideFrmSampling(bool)\0"
     "createRecord()\0index\0previewRow(QModelIndex)\0"
-    "onItemSelection()\0"
+    "onItemSelection()\0bFinished\0"
+    "onEditLeave(bool)\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -92,12 +96,14 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: unblockCustomDateCtrls(); break;
         case 4: onHideFrameDetails(); break;
         case 5: onShowFrameDetails(); break;
-        case 6: createRecord(); break;
-        case 7: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 8: onItemSelection(); break;
+        case 6: onHideFrmSampling((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 7: createRecord(); break;
+        case 8: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 9: onItemSelection(); break;
+        case 10: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }

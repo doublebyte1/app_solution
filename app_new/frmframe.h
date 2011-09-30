@@ -35,9 +35,13 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
 
+        void                                   onHideFrmSampling(bool bSubmitted);
+
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
+        //void                                   showSampling();
+        void                                   onEditLeave(const bool bFinished);
 
     signals:
         void                                   isLogBook(bool bLogBook);
@@ -76,7 +80,8 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         FrmFrameDetails::Mode                  m_curMode;
-        bool                                   m_submitted;
+        bool                                   m_submitted;;/**< flag to define if the record was finalised and successfully submitted */
+        bool                                   m_bSampling;;/**< flag to define if the sampling process definition is ongoing */
         bool                                   m_tabsDefined;
         bool                                   m_bInsert;
 };
