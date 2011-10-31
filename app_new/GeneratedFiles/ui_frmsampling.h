@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmsampling.ui'
 **
-** Created: Fri 30. Sep 17:01:12 2011
+** Created: Mon 31. Oct 16:15:02 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,6 +14,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -32,6 +33,9 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
     QLabel *lbSource;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_2;
+    QComboBox *cmbSchema;
     QTableView *tableView;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
@@ -70,12 +74,24 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_2);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        label_2 = new QLabel(FrmSampling);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+
+        horizontalLayout_3->addWidget(label_2);
+
+        cmbSchema = new QComboBox(FrmSampling);
+        cmbSchema->setObjectName(QString::fromUtf8("cmbSchema"));
+
+        horizontalLayout_3->addWidget(cmbSchema);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
+
         tableView = new QTableView(FrmSampling);
         tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setEditTriggers(QAbstractItemView::DoubleClicked);
         tableView->setAlternatingRowColors(true);
-        tableView->setSelectionMode(QAbstractItemView::NoSelection);
-        tableView->horizontalHeader()->setVisible(false);
 
         verticalLayout->addWidget(tableView);
 
@@ -102,6 +118,7 @@ public:
         retranslateUi(FrmSampling);
         QObject::connect(pushApply, SIGNAL(clicked()), FrmSampling, SLOT(apply()));
         QObject::connect(pushBack, SIGNAL(clicked()), FrmSampling, SLOT(back()));
+        QObject::connect(cmbSchema, SIGNAL(currentIndexChanged(int)), FrmSampling, SLOT(initRecords(int)));
 
         QMetaObject::connectSlotsByName(FrmSampling);
     } // setupUi
@@ -111,6 +128,7 @@ public:
         FrmSampling->setWindowTitle(QApplication::translate("FrmSampling", "Form", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("FrmSampling", "Source", 0, QApplication::UnicodeUTF8));
         lbSource->setText(QApplication::translate("FrmSampling", "[SOURCE]", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("FrmSampling", "Choose Sampling Schema", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushBack->setToolTip(QApplication::translate("FrmSampling", "Go back", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

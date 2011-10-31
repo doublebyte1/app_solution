@@ -2554,6 +2554,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\ui_frmsampling.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\ui_frmtrip.h"
 				>
 			</File>

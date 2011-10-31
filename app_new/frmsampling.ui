@@ -52,19 +52,24 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Choose Sampling Schema</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cmbSchema"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QTableView" name="tableView">
-     <property name="editTriggers">
-      <set>QAbstractItemView::DoubleClicked</set>
-     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::NoSelection</enum>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
     </widget>
    </item>
    <item>
@@ -152,9 +157,26 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmbSchema</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>FrmSampling</receiver>
+   <slot>initRecords(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>468</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>314</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>back()</slot>
   <slot>apply()</slot>
+  <slot>initRecords(int)</slot>
  </slots>
 </ui>

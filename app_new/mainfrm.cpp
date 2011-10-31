@@ -657,7 +657,7 @@ void MainFrm::initTabs()
     gridLayout->addWidget(pFrmFrameDetails);
     pFrmFrameDetails->hide();
 
-    pFrmSampling=new FrmSampling();
+    pFrmSampling=new FrmSampling(this->sSample);
      connect(pFrmSampling, SIGNAL(hideFrmSampling(bool)), this,
     SLOT(hideFrmSampling()));
 

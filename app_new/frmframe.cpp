@@ -371,7 +371,7 @@ void FrmFrame::onHideFrmSampling(bool bSubmitted)
             groupProcess->setEnabled(false);
             m_bInsert=false;
             m_submitted=true;
-            updateSample();//update sample here, because of the save
+            //updateSample();//update sample here, because of the save
         }
     }
 
@@ -522,6 +522,9 @@ bool FrmFrame::reallyApply()
     setPreviewQuery();
     groupProcess->setEnabled(true);
     m_bSampling=true;//waiting for the sampling input...!
+
+    tableView->selectRow(0);
+    updateSample();
 
     return !bError;
 }
