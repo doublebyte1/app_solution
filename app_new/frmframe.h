@@ -32,6 +32,9 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   unblockCustomDateCtrls();
 
     private slots:
+        bool                                   updateSample();
+        bool                                   updateSample(const QModelIndex& idx);
+
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
 
@@ -66,7 +69,6 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         */
         bool                                   reallyApply();
         void                                   setReadOnly(const bool bRO);
-        bool                                   updateSample();
         void                                   initModels();
         void                                   initFrModel();
         void                                   initMappers();

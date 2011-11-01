@@ -1,6 +1,6 @@
 #include <QTest>
 #include "frmsampling.h"
-#include "generictab.h"
+#include "previewtab.h"
 
 FrmSampling::FrmSampling(Sample* inSample, QWidget *parent, Qt::WFlags flags):
 QWidget(parent, flags),m_sample(inSample){
@@ -10,7 +10,6 @@ QWidget(parent, flags),m_sample(inSample){
     tSampLevels=0;
     tRefSchema=0;
     tRefLevels=0;
-    mapper1=0;
     initModels();
     initUI();
 }
@@ -20,18 +19,29 @@ FrmSampling::~FrmSampling()
     if (tSampLevels!=0) delete tSampLevels;
     if (tRefSchema!=0) delete tRefSchema;
     if (tRefLevels!=0) delete tRefLevels;
-    if (mapper1!=0) delete mapper1;
+}
+
+void FrmSampling::setTips(const bool bLogbook)
+{
+    lbSource->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbSource->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbSource->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
 void FrmSampling::showEvent ( QShowEvent * event )
 {
+    setSourceText(lbSource,m_sample->bLogBook);
+    setTips(m_sample->bLogBook);
+
     tSampLevels->setFilter(tr("id_fr_time=")+QVariant(m_sample->frameTimeId).toString());
 
     //right now we force the logbook to multi-stage logbook and sampling to multi-stage sampling
-    //tRefSchema->setFilter("id="+ (m_sample->bLogBook?QVariant(3).toString():QVariant(4).toString()) );
-    //initRecords(cmbSchema->currentIndex());
+    //HARDCODED for now: logbook=2; sampling=3
+    cmbSchema->setCurrentIndex(m_sample->bLogBook?2:3);
 
-    cmbSchema->setEnabled(true);
+    initRecords(cmbSchema->currentIndex());
+
+    //cmbSchema->setEnabled(true);
     tableView->setEnabled(true);
     m_submitted=false;
     pushApply->setEnabled(!m_submitted);
@@ -39,8 +49,6 @@ void FrmSampling::showEvent ( QShowEvent * event )
 
 void FrmSampling::initRecords(int index)
 {
-    qDebug() << mapper1->currentIndex() << endl;
-
     if (!this->isVisible()) return;
 
     //first revert changes
@@ -77,7 +85,7 @@ void FrmSampling::apply()
     }
 
     tableView->setEnabled(!m_submitted);
-    cmbSchema->setEnabled(!m_submitted);
+    //cmbSchema->setEnabled(!m_submitted);
     pushApply->setEnabled(!m_submitted);
 }
 
@@ -115,14 +123,9 @@ void FrmSampling::initModels()
 
 void FrmSampling::initUI()
 {
-    if (mapper1!=0) delete mapper1;
-    mapper1= new QDataWidgetMapper(this);
-    mapper1->setModel(tRefSchema);
-    mapper1->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-
     cmbSchema->setModel(tRefSchema);
     cmbSchema->setModelColumn(1);
-    mapper1->addMapping(cmbSchema, 1);
+    cmbSchema->setEnabled(false);
 
     initTable();
     tableView->resizeColumnsToContents();
@@ -160,3 +163,37 @@ Qt::ItemFlags CustomModel::flags ( const QModelIndex & index ) const
         return QSqlRelationalTableModel::flags(index);
     }
 }
+/*
+///////////////////////////////////////////////
+Delegate::Delegate(QObject * parent):
+QSqlRelationalDelegate (parent){
+
+
+}
+
+void Delegate::setEditorData(QWidget *editor,
+                       const QModelIndex &index) const
+{
+  if (!editor->metaObject()->userProperty().isValid()) {
+    if (editor->property("currentIndex").isValid()) {
+      editor->setProperty("currentIndex", index.data());
+      return;
+    }
+  }
+  QItemDelegate::setEditorData(editor, index);
+}
+
+void Delegate::setModelData(QWidget *editor,
+                     QAbstractItemModel *model,
+                     const QModelIndex &index) const
+{
+  if (!editor->metaObject()->userProperty().isValid()) {
+    QVariant value = editor->property("currentIndex");
+    if (value.isValid()) {
+      model->setData(index, value);
+      return;
+    }
+  }
+  QItemDelegate::setModelData(editor, model, index);
+}
+*/

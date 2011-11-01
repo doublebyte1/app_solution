@@ -205,7 +205,7 @@ void FrmMinorStrata::filterModel4Combo()
 void FrmMinorStrata::beforeShow()
 {
     this->groupDetails->setVisible(false);
-    setSourceText(lbSource);
+    setSourceText(lbSource,m_sample->bLogBook);
     toolButton->setVisible(m_sample->bLogBook);
 }
 

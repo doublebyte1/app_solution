@@ -236,7 +236,7 @@ void FrmVessel::beforeShow()
 {
     this->groupDetails->setVisible(false);
     this->groupFT->setVisible(!m_sample->bLogBook);
-    setSourceText(lbSource);
+    setSourceText(lbSource,m_sample->bLogBook);
     initVesselModel();
 }
 

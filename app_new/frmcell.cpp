@@ -276,7 +276,7 @@ void FrmCell::beforeShow()
 
     initCellModel();
     this->groupDetails->setVisible(false);
-    setSourceText(lbSource);
+    setSourceText(lbSource,m_sample->bLogBook);
 }
 
 bool FrmCell::reallyApply()

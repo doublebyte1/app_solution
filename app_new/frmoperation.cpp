@@ -319,7 +319,7 @@ void FrmOperation::beforeShow()
 {
     this->groupDetails->setVisible(false);
 
-    setSourceText(lbSource);
+    setSourceText(lbSource,m_sample->bLogBook);
     initOperationModel();
 }
 

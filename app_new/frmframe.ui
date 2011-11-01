@@ -543,5 +543,6 @@
   <slot>previewRow(QModelIndex)</slot>
   <slot>editRecord(bool)</slot>
   <slot>removeRecord()</slot>
+  <slot>updateSample()</slot>
  </slots>
 </ui>

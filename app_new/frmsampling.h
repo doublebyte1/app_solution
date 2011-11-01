@@ -11,6 +11,26 @@
 #ifndef FRMSAMPLING_H
 #define FRMSAMPLING_H
 
+//! Delegate Class
+/*!
+This class implements acustom delegate for the combo box.
+*//*
+class Delegate : public QSqlRelationalDelegate 
+{
+        Q_OBJECT
+
+    public:
+        Delegate(QObject *parent = 0);
+
+        void setEditorData(QWidget *editor,
+                           const QModelIndex &index) const;
+        void setModelData(QWidget *editor,
+                          QAbstractItemModel *model,
+                          const QModelIndex &index) const;
+
+};*/
+///////////////////////////////////////////////////////////////////
+
 //! Custom Model Class
 /*!
 This class implements an editable relatioanl model, appropriated for defining the characteristics of the sampling process.
@@ -60,6 +80,7 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
         void                           initRecords(int index);
 
     private:
+        void                           setTips(const bool bLogbook);
         void                           initTable();
         void                           initModels();
         void                           initUI();
@@ -67,7 +88,6 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
         QSqlTableModel*                tRefSchema;
         QSqlTableModel*                tRefLevels;
         CustomModel*                   tSampLevels;
-        QDataWidgetMapper*             mapper1;
         Sample*                        m_sample;/**< pointer to the Sample structure, hosted on the main form */
 };
 

@@ -167,6 +167,9 @@ void FrmFrame::previewRow(QModelIndex index)
 
     if (!index.isValid()) return;
 
+    QModelIndex idx=tableView->model()->index(index.row(),0);
+    updateSample(idx);
+
     //its on a new record
     if (!discardNewRecord()) return;
 
@@ -192,7 +195,7 @@ void FrmFrame::previewRow(QModelIndex index)
     QModelIndex pIdx;
     if (!translateIndex(index,pIdx)) return;
 
-    QModelIndex idx=viewFrameTime->index(index.row(),0);
+    idx=viewFrameTime->index(index.row(),0);
 
     mapper->setCurrentModelIndex(pIdx);
 
@@ -223,6 +226,7 @@ void FrmFrame::previewRow(QModelIndex index)
     mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 
     unblockCustomDateCtrls();
+
 }
 
 void FrmFrame::onItemSelection()
@@ -270,6 +274,7 @@ void FrmFrame::initUI()
     radioCopy->setChecked(true);
 
     initPreviewTable(tableView,viewFrameTime);
+    //tableView->selectRow(0);
     setButtonBox(buttonBox);
     setNewButton(pushNew);
     setEditButton(pushEdit);
@@ -402,6 +407,11 @@ void FrmFrame::initMapper2()
     connect(tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
          this, SLOT(previewRow(QModelIndex)));
 
+/*
+    connect(tableView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex &)), this,
+        SLOT(updateSample()));
+*/
+
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper << mapperStartDt << mapperEndDt;
     m_mapperBinderPtr=new MapperRuleBinder(m_ruleCheckerPtr, m_sample, lMapper, this->objectName());
@@ -524,7 +534,7 @@ bool FrmFrame::reallyApply()
     m_bSampling=true;//waiting for the sampling input...!
 
     tableView->selectRow(0);
-    updateSample();
+    //updateSample();
 
     return !bError;
 }
@@ -591,6 +601,22 @@ bool FrmFrame::getNextLabel(QString& strLabel)
     return true;
 }
 
+bool FrmFrame::updateSample(const QModelIndex& idx)
+{
+    m_sample->frameTimeId=idx.data().toInt();
+
+    QModelIndex idx2=viewFrameTime->index(idx.row(),4);
+
+    if (!idx2.isValid()) return false;
+    m_sample->frameId=idx2.data().toInt();
+
+    bool bLogbook;
+    if (!isLogBook(m_sample->frameId,bLogbook)) return false;
+    m_sample->bLogBook=bLogbook;
+
+    return true;
+}
+
 bool FrmFrame::updateSample()
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -600,18 +626,7 @@ bool FrmFrame::updateSample()
     QModelIndex idx=viewFrameTime->index(tableView->selectionModel()->currentIndex().row(),0);
 
     if (!idx.isValid()) return false;
-    m_sample->frameTimeId=idx.data().toInt();
-
-    idx=viewFrameTime->index(tableView->selectionModel()->currentIndex().row(),4);
-
-    if (!idx.isValid()) return false;
-    m_sample->frameId=idx.data().toInt();
-
-    bool bLogbook;
-    if (!isLogBook(m_sample->frameId,bLogbook)) return false;
-    m_sample->bLogBook=bLogbook;
-
-    return true;
+    return updateSample(idx);
 }
 
 bool FrmFrame::loadFrameFromSample()

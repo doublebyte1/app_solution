@@ -9,6 +9,12 @@
   #endif
 
 void                                  insertRecordIntoModel(QSqlTableModel* m);
+//! Set Source Text
+/*! Here we format the header label, and fill its text according to the fact that it is
+\par label pointer to a label
+a sampling or a logbook form;
+*/
+void                                  setSourceText(QLabel* label, const bool bIsLogbook);
 
 //////////////////////////////////////////////////////////////////////
 #ifndef PREVIEWTAB_H
@@ -129,12 +135,6 @@ class PreviewTab : public GenericTab
         we just update the preview query to show the inserted record on the table, and select this record;
         */
         bool                                  afterApply();
-        //! Set Source Text
-        /*! Here we format the header label, and fill its text according to the fact that it is
-        \par label pointer to a label
-        a sampling or a logbook form;
-        */
-        void                                  setSourceText(QLabel* label);
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
         bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);

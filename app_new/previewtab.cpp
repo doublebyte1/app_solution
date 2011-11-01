@@ -158,14 +158,6 @@ bool PreviewTab::afterApply()
     return true;
 }
 
-void PreviewTab::setSourceText(QLabel* label)
-{
-    label->setStyleSheet(m_sample->bLogBook?
-        tr("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));font: 75 10pt \"Fixedsys\"")
-    : tr("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(255, 0, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 85, 0, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.573864 rgba(255, 255, 255, 130), stop:0.57754 rgba(255, 255, 255, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));font: 75 10pt \"Fixedsys\"") );
-    label->setText(m_sample->bLogBook? tr("Logbook"): tr("Sampling"));
-}
-
 void PreviewTab::resizeEvent ( QResizeEvent * event )
 {
     (void) event;
@@ -260,8 +252,13 @@ bool PreviewTab::editRecord(bool on)
          }
 
         emit editLeave(true);
-    }else
+    }else{
+        if (!m_table->selectionModel()->hasSelection()){
+            emit showError(tr("You must select an item to edit!"));
+            return false;
+        }
         emit editLeave(false);
+    }
 
     m_pushNew->setEnabled(!m_pushEdit->isChecked());
     m_pushRemove->setEnabled(!m_pushEdit->isChecked());
@@ -406,4 +403,12 @@ void insertRecordIntoModel(QSqlTableModel* m)
         m->fetchMore();
 
     m->insertRow(m->rowCount());
+}
+
+void setSourceText(QLabel* label, const bool bIsLogbook)
+{
+    label->setStyleSheet(bIsLogbook?
+        QObject::tr("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));font: 75 10pt \"Fixedsys\"")
+    : QObject::tr("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(255, 0, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 85, 0, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.573864 rgba(255, 255, 255, 130), stop:0.57754 rgba(255, 255, 255, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));font: 75 10pt \"Fixedsys\"") );
+    label->setText(bIsLogbook? QObject::tr("Logbook"): QObject::tr("Sampling"));
 }

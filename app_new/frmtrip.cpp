@@ -340,7 +340,7 @@ void FrmTrip::beforeShow()
     if (m_sample->bLogBook)
         m_lWidgets << cmbSite;
 
-    setSourceText(lbSource);
+    setSourceText(lbSource,m_sample->bLogBook);
     initTripModel();
 
 }
