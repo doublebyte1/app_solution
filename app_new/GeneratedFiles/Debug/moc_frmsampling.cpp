@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmsampling.h'
 **
-** Created: Tue 1. Nov 10:45:54 2011
+** Created: Thu 3. Nov 14:15:28 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -72,7 +72,7 @@ static const uint qt_meta_data_FrmSampling[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -86,9 +86,11 @@ static const uint qt_meta_data_FrmSampling[] = {
      113,   49,   12,   12, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     132,   12,   12,   12, 0x08,
-     139,   12,   12,   12, 0x08,
-     153,  147,   12,   12, 0x08,
+     138,  132,   12,   12, 0x0a,
+     172,  165,   12,   12, 0x0a,
+     205,   12,   12,   12, 0x08,
+     212,   12,   12,   12, 0x08,
+     226,  220,   12,   12, 0x08,
 
        0        // eod
 };
@@ -97,8 +99,10 @@ static const char qt_meta_stringdata_FrmSampling[] = {
     "FrmSampling\0\0bNotSubmitted\0"
     "hideFrmSampling(bool)\0str\0showStatus(QString)\0"
     "str,bShowMsgBox\0showError(QString,bool)\0"
-    "showError(QString)\0back()\0apply()\0"
-    "index\0initRecords(int)\0"
+    "showError(QString)\0aMode\0"
+    "setMode(FrmSampling::MODE)\0bApply\0"
+    "onApplyChanges2FrmSampling(bool)\0"
+    "back()\0apply()\0index\0initRecords(int)\0"
 };
 
 const QMetaObject FrmSampling::staticMetaObject = {
@@ -136,12 +140,14 @@ int FrmSampling::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: back(); break;
-        case 5: apply(); break;
-        case 6: initRecords((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: setMode((*reinterpret_cast< const FrmSampling::MODE(*)>(_a[1]))); break;
+        case 5: onApplyChanges2FrmSampling((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 6: back(); break;
+        case 7: apply(); break;
+        case 8: initRecords((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

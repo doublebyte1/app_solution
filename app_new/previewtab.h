@@ -145,7 +145,7 @@ class PreviewTab : public GenericTab
     signals:
         void                                  isLogBook(const bool bIsLogbook);/**< signal to indicate if this is a logbook or sampling form*/
         void                                  blockCatchUISignals(const bool bBlock);/**< signal to block/unblock the CatchInputCtrl signals*/
-        void                                  editLeave(const bool bFinished);/**< signal to inform if we are *really* leaving the edit mode, or not*/
+        void                                  editLeave(const bool bFinished, const bool bDiscarded=false);/**< signal to inform if we are *really* leaving the edit mode, or not*/
 
     public slots:
         /*! Reimplemented from the GenericTab class

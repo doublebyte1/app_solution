@@ -532,6 +532,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmbPrexistent</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>frmframe</receiver>
+   <slot>adjustFrmSamplingMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>427</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onChoosePreExistent()</slot>
@@ -544,5 +560,6 @@
   <slot>editRecord(bool)</slot>
   <slot>removeRecord()</slot>
   <slot>updateSample()</slot>
+  <slot>adjustFrmSamplingMode()</slot>
  </slots>
 </ui>

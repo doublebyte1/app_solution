@@ -10,6 +10,7 @@ QWidget(parent, flags),m_sample(inSample){
     tSampLevels=0;
     tRefSchema=0;
     tRefLevels=0;
+    m_mode=FrmSampling::NONE;
     initModels();
     initUI();
 }
@@ -33,13 +34,20 @@ void FrmSampling::showEvent ( QShowEvent * event )
     setSourceText(lbSource,m_sample->bLogBook);
     setTips(m_sample->bLogBook);
 
+    pushApply->setVisible(m_mode==CREATE);
+
     tSampLevels->setFilter(tr("id_fr_time=")+QVariant(m_sample->frameTimeId).toString());
+    tSampLevels->sort(0,Qt::AscendingOrder);
 
     //right now we force the logbook to multi-stage logbook and sampling to multi-stage sampling
     //HARDCODED for now: logbook=2; sampling=3
     cmbSchema->setCurrentIndex(m_sample->bLogBook?2:3);
 
-    initRecords(cmbSchema->currentIndex());
+    for (int i=0; i < tSampLevels->rowCount(); ++i)
+        tableView->hideRow(i);
+
+    if (m_mode==CREATE || m_mode==REPLACE){
+        initRecords(cmbSchema->currentIndex());}
 
     //cmbSchema->setEnabled(true);
     tableView->setEnabled(true);
@@ -47,9 +55,18 @@ void FrmSampling::showEvent ( QShowEvent * event )
     pushApply->setEnabled(!m_submitted);
 }
 
+bool FrmSampling::removeRecords(int ct)
+{
+    //first check if the filter is on!
+    if (tSampLevels->filter().isEmpty() || tSampLevels->filter().isNull()) return false;
+
+    return ( tSampLevels->removeRows(0,tSampLevels->rowCount()));
+}
+
 void FrmSampling::initRecords(int index)
 {
     if (!this->isVisible()) return;
+    if (m_mode==EDIT)return;
 
     //first revert changes
     tSampLevels->revertAll();
@@ -73,8 +90,23 @@ void FrmSampling::back()
     emit hideFrmSampling(m_submitted);
 }
 
-void FrmSampling::apply()
+void FrmSampling::reallyApply()
 {
+    if (m_mode==REPLACE){
+
+        int ct=0;
+        for (int i=0; i < tSampLevels->rowCount(); ++i){
+            if (tableView->isRowHidden(i)) ct++;
+        }
+
+        if (!removeRecords(ct)){
+            if (tSampLevels->lastError().type()!=QSqlError::NoError)
+                emit showError(tSampLevels->lastError().text());
+            //else
+                //emit showError(tr("Could not remove previous characterization associated to this frame!"));
+        }
+    }
+
     if (tSampLevels->submitAll()){
         m_submitted=true;
     }else{
@@ -83,6 +115,33 @@ void FrmSampling::apply()
         else
             emit showError(tr("Failed to submit data: unknown error!"));
     }
+
+    uncoverRows();
+}
+
+void FrmSampling::uncoverRows()
+{
+    //show the hidden rows again
+    for (int i=0; i < tSampLevels->rowCount(); ++i){
+        if (tableView->isRowHidden(i)) tableView->showRow(i);
+    }
+}
+
+void FrmSampling::onApplyChanges2FrmSampling(const bool bApply)
+{
+    if (bApply)reallyApply();
+    else reallyDiscard();
+}
+
+void FrmSampling::reallyDiscard()
+{
+    tSampLevels->revertAll();
+    uncoverRows();
+}
+
+void FrmSampling::apply()
+{
+    reallyApply();
 
     tableView->setEnabled(!m_submitted);
     //cmbSchema->setEnabled(!m_submitted);
@@ -134,7 +193,7 @@ void FrmSampling::initUI()
 void FrmSampling::initTable()
 {
     tableView->setModel(tSampLevels);
-    tableView->sortByColumn(0);
+    tableView->sortByColumn(0, Qt::AscendingOrder);
     tableView->hideColumn(0);
     tableView->hideColumn(1);
 

@@ -667,6 +667,12 @@ void MainFrm::initTabs()
      connect(pFrmSampling, SIGNAL(showError(QString, const bool)), this,
     SLOT(displayError(QString, const bool)));
 
+     connect(pFrmFrame, SIGNAL(setFrmSamplingMode(const FrmSampling::MODE)), pFrmSampling,
+    SLOT(setMode(const FrmSampling::MODE)));
+
+     connect(pFrmFrame, SIGNAL(applyChanges2FrmSampling(const bool)), pFrmSampling,
+    SLOT(onApplyChanges2FrmSampling(const bool)));
+
     gridLayout->addWidget(pFrmSampling);
     pFrmSampling->hide();
 

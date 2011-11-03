@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 1. Nov 12:07:00 2011
+** Created: Thu 3. Nov 13:50:48 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,44 +23,49 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       4,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       19,   10,    9,    9, 0x05,
       45,   35,    9,    9, 0x05,
+      70,   65,    9,    9, 0x05,
+     115,  108,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      65,    9,    9,    9, 0x0a,
-      88,    9,    9,    9, 0x0a,
-     118,    9,  113,    9, 0x08,
-     137,  133,  113,    9, 0x08,
-     163,    9,    9,    9, 0x08,
-     184,    9,    9,    9, 0x08,
-     216,  205,    9,    9, 0x08,
-     240,    9,    9,    9, 0x08,
-     261,  255,    9,    9, 0x08,
-     285,    9,    9,    9, 0x08,
-     313,  303,    9,    9, 0x08,
+     146,    9,    9,    9, 0x0a,
+     169,    9,    9,    9, 0x0a,
+     194,    9,    9,    9, 0x08,
+     223,    9,  218,    9, 0x08,
+     242,  238,  218,    9, 0x08,
+     268,    9,    9,    9, 0x08,
+     289,    9,    9,    9, 0x08,
+     321,  310,    9,    9, 0x08,
+     345,    9,    9,    9, 0x08,
+     366,  360,    9,    9, 0x08,
+     390,    9,    9,    9, 0x08,
+     429,  408,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmFrame[] = {
     "FrmFrame\0\0bLogBook\0isLogBook(bool)\0"
-    "index,bOk\0submitted(int,bool)\0"
+    "index,bOk\0submitted(int,bool)\0mode\0"
+    "setFrmSamplingMode(FrmSampling::MODE)\0"
+    "bApply\0applyChanges2FrmSampling(bool)\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
-    "bool\0updateSample()\0idx\0"
-    "updateSample(QModelIndex)\0"
+    "adjustFrmSamplingMode()\0bool\0"
+    "updateSample()\0idx\0updateSample(QModelIndex)\0"
     "onHideFrameDetails()\0onShowFrameDetails()\0"
     "bSubmitted\0onHideFrmSampling(bool)\0"
     "createRecord()\0index\0previewRow(QModelIndex)\0"
-    "onItemSelection()\0bFinished\0"
-    "onEditLeave(bool)\0"
+    "onItemSelection()\0bFinished,bDiscarded\0"
+    "onEditLeave(bool,bool)\0"
 };
 
 const QMetaObject FrmFrame::staticMetaObject = {
@@ -96,22 +101,25 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: isLogBook((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: submitted((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 2: blockCustomDateCtrls(); break;
-        case 3: unblockCustomDateCtrls(); break;
-        case 4: { bool _r = updateSample();
+        case 2: setFrmSamplingMode((*reinterpret_cast< const FrmSampling::MODE(*)>(_a[1]))); break;
+        case 3: applyChanges2FrmSampling((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 4: blockCustomDateCtrls(); break;
+        case 5: unblockCustomDateCtrls(); break;
+        case 6: adjustFrmSamplingMode(); break;
+        case 7: { bool _r = updateSample();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 5: { bool _r = updateSample((*reinterpret_cast< const QModelIndex(*)>(_a[1])));
+        case 8: { bool _r = updateSample((*reinterpret_cast< const QModelIndex(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 6: onHideFrameDetails(); break;
-        case 7: onShowFrameDetails(); break;
-        case 8: onHideFrmSampling((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 9: createRecord(); break;
-        case 10: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 11: onItemSelection(); break;
-        case 12: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 9: onHideFrameDetails(); break;
+        case 10: onShowFrameDetails(); break;
+        case 11: onHideFrmSampling((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: createRecord(); break;
+        case 13: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 14: onItemSelection(); break;
+        case 15: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 13;
+        _id -= 16;
     }
     return _id;
 }
@@ -128,5 +136,19 @@ void FrmFrame::submitted(int _t1, bool _t2)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void FrmFrame::setFrmSamplingMode(const FrmSampling::MODE _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+
+// SIGNAL 3
+void FrmFrame::applyChanges2FrmSampling(const bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_END_MOC_NAMESPACE

@@ -49,8 +49,8 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     connect(this, SIGNAL(hideFrmSampling(bool)), this,
         SLOT(onHideFrmSampling(bool)));
 
-    connect(this, SIGNAL(editLeave(const bool)), this,
-        SLOT(onEditLeave(const bool)));
+    connect(this, SIGNAL(editLeave(const bool,const bool)), this,
+        SLOT(onEditLeave(const bool,const bool)));
 
     initModels();
     initUI();
@@ -99,9 +99,14 @@ void FrmFrame::beforeShow()
     this->groupDetails->setVisible(false);
 }
 
-void FrmFrame::onEditLeave(const bool bFinished)
+void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
     //m_bSampling=!bFinished;
+    if (!bFinished)
+        emit setFrmSamplingMode(FrmSampling::EDIT);
+    else{
+        emit applyChanges2FrmSampling(!bDiscarded);
+    }
     groupProcess->setEnabled(!bFinished);
 }
 
@@ -159,6 +164,9 @@ void FrmFrame::createRecord()
 
     //signal for the rule checker default values
     emit addRecord();
+
+    //signal for the FrmSampling
+    emit setFrmSamplingMode(FrmSampling::CREATE);
 }
 
 void FrmFrame::previewRow(QModelIndex index)
@@ -376,7 +384,7 @@ void FrmFrame::onHideFrmSampling(bool bSubmitted)
             groupProcess->setEnabled(false);
             m_bInsert=false;
             m_submitted=true;
-            //updateSample();//update sample here, because of the save
+            updateSample();//update sample here, because of the save
         }
     }
 
@@ -534,7 +542,7 @@ bool FrmFrame::reallyApply()
     m_bSampling=true;//waiting for the sampling input...!
 
     tableView->selectRow(0);
-    //updateSample();
+    updateSample();
 
     return !bError;
 }
@@ -627,6 +635,22 @@ bool FrmFrame::updateSample()
 
     if (!idx.isValid()) return false;
     return updateSample(idx);
+}
+
+void FrmFrame::adjustFrmSamplingMode()
+{
+    if (!pushEdit->isChecked()) return;
+
+    //set here if it is logbook or not
+    m_sample->frameId=cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt();
+    bool bLogbook;
+    if (!isLogBook(m_sample->frameId,bLogbook)){
+        emit showError(tr("Could not determine the type of this frame!"));
+        return;
+    }
+    m_sample->bLogBook=bLogbook;
+
+    emit setFrmSamplingMode(FrmSampling::REPLACE);
 }
 
 bool FrmFrame::loadFrameFromSample()

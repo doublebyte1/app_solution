@@ -2,11 +2,14 @@
 #include <QtSql>
 #include "ui_frmframe.h"
 #include "previewtab.h"
+#include "frmsampling.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
      #define new DEBUG_NEW
   #endif
+
+class FrmSampling;
 
 //////////////////////////////////////////////////////////////////////
 #ifndef FRMFRAME_H
@@ -32,6 +35,8 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   unblockCustomDateCtrls();
 
     private slots:
+        void                                   adjustFrmSamplingMode();
+
         bool                                   updateSample();
         bool                                   updateSample(const QModelIndex& idx);
 
@@ -43,12 +48,13 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   createRecord();
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
-        //void                                   showSampling();
-        void                                   onEditLeave(const bool bFinished);
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
 
     signals:
         void                                   isLogBook(bool bLogBook);
         void                                   submitted(int index, bool bOk);
+        void                                   setFrmSamplingMode(const FrmSampling::MODE mode);
+        void                                   applyChanges2FrmSampling(const bool bApply);
 
     protected:
         void                                   showEvent ( QShowEvent * event );

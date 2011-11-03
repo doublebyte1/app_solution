@@ -60,11 +60,22 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
     Q_OBJECT
 
     public:
+        //! An enum for accessing the sampling characterization form.
+        /*! Supported modes are edit and create.
+        */
+        enum MODE {
+                    CREATE, /*!< Enum value for initializing a characterization of the sampling process.*/
+                    EDIT, /*!< Enum value for editing an existent characterization of the sampling process.*/
+                    REPLACE, /*!< Enum value for replacing an existent characterization of the sampling process.*/
+                    NONE
+                    };
 
         FrmSampling(Sample* inSample, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmSampling();
 
     public slots:
+        void                           setMode(const FrmSampling::MODE aMode){m_mode=aMode;}
+        void                           onApplyChanges2FrmSampling(const bool bApply);
 
     signals:
         void                           hideFrmSampling(bool bNotSubmitted);
@@ -80,6 +91,10 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
         void                           initRecords(int index);
 
     private:
+        void                           reallyApply();
+        void                           reallyDiscard();
+        void                           uncoverRows();
+        bool                           removeRecords(int ct);
         void                           setTips(const bool bLogbook);
         void                           initTable();
         void                           initModels();
@@ -89,7 +104,9 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
         QSqlTableModel*                tRefLevels;
         CustomModel*                   tSampLevels;
         Sample*                        m_sample;/**< pointer to the Sample structure, hosted on the main form */
+        FrmSampling::MODE              m_mode;
 };
 
+Q_DECLARE_METATYPE( FrmSampling::MODE );
 #endif //FRMSAMPLING_H
 

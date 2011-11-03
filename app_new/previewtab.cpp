@@ -231,7 +231,7 @@ bool PreviewTab::editRecord(bool on)
            case QMessageBox::Save:
                if (!applyChanges()){
                     emit showError(tr("Could not submit changes to this record!"));
-                    emit editLeave(false);
+                    emit editLeave(false,false);
                     return false;
                }
                 else
@@ -251,7 +251,7 @@ bool PreviewTab::editRecord(bool on)
                break;
          }
 
-        emit editLeave(true);
+        emit editLeave(true,ret==QMessageBox::Discard);
     }else{
         if (!m_table->selectionModel()->hasSelection()){
             emit showError(tr("You must select an item to edit!"));
