@@ -43,8 +43,10 @@ void FrmSampling::showEvent ( QShowEvent * event )
     //HARDCODED for now: logbook=2; sampling=3
     cmbSchema->setCurrentIndex(m_sample->bLogBook?2:3);
 
-    for (int i=0; i < tSampLevels->rowCount(); ++i)
+    if (m_mode==REPLACE){
+        for (int i=0; i < tSampLevels->rowCount(); ++i)
         tableView->hideRow(i);
+    }
 
     if (m_mode==CREATE || m_mode==REPLACE){
         initRecords(cmbSchema->currentIndex());}
@@ -60,7 +62,7 @@ bool FrmSampling::removeRecords(int ct)
     //first check if the filter is on!
     if (tSampLevels->filter().isEmpty() || tSampLevels->filter().isNull()) return false;
 
-    return ( tSampLevels->removeRows(0,tSampLevels->rowCount()));
+    return ( tSampLevels->removeRows(0,ct));
 }
 
 void FrmSampling::initRecords(int index)
@@ -70,6 +72,8 @@ void FrmSampling::initRecords(int index)
 
     //first revert changes
     tSampLevels->revertAll();
+
+    //qDebug() << tSampLevels->rowCount() << endl;
 
     QModelIndex idx=cmbSchema->model()->index(index,0);
     tRefLevels->setFilter("id_schema="+idx.data().toString());
@@ -83,6 +87,8 @@ void FrmSampling::initRecords(int index)
          QModelIndex idLevel=tRefLevels->index(i,0);
          tSampLevels->setData(idx2,idLevel.data());
      }
+
+    //qDebug() << tSampLevels->rowCount() << endl;
 }
 
 void FrmSampling::back()
@@ -94,12 +100,14 @@ void FrmSampling::reallyApply()
 {
     if (m_mode==REPLACE){
 
-        int ct=0;
-        for (int i=0; i < tSampLevels->rowCount(); ++i){
-            if (tableView->isRowHidden(i)) ct++;
+
+        int i;
+        for (i=0; i < tSampLevels->rowCount(); ++i){
+            QModelIndex idx=tSampLevels->index(i,0);
+            if (tSampLevels->isDirty(idx)) break;
         }
 
-        if (!removeRecords(ct)){
+        if (!removeRecords(i)){
             if (tSampLevels->lastError().type()!=QSqlError::NoError)
                 emit showError(tSampLevels->lastError().text());
             //else
