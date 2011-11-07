@@ -132,8 +132,8 @@ void FrmCell::setPreviewQuery()
     tr("SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
     tr("                      F2.Date_Local, 103) AS [End Date] ") +
     tr("FROM         dbo.Sampled_Cell INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_date = F1.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_date = F2.ID INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_dt = F1.ID INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_dt = F2.ID INNER JOIN") +
     tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
     tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(")") +
     tr(" ORDER BY dbo.Sampled_Cell.ID DESC")

@@ -1128,20 +1128,20 @@ bool ModelInterface::getVesselsBlackList(const Sample* sample, QVector<int>& vVe
             tr("  dbo.Sampled_Cell.ID FROM       ")+
             tr("  dbo.Sampled_Cell INNER JOIN                     ") +
             tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
-            tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
-            tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
+            tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_dt = Dates2.ID INNER JOIN                    ")+
+            tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_dt = Dates1.ID WHERE     (") + 
             tr("( (Dates1.Date_Local <=      ")+
             tr("  (SELECT     Date_Local")+
             tr("  FROM          dbo.GL_Dates         ") +
             tr("  WHERE      (ID =                        ")+
-            tr("  (SELECT     id_end_date                ")+
+            tr("  (SELECT     id_end_dt                ")+
             tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
             tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
             tr(" (Dates2.Date_Local >=         ")+
             tr("  (SELECT     Date_Local                ")+
             tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
             tr("  WHERE      (ID =                                ")+
-            tr("  (SELECT     id_start_date                       ")+
+            tr("  (SELECT     id_start_dt                       ")+
             tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
             tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
             tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")") +
@@ -1204,20 +1204,20 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
             tr("  dbo.Sampled_Cell.ID, dbo.Ref_Minor_Strata.id_frame_time, Dates1.Date_Local AS start_dt, Dates2.Date_Local AS end_dt FROM       ")+
             tr("  dbo.Sampled_Cell INNER JOIN                     ") +
             tr("  dbo.Ref_Minor_Strata ON dbo.Sampled_Cell.id_Minor_Strata = dbo.Ref_Minor_Strata.ID INNER JOIN             ")+
-            tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_date = Dates2.ID INNER JOIN                    ")+
-            tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_date = Dates1.ID WHERE     (") + 
+            tr("  dbo.GL_Dates AS Dates2 ON dbo.Sampled_Cell.id_end_dt = Dates2.ID INNER JOIN                    ")+
+            tr("  dbo.GL_Dates AS Dates1 ON dbo.Sampled_Cell.id_start_dt = Dates1.ID WHERE     (") + 
             tr("( (Dates1.Date_Local <=      ")+
             tr("  (SELECT     Date_Local")+
             tr("  FROM          dbo.GL_Dates         ") +
             tr("  WHERE      (ID =                        ")+
-            tr("  (SELECT     id_end_date                ")+
+            tr("  (SELECT     id_end_dt                ")+
             tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1 ")+
             tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr("))))) AND ") +
             tr(" (Dates2.Date_Local >=         ")+
             tr("  (SELECT     Date_Local                ")+
             tr("  FROM          dbo.GL_Dates AS GL_Dates_1        ")+
             tr("  WHERE      (ID =                                ")+
-            tr("  (SELECT     id_start_date                       ")+
+            tr("  (SELECT     id_start_dt                       ")+
             tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
             tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
             tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")")

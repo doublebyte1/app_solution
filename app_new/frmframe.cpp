@@ -112,6 +112,14 @@ void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
 
 bool FrmFrame::applyChanges()
 {
+    QString strError;
+    if (!checkDependantDates(tr("Fr_Time"),m_sample->frameTimeId, customDtStart->dateTime(),
+        customDtEnd->dateTime(), strError))
+    {
+        emit showError(strError);
+        return false;
+    }
+
     int cur= mapper->currentIndex();
     bool bError=!submitMapperAndModel(mapper);
     if (!bError){

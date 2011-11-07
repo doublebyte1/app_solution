@@ -2,6 +2,7 @@
 #include <QtSql>
 #include "customtimectrl.h"
 #include "generictab.h"
+#include "sql.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -19,6 +20,8 @@ void                                  setSourceText(QLabel* label, const bool bI
 //////////////////////////////////////////////////////////////////////
 #ifndef PREVIEWTAB_H
 #define PREVIEWTAB_H
+
+//////////////////////////////////////////////////////////////////////////////
 
 //! Preview Tab Class
 /*!
@@ -159,6 +162,9 @@ class PreviewTab : public GenericTab
         */
         bool                                  editRecord(bool on);
 
+        bool                                  checkDependantDates(const QString strTable, const int id,
+                                                    QDateTime& curStartDt, QDateTime& curEndDt, QString& strError);
+
     private slots:
         //! Set Header Label Tips
         /*! In this function we set the tooltip, status tip and WhatsThis text,
@@ -216,5 +222,7 @@ class PreviewTab : public GenericTab
         QPushButton*                          m_pushNew;/**< pointer for the pushNew button in this form */
         QPushButton*                          m_pushEdit;/**< pointer for the pushEdit button in this form */
         QPushButton*                          m_pushRemove;/**< pointer for the pushRemove button in this form */
+        QMap<QString,sTable>                  mapTablesL;/**< map with table sequence for logbook (for checking dependant dates!)*/
+        QMap<QString,sTable>                  mapTablesS;/**< map with table sequence for sampling (for checking dependant dates!)*/
 };
 #endif //PREVIEWTAB_H

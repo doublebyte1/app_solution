@@ -11,6 +11,24 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
     m_pushRemove=0;
     m_groupDetails=0;
 
+    //Logbook flow
+    mapTablesL.insert("Fr_Time",sTable(qApp->translate("null_replacements", strNa),"Ref_Minor_Strata",true));
+    mapTablesL.insert("Ref_Minor_Strata",sTable("id_frame_time","Sampled_Strata_Vessels",true));
+    mapTablesL.insert("Sampled_Strata_Vessels",sTable("id_minor_strata","Abstract_Sampled_Vessels",false));
+    mapTablesL.insert("Abstract_Sampled_Vessels",sTable("id_sampled_strata_vessels","Sampled_Fishing_Trips",false));
+    mapTablesL.insert("Sampled_Fishing_Trips",sTable("id_abstract_sampled_vessels","Sampled_Fishing_Operations",true));
+    mapTablesL.insert("Sampled_Fishing_Operations",sTable("id_fishing_trip",qApp->translate("null_replacements", strNa),true));
+
+    //Sampling flow
+    mapTablesS.insert("Fr_Time",sTable(qApp->translate("null_replacements", strNa),"Ref_Minor_Strata",true));
+    mapTablesS.insert("Ref_Minor_Strata",sTable("id_frame_time","Sampled_Cell",true));
+    mapTablesS.insert("Sampled_Cell",sTable("id_minor_strata","Sampled_Cell_Vessel_Types",false));
+    mapTablesS.insert("Sampled_Cell_Vessel_Types",sTable("id_cell","Sampled_Cell_Vessels",false));
+    mapTablesS.insert("Sampled_Cell_Vessels",sTable("id_cell_vessel_types","Abstract_Sampled_Vessels",true));
+    mapTablesS.insert("Abstract_Sampled_Vessels",sTable("id_sampled_cell_vessels","Sampled_Fishing_Trips",false));
+    mapTablesS.insert("Sampled_Fishing_Trips",sTable("id_abstract_sampled_vessels","Sampled_Fishing_Operations",true));
+    mapTablesS.insert("Sampled_Fishing_Operations",sTable("id_fishing_trip",qApp->translate("null_replacements", strNa),true));
+
     setAttribute( Qt::WA_AlwaysShowToolTips);
 
     connect(this, SIGNAL(isLogBook 
@@ -395,6 +413,14 @@ bool PreviewTab::discardNewRecord()
 
     return true;
 }
+
+bool PreviewTab::checkDependantDates(const QString strTable, const int id, QDateTime& curStartDt, QDateTime& curEndDt,
+                                     QString& strError)
+{
+    return (m_sample->bLogBook?onCheckDependantDates(mapTablesL,strTable,id,curStartDt, curEndDt, strError):
+        onCheckDependantDates(mapTablesS,strTable,id,curStartDt,curEndDt,strError));
+}
+
 //////////////////////////////////////////////////////////////
 
 void insertRecordIntoModel(QSqlTableModel* m)

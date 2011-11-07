@@ -33,6 +33,20 @@ static const char *TMPCHAR =
 
 static QString bottomLevelTable=QObject::tr("Ref_Minor_Strata");//This is the default table for the bottom level, but we can change it within the regions UI
 
+//! Table struct
+/*! TODO: write something here later
+*/
+struct sTable {
+    sTable( const QString refField, const QString next, const bool bHasDates):
+    m_refField(refField), m_next(next), m_bHasDates(bHasDates)
+    {}
+    sTable()
+    {}
+   QString             m_refField;//!< TODO: add description
+   QString             m_next;//!< TODO: add description
+   bool                m_bHasDates;//!< TODO: add description
+};
+
 //! FK struct
 /*! This structure represents a Foreign Key, with parent, child and respective keys
 */
@@ -1717,6 +1731,63 @@ static QString rebuildIndexesSql()
     return QObject::tr(
         "EXEC sp_MSforeachtable @command1=\"print '?' DBCC DBREINDEX ('?', ' ', 80)\""
         );
+}
+
+static bool grabDateById(const int inId, QDateTime& outDate)
+{
+     QSqlQueryModel model;
+     model.setQuery("SELECT Date_Local from GL_Dates WHERE ID=" + inId);
+
+     return model.rowCount()>1;
+}
+
+static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const QString strTable, const int id, 
+                                  QDateTime& curStartDt, QDateTime& curEndDt, QString& strError)
+{
+    QMap<QString,sTable>::const_iterator it=mapTables.find(strTable);
+    if (it==mapTables.end()){
+        strError=QObject::tr("Could not find this table on the database!");
+        return false;
+    }
+
+    //query next
+     QSqlQueryModel model;
+     model.setQuery("SELECT * FROM " + strTable + " WHERE ID="
+         + QVariant(id).toString());
+
+     //if it does not have dates, keep going with a filter till it finds it...
+     if (!it.value().m_bHasDates){
+
+         for (int i=0; i < model.rowCount(); ++i)
+         {
+            onCheckDependantDates(mapTables,it.value().m_next,model.record(i).value("ID").toInt(),
+                curStartDt,curEndDt,strError);
+         }
+
+     }else{
+         QDateTime startDate, endDate;
+
+         for (int i=0; i < model.rowCount(); ++i)
+         {
+
+             if (!grabDateById(model.record(i).value("id_start_dt").toInt(),startDate) ||
+                 !grabDateById(model.record(i).value("id_end_dt").toInt(),endDate))
+             {
+                 strError=QObject::tr("Could not retrieve start/end date from table ") + strTable;
+                return false;
+             }
+            if (curStartDt < startDate || curEndDt > endDate)
+            {
+                 strError=QObject::tr("These dates invalidate the time interval on table ") + strTable;
+                 return false;
+            }
+
+         }
+         return true;
+
+     }
+
+     return false;//it should never come here!
 }
 
 #endif

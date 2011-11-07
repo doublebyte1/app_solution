@@ -129,8 +129,8 @@ void FrmOperation::setPreviewQuery()
     tr(" CONVERT(VARCHAR(8), F2.Date_Local, 108) END [End Time] ") +
     tr(" FROM         dbo.Sampled_Fishing_Operations INNER JOIN") +
     tr("                      dbo.Ref_Gears ON dbo.Sampled_Fishing_Operations.id_gear = dbo.Ref_Gears.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Operations.id_StartDate = F1.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Operations.id_EndDate = F2.ID") +
+    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Operations.id_start_dt = F1.ID INNER JOIN") +
+    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Operations.id_end_dt = F2.ID") +
     tr(" WHERE     (dbo.Sampled_Fishing_Operations.id_fishing_trip = :id) ORDER BY ID DESC")
     ;
 
