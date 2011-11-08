@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Mon 7. Nov 14:12:18 2011
+** Created: Tue 8. Nov 13:51:48 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -39,14 +39,14 @@ static const uint qt_meta_data_PreviewTab[] = {
  // slots: signature, parameters, type, tag, flags
      140,   11,   11,   11, 0x0a,
      161,  158,  153,   11, 0x0a,
-     219,  178,  153,   11, 0x0a,
-     292,  283,   11,   11, 0x08,
-     306,   11,  153,   11, 0x08,
-     313,   11,   11,   11, 0x08,
+     228,  178,  153,   11, 0x0a,
+     307,  298,   11,   11, 0x08,
+     321,   11,  153,   11, 0x08,
      328,   11,   11,   11, 0x08,
-     349,  343,   11,   11, 0x08,
-     380,  373,  153,   11, 0x08,
-     412,   11,   11,   11, 0x08,
+     343,   11,   11,   11, 0x08,
+     364,  358,   11,   11, 0x08,
+     395,  388,  153,   11, 0x08,
+     427,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -57,8 +57,8 @@ static const char qt_meta_stringdata_PreviewTab[] = {
     "bFinished,bDiscarded\0editLeave(bool,bool)\0"
     "bFinished\0editLeave(bool)\0onShowForm()\0"
     "bool\0on\0editRecord(bool)\0"
-    "strTable,id,curStartDt,curEndDt,strError\0"
-    "checkDependantDates(QString,int,QDateTime&,QDateTime&,QString&)\0"
+    "curTable,curStartDt,curEndDt,strTable,id,strError\0"
+    "checkDependantDates(QString,QDateTime,QDateTime,QString,int,QString&)\0"
     "bLogbook\0setTips(bool)\0next()\0"
     "createRecord()\0removeRecord()\0index\0"
     "previewRow(QModelIndex)\0button\0"
@@ -102,7 +102,7 @@ int PreviewTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: onShowForm(); break;
         case 5: { bool _r = editRecord((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 6: { bool _r = checkDependantDates((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2])),(*reinterpret_cast< QDateTime(*)>(_a[3])),(*reinterpret_cast< QDateTime(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5])));
+        case 6: { bool _r = checkDependantDates((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2])),(*reinterpret_cast< const QDateTime(*)>(_a[3])),(*reinterpret_cast< QString(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5])),(*reinterpret_cast< QString(*)>(_a[6])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 7: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         case 8: { bool _r = next();
