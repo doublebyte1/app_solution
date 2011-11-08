@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmreports.h'
 **
-** Created: Fri 24. Jun 15:04:44 2011
+** Created: Mon 7. Nov 14:12:24 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,37 +23,31 @@ static const uint qt_meta_data_FrmReports[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
-
- // signals: signature, parameters, type, tag, flags
-      12,   11,   11,   11, 0x05,
-      33,   29,   11,   11, 0x05,
-      69,   53,   11,   11, 0x05,
-      93,   29,   11,   11, 0x25,
+       0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-     112,   11,   11,   11, 0x08,
-     131,  126,   11,   11, 0x08,
-     161,  126,   11,   11, 0x08,
+      12,   11,   11,   11, 0x08,
+      31,   26,   11,   11, 0x08,
+      61,   26,   11,   11, 0x08,
+     100,   88,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmReports[] = {
-    "FrmReports\0\0hideFrmReports()\0str\0"
-    "showStatus(QString)\0str,bShowMsgBox\0"
-    "showError(QString,bool)\0showError(QString)\0"
-    "browseFiles()\0item\0previewItem(QListWidgetItem*)\0"
-    "loadItem(QListWidgetItem*)\0"
+    "FrmReports\0\0browseFiles()\0item\0"
+    "previewItem(QListWidgetItem*)\0"
+    "loadItem(QListWidgetItem*)\0strFilename\0"
+    "loadItem(QString)\0"
 };
 
 const QMetaObject FrmReports::staticMetaObject = {
-    { &QWidget::staticMetaObject, qt_meta_stringdata_FrmReports,
+    { &SecondaryFrm::staticMetaObject, qt_meta_stringdata_FrmReports,
       qt_meta_data_FrmReports, 0 }
 };
 
@@ -73,47 +67,24 @@ void *FrmReports::qt_metacast(const char *_clname)
         return static_cast<void*>(const_cast< FrmReports*>(this));
     if (!strcmp(_clname, "Ui::frmreports"))
         return static_cast< Ui::frmreports*>(const_cast< FrmReports*>(this));
-    return QWidget::qt_metacast(_clname);
+    return SecondaryFrm::qt_metacast(_clname);
 }
 
 int FrmReports::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = QWidget::qt_metacall(_c, _id, _a);
+    _id = SecondaryFrm::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: hideFrmReports(); break;
-        case 1: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: browseFiles(); break;
-        case 5: previewItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 6: loadItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 0: browseFiles(); break;
+        case 1: previewItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 2: loadItem((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 3: loadItem((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 4;
     }
     return _id;
-}
-
-// SIGNAL 0
-void FrmReports::hideFrmReports()
-{
-    QMetaObject::activate(this, &staticMetaObject, 0, 0);
-}
-
-// SIGNAL 1
-void FrmReports::showStatus(QString _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 1, _a);
-}
-
-// SIGNAL 2
-void FrmReports::showError(QString _t1, const bool _t2)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
-    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_END_MOC_NAMESPACE

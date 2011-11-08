@@ -172,14 +172,14 @@ void FrmSampling::initModels()
     tSampLevels->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Levels"),
         QSqlDriver::TableName));
     tSampLevels->setRelation(2, QSqlRelation(tr("Ref_Levels"), tr("ID"), tr("Name")));
-    tSampLevels->setRelation(4, QSqlRelation(tr("Ref_Criteria"), tr("ID"), tr("Name")));
+    tSampLevels->setRelation(4, QSqlRelation(tr("Ref_Strategy"), tr("ID"), tr("Name")));
     tSampLevels->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSampLevels->sort(0,Qt::AscendingOrder);
     tSampLevels->select();
 
     tSampLevels->setHeaderData(2,Qt::Horizontal, tr("Level"));
     tSampLevels->setHeaderData(3,Qt::Horizontal, tr("Sample size"));
-    tSampLevels->setHeaderData(4,Qt::Horizontal, tr("Criteria"));
+    tSampLevels->setHeaderData(4,Qt::Horizontal, tr("Strategy"));
 
     tRefLevels = new QSqlTableModel;
     tRefLevels->setTable(tr("Ref_Levels"));

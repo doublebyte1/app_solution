@@ -414,11 +414,11 @@ bool PreviewTab::discardNewRecord()
     return true;
 }
 
-bool PreviewTab::checkDependantDates(const QString strTable, const int id, QDateTime& curStartDt, QDateTime& curEndDt,
+bool PreviewTab::checkDependantDates(const QString curTable, const QDateTime& curStartDt, const QDateTime& curEndDt, QString strTable, int id,
                                      QString& strError)
 {
-    return (m_sample->bLogBook?onCheckDependantDates(mapTablesL,strTable,id,curStartDt, curEndDt, strError):
-        onCheckDependantDates(mapTablesS,strTable,id,curStartDt,curEndDt,strError));
+    return (m_sample->bLogBook?onCheckDependantDates(mapTablesL,strTable,curStartDt, curEndDt,strTable,id, strError):
+        onCheckDependantDates(mapTablesS,strTable,curStartDt,curEndDt,strTable,id,strError));
 }
 
 //////////////////////////////////////////////////////////////

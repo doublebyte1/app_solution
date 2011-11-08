@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Fri 24. Jun 14:32:03 2011
+** Created: Mon 7. Nov 14:12:19 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,13 +17,92 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
+static const uint qt_meta_data_RebuildIndexesThread[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       3,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       3,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      26,   22,   21,   21, 0x05,
+      62,   46,   21,   21, 0x05,
+      86,   22,   21,   21, 0x25,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_RebuildIndexesThread[] = {
+    "RebuildIndexesThread\0\0str\0showStatus(QString)\0"
+    "str,bShowMsgBox\0showError(QString,bool)\0"
+    "showError(QString)\0"
+};
+
+const QMetaObject RebuildIndexesThread::staticMetaObject = {
+    { &QThread::staticMetaObject, qt_meta_stringdata_RebuildIndexesThread,
+      qt_meta_data_RebuildIndexesThread, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &RebuildIndexesThread::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *RebuildIndexesThread::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *RebuildIndexesThread::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_RebuildIndexesThread))
+        return static_cast<void*>(const_cast< RebuildIndexesThread*>(this));
+    return QThread::qt_metacast(_clname);
+}
+
+int RebuildIndexesThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QThread::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: showStatus((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 1: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 2: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        default: ;
+        }
+        _id -= 3;
+    }
+    return _id;
+}
+
+// SIGNAL 0
+void RebuildIndexesThread::showStatus(const QString _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void RebuildIndexesThread::showError(QString _t1, const bool _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
 static const uint qt_meta_data_MainFrm[] = {
 
  // content:
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   14, // methods
+      24,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,18 +115,25 @@ static const uint qt_meta_data_MainFrm[] = {
       54,   44,    8,    8, 0x08,
      126,   84,    8,    8, 0x08,
      240,    8,    8,    8, 0x08,
-     263,  259,    8,    8, 0x08,
-     283,  259,    8,    8, 0x08,
-     325,  304,    8,    8, 0x08,
-     352,    8,    8,    8, 0x08,
-     379,  370,    8,    8, 0x08,
-     399,    8,    8,    8, 0x08,
-     425,  418,    8,    8, 0x08,
-     448,    8,    8,    8, 0x08,
-     459,    8,    8,    8, 0x08,
-     471,    8,    8,    8, 0x08,
-     483,    8,    8,    8, 0x08,
-     497,    8,    8,    8, 0x08,
+     259,    8,    8,    8, 0x08,
+     277,    8,    8,    8, 0x08,
+     299,  295,    8,    8, 0x08,
+     319,  295,    8,    8, 0x08,
+     361,  340,    8,    8, 0x08,
+     388,    8,    8,    8, 0x08,
+     415,  406,    8,    8, 0x08,
+     435,    8,    8,    8, 0x08,
+     454,    8,    8,    8, 0x08,
+     477,  470,    8,    8, 0x08,
+     500,    8,    8,    8, 0x08,
+     511,    8,    8,    8, 0x08,
+     528,    8,    8,    8, 0x08,
+     540,    8,    8,    8, 0x08,
+     552,    8,    8,    8, 0x08,
+     576,  572,    8,    8, 0x08,
+     609,    8,    8,    8, 0x08,
+     628,  572,    8,    8, 0x08,
+     660,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -58,14 +144,18 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "mode,persistence,sample,blackList,options\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,Sa"
     "mple*,QList<int>&,FrmFrameDetails::Options)\0"
-    "hideFrameDetails()\0str\0statusShow(QString)\0"
+    "hideFrameDetails()\0showFrmSampling()\0"
+    "hideFrmSampling()\0str\0statusShow(QString)\0"
     "statusClean(QString)\0strError,bShowMsgBox\0"
     "displayError(QString,bool)\0cleanupMsgBoxes()\0"
     "bLogBook\0rearrangeTabs(bool)\0"
-    "aboutThisProject()\0bReady\0"
-    "rulesInitialized(bool)\0loadFile()\0"
-    "closeFile()\0writeFile()\0loadReports()\0"
-    "closeReports()\0"
+    "aboutThisProject()\0callAssistant()\0"
+    "bReady\0rulesInitialized(bool)\0loadFile()\0"
+    "openRecentFile()\0closeFile()\0writeFile()\0"
+    "closeSecondaryFrm()\0frm\0"
+    "closeSecondaryFrm(SecondaryFrm*)\0"
+    "loadSecondaryFrm()\0loadSecondaryFrm(SecondaryFrm*)\0"
+    "RebuildIndexes()\0"
 };
 
 const QMetaObject MainFrm::staticMetaObject = {
@@ -104,21 +194,28 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 2: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
         case 3: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const FrmFrameDetails::Options(*)>(_a[5]))); break;
         case 4: hideFrameDetails(); break;
-        case 5: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 6: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 7: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 8: cleanupMsgBoxes(); break;
-        case 9: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 10: aboutThisProject(); break;
-        case 11: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 12: loadFile(); break;
-        case 13: closeFile(); break;
-        case 14: writeFile(); break;
-        case 15: loadReports(); break;
-        case 16: closeReports(); break;
+        case 5: showFrmSampling(); break;
+        case 6: hideFrmSampling(); break;
+        case 7: statusShow((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 8: statusClean((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 9: displayError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 10: cleanupMsgBoxes(); break;
+        case 11: rearrangeTabs((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: aboutThisProject(); break;
+        case 13: callAssistant(); break;
+        case 14: rulesInitialized((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 15: loadFile(); break;
+        case 16: openRecentFile(); break;
+        case 17: closeFile(); break;
+        case 18: writeFile(); break;
+        case 19: closeSecondaryFrm(); break;
+        case 20: closeSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
+        case 21: loadSecondaryFrm(); break;
+        case 22: loadSecondaryFrm((*reinterpret_cast< SecondaryFrm*(*)>(_a[1]))); break;
+        case 23: RebuildIndexes(); break;
         default: ;
         }
-        _id -= 17;
+        _id -= 24;
     }
     return _id;
 }

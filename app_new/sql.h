@@ -33,8 +33,10 @@ static const char *TMPCHAR =
 
 static QString bottomLevelTable=QObject::tr("Ref_Minor_Strata");//This is the default table for the bottom level, but we can change it within the regions UI
 
-//! Table struct
-/*! TODO: write something here later
+//! Table Sequence struct
+/*! This structure allows us to construct a one direction table flow for a sampling process. 
+Each element (table) provides us with the necessary information for navigation: the name of the parent field, the name of
+the next table and if it contains or not dates (for Date Validation purposes)
 */
 struct sTable {
     sTable( const QString refField, const QString next, const bool bHasDates):
@@ -42,9 +44,9 @@ struct sTable {
     {}
     sTable()
     {}
-   QString             m_refField;//!< TODO: add description
-   QString             m_next;//!< TODO: add description
-   bool                m_bHasDates;//!< TODO: add description
+   QString             m_refField;//!< name of the field that stores a reference to the parent
+   QString             m_next;//!< name of the table that is next on the sequence
+   bool                m_bHasDates;//!< boolean to flag if we have dates
 };
 
 //! FK struct
@@ -1736,35 +1738,56 @@ static QString rebuildIndexesSql()
 static bool grabDateById(const int inId, QDateTime& outDate)
 {
      QSqlQueryModel model;
-     model.setQuery("SELECT Date_Local from GL_Dates WHERE ID=" + inId);
+     model.setQuery("SELECT Date_Local from GL_Dates WHERE ID=" + QVariant(inId).toString());
 
-     return model.rowCount()>1;
+     if (model.rowCount()!=1) return false;
+     outDate=model.record(0).value("Date_Local").toDateTime();
+
+     return true;
 }
 
-static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const QString strTable, const int id, 
-                                  QDateTime& curStartDt, QDateTime& curEndDt, QString& strError)
+static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const QString curTable, const QDateTime& curStartDt, const QDateTime& curEndDt
+                                   ,QString strTable, int id, QString& strError)
 {
+    //! On Check Dependant dates
+    /*!
+    This function goes trough the table sequence and searches if the new dates invalidate time intervals on previously inserted records.
+    This is a recurrent function that searches for the first table dependant of the current one, that has date records; the following ones will *always* be contained in this interval.
+    \param mapTables map with table names and sTable objects with relevant information
+    \param curTable name of the starting table
+    \param curStartDt new start date
+    \param curEndDt new end date
+    \param strTable name of the table that is being tested right now
+    \param id id of the parent (to filter the table)
+    \param strError string to store the error
+    \return boolean stating if the change is validated or not
+    */
+
     QMap<QString,sTable>::const_iterator it=mapTables.find(strTable);
     if (it==mapTables.end()){
         strError=QObject::tr("Could not find this table on the database!");
         return false;
     }
 
-    //query next
-     QSqlQueryModel model;
-     model.setQuery("SELECT * FROM " + strTable + " WHERE ID="
-         + QVariant(id).toString());
+    if (strTable.compare(curTable)==0){
+        return onCheckDependantDates(mapTables,curTable,curStartDt,curEndDt,it.value().m_next,id,strError);
+    }else{
+
+         QSqlQueryModel model;
+         model.setQuery("SELECT * FROM " + strTable + " WHERE " + it.value().m_refField + "="
+             + QVariant(id).toString());
 
      //if it does not have dates, keep going with a filter till it finds it...
      if (!it.value().m_bHasDates){
 
          for (int i=0; i < model.rowCount(); ++i)
          {
-            onCheckDependantDates(mapTables,it.value().m_next,model.record(i).value("ID").toInt(),
-                curStartDt,curEndDt,strError);
+            return onCheckDependantDates(mapTables,curTable,
+                curStartDt,curEndDt,it.value().m_next,model.record(i).value("ID").toInt(),strError);
          }
 
      }else{
+
          QDateTime startDate, endDate;
 
          for (int i=0; i < model.rowCount(); ++i)
@@ -1776,18 +1799,23 @@ static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const Q
                  strError=QObject::tr("Could not retrieve start/end date from table ") + strTable;
                 return false;
              }
-            if (curStartDt < startDate || curEndDt > endDate)
+
+             //n.b.: use .toTime_t() for comparison of uints!
+            if ( curStartDt.toTime_t() > startDate.toTime_t() || curEndDt.toTime_t() < endDate.toTime_t())
             {
-                 strError=QObject::tr("These dates invalidate the time interval on table ") + strTable;
+                 strError=startDate > curStartDt?
+                     QObject::tr("This start date invalidates the time interval on table ") + strTable:
+                  QObject::tr("This end date invalidates the time interval on table ") + strTable;
                  return false;
             }
-
          }
-         return true;
+         //everything went ok: it validates the dates!
+        return true;
+     }
 
      }
 
-     return false;//it should never come here!
+     return true;
 }
 
 #endif

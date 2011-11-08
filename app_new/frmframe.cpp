@@ -112,31 +112,34 @@ void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
 
 bool FrmFrame::applyChanges()
 {
+    bool bError=true;
+
     QString strError;
-    if (!checkDependantDates(tr("Fr_Time"),m_sample->frameTimeId, customDtStart->dateTime(),
-        customDtEnd->dateTime(), strError))
+    if (!checkDependantDates(tr("Fr_Time"), customDtStart->dateTime(),
+        customDtEnd->dateTime(),tr("Fr_Time"),m_sample->frameTimeId, strError))
     {
         emit showError(strError);
-        return false;
-    }
+    }else{
 
-    int cur= mapper->currentIndex();
-    bool bError=!submitMapperAndModel(mapper);
-    if (!bError){
-        mapper->setCurrentIndex(cur);
-        int curStart, curEnd;
-        curStart=mapperStartDt->currentIndex();
-        curEnd=mapperEndDt->currentIndex();
-
-        bError=submitDates(mapperStartDt, mapperEndDt);
-
+        int cur= mapper->currentIndex();
+        bError=!submitMapperAndModel(mapper);
         if (!bError){
-            mapperStartDt->setCurrentIndex(curStart);
-            mapperEndDt->setCurrentIndex(curEnd);
-        }
+            mapper->setCurrentIndex(cur);
+            int curStart, curEnd;
+            curStart=mapperStartDt->currentIndex();
+            curEnd=mapperEndDt->currentIndex();
 
+            bError=submitDates(mapperStartDt, mapperEndDt);
+
+            if (!bError){
+                mapperStartDt->setCurrentIndex(curStart);
+                mapperEndDt->setCurrentIndex(curEnd);
+            }
+
+        }
     }
 
+    pushEdit->setChecked(bError);
     return !bError;
 }
 

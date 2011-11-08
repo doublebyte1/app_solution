@@ -161,9 +161,19 @@ class PreviewTab : public GenericTab
         \return boolean to indicate if we want to edit or not
         */
         bool                                  editRecord(bool on);
-
-        bool                                  checkDependantDates(const QString strTable, const int id,
-                                                    QDateTime& curStartDt, QDateTime& curEndDt, QString& strError);
+        //! check Dependant Dates
+        /*! This is a utility function that validates date changes (called through editing mode).
+        It is designed to navigate through the table structure of logbook and sampling, searching for dependant date records.
+        \param curTable name of the starting table
+        \param curStartDt new start date
+        \param curEndDt new end date
+        \param strTable name of the table that is being tested right now
+        \param id id of the parent (to filter the table)
+        \param strError string to store the error
+        \return boolean to indicate if the validation went through
+        */
+        bool                                  checkDependantDates(const QString curTable, const QDateTime& curStartDt,
+                                                    const QDateTime& curEndDt, QString strTable, int id,QString& strError);
 
     private slots:
         //! Set Header Label Tips

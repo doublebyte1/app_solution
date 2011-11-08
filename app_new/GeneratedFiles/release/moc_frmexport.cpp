@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmexport.h'
 **
-** Created: Thu 30. Jun 19:11:46 2011
+** Created: Mon 7. Nov 14:12:32 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
