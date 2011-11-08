@@ -1737,6 +1737,14 @@ static QString rebuildIndexesSql()
 
 static bool grabDateById(const int inId, QDateTime& outDate)
 {
+    //! Grab date by id
+    /*!
+    This is an utility function that receives a ID on table GL_Dates and returns a local date.
+    \param inId id on table GL_Dates
+    \param outDate address of QDateTime to store the results
+    \return boolean stating as success or failure
+    */
+
      QSqlQueryModel model;
      model.setQuery("SELECT Date_Local from GL_Dates WHERE ID=" + QVariant(inId).toString());
 
