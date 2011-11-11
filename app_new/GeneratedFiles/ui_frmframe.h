@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Mon 7. Nov 08:54:22 2011
+** Created: Wed 9. Nov 11:05:25 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -419,7 +419,7 @@ public:
         label->setText(QApplication::translate("frmframe", "Start Date", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmframe", "End Date", 0, QApplication::UnicodeUTF8));
         groupProcess->setTitle(QString());
-        label_5->setText(QApplication::translate("frmframe", "Sampling Process", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("frmframe", "Sampling Technique", 0, QApplication::UnicodeUTF8));
         toolProcess->setText(QApplication::translate("frmframe", "...", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmframe", "LBHEADER", 0, QApplication::UnicodeUTF8));
         groupBackNext->setTitle(QString());

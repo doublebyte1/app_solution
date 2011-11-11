@@ -84,6 +84,7 @@ class RuleChecker: public QWidget
                         VALIDATION, /*!< Enum value for validation rules. */
                         PRETRIGGER, /*!< Enum value for rules that are triggered before the record is inserted in the database. */
                         POSTTRIGGER,/*!< Enum value for rules that are triggered after the record is inserted in the database. */
+                        NA,/*!< Enum value for reference entries (n/a). */
                         PRESUBMIT/*!< Enum value for rules that are triggered after the record is inserted in the database. */
                         };
 

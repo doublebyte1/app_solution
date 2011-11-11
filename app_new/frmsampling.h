@@ -55,7 +55,7 @@ class CustomModel : public QSqlRelationalTableModel
 This class implements the widget that allows us to define the properties of each stage of the sampling process.
 */
 
-class FrmSampling : public QWidget, public Ui::FrmSampling
+class FrmSampling : public GenericTab, public Ui::FrmSampling
 {
     Q_OBJECT
 
@@ -70,7 +70,7 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
                     NONE
                     };
 
-        FrmSampling(Sample* inSample, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmSampling(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmSampling();
 
     public slots:
@@ -78,20 +78,23 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
         void                           onApplyChanges2FrmSampling(const bool bApply);
 
     signals:
-        void                           hideFrmSampling(bool bNotSubmitted);
-        void                           showStatus(QString str);//!< signal for showing messages in the status bar
-        void                           showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+        //void                           hideFrmSampling(bool bNotSubmitted);
 
     protected:
         void                           showEvent ( QShowEvent * event );
 
     private slots:
         void                           back();
-        void                           apply();
-        void                           initRecords(int index);
+        //void                           apply();
+        bool                           next(){return false;}
+        void                           insertRow();
+        void                           removeRow();
 
     private:
-        void                           reallyApply();
+        void                           onShowForm();
+        bool                           createRecords();
+        void                           initMappers();
+        bool                           reallyApply();
         void                           reallyDiscard();
         void                           uncoverRows();
         bool                           removeRecords(int ct);
@@ -100,11 +103,13 @@ class FrmSampling : public QWidget, public Ui::FrmSampling
         void                           initModels();
         void                           initUI();
         bool                           m_submitted;
-        QSqlTableModel*                tRefSchema;
+        QSqlRelationalTableModel*      tRefSampTec;
         QSqlTableModel*                tRefLevels;
-        CustomModel*                   tSampLevels;
-        Sample*                        m_sample;/**< pointer to the Sample structure, hosted on the main form */
+        QSqlRelationalTableModel*      tSampLevels;
         FrmSampling::MODE              m_mode;
+        QDataWidgetMapper*             mapper1;
+        QDataWidgetMapper*             mapper2;
+        NullRelationalDelegate*        nullDellegate;
 };
 
 Q_DECLARE_METATYPE( FrmSampling::MODE );

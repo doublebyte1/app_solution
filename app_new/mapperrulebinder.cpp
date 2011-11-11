@@ -266,7 +266,7 @@ bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QW
           if (val.toBool()==0){
                 // Look for error
                 QSqlQuery eQuery;
-                eQuery.prepare(tr("SELECT description, [rule] FROM dbo.UI_Rules WHERE (id_rules LIKE :rule)"));
+                eQuery.prepare(tr("SELECT description, [rule] FROM dbo.UI_Rules WHERE (id LIKE :rule)"));
                 eQuery.bindValue(tr(":rule"),rule.key());
                 eQuery.setForwardOnly(true);
                 if (!eQuery.exec()) return false;

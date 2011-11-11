@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmsampling.ui'
 **
-** Created: Mon 31. Oct 16:15:02 2011
+** Created: Thu 10. Nov 11:47:49 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -15,11 +15,15 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QComboBox>
+#include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
+#include <QtGui/QSpinBox>
 #include <QtGui/QTableView>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
@@ -29,13 +33,32 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmSampling
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
     QLabel *lbSource;
+    QGroupBox *groupTechnique;
+    QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_2;
-    QComboBox *cmbSchema;
+    QLineEdit *lineName;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label_3;
+    QPlainTextEdit *textDescription;
+    QLabel *label_8;
+    QPlainTextEdit *textComments;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *label_4;
+    QComboBox *cmbStrategy;
+    QLabel *label_5;
+    QSpinBox *spinSample;
+    QLabel *label_6;
+    QSpinBox *spinPopulation;
+    QHBoxLayout *horizontalLayout_6;
+    QVBoxLayout *verticalLayout;
+    QLabel *label_7;
+    QPushButton *pushInsert;
+    QPushButton *pushRemove;
     QTableView *tableView;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
@@ -46,9 +69,9 @@ public:
     {
         if (FrmSampling->objectName().isEmpty())
             FrmSampling->setObjectName(QString::fromUtf8("FrmSampling"));
-        FrmSampling->resize(630, 434);
-        verticalLayout = new QVBoxLayout(FrmSampling);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        FrmSampling->resize(774, 377);
+        verticalLayout_3 = new QVBoxLayout(FrmSampling);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         label = new QLabel(FrmSampling);
@@ -72,28 +95,135 @@ public:
         horizontalLayout_2->addWidget(lbSource);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        verticalLayout_3->addLayout(horizontalLayout_2);
 
+        groupTechnique = new QGroupBox(FrmSampling);
+        groupTechnique->setObjectName(QString::fromUtf8("groupTechnique"));
+        verticalLayout_2 = new QVBoxLayout(groupTechnique);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        label_2 = new QLabel(FrmSampling);
+        label_2 = new QLabel(groupTechnique);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout_3->addWidget(label_2);
 
-        cmbSchema = new QComboBox(FrmSampling);
-        cmbSchema->setObjectName(QString::fromUtf8("cmbSchema"));
+        lineName = new QLineEdit(groupTechnique);
+        lineName->setObjectName(QString::fromUtf8("lineName"));
 
-        horizontalLayout_3->addWidget(cmbSchema);
+        horizontalLayout_3->addWidget(lineName);
 
 
-        verticalLayout->addLayout(horizontalLayout_3);
+        verticalLayout_2->addLayout(horizontalLayout_3);
 
-        tableView = new QTableView(FrmSampling);
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        label_3 = new QLabel(groupTechnique);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        horizontalLayout_4->addWidget(label_3);
+
+        textDescription = new QPlainTextEdit(groupTechnique);
+        textDescription->setObjectName(QString::fromUtf8("textDescription"));
+
+        horizontalLayout_4->addWidget(textDescription);
+
+        label_8 = new QLabel(groupTechnique);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        horizontalLayout_4->addWidget(label_8);
+
+        textComments = new QPlainTextEdit(groupTechnique);
+        textComments->setObjectName(QString::fromUtf8("textComments"));
+
+        horizontalLayout_4->addWidget(textComments);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_4);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        label_4 = new QLabel(groupTechnique);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        horizontalLayout_5->addWidget(label_4);
+
+        cmbStrategy = new QComboBox(groupTechnique);
+        cmbStrategy->setObjectName(QString::fromUtf8("cmbStrategy"));
+
+        horizontalLayout_5->addWidget(cmbStrategy);
+
+        label_5 = new QLabel(groupTechnique);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        horizontalLayout_5->addWidget(label_5);
+
+        spinSample = new QSpinBox(groupTechnique);
+        spinSample->setObjectName(QString::fromUtf8("spinSample"));
+        spinSample->setMaximum(100000);
+
+        horizontalLayout_5->addWidget(spinSample);
+
+        label_6 = new QLabel(groupTechnique);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+
+        horizontalLayout_5->addWidget(label_6);
+
+        spinPopulation = new QSpinBox(groupTechnique);
+        spinPopulation->setObjectName(QString::fromUtf8("spinPopulation"));
+        spinPopulation->setMaximum(100000);
+
+        horizontalLayout_5->addWidget(spinPopulation);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_5);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        label_7 = new QLabel(groupTechnique);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
+        label_7->setSizePolicy(sizePolicy1);
+
+        verticalLayout->addWidget(label_7);
+
+        pushInsert = new QPushButton(groupTechnique);
+        pushInsert->setObjectName(QString::fromUtf8("pushInsert"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app_new/add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushInsert->setIcon(icon);
+
+        verticalLayout->addWidget(pushInsert);
+
+        pushRemove = new QPushButton(groupTechnique);
+        pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon1);
+
+        verticalLayout->addWidget(pushRemove);
+
+
+        horizontalLayout_6->addLayout(verticalLayout);
+
+        tableView = new QTableView(groupTechnique);
         tableView->setObjectName(QString::fromUtf8("tableView"));
         tableView->setAlternatingRowColors(true);
+        tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+        tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-        verticalLayout->addWidget(tableView);
+        horizontalLayout_6->addWidget(tableView);
+
+
+        verticalLayout_2->addLayout(horizontalLayout_6);
+
+
+        verticalLayout_3->addWidget(groupTechnique);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -112,13 +242,22 @@ public:
         horizontalLayout->addWidget(pushApply);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        verticalLayout_3->addLayout(horizontalLayout);
 
+#ifndef QT_NO_SHORTCUT
+        label_3->setBuddy(textDescription);
+        label_4->setBuddy(cmbStrategy);
+        label_5->setBuddy(spinSample);
+        label_6->setBuddy(spinPopulation);
+        label_7->setBuddy(tableView);
+#endif // QT_NO_SHORTCUT
 
         retranslateUi(FrmSampling);
         QObject::connect(pushApply, SIGNAL(clicked()), FrmSampling, SLOT(apply()));
         QObject::connect(pushBack, SIGNAL(clicked()), FrmSampling, SLOT(back()));
-        QObject::connect(cmbSchema, SIGNAL(currentIndexChanged(int)), FrmSampling, SLOT(initRecords(int)));
+        QObject::connect(pushInsert, SIGNAL(clicked()), FrmSampling, SLOT(insertRow()));
+        QObject::connect(pushRemove, SIGNAL(clicked()), FrmSampling, SLOT(removeRow()));
+        QObject::connect(tableView, SIGNAL(entered(QModelIndex)), tableView, SLOT(resizeColumnsToContents()));
 
         QMetaObject::connectSlotsByName(FrmSampling);
     } // setupUi
@@ -128,7 +267,34 @@ public:
         FrmSampling->setWindowTitle(QApplication::translate("FrmSampling", "Form", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("FrmSampling", "Source", 0, QApplication::UnicodeUTF8));
         lbSource->setText(QApplication::translate("FrmSampling", "[SOURCE]", 0, QApplication::UnicodeUTF8));
-        label_2->setText(QApplication::translate("FrmSampling", "Choose Sampling Schema", 0, QApplication::UnicodeUTF8));
+        groupTechnique->setTitle(QString());
+        label_2->setText(QApplication::translate("FrmSampling", "Name", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("FrmSampling", "Description", 0, QApplication::UnicodeUTF8));
+        label_8->setText(QApplication::translate("FrmSampling", "Comments", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("FrmSampling", "Global Strategy", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("FrmSampling", "Sample Size", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("FrmSampling", "Population Size", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("FrmSampling", "Levels", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushInsert->setToolTip(QApplication::translate("FrmSampling", "Insert row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushInsert->setStatusTip(QApplication::translate("FrmSampling", "Insert row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushInsert->setWhatsThis(QApplication::translate("FrmSampling", "Inserts row into table", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushInsert->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove->setToolTip(QApplication::translate("FrmSampling", "Remove row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove->setStatusTip(QApplication::translate("FrmSampling", "Remove row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove->setWhatsThis(QApplication::translate("FrmSampling", "Removes row into table", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove->setText(QString());
 #ifndef QT_NO_TOOLTIP
         pushBack->setToolTip(QApplication::translate("FrmSampling", "Go back", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

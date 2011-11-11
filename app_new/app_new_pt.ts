@@ -4275,7 +4275,7 @@
     </message>
     <message>
         <location filename="mapperrulebinder.cpp" line="268"/>
-        <source>SELECT description, [rule] FROM dbo.UI_Rules WHERE (id_rules LIKE :rule)</source>
+        <source>SELECT description, [rule] FROM dbo.UI_Rules WHERE (ID LIKE :rule)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5896,7 +5896,7 @@
     </message>
     <message>
         <location filename="sql.h" line="1630"/>
-        <source>select id_rules from UI_Rules WHERE [rule] like &apos;n/a&apos;</source>
+        <source>select ID from UI_Rules WHERE [rule] like &apos;n/a&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6117,12 +6117,12 @@
     </message>
     <message>
         <location filename="rulechecker.cpp" line="65"/>
-        <source>SELECT distinct dbo.UI_Rules.id_rules, dbo.UI_Rules.field, dbo.UI_Rules.mapper, dbo.UI_Forms.Name as form_name, dbo.UI_Rules.[rule], dbo.UI_Rule_Types.name AS type_name FROM dbo.UI_Rule_Ptrs RIGHT OUTER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.id_rules = dbo.UI_Rules.id_rules INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID WHERE (dbo.UI_Rules.active=1)</source>
+        <source>SELECT distinct dbo.UI_Rules.ID, dbo.UI_Rules.field, dbo.UI_Rules.mapper, dbo.UI_Forms.Name as form_name, dbo.UI_Rules.[rule], dbo.UI_Rule_Types.name AS type_name FROM dbo.UI_Rule_Ptrs RIGHT OUTER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.ID = dbo.UI_Rules.ID INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID WHERE (dbo.UI_Rules.active=1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="rulechecker.cpp" line="77"/>
-        <source>SELECT dbo.UI_Rule_Ptrs.field, dbo.UI_Rule_Ptrs.id_rules, dbo.UI_Rule_Ptrs.mapper, dbo.UI_Forms.Name as form_namedbo.UI_Rule_Ptrs.ID FROM dbo.UI_Rule_Ptrs INNER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.id_rules = dbo.UI_Rules.id_rules INNER JOIN UI_Forms ON UI_Rule_Ptrs.form=UI_Forms.ID WHERE (dbo.UI_Rule_Ptrs.id_rules = :id AND dbo.UI_Rules.active=1)</source>
+        <source>SELECT dbo.UI_Rule_Ptrs.field, dbo.UI_Rule_Ptrs.ID, dbo.UI_Rule_Ptrs.mapper, dbo.UI_Forms.Name as form_namedbo.UI_Rule_Ptrs.ID FROM dbo.UI_Rule_Ptrs INNER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.ID = dbo.UI_Rules.ID INNER JOIN UI_Forms ON UI_Rule_Ptrs.form=UI_Forms.ID WHERE (dbo.UI_Rule_Ptrs.ID = :id AND dbo.UI_Rules.active=1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6154,7 +6154,7 @@
     <message>
         <location filename="rulechecker.cpp" line="99"/>
         <location filename="rulechecker.cpp" line="111"/>
-        <source>id_rules</source>
+        <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

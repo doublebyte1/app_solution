@@ -2,7 +2,6 @@
 #include "buttongroup.h"
 //#include "timestampdateedit.h"
 #include "sql.h"
-#include "globaldefs.h"
 
 RuleChecker::RuleChecker(QWidget* parent)
     : QWidget(parent)
@@ -36,9 +35,6 @@ const bool RuleChecker::GetTypeFromString(const QString strType, Type& type)
     }else if (strType.compare(tr("pre-submit"),Qt::CaseInsensitive)==0)
     {
         type=RuleChecker::PRESUBMIT;
-    }else if (strType.compare(tr("n/a"),Qt::CaseInsensitive)==0)
-    {
-        type=RuleChecker::NA;
     } else return false;
 
     return true;
@@ -66,15 +62,11 @@ MapRules* RuleChecker::GetContainerFromType(const Type& type)
 bool RuleChecker::buildHashes()
 {
     //First run queries
-    QString sqlActiveRules=tr("SELECT distinct dbo.UI_Rules.id, dbo.UI_Rules.field, dbo.UI_Rules.mapper, "
+    QString sqlActiveRules=tr("SELECT distinct dbo.UI_rules.ID, dbo.UI_Rules.field, dbo.UI_Rules.mapper, "
         "dbo.UI_Forms.Name as form_name, "
         "dbo.UI_Rules.[rule], dbo.UI_Rule_Types.name AS type_name "
-
-        //"FROM dbo.UI_Rule_Ptrs RIGHT OUTER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.id_rules = "
-        //"dbo.UI_Rules.id INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types "
-
-        "FROM UI_Rules "
-        " INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types "
+        "FROM dbo.UI_Rule_Ptrs RIGHT OUTER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.id_rules = "
+        "dbo.UI_rules.ID INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types "
         "INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID "
         "WHERE (dbo.UI_Rules.active=1)");
 
@@ -82,15 +74,18 @@ bool RuleChecker::buildHashes()
     if (!query.prepare(sqlActiveRules)) return false;
     QSqlQuery triggerPtrQuery;
     if (!triggerPtrQuery.prepare(
-        tr("SELECT dbo.UI_Rule_Ptrs.field, dbo.UI_Rule_Ptrs.id_rules, "
+        tr("SELECT dbo.UI_Rule_Ptrs.field, dbo.UI_Rule_Ptrs.id, "
         "dbo.UI_Rule_Ptrs.mapper, dbo.UI_Forms.Name as form_name"
         "dbo.UI_Rule_Ptrs.ID FROM dbo.UI_Rule_Ptrs INNER JOIN dbo.UI_Rules ON "
-        "dbo.UI_Rule_Ptrs.id_rules = dbo.UI_Rules.id "
+        "dbo.UI_Rule_Ptrs.id_rules = dbo.UI_rules.ID "
         "INNER JOIN UI_Forms ON UI_Rule_Ptrs.form=UI_Forms.ID "
         "WHERE (dbo.UI_Rule_Ptrs.id_rules = :id AND dbo.UI_Rules.active=1)"
         )) ){
             return false;
         }
+
+    size_t naId;//Id for n/a rule
+    if (!getNaRuleID(naId)) return false;
 
     query.setForwardOnly(true);
     if (!query.exec()) return false;
@@ -113,8 +108,8 @@ bool RuleChecker::buildHashes()
                         if (!standardRuleInsertion(rule,id,cellShrPtr(new cell(field,form,mapper)),*mapPtr)) return false;
             }else if (eRuleType==RuleChecker::PRETRIGGER){
                 // Retrieve the settings from the origin column
-                size_t id=query.value(query.record().indexOf(tr("id_rules"))).toInt();
-                triggerPtrQuery.bindValue(tr(":id_rules"), id);
+                size_t id=query.value(query.record().indexOf(tr("id"))).toInt();
+                triggerPtrQuery.bindValue(tr(":id"), id);
                 triggerPtrQuery.setForwardOnly(true);
                 if (!triggerPtrQuery.exec()|| triggerPtrQuery.numRowsAffected()<1){
                     return false;
@@ -127,21 +122,19 @@ bool RuleChecker::buildHashes()
                     if (!standardRuleInsertion(rule,id,cellShrPtr(new cell(field,form,mapper,cellShrPtr(new cell(fieldO,formO,mapperO)))),mapPreTriggers)) return false;
                  }
 
-            }else if (eRuleType!=RuleChecker::NA) return false;
+            }else return false;
         }
 
     QSqlQuery dumPtrQuery;
     if (!dumPtrQuery.prepare(
-
-        " SELECT dbo.UI_Rules.field,dbo.UI_Rules.id , dbo.UI_Rules.mapper, UI_Rule_Types.Name as type_name, "
-        "UI_Forms.Name as form_name FROM UI_Rules "
-        "INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID "
-        "INNER JOIN UI_Rule_Types ON UI_Rules.type=UI_Rule_Types.Id_rule_types "
-        "WHERE (UI_Rule_Types.Name like :par_na AND dbo.UI_Rules.active=1) "
+        "SELECT dbo.UI_Rule_Ptrs.field,dbo.UI_Rule_Ptrs.id , dbo.UI_Rule_Ptrs.mapper, "
+        "UI_Forms.Name as form_name FROM UI_Rule_Ptrs "
+        "INNER JOIN UI_Forms ON UI_Rule_Ptrs.form=UI_Forms.ID "
+        " WHERE (dbo.UI_Rule_Ptrs.id_rules =:id AND dbo.UI_Rule_Ptrs.active=1)"
         )){
             return false;
         }
-    dumPtrQuery.bindValue(tr(":par_na"), qApp->translate("null_replacements", strNa));
+    dumPtrQuery.bindValue(tr(":id"), naId);
         //Ptrs with no rule are also stored in the references map, so that
         //we can access them later;
      dumPtrQuery.setForwardOnly(true);

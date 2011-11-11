@@ -13,7 +13,6 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     tFrameTime=0;
     viewFrameTime=0;
     frModel=0;
-    //mapper1=0;
     mapper=0;
     mapperStartDt=0;
     mapperEndDt=0;
@@ -62,7 +61,6 @@ FrmFrame::~FrmFrame()
     if (tFrameTime!=0) delete tFrameTime;
     if (viewFrameTime!=0) delete viewFrameTime;
     if (frModel!=0) delete frModel;
-    //if (mapper1!=0) delete mapper1;
     if (mapper!=0) delete mapper;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
@@ -425,11 +423,6 @@ void FrmFrame::initMapper2()
 
     connect(tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
          this, SLOT(previewRow(QModelIndex)));
-
-/*
-    connect(tableView->selectionModel(), SIGNAL(currentChanged ( const QModelIndex &, const QModelIndex &)), this,
-        SLOT(updateSample()));
-*/
 
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper << mapperStartDt << mapperEndDt;

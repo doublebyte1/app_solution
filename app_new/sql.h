@@ -1643,7 +1643,7 @@ static bool getNaRuleID(size_t& id)
 
     QSqlQuery query;
     if (!query.prepare(
-        QObject::tr("select id_rules from UI_Rules WHERE [rule] like 'n/a'"))) return false;
+        QObject::tr("select id from UI_Rules WHERE [rule] like 'n/a'"))) return false;
 
     query.setForwardOnly(true);
     if (!query.exec()|| query.numRowsAffected()!=1){

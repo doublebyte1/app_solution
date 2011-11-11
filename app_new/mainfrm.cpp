@@ -101,6 +101,10 @@ void MainFrm::initRules()
 
 void MainFrm::rulesInitialized(bool bReady)
 {
+    if (!bReady)
+        displayError(tr("Could not initialize rules!"),true);
+    else
+        statusShow(tr("Rules correctly initialized!"));
     //frmSamplingFramePtr->init();
     //m_bGotRules=bReady;
 }
@@ -657,7 +661,7 @@ void MainFrm::initTabs()
     gridLayout->addWidget(pFrmFrameDetails);
     pFrmFrameDetails->hide();
 
-    pFrmSampling=new FrmSampling(this->sSample);
+    pFrmSampling=new FrmSampling(sSample,tDateTime,ruleCheckerPtr);
      connect(pFrmSampling, SIGNAL(hideFrmSampling(bool)), this,
     SLOT(hideFrmSampling()));
 
@@ -670,8 +674,8 @@ void MainFrm::initTabs()
      connect(pFrmFrame, SIGNAL(setFrmSamplingMode(const FrmSampling::MODE)), pFrmSampling,
     SLOT(setMode(const FrmSampling::MODE)));
 
-     connect(pFrmFrame, SIGNAL(applyChanges2FrmSampling(const bool)), pFrmSampling,
-    SLOT(onApplyChanges2FrmSampling(const bool)));
+//     connect(pFrmFrame, SIGNAL(applyChanges2FrmSampling(const bool)), pFrmSampling,
+//    SLOT(onApplyChanges2FrmSampling(const bool)));
 
     gridLayout->addWidget(pFrmSampling);
     pFrmSampling->hide();

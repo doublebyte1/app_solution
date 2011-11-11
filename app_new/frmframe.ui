@@ -326,7 +326,7 @@
              <item>
               <widget class="QLabel" name="label_5">
                <property name="text">
-                <string>Sampling Process</string>
+                <string>Sampling Technique</string>
                </property>
               </widget>
              </item>

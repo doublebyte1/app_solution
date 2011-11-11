@@ -93,18 +93,6 @@ void GenericTab::onLockControls(bool bLock,QList<QWidget*>& lWidgets)
         lWidgets.at(i)->setDisabled(bLock);
 }
 
-void GenericTab::resizeToVisibleColumns ( QTableView* table )
-{
-    int ct=0;
-    for (int i=0; i < table->model()->columnCount(); ++i)
-        if (!table->isColumnHidden(i)) ++ ct;
-
-    for (int i=0; i < table->model()->columnCount(); ++i)
-        if (!table->isColumnHidden(i))
-            table->setColumnWidth(i,table->width()/ct);
-
-}
-
 ///////////////////////////////////////////////
 
 NullRelationalDelegate::NullRelationalDelegate(QList<int> colsOthers, QList<int> colsText, QObject *parent):
@@ -159,4 +147,16 @@ void filterTable(QSqlTableModel* table)
             + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strOther)
             + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strUnknown)
             + QObject::tr("'"));
+}
+
+void resizeToVisibleColumns ( QTableView* table )
+{
+    int ct=0;
+    for (int i=0; i < table->model()->columnCount(); ++i)
+        if (!table->isColumnHidden(i)) ++ ct;
+
+    for (int i=0; i < table->model()->columnCount(); ++i)
+        if (!table->isColumnHidden(i))
+            table->setColumnWidth(i,table->width()/ct);
+
 }

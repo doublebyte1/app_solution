@@ -11,7 +11,14 @@
      #define new DEBUG_NEW
   #endif
 
-void filterTable(QSqlTableModel* table);
+void                    filterTable(QSqlTableModel* table);
+//! Resize columns to contents
+/*! This is an utility function to resize the table, in order to show
+the contents of the visible columns.
+  \par table pointer to a table;
+  \sa getDtId(const int mapIdx, int& id)
+*/
+void                    resizeToVisibleColumns ( QTableView* table );
 
 //////////////////////////////////////////////////////////////////
 #ifndef SAMPLE_H
@@ -205,13 +212,6 @@ class GenericTab : public QWidget
           \sa resizeToVisibleColumns ( QTableView* table )
       */
         bool                    getDtId(const int mapIdx, int& id);
-        //! Resize columns to contents
-        /*! This is an utility function to resize the table, in order to show
-        the contents of the visible columns.
-          \par table pointer to a table;
-          \sa getDtId(const int mapIdx, int& id)
-      */
-        void                    resizeToVisibleColumns ( QTableView* table );
         //! Init Rule Binder
         /*! This function initializes the rule binder, connecting all the necessary signals
         to have interaction with this class;
