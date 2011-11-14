@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Wed 9. Nov 11:05:25 2011
+** Created: Mon 14. Nov 18:32:15 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -117,6 +117,8 @@ public:
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
         tableView->setSizePolicy(sizePolicy1);
+        tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+        tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
         horizontalLayout->addWidget(tableView);
 
@@ -350,6 +352,7 @@ public:
         QObject::connect(pushEdit, SIGNAL(clicked(bool)), frmframe, SLOT(editRecord(bool)));
         QObject::connect(pushRemove, SIGNAL(clicked()), frmframe, SLOT(removeRecord()));
         QObject::connect(cmbPrexistent, SIGNAL(currentIndexChanged(int)), frmframe, SLOT(adjustFrmSamplingMode()));
+        QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmframe, SLOT(previewRow(QModelIndex)));
 
         QMetaObject::connectSlotsByName(frmframe);
     } // setupUi

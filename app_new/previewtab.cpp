@@ -92,14 +92,20 @@ bool PreviewTab::submitMapperAndModel(QDataWidgetMapper* aMapper)
 
 bool PreviewTab::tableSelect(const int id)
 {
-    for (int i=0; i < m_table->model()->rowCount();++i){
-        if (m_table->model()->index(i,0).data().toInt()==id){
-            m_table->selectRow(i);
-            return true;
-        }
-    }
+    if (m_table==0 || m_table->model()==0) return false;
 
-    return false;
+    QModelIndex start=m_table->model()->index(0,0);
+    QModelIndexList list=m_table->model()->match(start,0,id);
+
+    if (list.size()!=1 || !list.at(0).isValid()) return false;
+
+    //m_table->setCurrentIndex(list.at(0));
+
+    m_table->scrollTo(list.at(0), QAbstractItemView::EnsureVisible);
+    m_table->selectRow(list.at(0).row());
+    //m_table->selectionModel()->setCurrentIndex(list.at(0),QItemSelectionModel::Rows | QItemSelectionModel::ClearAndSelect);
+
+    return m_table->selectionModel()->hasSelection();
 }
 
 void PreviewTab::genericUI4NewRecord()
@@ -138,6 +144,7 @@ bool PreviewTab::onButtonClick(QAbstractButton* button)
 void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
 {
     m_table=aTable;
+
     m_table->setModel(view);
 
     connect(m_table->selectionModel(), SIGNAL(selectionChanged 
@@ -148,11 +155,12 @@ void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
     m_table->verticalHeader()->hide();
     m_table->setSelectionMode(
         QAbstractItemView::SingleSelection);
-    m_table->setSelectionBehavior( QAbstractItemView::SelectRows );
+    m_table->setSelectionBehavior( QAbstractItemView::SelectRows);
     m_table->horizontalHeader()->setClickable(false);
     m_table->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
 
-    m_table->setItemDelegate(new QSqlRelationalDelegate(m_table));
+    //m_table->setItemDelegate(new QSqlRelationalDelegate(m_table));
+
 }
 
 bool PreviewTab::afterApply()
@@ -191,20 +199,15 @@ void PreviewTab::onShowForm()
     if (m_model==0) return;
     m_model->select();
     m_tDateTime->select();
+
     setPreviewQuery();
 
     if (m_model==0) return ;
-    if (!m_model->filter().isEmpty()) m_model->setFilter(tr(""));
 
     if (m_tDateTime==0) return ;
-    if (!m_tDateTime->filter().isEmpty()) m_tDateTime->setFilter(tr(""));
 
     //filter the relational model
     filterModel4Combo();
-
-    if (m_table->model()->rowCount()>0){
-        m_table->selectRow(0);
-    }
 
     if (m_sample==0 || lbHead==0) return;
 

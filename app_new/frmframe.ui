@@ -60,6 +60,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -541,6 +547,22 @@
     <hint type="sourcelabel">
      <x>427</x>
      <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tableView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>frmframe</receiver>
+   <slot>previewRow(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>450</x>
+     <y>63</y>
     </hint>
     <hint type="destinationlabel">
      <x>406</x>

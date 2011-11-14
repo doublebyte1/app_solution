@@ -54,6 +54,8 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     initModels();
     initUI();
     initMappers();
+
+    onShowForm();
 }
 
 FrmFrame::~FrmFrame()
@@ -259,8 +261,8 @@ void FrmFrame::previewRow(QModelIndex index)
 
 void FrmFrame::onItemSelection()
 {
-    if (!m_bSampling)
-        pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    //if (!pushEdit->isChecked())
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection() && !m_bSampling);
 }
 
 void FrmFrame::blockCustomDateCtrls()
@@ -277,12 +279,14 @@ void FrmFrame::unblockCustomDateCtrls()
     customDtEnd->blockSignals(false);
 }
 
+
 void FrmFrame::showEvent ( QShowEvent * event )
 {
     //Since this is the first form, we have to force the call here!
-    if (m_curMode == FrmFrameDetails::NONE && !pushEdit->isChecked())
-        onShowForm();
+    //if (m_curMode == FrmFrameDetails::NONE && !pushEdit->isChecked())
+        //onShowForm();
 }
+
 
 void FrmFrame::initModels()
 {
@@ -432,8 +436,8 @@ void FrmFrame::initMapper2()
     mapper->addMapping(this->cmbPrexistent, 1/*, tr("currentIndex").toAscii()*/);
     //mapper->toLast();
 
-    connect(tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-         this, SLOT(previewRow(QModelIndex)));
+    //connect(tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
+      //   this, SLOT(previewRow(QModelIndex)));
 
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper << mapperStartDt << mapperEndDt;
@@ -670,6 +674,9 @@ void FrmFrame::adjustFrmSamplingMode()
 
 bool FrmFrame::loadFrameFromSample()
 {
+
+    
+    /*
     tFrameTime->setFilter(tr("FR_Time.ID=") + QVariant(m_sample->frameTimeId).toString());
     if (tFrameTime->rowCount()!=1){
         emit showError (tr("Could not find this frame time!"));
@@ -704,6 +711,6 @@ bool FrmFrame::loadFrameFromSample()
 
     m_submitted=true;
     setReadOnly(true);
-
+*/
     return true;
 }

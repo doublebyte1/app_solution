@@ -262,7 +262,7 @@ void MainFrm::loadTabs()
 
         if (sSample->frameId==-1 || sSample->frameTimeId==-1) return;
 
-        if (pFrmFrame->loadFrameFromSample()){
+//        if (pFrmFrame->loadFrameFromSample()){
 
             QVector<int> vSample;
             if (sSample->frameTimeId!=-1) vSample << sSample->frameTimeId;
@@ -274,7 +274,7 @@ void MainFrm::loadTabs()
             if (sSample->operationId!=-1) vSample << sSample->operationId;
             //TODO: add catch?
 
-            if (vSample.size()>1){//We need to read more information
+            //if (vSample.size()>1){//We need to read more information
                 //pFrmFrame->next();
 
                 if (vSample.size() > vTabs.size()){
@@ -288,6 +288,9 @@ void MainFrm::loadTabs()
 
                          if ( qobject_cast<PreviewTab*>(vTabs.at(ct))!=0){
                             PreviewTab* pTab=qobject_cast<PreviewTab*>(vTabs.at(ct));
+
+                            qDebug() << pTab->title() << endl;
+
                             if (!pTab->tableSelect(*it)){
                                 displayError(tr("Could not find the saved record on form ") +
                                     vTabs.at(ct)->title(),true);
@@ -306,12 +309,12 @@ void MainFrm::loadTabs()
                     if (bOk) statusShow(tr("Project successfully loaded."));
                     else displayError (tr("Could not load tab ") + vTabs.at(ct)->title() + tr("!"),false);
                 }
-            }
- 
+            //}
+ /*
         }else{
             displayError(tr("Could not load project file!"),true);
         }
-
+*/
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
