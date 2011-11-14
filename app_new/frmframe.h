@@ -35,6 +35,7 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   unblockCustomDateCtrls();
 
     private slots:
+        void                                   onAppliedChanges2FrmSampling();
         void                                   adjustFrmSamplingMode();
 
         bool                                   updateSample();

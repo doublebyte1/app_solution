@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmsampling.h'
 **
-** Created: Thu 10. Nov 17:08:12 2011
+** Created: Mon 14. Nov 08:38:20 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -72,29 +72,32 @@ static const uint qt_meta_data_FrmSampling[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      13,   12,   12,   12, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      19,   13,   12,   12, 0x0a,
-      53,   46,   12,   12, 0x0a,
-      86,   12,   12,   12, 0x08,
-      98,   12,   93,   12, 0x08,
-     105,   12,   12,   12, 0x08,
-     117,   12,   12,   12, 0x08,
+      50,   44,   12,   12, 0x0a,
+      77,   12,   12,   12, 0x08,
+      89,   12,   84,   12, 0x08,
+      96,   12,   12,   12, 0x08,
+     108,   12,   12,   12, 0x08,
+     127,  120,   12,   12, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FrmSampling[] = {
-    "FrmSampling\0\0aMode\0setMode(FrmSampling::MODE)\0"
-    "bApply\0onApplyChanges2FrmSampling(bool)\0"
+    "FrmSampling\0\0AppliedChanges2SamplingFrame()\0"
+    "aMode\0setMode(FrmSampling::MODE)\0"
     "back()\0bool\0next()\0insertRow()\0"
-    "removeRow()\0"
+    "removeRow()\0bApply\0onApplyChanges2FrmSampling(bool)\0"
 };
 
 const QMetaObject FrmSampling::staticMetaObject = {
@@ -128,17 +131,24 @@ int FrmSampling::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: setMode((*reinterpret_cast< const FrmSampling::MODE(*)>(_a[1]))); break;
-        case 1: onApplyChanges2FrmSampling((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 0: AppliedChanges2SamplingFrame(); break;
+        case 1: setMode((*reinterpret_cast< const FrmSampling::MODE(*)>(_a[1]))); break;
         case 2: back(); break;
         case 3: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 4: insertRow(); break;
         case 5: removeRow(); break;
+        case 6: onApplyChanges2FrmSampling((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
+}
+
+// SIGNAL 0
+void FrmSampling::AppliedChanges2SamplingFrame()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, 0);
 }
 QT_END_MOC_NAMESPACE

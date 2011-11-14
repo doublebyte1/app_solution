@@ -75,22 +75,23 @@ class FrmSampling : public GenericTab, public Ui::FrmSampling
 
     public slots:
         void                           setMode(const FrmSampling::MODE aMode){m_mode=aMode;}
-        void                           onApplyChanges2FrmSampling(const bool bApply);
 
     signals:
-        //void                           hideFrmSampling(bool bNotSubmitted);
+        void                           AppliedChanges2SamplingFrame();
 
     protected:
         void                           showEvent ( QShowEvent * event );
 
     private slots:
         void                           back();
-        //void                           apply();
         bool                           next(){return false;}
         void                           insertRow();
         void                           removeRow();
+        void                           onApplyChanges2FrmSampling(const bool bApply);
 
     private:
+        bool                           comitSamplingTechnique();
+        bool                           comitSampledLevels();
         void                           onShowForm();
         bool                           createRecords();
         void                           initMappers();

@@ -97,13 +97,24 @@ void FrmFrame::beforeShow()
     this->groupDetails->setVisible(false);
 }
 
+void FrmFrame::onAppliedChanges2FrmSampling()
+{
+    groupProcess->setEnabled(false);
+    pushEdit->setChecked(false);
+}
+
 void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
     //m_bSampling=!bFinished;
-    if (!bFinished)
+
+    if (!bFinished){
         emit setFrmSamplingMode(FrmSampling::EDIT);
-    else{
-        emit applyChanges2FrmSampling(!bDiscarded);
+    }else{
+        if (!bDiscarded){
+            pushEdit->setChecked(true);
+            emit applyChanges2FrmSampling(!bDiscarded);
+            return;
+        }
     }
     groupProcess->setEnabled(!bFinished);
 }

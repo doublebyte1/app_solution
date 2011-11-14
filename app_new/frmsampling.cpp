@@ -71,66 +71,49 @@ void FrmSampling::onShowForm()
     setSourceText(lbSource,m_sample->bLogBook);
     setTips(m_sample->bLogBook);
 
-    pushApply->setVisible(m_mode==CREATE);
-
     if (m_mode==CREATE){
 
         if (!createRecords()){
             emit showError(tr("Could not initialize records for Sampling Technique!"));
             return;
         }else {
+            mapper1->toLast();
             emit addRecord();
             emit showStatus(tr("Records successfully initialized for characterizing the sampling technique used for this frame!"));
         }
 
+        for (int i=0; i < tSampLevels->rowCount(); ++i)
+            tableView->hideRow(i);
+
+    }if (m_mode==EDIT){
+
+        tRefSampTec->setFilter("id_fr_time=" + QVariant(m_sample->frameTimeId).toString());
+
+        QModelIndex idx=tRefSampTec->index(tRefSampTec->rowCount()-1,0);
+        if (!idx.isValid()) return;
+
+        tSampLevels->setFilter("id_sampling_technique=" + idx.data().toString());
+
+        mapper1->toLast();
     }
 
-    for (int i=0; i < tSampLevels->rowCount(); ++i)
-        tableView->hideRow(i);
-
     m_submitted=false;
+
+    groupTechnique->setEnabled(!m_submitted);
     pushApply->setEnabled(!m_submitted);
+    pushApply->setVisible(m_mode==CREATE);
+
 }
 
 void FrmSampling::showEvent ( QShowEvent * event )
 {
+    spinPopulation->blockSignals(true);
+    spinSample->blockSignals(true);
     onShowForm();
+    spinPopulation->blockSignals(false);
+    spinSample->blockSignals(false);
 }
 
-bool FrmSampling::removeRecords(int ct)
-{
-    //first check if the filter is on!
-    if (tSampLevels->filter().isEmpty() || tSampLevels->filter().isNull()) return false;
-
-    return ( tSampLevels->removeRows(0,ct));
-}
-/*
-void FrmSampling::initRecords(int index)
-{
-    if (!this->isVisible()) return;
-    if (m_mode==EDIT)return;
-
-    //first revert changes
-    tSampLevels->revertAll();
-
-    //qDebug() << tSampLevels->rowCount() << endl;
-/*
-    QModelIndex idx=cmbSchema->model()->index(index,0);
-    tRefLevels->setFilter("id_schema="+idx.data().toString());
-
-     for (int i=0; i < tRefLevels->rowCount(); ++i)
-     {
-         tSampLevels->insertRow(tSampLevels->rowCount());
-         QModelIndex idx1=tSampLevels->index(tSampLevels->rowCount()-1,1);
-         tSampLevels->setData(idx1,m_sample->frameTimeId);
-         QModelIndex idx2=tSampLevels->index(tSampLevels->rowCount()-1,2);
-         QModelIndex idLevel=tRefLevels->index(i,0);
-         tSampLevels->setData(idx2,idLevel.data());
-     }
-
-    //qDebug() << tSampLevels->rowCount() << endl;
-}
-*/
 void FrmSampling::back()
 {
     emit hideFrmSampling(m_submitted);
@@ -147,7 +130,7 @@ void FrmSampling::initMappers()
 
     if (nullDellegate!=0) delete nullDellegate;
     QList<int> lCmb;
-    lCmb << 5 ;
+    lCmb << 5 << 6 << 7;
     QList<int> lText;
     lText << 3 << 4;
     nullDellegate=new NullRelationalDelegate(lCmb,lText);
@@ -170,70 +153,100 @@ void FrmSampling::initMappers()
     if (!initBinder(m_mapperBinderPtr))
         emit showError(tr("Could not init binder!"));
 
+    //TODO: create delegate (and binder) for the table?
 }
 
-
-bool FrmSampling::reallyApply()
+bool FrmSampling::comitSamplingTechnique()
 {
+    bool bError=false;
 
-    return true;
-    /*
+    int curIndex=mapper1->currentIndex();
 
-    if (m_mode==REPLACE){
-
-        int i;
-        for (i=0; i < tSampLevels->rowCount(); ++i){
-            QModelIndex idx=tSampLevels->index(i,0);
-            if (tSampLevels->isDirty(idx)) break;
-        }
-
-        if (!removeRecords(i)){
-            if (tSampLevels->lastError().type()!=QSqlError::NoError)
-                emit showError(tSampLevels->lastError().text());
-            //else
-                //emit showError(tr("Could not remove previous characterization associated to this frame!"));
-        }
-    }
-
-    if (tSampLevels->submitAll()){
-        m_submitted=true;
+    if (!mapper1->submit()){
+            if (tRefSampTec->lastError().type()!=QSqlError::NoError)
+                emit showError(tRefSampTec->lastError().text());
+            else
+                emit showError(tr("Could not submit mapper!"));
+            bError=true;
     }else{
-        if (tSampLevels->lastError().type()!=QSqlError::NoError)
-            emit showError(tSampLevels->lastError().text());
-        else
-            emit showError(tr("Failed to submit data: unknown error!"));
+            QModelIndex idx=tRefSampTec->index(tRefSampTec->rowCount()-1,8);
+            if (!idx.isValid()) return false;
+            if (!tRefSampTec->setData(idx,m_sample->frameTimeId)) return false;
+
+            if (!tRefSampTec->submitAll()){
+                if (tRefSampTec->lastError().type()!=QSqlError::NoError)
+                    emit showError(tRefSampTec->lastError().text());
+                else
+                    emit showError(tr("Could not write Sampling Technique in the database!"));
+                bError=true;
+            }else
+                emit showStatus(tr("Sampling Technique successfully written in the database!"));
     }
 
-    uncoverRows();
-    */
+    mapper1->setCurrentIndex(curIndex);
+
+    return !bError;
 }
 
-void FrmSampling::uncoverRows()
+bool FrmSampling::comitSampledLevels()
 {
-    //show the hidden rows again
-    for (int i=0; i < tSampLevels->rowCount(); ++i){
-        if (tableView->isRowHidden(i)) tableView->showRow(i);
+    bool bError=false;
+    int id;
+    int ct=0;
+
+
+    QModelIndex indexTechnique=tRefSampTec->index(tRefSampTec->rowCount()-1,0);
+    if (!indexTechnique.isValid()) return false;
+    id=indexTechnique.data().toInt();
+    for (int i=0; i < tSampLevels->rowCount(); ++i)
+    {
+            QModelIndex indexId=tSampLevels->index(i,0);
+            if (!indexId.isValid()) return false;
+            if (tSampLevels->isDirty(indexId)){
+                QModelIndex indexFr=tSampLevels->index(i,6);
+                if (!indexFr.isValid()) return false;
+                if (!tSampLevels->setData(indexFr,id)) return false;
+                ++ct;
+            }
     }
+
+    if (ct<1 && m_mode==CREATE){
+        emit showError(tr("You must add some level(s) to this sampling strategy!"));
+        return false;
+    }
+
+    if (!tSampLevels->submitAll()){
+        if (tSampLevels->lastError().type()!=QSqlError::NoError){
+            emit showError(tSampLevels->lastError().text());
+        }else
+            emit showError(tr("Could not write Sampling levels in the database!"));
+        bError=true;
+    }else{
+        emit showStatus(tr("Sampling Technique successfully written in the database!"));
+        if (m_mode==CREATE)tSampLevels->setFilter("id_sampling_technique=" + QVariant(id).toString());
+    }
+
+    return !bError;
 }
 
 void FrmSampling::onApplyChanges2FrmSampling(const bool bApply)
 {
-    if (bApply)reallyApply();
-    else reallyDiscard();
+    if (bApply)
+            apply();
 }
 
-void FrmSampling::reallyDiscard()
+bool FrmSampling::reallyApply()
 {
-    tSampLevels->revertAll();
-    uncoverRows();
+    //first comit tRefSampTec; then get the id and comit tSampLevels
+    bool bError=(!comitSamplingTechnique() || !comitSampledLevels());
+
+    m_submitted=!bError;
+    groupTechnique->setEnabled(!m_submitted);
+    pushApply->setEnabled(!m_submitted);
+
+    if (!bError && m_mode==EDIT) AppliedChanges2SamplingFrame();
+    return !bError;
 }
-/*
-void FrmSampling::apply()
-{    
-    //reallyApply();
-    emit submit();
-}
-*/
 
 void FrmSampling::initModels()
 {
@@ -281,13 +294,7 @@ void FrmSampling::initModels()
 
 void FrmSampling::initUI()
 {
-    /*
-    cmbSchema->setModel(tRefSampTec);
-    cmbSchema->setModelColumn(1);
-    cmbSchema->setEnabled(false);
-*/
     initTable();
-    //tableView->resizeColumnsToContents();
     initMappers();
 }
 
@@ -296,7 +303,7 @@ void FrmSampling::initTable()
     tableView->setModel(tSampLevels);
     tableView->sortByColumn(0, Qt::AscendingOrder);
     tableView->hideColumn(0);// identity
-    tableView->hideColumn(8);//id frame time
+    tableView->hideColumn(6);//id frame time
 
     tableView->setItemDelegate(new QSqlRelationalDelegate(tableView));
 
