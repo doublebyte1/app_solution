@@ -283,9 +283,6 @@ void MainFrm::loadTabs()
 
                  if ( qobject_cast<PreviewTab*>(vTabs.at(ct))!=0){
                     PreviewTab* pTab=qobject_cast<PreviewTab*>(vTabs.at(ct));
-
-                    qDebug() << pTab->title() << endl;
-
                     if (!pTab->tableSelect(*it)){
                         displayError(tr("Could not find the saved record on form ") +
                             vTabs.at(ct)->title(),true);
