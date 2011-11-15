@@ -69,12 +69,8 @@ bool RuleChecker::buildHashes()
     QString sqlActiveRules=tr("SELECT distinct dbo.UI_Rules.id, dbo.UI_Rules.field, dbo.UI_Rules.mapper, "
         "dbo.UI_Forms.Name as form_name, "
         "dbo.UI_Rules.[rule], dbo.UI_Rule_Types.name AS type_name "
-
-        //"FROM dbo.UI_Rule_Ptrs RIGHT OUTER JOIN dbo.UI_Rules ON dbo.UI_Rule_Ptrs.id_rules = "
-        //"dbo.UI_Rules.id INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types "
-
         "FROM UI_Rules "
-        " INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id_rule_types "
+        " INNER JOIN dbo.UI_Rule_Types ON dbo.UI_Rules.type = dbo.UI_Rule_Types.id "
         "INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID "
         "WHERE (dbo.UI_Rules.active=1)");
 
@@ -136,7 +132,7 @@ bool RuleChecker::buildHashes()
         " SELECT dbo.UI_Rules.field,dbo.UI_Rules.id , dbo.UI_Rules.mapper, UI_Rule_Types.Name as type_name, "
         "UI_Forms.Name as form_name FROM UI_Rules "
         "INNER JOIN UI_Forms ON UI_Rules.form=UI_Forms.ID "
-        "INNER JOIN UI_Rule_Types ON UI_Rules.type=UI_Rule_Types.Id_rule_types "
+        "INNER JOIN UI_Rule_Types ON UI_Rules.type=UI_Rule_Types.Id "
         "WHERE (UI_Rule_Types.Name like :par_na AND dbo.UI_Rules.active=1) "
         )){
             return false;

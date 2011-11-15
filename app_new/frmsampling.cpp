@@ -87,14 +87,21 @@ void FrmSampling::onShowForm()
 
     }if (m_mode==EDIT){
 
+        bool bError=false;
+
         tRefSampTec->setFilter("id_fr_time=" + QVariant(m_sample->frameTimeId).toString());
 
-        QModelIndex idx=tRefSampTec->index(tRefSampTec->rowCount()-1,0);
-        if (!idx.isValid()) return;
+        QModelIndex idx=tRefSampTec->index(0,0);
+        if (idx.isValid()){
 
-        tSampLevels->setFilter("id_sampling_technique=" + idx.data().toString());
+            tSampLevels->setFilter("id_sampling_technique=" + idx.data().toString());
+            tSampLevels->select();
 
-        mapper1->toLast();
+            mapper1->toLast();
+
+        } else {
+            emit showError(tr("Could not find a sampling technique for this frame!"));
+        }
     }
 
     m_submitted=false;

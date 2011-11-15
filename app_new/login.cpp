@@ -47,7 +47,7 @@ void Login::validate()
     if (m_connected)
     {
         QSqlQuery query;
-        query.prepare( tr("SELECT username, password, name, entry, modify, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].role_id) AND (username= :user AND password= :pass) )") );
+        query.prepare( tr("SELECT username, password, name, entry, modify, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].id) AND (username= :user AND password= :pass) )") );
         query.bindValue(tr(":user"), lineUser->text() );
         query.bindValue(tr(":pass"), linePasswd->text() );
 

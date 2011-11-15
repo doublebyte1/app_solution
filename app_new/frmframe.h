@@ -28,8 +28,6 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         FrmFrame(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent=0, Qt::WFlags flags=0);
         ~FrmFrame();
 
-        bool                                   loadFrameFromSample();
-
     public slots:
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();

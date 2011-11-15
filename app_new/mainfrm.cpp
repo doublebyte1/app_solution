@@ -262,59 +262,49 @@ void MainFrm::loadTabs()
 
         if (sSample->frameId==-1 || sSample->frameTimeId==-1) return;
 
-//        if (pFrmFrame->loadFrameFromSample()){
+        QVector<int> vSample;
+        if (sSample->frameTimeId!=-1) vSample << sSample->frameTimeId;
+        if (sSample->minorStrataId!=-1) vSample << sSample->minorStrataId;
+        if (sSample->cellId!=-1) vSample << sSample->cellId;
+        if (sSample->vesselTypeId!=-1) vSample << sSample->vesselTypeId;
+        if (sSample->sampVesselId!=-1) vSample << sSample->sampVesselId;
+        if (sSample->tripId!=-1) vSample << sSample->tripId;
+        if (sSample->operationId!=-1) vSample << sSample->operationId;
+        //TODO: add catch?
 
-            QVector<int> vSample;
-            if (sSample->frameTimeId!=-1) vSample << sSample->frameTimeId;
-            if (sSample->minorStrataId!=-1) vSample << sSample->minorStrataId;
-            if (sSample->cellId!=-1) vSample << sSample->cellId;
-            if (sSample->vesselTypeId!=-1) vSample << sSample->vesselTypeId;
-            if (sSample->sampVesselId!=-1) vSample << sSample->sampVesselId;
-            if (sSample->tripId!=-1) vSample << sSample->tripId;
-            if (sSample->operationId!=-1) vSample << sSample->operationId;
-            //TODO: add catch?
-
-            //if (vSample.size()>1){//We need to read more information
-                //pFrmFrame->next();
-
-                if (vSample.size() > vTabs.size()){
-                    displayError(tr("Could not load project file!"),true);//TODO: improve errors!
-                }else{
-
-                    bool bOk=true;
-                    int ct=0;
-                    QVector<int>::const_iterator it;
-                     for (it = vSample.begin(); it != vSample.end(); ++it){
-
-                         if ( qobject_cast<PreviewTab*>(vTabs.at(ct))!=0){
-                            PreviewTab* pTab=qobject_cast<PreviewTab*>(vTabs.at(ct));
-
-                            qDebug() << pTab->title() << endl;
-
-                            if (!pTab->tableSelect(*it)){
-                                displayError(tr("Could not find the saved record on form ") +
-                                    vTabs.at(ct)->title(),true);
-                                bOk=false;
-                                break;
-                            }
-                         }
-
-                         if (!vTabs.at(ct)->next()){
-                            bOk=false;
-                            break;
-                         }
-                         ct++;
-                     }
-
-                    if (bOk) statusShow(tr("Project successfully loaded."));
-                    else displayError (tr("Could not load tab ") + vTabs.at(ct)->title() + tr("!"),false);
-                }
-            //}
- /*
+        if (vSample.size() > vTabs.size()){
+            displayError(tr("Could not load project file!"),true);//TODO: improve errors!
         }else{
-            displayError(tr("Could not load project file!"),true);
+
+            bool bOk=true;
+            int ct=0;
+            QVector<int>::const_iterator it;
+             for (it = vSample.begin(); it != vSample.end(); ++it){
+
+                 if ( qobject_cast<PreviewTab*>(vTabs.at(ct))!=0){
+                    PreviewTab* pTab=qobject_cast<PreviewTab*>(vTabs.at(ct));
+
+                    qDebug() << pTab->title() << endl;
+
+                    if (!pTab->tableSelect(*it)){
+                        displayError(tr("Could not find the saved record on form ") +
+                            vTabs.at(ct)->title(),true);
+                        bOk=false;
+                        break;
+                    }
+                 }
+
+                 if (!vTabs.at(ct)->next()){
+                    bOk=false;
+                    break;
+                 }
+                 ct++;
+             }
+
+            if (bOk) statusShow(tr("Project successfully loaded."));
+            else displayError (tr("Could not load tab ") + vTabs.at(ct)->title() + tr("!"),false);
         }
-*/
+
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
