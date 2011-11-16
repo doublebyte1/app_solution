@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Wed 16. Nov 15:41:10 2011
+** Created: Wed 16. Nov 19:44:57 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -134,6 +134,8 @@ public:
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
         tableView = new QTableView(frmminorstrata);
         tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+        tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableView->setShowGrid(false);
 
         horizontalLayout_6->addWidget(tableView);

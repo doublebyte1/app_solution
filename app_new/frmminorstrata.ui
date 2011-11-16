@@ -86,6 +86,12 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        <property name="whatsThis">
         <string>In this widget we can choose a minor strata, or create a new one</string>
        </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
        <property name="showGrid">
         <bool>false</bool>
        </property>

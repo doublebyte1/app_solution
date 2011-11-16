@@ -223,10 +223,17 @@ bool PreviewTab::next()
     }
 
     if (!updateSample()) return false;
-    QString strLabel;
-    if (!getNextLabel(strLabel)) return false;
 
-    emit forward(lbHead->text().isEmpty()? strLabel :lbHead->text()+ tr("-> ") + strLabel);
+    //QString strLabel;
+    //emit forward(lbHead->text().isEmpty()? strLabel :lbHead->text()+ tr("-> ") + strLabel);
+    emit forward("");
+    return true;
+}
+
+bool PreviewTab::getNewHeader(QString& strLabel)
+{
+    if (!getNextLabel(strLabel)) return false;
+    strLabel=(lbHead->text().isEmpty()? strLabel:lbHead->text()+ tr("-> ") + strLabel);
     return true;
 }
 

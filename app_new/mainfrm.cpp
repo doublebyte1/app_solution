@@ -1,6 +1,9 @@
 #include <QTest>
 #include "mainfrm.h"
 
+#define JUMP 1
+#define STEP 3
+
 MainFrm::MainFrm(QWidget *parent, Qt::WFlags flags):
 QMainWindow(parent, flags){
 
@@ -612,8 +615,8 @@ void MainFrm::newTabs()
         sSample=new Sample;
         initTabs();
 
-        if (pFrmFrame==0) return;
-        this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
+        //if (pFrmFrame==0) return;
+        //this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
 
     statusShow(tr("Project successfully initialized."));
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
@@ -697,18 +700,24 @@ void MainFrm::initTabs()
          connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
         SLOT(statusShow(QString)),Qt::UniqueConnection);
 
+         /*
          if (i < vTabs.size()-1){
              connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
             SLOT(fillHeader(const QString)),Qt::UniqueConnection);
 
              connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
             SLOT(onShowForm()),Qt::UniqueConnection);
-         }
+         }*/
+
+        this->tabWidget->insertTab(vTabs.size()
+        ,vTabs.at(i), vTabs.at(i)->title());
 
          if (i>0)
              tabWidget->setTabEnabled(i,false);
 
      }
+     tabWidget->setCurrentIndex(0);
+
 }
 
 void MainFrm::rearrangeTabs(bool bLogBook)
@@ -737,29 +746,75 @@ void MainFrm::updateIndexes(const int from)
      }
 }
 
-
-void MainFrm::addTab(int idx, bool bOk)
+/*
+void MainFrm::addTab(const int idx, const int newIndex, bool bOk)
 {
-    if (bOk && tabWidget->count()==(idx+1) && idx< vTabs.size()-1){
-        this->tabWidget->insertTab(vTabs.size()
-        ,vTabs.at(idx+1), vTabs.at(idx+1)->title());
+    if (bOk && 
+        tabWidget->count()==(idx+1) && 
+        idx< vTabs.size()-1){
+            this->tabWidget->insertTab(vTabs.size()
+            ,vTabs.at(newIndex), vTabs.at(newIndex)->title());
     }
+}
+*/
+bool MainFrm::getPrevIndex(const int idx, const bool bLogbook, int& newIndex)
+{
+    if (bLogbook && idx==JUMP+STEP){
+        newIndex=JUMP;
+    }else{
+        newIndex=idx-1;
+    }
+    return (newIndex >=0 && newIndex <= vTabs.count());
+}
+
+bool MainFrm::getNextIndex(const int idx, const bool bLogbook, int& newIndex)
+{
+    if (bLogbook && idx==JUMP){
+        newIndex=idx+STEP;
+    }else{
+        newIndex=idx+1;
+    }
+
+    QString strLabel;
+    if (!vTabs.at(idx)->getNewHeader(strLabel)){
+        displayError(tr("Could not retrieve label for next tab!"),false);
+        return false;
+    }
+    vTabs.at(newIndex)->fillHeader(strLabel);
+    vTabs.at(newIndex)->onShowForm();
+
+    return (newIndex >=0 && newIndex <= vTabs.count());
 }
 
 void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
 {
+    int curIdx=tabWidget->currentIndex();
+
     tabWidget->blockSignals(true);//lets block the signals to prevent entering the next again...
 
+    int newIndex=-1;
+
+    bool bEnable=!vTabs.at(idx)->getSample()->bLogBook;
+    for (int i=JUMP+1; i < JUMP+STEP; ++i)
+        tabWidget->setTabEnabled(i,bEnable);
+
     if (bNext){
-        if (idx<tabWidget->count()){
-            addTab(idx,true);
-            tabWidget->setCurrentIndex(idx+1);
+        if (!getNextIndex(idx,vTabs.at(curIdx)->getSample()->bLogBook,newIndex)){
+            displayError(tr("Could not navigate to the next tab!"),false);
+            return;
         }
+
     }else{
-        if (idx>0){
-            tabWidget->setCurrentIndex(idx-1);
+        if (!getPrevIndex(curIdx,vTabs.at(curIdx)->getSample()->bLogBook,newIndex)){
+            displayError(tr("Could not navigate to the next tab!"),false);
+            return;
         }
+
+        //tabWidget->setCurrentIndex(curIdx-1);
     }
+
+    tabWidget->setTabEnabled(newIndex,true);
+    tabWidget->setCurrentIndex(newIndex);
 
     tabWidget->blockSignals(false);//and unblock...
 }

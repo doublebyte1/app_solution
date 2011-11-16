@@ -374,7 +374,7 @@ void FrmMinorStrata::initUI()
 
 void FrmMinorStrata::onItemSelection()
 {
-    pushNext->setEnabled(tableView->selectionModel()->hasSelection() && !radioInactive->isChecked());
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection() /*&& radioInactive->isChecked()*/);
 }
 
 void FrmMinorStrata::setPreviewQuery()

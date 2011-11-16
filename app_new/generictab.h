@@ -134,6 +134,7 @@ class GenericTab : public QWidget
         \sa index()
         */
         const QString           title()const {return m_title;}
+        const Sample*           getSample() const {return m_sample;}
 
     public slots:
         //! Fill header

@@ -44,6 +44,14 @@ class PreviewTab : public GenericTab
           \return boolean indication if it found or not the record with this id
         */
         bool                                  tableSelect(const int id);
+        //! Go to the next step
+        /*! The next is the slot that actually passes the information to the next tab (and adds it
+        if it is not visible), and therefore is crucial to the sampling process;
+        if we just change tabs, we do not pass any information around: we must 
+        press next to effectively navigate in the tree;
+        */
+        bool                                  next();
+        bool                                  getNewHeader(QString& strLabel);
 
     protected:
         //! Set preview model
@@ -182,13 +190,6 @@ class PreviewTab : public GenericTab
         /par bLogBook boolean to indicate whether it is a logbook or sampling form
         */
         void                                  setTips(const bool bLogbook);
-        //! Go to the next step
-        /*! The next is the slot that actually passes the information to the next tab (and adds it
-        if it is not visible), and therefore is crucial to the sampling process;
-        if we just change tabs, we do not pass any information around: we must 
-        press next to effectively navigate in the tree;
-        */
-        bool                                  next();
         //! A pure virtual member.
         /*! Slot that inititializes a new record
           \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button), onItemSelection()

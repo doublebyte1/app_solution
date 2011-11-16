@@ -140,6 +140,9 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    initRules();
 
     private:
+        bool                    getNextIndex(const int idx, const bool bLogbook, int& newIndex);
+        bool                    getPrevIndex(const int idx, const bool bLogbook, int& newIndex);
+
         void                    initSecondaryFrm(SecondaryFrm* frm);
         bool                    initDateModel();
         void                    resetTabs();
@@ -170,7 +173,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         FrmExport               *pFrmExport;
         FrmRegions              *pFrmRegions;
         FrmImportRegions        *pFrmImportRegions;
-        QVector<GenericTab*>    vTabs;//!< container for storing pointers to the tabs;
+        QVector<PreviewTab*>    vTabs;//!< container for storing pointers to the tabs;
         QVector<SecondaryFrm*>  vSecondaryFrms;//!< container for storing pointers to the secondary forms;
         QList<MsgBoxPtr>        m_listMsgBoxes;//!< container for storing pointers to the messageboxes;
         Sample*                 sSample;
@@ -190,7 +193,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QAction* separatorAct;
 
     private slots:
-        void                    addTab(int idx, bool bOk);
+        //void                    addTab(const int idx, const int newIndex, bool bOk);
         void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 
