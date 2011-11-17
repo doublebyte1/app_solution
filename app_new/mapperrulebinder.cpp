@@ -222,7 +222,11 @@ bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QW
     //qDebug() << varPar.toString() << endl;
 
     QSqlQuery query;
-    if (!ruleCheckerPtr->applyRule(strRule,query,varPar)) return false;
+    if (!ruleCheckerPtr->applyRule(strRule,query,varPar)){
+        showError(tr("Error executing rule no") + QVariant(rule.key()).toString() + tr(" '") + strRule + tr("' :")
+            + query.lastError().text());
+        return false;
+    }
     query.first();
     QVariant val=query.value(0);
 
