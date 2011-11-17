@@ -55,6 +55,8 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     initUI();
     initMappers();
 
+    setLoading(true);
+
     onShowForm();
 }
 

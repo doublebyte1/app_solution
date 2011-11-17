@@ -1,8 +1,8 @@
 #include <QTest>
 #include "mainfrm.h"
 
-#define JUMP 1
-#define STEP 3
+#define JUMP 1 //!< This is the last common form from logbook and sampling (where the "jump" starts for logbook!)
+#define STEP 3 //!< This is the number of forms that only exist on sampling (size of the "jump" for logbook!)
 
 MainFrm::MainFrm(QWidget *parent, Qt::WFlags flags):
 QMainWindow(parent, flags){
@@ -266,16 +266,16 @@ void MainFrm::loadTabs()
         if (sSample->frameId==-1 || sSample->frameTimeId==-1) return;
 
         QVector<int> vSample;
-        if (sSample->frameTimeId!=-1) vSample << sSample->frameTimeId;
-        if (sSample->minorStrataId!=-1) vSample << sSample->minorStrataId;
-        if (sSample->cellId!=-1) vSample << sSample->cellId;
-        if (sSample->vesselTypeId!=-1) vSample << sSample->vesselTypeId;
-        if (sSample->sampVesselId!=-1) vSample << sSample->sampVesselId;
-        if (sSample->tripId!=-1) vSample << sSample->tripId;
-        if (sSample->operationId!=-1) vSample << sSample->operationId;
-        //TODO: add catch?
+        vSample << sSample->frameTimeId;
+        vSample << sSample->minorStrataId;
+        vSample << sSample->cellId;
+        vSample << sSample->vesselTypeId;
+        vSample << sSample->sampVesselId;
+        vSample << sSample->tripId;
+        vSample << sSample->operationId;
+        vSample << sSample->catchId;
 
-        if (vSample.size() > vTabs.size()){
+        if (vSample.size() != vTabs.size()){
             displayError(tr("Could not load project file!"),true);//TODO: improve errors!
         }else{
 
@@ -286,20 +286,28 @@ void MainFrm::loadTabs()
 
                  if ( qobject_cast<PreviewTab*>(vTabs.at(ct))!=0){
                     PreviewTab* pTab=qobject_cast<PreviewTab*>(vTabs.at(ct));
-                    if (!pTab->tableSelect(*it)){
-                        displayError(tr("Could not find the saved record on form ") +
-                            vTabs.at(ct)->title(),true);
-                        bOk=false;
-                        break;
-                    }
-                 }
 
-                 if (!vTabs.at(ct)->next()){
-                    bOk=false;
-                    break;
-                 }
-                 ct++;
-             }
+                    if (*it!=-1){
+
+                            if (!pTab->tableSelect(*it)){
+                                displayError(tr("Could not find the saved record on form ") +
+                                    vTabs.at(ct)->title(),true);
+                                bOk=false;
+                                break;
+                            }
+
+                         vTabs.at(ct)->setLoading(true);
+                         if (!vTabs.at(ct)->next()){
+                            bOk=false;
+                            vTabs.at(ct)->setLoading(false);
+                            break;
+                         }
+                         vTabs.at(ct)->setLoading(false);
+                    }
+                     ct++;
+
+                 }//cast
+             }//for
 
             if (bOk) statusShow(tr("Project successfully loaded."));
             else displayError (tr("Could not load tab ") + vTabs.at(ct)->title() + tr("!"),false);
@@ -499,12 +507,14 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
                     stream.writeTextElement(tr("isLogbook"), QVariant(sSample->bLogBook).toString());
                     stream.writeTextElement(tr("frameId"), QVariant(sSample->frameId).toString());
                     stream.writeTextElement(tr("frameTimeId"), QVariant(sSample->frameTimeId).toString());
-                    if (sSample->minorStrataId!=-1) stream.writeTextElement(tr("minorStrataId"), QVariant(sSample->minorStrataId).toString());
-                    if (sSample->cellId!=-1) stream.writeTextElement(tr("cellId"), QVariant(sSample->cellId).toString());
-                    if (sSample->vesselTypeId!=-1) stream.writeTextElement(tr("vesselTypeId"), QVariant(sSample->vesselTypeId).toString());
-                    if (sSample->sampVesselId!=-1) stream.writeTextElement(tr("sampVesselId"), QVariant(sSample->sampVesselId).toString());
-                    if (sSample->tripId!=-1) stream.writeTextElement(tr("tripId"), QVariant(sSample->tripId).toString());
-                    if (sSample->operationId!=-1) stream.writeTextElement(tr("operationId"), QVariant(sSample->operationId).toString());
+                    stream.writeTextElement(tr("minorStrataId"), QVariant(sSample->minorStrataId).toString());
+                    stream.writeTextElement(tr("cellId"), QVariant(sSample->cellId).toString());
+                    stream.writeTextElement(tr("vesselTypeId"), QVariant(sSample->vesselTypeId).toString());
+                    stream.writeTextElement(tr("sampVesselId"), QVariant(sSample->sampVesselId).toString());
+                    stream.writeTextElement(tr("tripId"), QVariant(sSample->tripId).toString());
+                    stream.writeTextElement(tr("operationId"), QVariant(sSample->operationId).toString());
+                    stream.writeTextElement(tr("catchId"), QVariant(sSample->catchId).toString());
+
 
                 stream.writeEndElement();//indexes
             stream.writeEndElement();//top
@@ -615,9 +625,6 @@ void MainFrm::newTabs()
         sSample=new Sample;
         initTabs();
 
-        //if (pFrmFrame==0) return;
-        //this->tabWidget->insertTab(0,pFrmFrame, pFrmFrame->title());
-
     statusShow(tr("Project successfully initialized."));
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
@@ -719,7 +726,7 @@ void MainFrm::initTabs()
      tabWidget->setCurrentIndex(0);
 
 }
-
+/*
 void MainFrm::rearrangeTabs(bool bLogBook)
 {
     //We only want to do this (the first time we press next, and therefore using this flag...)
@@ -746,7 +753,6 @@ void MainFrm::updateIndexes(const int from)
      }
 }
 
-/*
 void MainFrm::addTab(const int idx, const int newIndex, bool bOk)
 {
     if (bOk && 
@@ -798,6 +804,11 @@ void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
     for (int i=JUMP+1; i < JUMP+STEP; ++i)
         tabWidget->setTabEnabled(i,bEnable);
 
+    if (!bEnable){
+        vTabs.at(idx)->getSample()->cellId=-1;
+        vTabs.at(idx)->getSample()->vesselTypeId=-1;
+    }
+
     if (bNext){
         if (!getNextIndex(idx,vTabs.at(curIdx)->getSample()->bLogBook,newIndex)){
             displayError(tr("Could not navigate to the next tab!"),false);
@@ -810,7 +821,6 @@ void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
             return;
         }
 
-        //tabWidget->setCurrentIndex(curIdx-1);
     }
 
     tabWidget->setTabEnabled(newIndex,true);

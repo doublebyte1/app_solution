@@ -36,7 +36,7 @@ and also to the QdataWidgetMapper binder;
 
 struct Sample{
     Sample(): frameId(-1), frameTimeId(-1), minorStrataId(-1), cellId(-1), vesselTypeId(-1), sampVesselId(-1),
-    tripId(-1),operationId(-1){;}
+    tripId(-1),operationId(-1),catchId(-1){;}
     bool        bLogBook;/**< boolean to indicate if its logbook (true) or sampling(false) */
     int         frameId;/**< frame id */
     int         frameTimeId;/**< frame time id */
@@ -46,6 +46,7 @@ struct Sample{
     int         sampVesselId;/**< sampled vessel id */
     int         tripId;/**< trip id */
     int         operationId;/**< operation id */
+    int         catchId;/**< operation id */
 };
 
 #endif //SAMPLE_H
@@ -134,7 +135,7 @@ class GenericTab : public QWidget
         \sa index()
         */
         const QString           title()const {return m_title;}
-        const Sample*           getSample() const {return m_sample;}
+        Sample*                 getSample() {return m_sample;}
 
     public slots:
         //! Fill header

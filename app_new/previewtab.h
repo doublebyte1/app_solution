@@ -51,7 +51,19 @@ class PreviewTab : public GenericTab
         press next to effectively navigate in the tree;
         */
         bool                                  next();
+        //! Get New Header
+        /*! This is a convenience function, to retrieve the label from the next form
+          \par strLabel address of a string to put the results
+          \return boolean as indication of success
+        */
         bool                                  getNewHeader(QString& strLabel);
+        //! Set Loading
+        /*! This function sets the loading mode and indicates if the form is being loaded 
+        automatically from a file, or manually by the user.
+          \par bLoading constant boolean to set if is loading ot not
+          \return boolean as indication of success
+        */
+        void                                  setLoading(const bool bLoading){m_bLoading=bLoading;}
 
     protected:
         //! Set preview model
@@ -235,5 +247,6 @@ class PreviewTab : public GenericTab
         QPushButton*                          m_pushRemove;/**< pointer for the pushRemove button in this form */
         QMap<QString,sTable>                  mapTablesL;/**< map with table sequence for logbook (for checking dependant dates!)*/
         QMap<QString,sTable>                  mapTablesS;/**< map with table sequence for sampling (for checking dependant dates!)*/
+        bool                                  m_bLoading;/**< boolean flag to indicate if we are in loading mode*/
 };
 #endif //PREVIEWTAB_H

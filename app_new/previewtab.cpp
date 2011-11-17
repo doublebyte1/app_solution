@@ -10,6 +10,7 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
     m_pushEdit=0;
     m_pushRemove=0;
     m_groupDetails=0;
+    m_bLoading=false;
 
     //Logbook flow
     mapTablesL.insert("Fr_Time",sTable(qApp->translate("null_replacements", strNa),"Ref_Minor_Strata",true));
@@ -202,14 +203,17 @@ void PreviewTab::onShowForm()
 
     setPreviewQuery();
 
-    if (m_model==0) return ;
-
     if (m_tDateTime==0) return ;
 
     //filter the relational model
     filterModel4Combo();
 
     if (m_sample==0 || lbHead==0) return;
+
+    if (!m_bLoading && m_table->model()->rowCount()>0){
+        QModelIndex idx=m_table->model()->index(0,0);
+        m_table->selectionModel()->setCurrentIndex(idx, QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
+    }
 
      emit isLogBook(m_sample->bLogBook);
 }

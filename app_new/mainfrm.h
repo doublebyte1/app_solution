@@ -148,7 +148,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    resetTabs();
         void                    initPreviewTab(PreviewTab* tab);
         void                    initUi();
-        void                    updateIndexes(const int from);
+        //void                    updateIndexes(const int from);
 
         bool                    CreateXMLFile(const QString strFileName);
         bool                    readXMLFile(const QString strFileName);
@@ -206,7 +206,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    statusClean(QString str);
         void                    displayError(QString strError, const bool bShowMsgBox);
         void                    cleanupMsgBoxes();
-        void                    rearrangeTabs(bool bLogBook);
+        //void                    rearrangeTabs(bool bLogBook);
         void                    aboutThisProject();
         void                    callAssistant();
         void                    rulesInitialized(bool bReady);
