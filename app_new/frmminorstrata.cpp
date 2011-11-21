@@ -25,6 +25,9 @@ PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"), ruleCheckerPtr, parent, fl
     connect(toolButton, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));
 
+    //connect(this, SIGNAL(editLeave(const bool,const bool)), this,
+        //SLOT(onEditLeave(const bool,const bool)));
+
     initModels();
     initUI();
     initMappers();
@@ -118,14 +121,20 @@ bool FrmMinorStrata::applyChanges()
         }
     }
 
-    pushEdit->setChecked(bError);
+    //pushEdit->setChecked(bError);
+    emit editLeave(true,false);
     return !bError;
 
 }
 
 void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
-    //does nothing
+    if (bFinished){
+        setPreviewQuery();
+        emit lockControls(true,m_lWidgets);
+        //everything went ok, so we can check it off!
+        pushEdit->setChecked(false);
+    }
 }
 
 void FrmMinorStrata::disableReasonCombo()

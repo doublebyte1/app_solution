@@ -41,6 +41,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
 
     private:
         //! Really Apply

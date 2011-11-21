@@ -36,8 +36,8 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
 
         void                                   setActiveReason(bool bActive);
         void                                   disableReasonCombo();
-        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
         void                                   onItemSelection();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
 
         void                                   onShowFrameDetails();
 

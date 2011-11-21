@@ -38,6 +38,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
 
     private:
         //! Really Apply

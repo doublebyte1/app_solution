@@ -35,6 +35,7 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         */
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
 
     private:
         //! Really Apply

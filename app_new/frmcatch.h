@@ -35,6 +35,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         */
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
 
     private:
         //! Really Apply

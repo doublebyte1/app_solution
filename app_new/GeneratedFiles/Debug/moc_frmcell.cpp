@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcell.h'
 **
-** Created: Thu 29. Sep 12:03:48 2011
+** Created: Mon 21. Nov 16:40:23 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmCell[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,7 @@ static const uint qt_meta_data_FrmCell[] = {
       75,    8,    8,    8, 0x08,
       93,    8,    8,    8, 0x08,
      116,    8,    8,    8, 0x08,
+     162,  141,    8,    8, 0x08,
 
        0        // eod
 };
@@ -45,7 +46,8 @@ static const char qt_meta_stringdata_FrmCell[] = {
     "FrmCell\0\0createRecord()\0index\0"
     "previewRow(QModelIndex)\0onShowFrameDetails()\0"
     "onItemSelection()\0blockCustomDateCtrls()\0"
-    "unblockCustomDateCtrls()\0"
+    "unblockCustomDateCtrls()\0bFinished,bDiscarded\0"
+    "onEditLeave(bool,bool)\0"
 };
 
 const QMetaObject FrmCell::staticMetaObject = {
@@ -85,9 +87,10 @@ int FrmCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: onItemSelection(); break;
         case 4: blockCustomDateCtrls(); break;
         case 5: unblockCustomDateCtrls(); break;
+        case 6: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

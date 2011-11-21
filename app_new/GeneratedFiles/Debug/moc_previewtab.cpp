@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Mon 21. Nov 15:21:34 2011
+** Created: Mon 21. Nov 16:33:59 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_PreviewTab[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -40,12 +40,13 @@ static const uint qt_meta_data_PreviewTab[] = {
      140,   11,   11,   11, 0x0a,
      161,  158,  153,   11, 0x0a,
      228,  178,  153,   11, 0x0a,
-     307,  298,   11,   11, 0x08,
-     321,   11,   11,   11, 0x08,
-     336,   11,   11,   11, 0x08,
-     357,  351,   11,   11, 0x08,
-     388,  381,  153,   11, 0x08,
-     420,   11,   11,   11, 0x08,
+     298,   72,   11,   11, 0x08,
+     330,  321,   11,   11, 0x08,
+     344,   11,   11,   11, 0x08,
+     359,   11,   11,   11, 0x08,
+     380,  374,   11,   11, 0x08,
+     411,  404,  153,   11, 0x08,
+     443,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -58,7 +59,8 @@ static const char qt_meta_stringdata_PreviewTab[] = {
     "bool\0on\0editRecord(bool)\0"
     "curTable,curStartDt,curEndDt,strTable,id,strError\0"
     "checkDependantDates(QString,QDateTime,QDateTime,QString,int,QString&)\0"
-    "bLogbook\0setTips(bool)\0createRecord()\0"
+    "onEditLeave(bool,bool)\0bLogbook\0"
+    "setTips(bool)\0createRecord()\0"
     "removeRecord()\0index\0previewRow(QModelIndex)\0"
     "button\0onButtonClick(QAbstractButton*)\0"
     "onItemSelection()\0"
@@ -102,16 +104,17 @@ int PreviewTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 6: { bool _r = checkDependantDates((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2])),(*reinterpret_cast< const QDateTime(*)>(_a[3])),(*reinterpret_cast< QString(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5])),(*reinterpret_cast< QString(*)>(_a[6])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 7: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 8: createRecord(); break;
-        case 9: removeRecord(); break;
-        case 10: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 11: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
+        case 7: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 8: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 9: createRecord(); break;
+        case 10: removeRecord(); break;
+        case 11: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 12: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 12: onItemSelection(); break;
+        case 13: onItemSelection(); break;
         default: ;
         }
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }

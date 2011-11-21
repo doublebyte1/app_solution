@@ -36,6 +36,8 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
         (const bool)), this,
             SLOT(setTips(const bool)));
 
+    connect(this, SIGNAL(editLeave(const bool,const bool)), this,
+        SLOT(onEditLeave(const bool,const bool)));
 }
 
 PreviewTab::~PreviewTab()

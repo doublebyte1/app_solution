@@ -48,8 +48,8 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     connect(this, SIGNAL(hideFrmSampling(bool)), this,
         SLOT(onHideFrmSampling(bool)));
 
-    connect(this, SIGNAL(editLeave(const bool,const bool)), this,
-        SLOT(onEditLeave(const bool,const bool)));
+//    connect(this, SIGNAL(editLeave(const bool,const bool)), this,
+//        SLOT(onEditLeave(const bool,const bool)));
 
     initModels();
     initUI();

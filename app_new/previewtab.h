@@ -71,12 +71,12 @@ class PreviewTab : public GenericTab
         according if we are in edit mode, or not;
           \sa reallyApply()
         */
-        bool                                IReallyApply();
+        bool                                  IReallyApply();
         //! A pure virtual function
         /*! This is the function where we actually apply the changes; it is called by the interface IReallyApply;
           \sa onPreSubmit(const bool bSubmit), IReallyApply()
         */
-        virtual bool                        reallyApply()=0;
+        virtual bool                          reallyApply()=0;
         //! Set preview model
         /*! In this function we assign the model that allows us to preview records
         \par aModel pointer to a relational tableModel
@@ -213,6 +213,7 @@ class PreviewTab : public GenericTab
                                                     const QDateTime& curEndDt, QString strTable, int id,QString& strError);
 
     private slots:
+        virtual void                          onEditLeave(const bool bFinished, const bool bDiscarded)=0;
         //! Set Header Label Tips
         /*! In this function we set the tooltip, status tip and WhatsThis text,
         regarding the fact that it is a logbook or sampling form;
@@ -225,7 +226,6 @@ class PreviewTab : public GenericTab
         */
         virtual void                          createRecord()=0;
         void                                  removeRecord();
-
         //! A pure virtual member.
         /*! Slot that previews a selected row
           \sa createRecord(), onButtonClick(QAbstractButton * button), onItemSelection()
