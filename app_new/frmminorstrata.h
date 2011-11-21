@@ -36,6 +36,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
 
         void                                   setActiveReason(bool bActive);
         void                                   disableReasonCombo();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
         void                                   onItemSelection();
 
         void                                   onShowFrameDetails();
@@ -66,7 +67,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         //! Update the sample structure
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   updateSample();
+        //bool                                   updateSample();
 
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;

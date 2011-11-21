@@ -435,6 +435,24 @@ bool PreviewTab::checkDependantDates(const QString curTable, const QDateTime& cu
         onCheckDependantDates(mapTablesS,strTable,curStartDt,curEndDt,strTable,id,strError));
 }
 
+bool PreviewTab::updateSample(const QModelIndex& idx)
+{
+    return (m_sample->setMemberById(m_index,idx.data().toInt()));
+}
+
+bool PreviewTab::updateSample()
+{
+    //check if there is a selection
+    if (!m_table->selectionModel()->hasSelection())
+        return false;
+
+    //updating the sample structure
+    QModelIndex idx=m_table->model()->index(m_table->selectionModel()->currentIndex().row(),0);
+
+    if (!idx.isValid()) return false;
+    return updateSample(idx);
+}
+
 //////////////////////////////////////////////////////////////
 
 void insertRecordIntoModel(QSqlTableModel* m)

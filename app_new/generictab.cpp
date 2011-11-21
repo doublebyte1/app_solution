@@ -160,3 +160,40 @@ void resizeToVisibleColumns ( QTableView* table )
             table->setColumnWidth(i,table->width()/ct);
 
 }
+//////////////////////////////////////////////////
+
+bool Sample::setMemberById(const int id, const int val)
+{
+         switch (id) {
+           case 0:
+                frameTimeId=val;
+                break;
+           case 1:
+                minorStrataId=val;
+               break;
+           case 2:
+                cellId=val;
+                break;
+           case 3:
+                vesselTypeId=val;
+                break;
+           case 4:
+                sampVesselId=val;
+                break;
+           case 5:
+                tripId=val;
+                break;
+           case 6:
+                operationId=val;
+                break;
+           case 7:
+                catchId=val;
+                break;
+           default:
+               // should never be reached
+               return false;
+               break;
+         }
+
+         return true;
+}

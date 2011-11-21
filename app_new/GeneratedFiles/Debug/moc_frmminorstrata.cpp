@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Thu 29. Sep 12:03:40 2011
+** Created: Mon 21. Nov 10:04:13 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,8 +37,9 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
       84,   15,   15,   15, 0x08,
      117,  109,   15,   15, 0x08,
      139,   15,   15,   15, 0x08,
-     160,   15,   15,   15, 0x08,
-     178,   15,   15,   15, 0x08,
+     181,  160,   15,   15, 0x08,
+     204,   15,   15,   15, 0x08,
+     222,   15,   15,   15, 0x08,
 
        0        // eod
 };
@@ -48,6 +49,7 @@ static const char qt_meta_stringdata_FrmMinorStrata[] = {
     "previewRow(QModelIndex)\0blockCustomDateCtrls()\0"
     "unblockCustomDateCtrls()\0bActive\0"
     "setActiveReason(bool)\0disableReasonCombo()\0"
+    "bFinished,bDiscarded\0onEditLeave(bool,bool)\0"
     "onItemSelection()\0onShowFrameDetails()\0"
 };
 
@@ -88,11 +90,12 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: unblockCustomDateCtrls(); break;
         case 4: setActiveReason((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 5: disableReasonCombo(); break;
-        case 6: onItemSelection(); break;
-        case 7: onShowFrameDetails(); break;
+        case 6: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 7: onItemSelection(); break;
+        case 8: onShowFrameDetails(); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

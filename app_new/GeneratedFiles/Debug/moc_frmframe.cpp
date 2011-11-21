@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 15. Nov 10:09:17 2011
+** Created: Fri 18. Nov 09:33:51 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmFrame[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      17,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -41,15 +41,13 @@ static const uint qt_meta_data_FrmFrame[] = {
      169,    9,    9,    9, 0x0a,
      194,    9,    9,    9, 0x08,
      225,    9,    9,    9, 0x08,
-     254,    9,  249,    9, 0x08,
-     273,  269,  249,    9, 0x08,
-     299,    9,    9,    9, 0x08,
-     320,    9,    9,    9, 0x08,
-     352,  341,    9,    9, 0x08,
-     376,    9,    9,    9, 0x08,
-     397,  391,    9,    9, 0x08,
-     421,    9,    9,    9, 0x08,
-     460,  439,    9,    9, 0x08,
+     249,    9,    9,    9, 0x08,
+     270,    9,    9,    9, 0x08,
+     302,  291,    9,    9, 0x08,
+     326,    9,    9,    9, 0x08,
+     347,  341,    9,    9, 0x08,
+     371,    9,    9,    9, 0x08,
+     410,  389,    9,    9, 0x08,
 
        0        // eod
 };
@@ -61,11 +59,10 @@ static const char qt_meta_stringdata_FrmFrame[] = {
     "bApply\0applyChanges2FrmSampling(bool)\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
     "onAppliedChanges2FrmSampling()\0"
-    "adjustFrmSamplingMode()\0bool\0"
-    "updateSample()\0idx\0updateSample(QModelIndex)\0"
-    "onHideFrameDetails()\0onShowFrameDetails()\0"
-    "bSubmitted\0onHideFrmSampling(bool)\0"
-    "createRecord()\0index\0previewRow(QModelIndex)\0"
+    "adjustFrmSamplingMode()\0onHideFrameDetails()\0"
+    "onShowFrameDetails()\0bSubmitted\0"
+    "onHideFrmSampling(bool)\0createRecord()\0"
+    "index\0previewRow(QModelIndex)\0"
     "onItemSelection()\0bFinished,bDiscarded\0"
     "onEditLeave(bool,bool)\0"
 };
@@ -109,20 +106,16 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 5: unblockCustomDateCtrls(); break;
         case 6: onAppliedChanges2FrmSampling(); break;
         case 7: adjustFrmSamplingMode(); break;
-        case 8: { bool _r = updateSample();
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 9: { bool _r = updateSample((*reinterpret_cast< const QModelIndex(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 10: onHideFrameDetails(); break;
-        case 11: onShowFrameDetails(); break;
-        case 12: onHideFrmSampling((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 13: createRecord(); break;
-        case 14: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 15: onItemSelection(); break;
-        case 16: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 8: onHideFrameDetails(); break;
+        case 9: onShowFrameDetails(); break;
+        case 10: onHideFrmSampling((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 11: createRecord(); break;
+        case 12: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 13: onItemSelection(); break;
+        case 14: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 17;
+        _id -= 15;
     }
     return _id;
 }

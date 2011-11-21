@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Wed 16. Nov 19:44:57 2011
+** Created: Mon 21. Nov 09:16:55 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -395,6 +395,8 @@ public:
         QObject::connect(radioInactive, SIGNAL(clicked()), frmminorstrata, SLOT(disableReasonCombo()));
         QObject::connect(pushNew, SIGNAL(clicked()), frmminorstrata, SLOT(createRecord()));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmminorstrata, SLOT(previewRow(QModelIndex)));
+        QObject::connect(pushEdit, SIGNAL(clicked(bool)), frmminorstrata, SLOT(editRecord(bool)));
+        QObject::connect(pushRemove, SIGNAL(clicked()), frmminorstrata, SLOT(removeRecord()));
 
         QMetaObject::connectSlotsByName(frmminorstrata);
     } // setupUi

@@ -193,6 +193,46 @@ void FrmFrame::createRecord()
     emit setFrmSamplingMode(FrmSampling::CREATE);
 }
 
+bool FrmFrame::updateFrameSample(const QModelIndex index)
+{
+    return updateFrameSampleParts(index) && updateSample(index);
+}
+
+bool FrmFrame::updateFrameSample()
+{
+    return updateFrameSampleParts() && updateSample();
+}
+
+bool FrmFrame::updateFrameSampleParts(const QModelIndex index)
+{
+    QModelIndex idx2=viewFrameTime->index(index.row(),4);
+
+    //frame id
+    if (!idx2.isValid()) return false;
+    m_sample->frameId=idx2.data().toInt();
+
+    //logbook
+    bool bLogbook;
+    if (!isLogBook(m_sample->frameId,bLogbook)) return false;
+    m_sample->bLogBook=bLogbook;
+
+    return true;
+}
+
+bool FrmFrame::updateFrameSampleParts()
+{
+    //check if there is a selection
+    if (!tableView->selectionModel()->hasSelection())
+        return false;
+
+    //updating the sample structure
+    QModelIndex idx=tableView->model()->index(tableView->selectionModel()->currentIndex().row(),0);
+
+    if (!idx.isValid()) return false;
+
+    return updateFrameSampleParts(idx);
+}
+
 void FrmFrame::previewRow(QModelIndex index)
 {
     if (m_bSampling) return;
@@ -200,7 +240,10 @@ void FrmFrame::previewRow(QModelIndex index)
     if (!index.isValid()) return;
 
     QModelIndex idx=tableView->model()->index(index.row(),0);
-    updateSample(idx);
+    if (!updateFrameSample(idx)){
+        emit showError(tr("Could not update sample with values of this row!"));
+        return;
+    }
 
     //its on a new record
     if (!discardNewRecord()) return;
@@ -410,7 +453,11 @@ void FrmFrame::onHideFrmSampling(bool bSubmitted)
             groupProcess->setEnabled(false);
             m_bInsert=false;
             m_submitted=true;
-            updateSample();//update sample here, because of the save
+            if (!updateFrameSample()){
+                emit showError(tr("Could not update sample with values of this row!"));
+                return;
+            }
+
         }
     }
 
@@ -563,7 +610,11 @@ bool FrmFrame::reallyApply()
     m_bSampling=true;//waiting for the sampling input...!
 
     tableView->selectRow(0);
-    updateSample();
+    //updateSample();
+    if (!updateFrameSample()){
+        emit showError(tr("Could not update sample with values of this row!"));
+        bError=true;
+    }
 
     return !bError;
 }
@@ -629,7 +680,7 @@ bool FrmFrame::getNextLabel(QString& strLabel)
     strLabel=idx.data().toString();
     return true;
 }
-
+/*
 bool FrmFrame::updateSample(const QModelIndex& idx)
 {
     m_sample->frameTimeId=idx.data().toInt();
@@ -657,7 +708,7 @@ bool FrmFrame::updateSample()
     if (!idx.isValid()) return false;
     return updateSample(idx);
 }
-
+*/
 void FrmFrame::adjustFrmSamplingMode()
 {
     if (!pushEdit->isChecked()) return;

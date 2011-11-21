@@ -63,7 +63,7 @@ void FrmMinorStrata::onShowFrameDetails()
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
         m_sample, blackList, options);
 }
-
+/*
 bool FrmMinorStrata::updateSample()
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -76,7 +76,7 @@ bool FrmMinorStrata::updateSample()
     m_sample->minorStrataId=idx.data().toInt();
     return true;
 }
-
+*/
 bool FrmMinorStrata::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -89,9 +89,15 @@ bool FrmMinorStrata::getNextLabel(QString& strLabel)
     return true;
 }
 
+void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+
+}
+
 void FrmMinorStrata::disableReasonCombo()
 {
     if (static_cast<QRadioButton*>(QObject::sender())==0) return;
+
     cmbReasons->setEnabled(static_cast<QRadioButton*>(QObject::sender())!=radioActive);
 }
 
@@ -105,17 +111,32 @@ void FrmMinorStrata::setActiveReason(bool bActive)
 
 void FrmMinorStrata::previewRow(QModelIndex index)
 {
+    QModelIndex idx=viewMinorStrata->index(index.row(),0);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this minor strata!"));
+        return;
+    }
+
+    updateSample(idx);
+
+    //its on a new record
+    if (!discardNewRecord()) return;
+
+    //its on a edit
+    if (pushEdit->isChecked()){
+        pushEdit->setChecked(false);
+        if (!editRecord(false)) return;
+    }
+
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
 
-    QModelIndex idx=viewMinorStrata->index(index.row(),0);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
-        return;
-    }
+    pushNew->setEnabled(true);
+    pushEdit->setEnabled(true);
+    pushRemove->setEnabled(true);
 
     QString id=idx.data().toString();
 
@@ -348,9 +369,15 @@ void FrmMinorStrata::initUI()
     buttonGroup->addButton(radioActive,0);
     buttonGroup->addButton(radioInactive,1);
 
+    connect(buttonGroup, SIGNAL(buttonClicked(int)), this,
+        SLOT(onButtonClicked(int)));
+
     initPreviewTable(tableView,viewMinorStrata);
     setButtonBox(buttonBox);
     setGroupDetails(groupDetails);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
 
     m_lWidgets << lineNew;
     m_lWidgets << label_3;
@@ -374,7 +401,13 @@ void FrmMinorStrata::initUI()
 
 void FrmMinorStrata::onItemSelection()
 {
-    pushNext->setEnabled(tableView->selectionModel()->hasSelection() /*&& radioInactive->isChecked()*/);
+    //the signal radio button does not work very well, so lets read the value on the table!
+    QModelIndex idx=viewMinorStrata->index(tableView->currentIndex().row(),4);
+
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection()
+        && idx.data().toBool()==false
+        );
+
 }
 
 void FrmMinorStrata::setPreviewQuery()

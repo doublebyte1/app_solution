@@ -162,6 +162,12 @@ class PreviewTab : public GenericTab
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
         bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);
         bool                                  discardNewRecord();
+        bool                                  updateSample(const QModelIndex& idx);
+        //! Update Sample
+        /*! Helper function that updates the sample structure
+          \sa updateSample(const QModelIndex& idx, const int id)
+        */
+        bool                                  updateSample();
 
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 
@@ -227,11 +233,6 @@ class PreviewTab : public GenericTab
         virtual void                          onItemSelection()=0;
 
     private:
-        //! A pure virtual member.
-        /*! Helper function for the next slot, that updates the sample structure
-          \sa getNextLabel(QString& strLabel)
-        */
-        virtual bool                          updateSample()=0;
         //! A pure virtual member.
         /*! Helper function for the next slot, that gets the title label of the next form
           \sa updateSample()

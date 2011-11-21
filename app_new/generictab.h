@@ -37,6 +37,9 @@ and also to the QdataWidgetMapper binder;
 struct Sample{
     Sample(): frameId(-1), frameTimeId(-1), minorStrataId(-1), cellId(-1), vesselTypeId(-1), sampVesselId(-1),
     tripId(-1),operationId(-1),catchId(-1){;}
+
+    bool       setMemberById(const int id, const int val);
+
     bool        bLogBook;/**< boolean to indicate if its logbook (true) or sampling(false) */
     int         frameId;/**< frame id */
     int         frameTimeId;/**< frame time id */

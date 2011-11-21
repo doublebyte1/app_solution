@@ -36,8 +36,8 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   onAppliedChanges2FrmSampling();
         void                                   adjustFrmSamplingMode();
 
-        bool                                   updateSample();
-        bool                                   updateSample(const QModelIndex& idx);
+//        bool                                   updateSample();
+//        bool                                   updateSample(const QModelIndex& idx);
 
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
@@ -59,6 +59,12 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   showEvent ( QShowEvent * event );
 
     private:
+
+        bool                                   updateFrameSample();
+        bool                                   updateFrameSample(const QModelIndex index);
+        bool                                   updateFrameSampleParts();
+        bool                                   updateFrameSampleParts(const QModelIndex index);
+
         bool                                   isLogBook(const int frameId, bool& bLogbook);
         void                                   setPreviewQuery();
         void                                   filterModel4Combo(){;}

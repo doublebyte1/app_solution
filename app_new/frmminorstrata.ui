@@ -582,6 +582,38 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushEdit</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>editRecord(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>684</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>371</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>frmminorstrata</receiver>
+   <slot>removeRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>684</x>
+     <y>133</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>371</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>showDetails()</slot>
@@ -592,6 +624,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
   <slot>previewRow(QModelIndex)</slot>
   <slot>disableReasonCombo()</slot>
   <slot>next()</slot>
+  <slot>editRecord(bool)</slot>
+  <slot>removeRecord()</slot>
  </slots>
  <buttongroups>
   <buttongroup name="buttonGroup"/>
