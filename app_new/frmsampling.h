@@ -88,6 +88,10 @@ class FrmSampling : public GenericTab, public Ui::FrmSampling
         void                           insertRow();
         void                           removeRow();
         void                           onApplyChanges2FrmSampling(const bool bApply);
+        //! Interface for really apply
+        /*! Implemented from the base class. In this case, it just calls reallyApply (no need for interface!)
+        */
+        bool                           IReallyApply(){return reallyApply();}
 
     private:
         bool                           comitSamplingTechnique();

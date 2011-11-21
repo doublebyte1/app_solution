@@ -168,6 +168,7 @@ bool FrmSampling::comitSamplingTechnique()
     bool bError=false;
 
     int curIndex=mapper1->currentIndex();
+    if (curIndex==-1) return true; //there are no changes on this form!! (CAREFULL WITH THIS TEST)
 
     if (!mapper1->submit()){
             if (tRefSampTec->lastError().type()!=QSqlError::NoError)
@@ -200,7 +201,6 @@ bool FrmSampling::comitSampledLevels()
     bool bError=false;
     int id;
     int ct=0;
-
 
     QModelIndex indexTechnique=tRefSampTec->index(tRefSampTec->rowCount()-1,0);
     if (!indexTechnique.isValid()) return false;
@@ -251,7 +251,7 @@ bool FrmSampling::reallyApply()
     groupTechnique->setEnabled(!m_submitted);
     pushApply->setEnabled(!m_submitted);
 
-    if (!bError && m_mode==EDIT) AppliedChanges2SamplingFrame();
+    if (!bError && m_mode!=CREATE) AppliedChanges2SamplingFrame();
     return !bError;
 }
 

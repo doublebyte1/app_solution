@@ -103,21 +103,23 @@ void FrmFrame::beforeShow()
 
 void FrmFrame::onAppliedChanges2FrmSampling()
 {
+    setPreviewQuery();
+    emit lockControls(true,m_lWidgets);
     groupProcess->setEnabled(false);
+    //everything went ok, so we can check it off!
     pushEdit->setChecked(false);
 }
 
 void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
-    //m_bSampling=!bFinished;
-
     if (!bFinished){
         emit setFrmSamplingMode(FrmSampling::EDIT);
     }else{
         if (!bDiscarded){
-            pushEdit->setChecked(true);
             emit applyChanges2FrmSampling(!bDiscarded);
             return;
+        }else{
+            pushEdit->setChecked(false);
         }
     }
     groupProcess->setEnabled(!bFinished);
@@ -152,7 +154,8 @@ bool FrmFrame::applyChanges()
         }
     }
 
-    pushEdit->setChecked(bError);
+    //pushEdit->setChecked(bError);
+    emit editLeave(true,false);
     return !bError;
 }
 

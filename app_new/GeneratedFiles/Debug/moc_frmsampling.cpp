@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmsampling.h'
 **
-** Created: Mon 14. Nov 08:38:20 2011
+** Created: Mon 21. Nov 15:21:36 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -72,7 +72,7 @@ static const uint qt_meta_data_FrmSampling[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -89,6 +89,7 @@ static const uint qt_meta_data_FrmSampling[] = {
       96,   12,   12,   12, 0x08,
      108,   12,   12,   12, 0x08,
      127,  120,   12,   12, 0x08,
+     160,   12,   84,   12, 0x08,
 
        0        // eod
 };
@@ -98,6 +99,7 @@ static const char qt_meta_stringdata_FrmSampling[] = {
     "aMode\0setMode(FrmSampling::MODE)\0"
     "back()\0bool\0next()\0insertRow()\0"
     "removeRow()\0bApply\0onApplyChanges2FrmSampling(bool)\0"
+    "IReallyApply()\0"
 };
 
 const QMetaObject FrmSampling::staticMetaObject = {
@@ -139,9 +141,11 @@ int FrmSampling::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: insertRow(); break;
         case 5: removeRow(); break;
         case 6: onApplyChanges2FrmSampling((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 7: { bool _r = IReallyApply();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

@@ -66,6 +66,17 @@ class PreviewTab : public GenericTab
         void                                  setLoading(const bool bLoading){m_bLoading=bLoading;}
 
     protected:
+        //! Interface for really apply
+        /*! Implemented from the base class. Here we decide if we want to call reallyApply() or applyChanges,
+        according if we are in edit mode, or not;
+          \sa reallyApply()
+        */
+        bool                                IReallyApply();
+        //! A pure virtual function
+        /*! This is the function where we actually apply the changes; it is called by the interface IReallyApply;
+          \sa onPreSubmit(const bool bSubmit), IReallyApply()
+        */
+        virtual bool                        reallyApply()=0;
         //! Set preview model
         /*! In this function we assign the model that allows us to preview records
         \par aModel pointer to a relational tableModel
@@ -137,12 +148,6 @@ class PreviewTab : public GenericTab
           \sa setPreviewModel(QSqlRelationalTableModel* aModel), setPreviewQuery(), filterModel4Combo(), uI4NewRecord()
         */
         virtual void                          setHeader()=0;
-        //! Apply Changes to Record
-        /*! This a pure virtual method, that actually applies the edits on this record.
-        \return boolean as success or failure
-        \sa genericEditRecord(bool on, int& ret)
-        */
-        virtual bool                         applyChanges()=0;
         //! Generic Create Record
         /*! Method called, each time we create a new record; it does some "household" stuff like
         resetting the filters of the models, and then it actually inserts an empry record on the "resident" model in this class;
@@ -153,6 +158,12 @@ class PreviewTab : public GenericTab
         /par event we don't actually use this parameter!
         */
         void                                  resizeEvent ( QResizeEvent * event );
+        //! Apply Changes to Record
+        /*! This a pure virtual method, that actually applies the edits on this record.
+        \return boolean as success or failure
+        \sa genericEditRecord(bool on, int& ret)
+        */
+        virtual bool                          applyChanges()=0;
         //! After apply
         /*! Slot called after a successfully submission of the record into the database;
         we just update the preview query to show the inserted record on the table, and select this record;
@@ -244,10 +255,10 @@ class PreviewTab : public GenericTab
         QDialogButtonBox*                     m_buttonBox;/**< pointer for the buttonBox in this form */
         QGroupBox*                            m_groupDetails;/**< pointer for the detail groupbox in this form */
         QPushButton*                          m_pushNew;/**< pointer for the pushNew button in this form */
-        QPushButton*                          m_pushEdit;/**< pointer for the pushEdit button in this form */
         QPushButton*                          m_pushRemove;/**< pointer for the pushRemove button in this form */
         QMap<QString,sTable>                  mapTablesL;/**< map with table sequence for logbook (for checking dependant dates!)*/
         QMap<QString,sTable>                  mapTablesS;/**< map with table sequence for sampling (for checking dependant dates!)*/
         bool                                  m_bLoading;/**< boolean flag to indicate if we are in loading mode*/
+        QPushButton*                          m_pushEdit;/**< pointer for the pushEdit button in this form */
 };
 #endif //PREVIEWTAB_H

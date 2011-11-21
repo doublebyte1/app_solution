@@ -60,7 +60,7 @@ void GenericTab::apply()
 
 void GenericTab::onPreSubmit(const bool bSubmit)
 {
-    if (bSubmit) reallyApply();
+    if (bSubmit) IReallyApply();
 }
 
 void GenericTab::setLbHead(QLabel* inLbHeader)

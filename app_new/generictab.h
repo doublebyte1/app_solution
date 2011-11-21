@@ -183,11 +183,11 @@ class GenericTab : public QWidget
 
     protected:
         //! A pure virtual function
-        /*! This is the function where we actually apply the changes; it is called by the onPreSubmit,
+        /*! This is an interface function before we actually apply the changes; it is called by the onPreSubmit,
         if everything went ok with the validation;
           \sa onPreSubmit(const bool bSubmit)
         */
-        virtual bool            reallyApply()=0;
+        virtual bool            IReallyApply()=0;
         //! A pure virtual function
         /*! Method where we initialize the models (called in the constructor).
         If we want to initialize a model outside the constructor (for instance, each time we show a form),

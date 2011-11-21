@@ -89,9 +89,43 @@ bool FrmMinorStrata::getNextLabel(QString& strLabel)
     return true;
 }
 
+bool FrmMinorStrata::applyChanges()
+{
+    bool bError=true;
+
+    QString strError;
+    if (!checkDependantDates(tr("Ref_Minor_Strata"), customDtStart->dateTime(),
+        customDtEnd->dateTime(),tr("Ref_Minor_Strata"),m_sample->minorStrataId, strError))
+    {
+        emit showError(strError);
+    }else{
+
+        int cur= mapper1->currentIndex();
+        bError=!submitMapperAndModel(mapper1);
+        if (!bError){
+            mapper1->setCurrentIndex(cur);
+            int curStart, curEnd;
+            curStart=mapperStartDt->currentIndex();
+            curEnd=mapperEndDt->currentIndex();
+
+            bError=submitDates(mapperStartDt, mapperEndDt);
+
+            if (!bError){
+                mapperStartDt->setCurrentIndex(curStart);
+                mapperEndDt->setCurrentIndex(curEnd);
+            }
+
+        }
+    }
+
+    pushEdit->setChecked(bError);
+    return !bError;
+
+}
+
 void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
-
+    //does nothing
 }
 
 void FrmMinorStrata::disableReasonCombo()
@@ -368,9 +402,6 @@ void FrmMinorStrata::initUI()
     buttonGroup=new ButtonGroup(this);
     buttonGroup->addButton(radioActive,0);
     buttonGroup->addButton(radioInactive,1);
-
-    connect(buttonGroup, SIGNAL(buttonClicked(int)), this,
-        SLOT(onButtonClicked(int)));
 
     initPreviewTable(tableView,viewMinorStrata);
     setButtonBox(buttonBox);

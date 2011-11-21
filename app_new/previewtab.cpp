@@ -7,10 +7,10 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
     m_table=0;
     m_buttonBox=0;
     m_pushNew=0;
-    m_pushEdit=0;
     m_pushRemove=0;
     m_groupDetails=0;
     m_bLoading=false;
+    m_pushEdit=0;
 
     //Logbook flow
     mapTablesL.insert("Fr_Time",sTable(qApp->translate("null_replacements", strNa),"Ref_Minor_Strata",true));
@@ -100,11 +100,8 @@ bool PreviewTab::tableSelect(const int id)
 
     if (list.size()!=1 || !list.at(0).isValid()) return false;
 
-    //m_table->setCurrentIndex(list.at(0));
-
     m_table->scrollTo(list.at(0), QAbstractItemView::EnsureVisible);
     m_table->selectRow(list.at(0).row());
-    //m_table->selectionModel()->setCurrentIndex(list.at(0),QItemSelectionModel::Rows | QItemSelectionModel::ClearAndSelect);
 
     return m_table->selectionModel()->hasSelection();
 }
@@ -241,6 +238,11 @@ bool PreviewTab::getNewHeader(QString& strLabel)
     return true;
 }
 
+bool PreviewTab::IReallyApply()
+{
+        return !m_pushEdit->isChecked()? reallyApply(): applyChanges();
+}
+
 bool PreviewTab::editRecord(bool on)
 {
     //removing filters
@@ -252,6 +254,9 @@ bool PreviewTab::editRecord(bool on)
 
     if (!on){
 
+      //lets do this first, and then we decide if we want to turn it off!
+       m_pushEdit->setChecked(true);
+
         QMessageBox msgBox;
         msgBox.setText(tr("You are modifying a record."));
         msgBox.setInformativeText(tr("Do you want to save your changes?"));
@@ -261,17 +266,13 @@ bool PreviewTab::editRecord(bool on)
 
          switch (ret) {
            case QMessageBox::Save:
-               if (!applyChanges()){
-                    emit showError(tr("Could not submit changes to this record!"));
-                    emit editLeave(false,false);
-                    return false;
-               }
-                else
-                    setPreviewQuery();
-                break;
+               apply();
+               return false;
+                break;//No need for this!
            case QMessageBox::Discard:
                m_model->revertAll();
                //for the date, we dont need to to anything
+               emit editLeave(true,true);
                break;
            case QMessageBox::Cancel:
                 m_pushEdit->setChecked(true);
@@ -283,7 +284,6 @@ bool PreviewTab::editRecord(bool on)
                break;
          }
 
-        emit editLeave(true,ret==QMessageBox::Discard);
     }else{
         if (!m_table->selectionModel()->hasSelection()){
             emit showError(tr("You must select an item to edit!"));

@@ -50,7 +50,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         //! Apply Changes
         /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
         */
-        bool                                   applyChanges(){return false;}//TODO: implement this!
+        bool                                   applyChanges();//TODO: implement this!
         void                                   setPreviewQuery();
         void                                   filterModel4Combo();
         void                                   uI4NewRecord();
