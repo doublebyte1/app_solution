@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Mon 21. Nov 16:51:53 2011
+** Created: Tue 22. Nov 13:42:44 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -40,6 +40,7 @@ static const uint qt_meta_data_FrmMinorStrata[] = {
      160,   15,   15,   15, 0x08,
      199,  178,   15,   15, 0x08,
      222,   15,   15,   15, 0x08,
+     243,   15,   15,   15, 0x08,
 
        0        // eod
 };
@@ -51,6 +52,7 @@ static const char qt_meta_stringdata_FrmMinorStrata[] = {
     "setActiveReason(bool)\0disableReasonCombo()\0"
     "onItemSelection()\0bFinished,bDiscarded\0"
     "onEditLeave(bool,bool)\0onShowFrameDetails()\0"
+    "onHideFrameDetails()\0"
 };
 
 const QMetaObject FrmMinorStrata::staticMetaObject = {
@@ -93,9 +95,10 @@ int FrmMinorStrata::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 6: onItemSelection(); break;
         case 7: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 8: onShowFrameDetails(); break;
+        case 9: onHideFrameDetails(); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

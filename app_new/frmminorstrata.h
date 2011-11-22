@@ -40,6 +40,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
 
         void                                   onShowFrameDetails();
+        void                                   onHideFrameDetails();
 
     private:
         //! Really Apply

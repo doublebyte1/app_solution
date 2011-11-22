@@ -36,9 +36,6 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   onAppliedChanges2FrmSampling();
         void                                   adjustFrmSamplingMode();
 
-//        bool                                   updateSample();
-//        bool                                   updateSample(const QModelIndex& idx);
-
         void                                   onHideFrameDetails();
         void                                   onShowFrameDetails();
 

@@ -8,6 +8,8 @@ GenericTab(index,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent,flags){
     m_buttonBox=0;
     m_pushNew=0;
     m_pushRemove=0;
+    m_pushNext=0;
+    m_pushPrevious=0;
     m_groupDetails=0;
     m_bLoading=false;
     m_pushEdit=0;
@@ -121,6 +123,12 @@ void PreviewTab::genericUI4NewRecord()
 
     m_pushEdit->setEnabled(false);
     m_pushRemove->setEnabled(false);
+
+    if (m_pushNext!=0)
+        m_pushNext->setEnabled(false);
+
+    if (m_pushPrevious!=0)
+        m_pushPrevious->setEnabled(false);
 }
 
 bool PreviewTab::onButtonClick(QAbstractButton* button)
@@ -291,12 +299,16 @@ bool PreviewTab::editRecord(bool on)
             emit showError(tr("You must select an item to edit!"));
             return false;
         }
+        //Lets make sure this is visible for edits!
+        if (!m_groupDetails->isVisible())
+            m_groupDetails->setVisible(true);
+
         emit editLeave(false);
     }
-
+/*
     m_pushNew->setEnabled(!m_pushEdit->isChecked());
     m_pushRemove->setEnabled(!m_pushEdit->isChecked());
-
+*/
     m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
     emit lockControls(!on,m_lWidgets);
 

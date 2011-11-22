@@ -48,9 +48,6 @@ PreviewTab(0,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
     connect(this, SIGNAL(hideFrmSampling(bool)), this,
         SLOT(onHideFrmSampling(bool)));
 
-//    connect(this, SIGNAL(editLeave(const bool,const bool)), this,
-//        SLOT(onEditLeave(const bool,const bool)));
-
     initModels();
     initUI();
     initMappers();
@@ -93,7 +90,6 @@ void FrmFrame::uI4NewRecord()
 {
     genericUI4NewRecord();
     groupProcess->setEnabled(false);
-    pushNext->setEnabled(false);
 }
 
 void FrmFrame::beforeShow()
@@ -359,6 +355,7 @@ void FrmFrame::initUI()
     setNewButton(pushNew);
     setEditButton(pushEdit);
     setRemoveButton(pushRemove);
+    setNextButton(pushNext);
     setGroupDetails(groupDetails);
 
     m_lWidgets << groupPhysical;
@@ -618,6 +615,13 @@ bool FrmFrame::reallyApply()
         emit showError(tr("Could not update sample with values of this row!"));
         bError=true;
     }
+
+    QToolTip::showText(toolProcess->mapToGlobal(toolProcess->pos()), 
+        tr("You have just initialized a frame!\n Now before starting to introduce information, ")
+        + tr("take a moment to define the sampling technique used to collect this data.\n ")
+        + tr("This is very important to allows later to generate the correct estimates. ")
+        , toolProcess);
+    //toolProcess->setFocus();
 
     return !bError;
 }

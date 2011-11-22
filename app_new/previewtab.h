@@ -113,6 +113,18 @@ class PreviewTab : public GenericTab
           \sa setEditButton(QPushButton* apushButton),setNewButton(QPushButton* apushButton)
           */
         void                                  setRemoveButton(QPushButton* apushButton){m_pushRemove=apushButton;}
+        //! Set next button
+        /*! In this function we store a pointer for the "next" pushbutton.
+        \par aButtonBox pointer to a pushbutton
+          \sa setEditButton(QPushButton* apushButton),setNewButton(QPushButton* apushButton)
+          */
+        void                                  setNextButton(QPushButton* apushButton){m_pushNext=apushButton;}
+        //! Set previous button
+        /*! In this function we store a pointer for the "previous" pushbutton.
+        \par aButtonBox pointer to a pushbutton
+          \sa setEditButton(QPushButton* apushButton),setNewButton(QPushButton* apushButton)
+          */
+        void                                  setPreviousButton(QPushButton* apushButton){m_pushPrevious=apushButton;}
         //! Init preview table
         /*! In this function we initialize the table that displays the records, connecting it to a model
         \par aTable pointer to a table widget
@@ -260,5 +272,7 @@ class PreviewTab : public GenericTab
         QMap<QString,sTable>                  mapTablesS;/**< map with table sequence for sampling (for checking dependant dates!)*/
         bool                                  m_bLoading;/**< boolean flag to indicate if we are in loading mode*/
         QPushButton*                          m_pushEdit;/**< pointer for the pushEdit button in this form */
+        QPushButton*                          m_pushNext;/**< pointer for the pushPrevius button in this form */
+        QPushButton*                          m_pushPrevious;/**< pointer for the pushNext button in this form */
 };
 #endif //PREVIEWTAB_H

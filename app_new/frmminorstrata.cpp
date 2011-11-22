@@ -25,8 +25,8 @@ PreviewTab(1,inSample,inTDateTime,tr("Minor Strata"), ruleCheckerPtr, parent, fl
     connect(toolButton, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));
 
-    //connect(this, SIGNAL(editLeave(const bool,const bool)), this,
-        //SLOT(onEditLeave(const bool,const bool)));
+    connect(this, SIGNAL(hideFrameDetails(bool)), this,
+        SLOT(onHideFrameDetails()));
 
     initModels();
     initUI();
@@ -46,6 +46,12 @@ FrmMinorStrata::~FrmMinorStrata()
     if (viewMinorStrata!=0) delete viewMinorStrata;
 }
 
+void FrmMinorStrata::onHideFrameDetails()
+{
+    toolButton->setEnabled(false);
+    pushNext->setEnabled(true);
+    pushPrevious->setEnabled(true);
+}
 
 void FrmMinorStrata::onShowFrameDetails()
 {
@@ -54,11 +60,13 @@ void FrmMinorStrata::onShowFrameDetails()
         return;
     }
 
+/*
     QModelIndex idx=viewMinorStrata->index(tableView->selectionModel()->currentIndex().row(),0);
     if (m_sample->minorStrataId!=idx.data().toInt()){
         emit showError(tr("We only support changes in the last inserted minor strata!"));
         return;
     }
+*/
 
     QList<int> blackList;
     blackList << 1 << 2;
@@ -130,11 +138,16 @@ bool FrmMinorStrata::applyChanges()
 void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
     if (bFinished){
+
         setPreviewQuery();
-        emit lockControls(true,m_lWidgets);
         //everything went ok, so we can check it off!
         pushEdit->setChecked(false);
+        pushNew->setEnabled(!pushEdit->isChecked());
+        pushRemove->setEnabled(!pushEdit->isChecked());
+        emit lockControls(true,m_lWidgets);
+
     }
+    toolButton->setEnabled(!bFinished);
 }
 
 void FrmMinorStrata::disableReasonCombo()
@@ -180,6 +193,8 @@ void FrmMinorStrata::previewRow(QModelIndex index)
     pushNew->setEnabled(true);
     pushEdit->setEnabled(true);
     pushRemove->setEnabled(true);
+    pushNext->setEnabled(true);
+    pushPrevious->setEnabled(true);
 
     QString id=idx.data().toString();
 
@@ -214,13 +229,15 @@ void FrmMinorStrata::previewRow(QModelIndex index)
 
 void FrmMinorStrata::uI4NewRecord()
 {
+    genericUI4NewRecord();
+/*
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     emit lockControls(false,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
-
+*/
     lineNew->clear();
     radioActive->click();
     textComments->clear();
@@ -391,6 +408,18 @@ bool FrmMinorStrata::reallyApply()
                 QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
                 if (!idx.isValid()) bError=false;
                 else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details
+
+                toolButton->setFocus();
+
+                QToolTip::showText(toolButton->mapToGlobal(toolButton->pos()), 
+                    tr("You have just initialized a minor strata!\n Now before starting to introduce information, ")
+                    + tr("take a moment to have a look at the frame.\n ")
+                    + tr("If you wish to do any temporary changes, *please do it NOW*! ")
+                    , toolButton);
+
+                //lets disable next till we review the frame
+                //pushNext->setEnabled(false);
+                //pushPrevious->setEnabled(false);
             }
         }
         return !bError;
@@ -418,6 +447,8 @@ void FrmMinorStrata::initUI()
     setNewButton(pushNew);
     setEditButton(pushEdit);
     setRemoveButton(pushRemove);
+    setNextButton(pushNext);
+    setPreviousButton(pushPrevious);
 
     m_lWidgets << lineNew;
     m_lWidgets << label_3;
@@ -433,8 +464,8 @@ void FrmMinorStrata::initUI()
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
 
-    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
-        SLOT(setEnabled(bool)));
+    //connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
+        //SLOT(setEnabled(bool)));
 
     toolButton->setEnabled(false);
 }
@@ -446,8 +477,7 @@ void FrmMinorStrata::onItemSelection()
 
     pushNext->setEnabled(tableView->selectionModel()->hasSelection()
         && idx.data().toBool()==false
-        );
-
+        && !toolButton->isEnabled());
 }
 
 void FrmMinorStrata::setPreviewQuery()
