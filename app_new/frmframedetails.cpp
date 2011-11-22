@@ -185,12 +185,12 @@ bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
     return true;
 }
 
-void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, Sample* sample, 
+bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, Sample* sample, 
                                       QList<int>& blackList, const Options options)
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
-    if (treeView==0) return;
+    if (treeView==0) return false;
 
     if (blackList.size()>0)
         treeView->setBlackList(blackList);
@@ -223,7 +223,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     if (!initModel(mode,sample,options)){
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         emit showError(tr("Could not create frame view!"));
-        return;
+        return false;
     }
 
     if (mode==FrmFrameDetails::VIEW){// read-only on Permanent mode
@@ -264,7 +264,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                         emit showError(query.lastError().text());
                     else
                         emit showError(tr("Could not retrieve the type of the cloned frame!"));
-                    return;
+                    return false;
                 }
                 query.first();
                 this->cmbCloned->setCurrentIndex(this->cmbCloned->findText(
@@ -281,7 +281,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
                         emit showError(query.lastError().text());
                     else
                         emit showError(tr("Could not retrieve the type of the cloned frame!"));
-                    return;
+                    return false;
                 }
                 query.first();
 
@@ -306,6 +306,7 @@ void FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     }
 
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+    return true;
 }
 
 void FrmFrameDetails::initTree()

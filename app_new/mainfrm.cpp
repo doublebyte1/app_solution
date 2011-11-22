@@ -839,9 +839,13 @@ void MainFrm::hideFrameDetails()
 void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,
                                const FrmFrameDetails::Persistence persistence,Sample* sample,
                                QList<int>& blackList, const FrmFrameDetails::Options options){
-    pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList, options);
-    tabWidget->hide();
-    pFrmFrameDetails->show();
+
+   if (!pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList, options)){
+       //displayError(tr("Could not initialize form with frame details!"),true);
+   } else{
+        tabWidget->hide();
+        pFrmFrameDetails->show();
+   }
 }
 
 void MainFrm::hideFrmSampling()

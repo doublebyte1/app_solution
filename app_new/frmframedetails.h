@@ -55,7 +55,7 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         FrmFrameDetails(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrameDetails();
 
-        void                    setFrameDetails(const Mode mode, const Persistence persistence,
+        bool                    setFrameDetails(const Mode mode, const Persistence persistence,
             Sample* sample, QList<int>& blackList, const Options options);
 
     public slots:

@@ -48,9 +48,11 @@ FrmMinorStrata::~FrmMinorStrata()
 
 void FrmMinorStrata::onHideFrameDetails()
 {
-    toolButton->setEnabled(false);
-    pushNext->setEnabled(true);
-    pushPrevious->setEnabled(true);
+    if (!pushEdit->isChecked()){
+        toolButton->setEnabled(false);
+        pushNext->setEnabled(true);
+        pushPrevious->setEnabled(true);
+    }
 }
 
 void FrmMinorStrata::onShowFrameDetails()
@@ -193,8 +195,8 @@ void FrmMinorStrata::previewRow(QModelIndex index)
     pushNew->setEnabled(true);
     pushEdit->setEnabled(true);
     pushRemove->setEnabled(true);
-    pushNext->setEnabled(true);
-    pushPrevious->setEnabled(true);
+//    pushNext->setEnabled(true);
+//    pushPrevious->setEnabled(true);
 
     QString id=idx.data().toString();
 
@@ -402,12 +404,15 @@ bool FrmMinorStrata::reallyApply()
             }else{
                 toolButton->setEnabled(true);
 
+                                /*
                 while(tRefMinorStrata->canFetchMore())
                     tRefMinorStrata->fetchMore();
 
                 QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
                 if (!idx.isValid()) bError=false;
                 else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details
+                */
+                updateSample();
 
                 toolButton->setFocus();
 
@@ -418,8 +423,8 @@ bool FrmMinorStrata::reallyApply()
                     , toolButton);
 
                 //lets disable next till we review the frame
-                //pushNext->setEnabled(false);
-                //pushPrevious->setEnabled(false);
+                pushNext->setEnabled(false);
+                pushPrevious->setEnabled(false);
             }
         }
         return !bError;
@@ -476,6 +481,10 @@ void FrmMinorStrata::onItemSelection()
     QModelIndex idx=viewMinorStrata->index(tableView->currentIndex().row(),4);
 
     pushNext->setEnabled(tableView->selectionModel()->hasSelection()
+        && idx.data().toBool()==false
+        && !toolButton->isEnabled());
+
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection()
         && idx.data().toBool()==false
         && !toolButton->isEnabled());
 }

@@ -1220,7 +1220,7 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
             tr("  (SELECT     id_start_dt                       ")+
             tr("  FROM          dbo.Sampled_Cell AS Sampled_Cell_1   ")+
             tr("  WHERE      (ID = ") + QVariant(sample->cellId).toString() +tr(")))))) ") +
-            tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<>") + QVariant(sample->cellId).toString() +tr(")")
+            tr(") AND (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (dbo.Sampled_Cell.ID<=") + QVariant(sample->cellId).toString() +tr(")")
             ;
             strUnit=("id_cell");
     }else{
@@ -1244,8 +1244,8 @@ bool ModelInterface::readTempChangesVessel(const Sample* sample)
         tr(" WHERE      (ID =                                ")+
         tr(" (SELECT     id_start_dt                       ")+
         tr(" FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1   ")+
-        tr(" WHERE      (ID = ") + QVariant(sample->minorStrataId).toString() +tr(")) ) ) ) AND") +
-        tr(" (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (Ref_Minor_Strata.ID <>") + QVariant(sample->minorStrataId).toString() +tr(")");
+        tr(" WHERE      (ID = ") + QVariant(sample->minorStrataId).toString() +tr(")) ) ) ) AND") + //we compare with minor strata that came before
+        tr(" (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(sample->frameTimeId).toString() +tr(") AND (Ref_Minor_Strata.ID <=") + QVariant(sample->minorStrataId).toString() +tr(")");
 
         strUnit=("id_minor_strata");
     }
