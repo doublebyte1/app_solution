@@ -658,6 +658,12 @@ void MainFrm::initTabs()
      connect(pFrmFrameDetails, SIGNAL(showError(QString, const bool)), this,
     SLOT(displayError(QString, const bool)));
 
+     connect(pFrmMinorStrata, SIGNAL(applyChanges2FrameDetails()), pFrmFrameDetails,
+    SLOT(onApplyChanges2FrameDetails()));
+
+     connect(pFrmFrameDetails, SIGNAL(AppliedChanges2FrameDetails()), pFrmMinorStrata,
+    SLOT(editFinished()));
+
     gridLayout->addWidget(pFrmFrameDetails);
     pFrmFrameDetails->hide();
 
@@ -678,7 +684,7 @@ void MainFrm::initTabs()
     SLOT(onApplyChanges2FrmSampling(const bool)));
 
      connect(pFrmSampling, SIGNAL(AppliedChanges2SamplingFrame()), pFrmFrame,
-    SLOT(onAppliedChanges2FrmSampling()));
+    SLOT(editFinished()));
 
     gridLayout->addWidget(pFrmSampling);
     pFrmSampling->hide();

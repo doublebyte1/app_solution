@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframedetails.h'
 **
-** Created: Wed 23. Nov 11:25:45 2011
+** Created: Wed 23. Nov 16:32:53 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,28 +23,31 @@ static const uint qt_meta_data_FrmFrameDetails[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       31,   17,   16,   16, 0x05,
       58,   54,   16,   16, 0x05,
       94,   78,   16,   16, 0x05,
      118,   54,   16,   16, 0x25,
+     137,   16,   16,   16, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     137,   16,   16,   16, 0x08,
-     144,   16,   16,   16, 0x08,
-     153,   16,   16,   16, 0x08,
-     161,   16,   16,   16, 0x08,
-     170,   16,   16,   16, 0x08,
-     177,   54,   16,   16, 0x08,
-     212,   16,   16,   16, 0x08,
-     227,   16,   16,   16, 0x08,
+     167,   16,   16,   16, 0x08,
+     174,   16,   16,   16, 0x08,
+     188,   16,  183,   16, 0x08,
+     196,   16,   16,   16, 0x08,
+     205,   16,   16,   16, 0x08,
+     212,   54,   16,   16, 0x08,
+     247,   16,   16,   16, 0x08,
+     262,   16,   16,   16, 0x08,
+     275,   16,   16,   16, 0x08,
+     305,   16,  183,   16, 0x08,
 
        0        // eod
 };
@@ -54,9 +57,12 @@ static const char qt_meta_stringdata_FrmFrameDetails[] = {
     "hideFrameDetails(bool)\0str\0"
     "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
-    "back()\0cancel()\0apply()\0verify()\0"
-    "undo()\0isClonedFromPreviousFrame(QString)\0"
+    "AppliedChanges2FrameDetails()\0back()\0"
+    "cancel()\0bool\0apply()\0verify()\0undo()\0"
+    "isClonedFromPreviousFrame(QString)\0"
     "enableVerify()\0showLegend()\0"
+    "onApplyChanges2FrameDetails()\0"
+    "onNoChanges()\0"
 };
 
 const QMetaObject FrmFrameDetails::staticMetaObject = {
@@ -94,17 +100,22 @@ int FrmFrameDetails::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: back(); break;
-        case 5: cancel(); break;
-        case 6: apply(); break;
-        case 7: verify(); break;
-        case 8: undo(); break;
-        case 9: isClonedFromPreviousFrame((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 10: enableVerify(); break;
-        case 11: showLegend(); break;
+        case 4: AppliedChanges2FrameDetails(); break;
+        case 5: back(); break;
+        case 6: cancel(); break;
+        case 7: { bool _r = apply();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 8: verify(); break;
+        case 9: undo(); break;
+        case 10: isClonedFromPreviousFrame((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 11: enableVerify(); break;
+        case 12: showLegend(); break;
+        case 13: onApplyChanges2FrameDetails(); break;
+        case 14: { bool _r = onNoChanges();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
-        _id -= 12;
+        _id -= 15;
     }
     return _id;
 }
@@ -128,5 +139,11 @@ void FrmFrameDetails::showError(QString _t1, const bool _t2)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+
+// SIGNAL 4
+void FrmFrameDetails::AppliedChanges2FrameDetails()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, 0);
 }
 QT_END_MOC_NAMESPACE

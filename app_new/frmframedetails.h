@@ -65,23 +65,27 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         void                    hideFrameDetails(bool bNotSubmitted);
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+        void                    AppliedChanges2FrameDetails();
 
     protected:
 
     private slots:
         void                    back();
         void                    cancel();
-        void                    apply();
+        bool                    apply();
         void                    verify();
         void                    undo();
         void                    isClonedFromPreviousFrame(QString str);
         void                    enableVerify();
         void                    showLegend();
+        void                    onApplyChanges2FrameDetails();
+        bool                    onNoChanges();
 
     private:
         Sample*                 m_sample;
         Mode                    m_mode;
         Persistence             m_persistence;
+        bool                    m_dirty;
         bool                    m_submitted;
         bool                    m_verified;
         FrameView               *treeView;

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmvesseltype.h'
 **
-** Created: Mon 21. Nov 16:40:18 2011
+** Created: Wed 23. Nov 16:16:07 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmVesselType[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,6 +35,7 @@ static const uint qt_meta_data_FrmVesselType[] = {
       36,   30,   14,   14, 0x08,
       60,   14,   14,   14, 0x08,
       99,   78,   14,   14, 0x08,
+     122,   14,   14,   14, 0x08,
 
        0        // eod
 };
@@ -43,6 +44,7 @@ static const char qt_meta_stringdata_FrmVesselType[] = {
     "FrmVesselType\0\0createRecord()\0index\0"
     "previewRow(QModelIndex)\0onItemSelection()\0"
     "bFinished,bDiscarded\0onEditLeave(bool,bool)\0"
+    "editFinished()\0"
 };
 
 const QMetaObject FrmVesselType::staticMetaObject = {
@@ -80,9 +82,10 @@ int FrmVesselType::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
         case 2: onItemSelection(); break;
         case 3: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 4: editFinished(); break;
         default: ;
         }
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

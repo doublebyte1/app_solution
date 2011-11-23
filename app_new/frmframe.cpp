@@ -97,7 +97,7 @@ void FrmFrame::beforeShow()
     this->groupDetails->setVisible(false);
 }
 
-void FrmFrame::onAppliedChanges2FrmSampling()
+void FrmFrame::editFinished()
 {
     setPreviewQuery();
     emit lockControls(true,m_lWidgets);

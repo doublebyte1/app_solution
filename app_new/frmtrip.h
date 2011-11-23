@@ -39,6 +39,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
+        void                                   editFinished(){;}
 
     private:
         //! Really Apply

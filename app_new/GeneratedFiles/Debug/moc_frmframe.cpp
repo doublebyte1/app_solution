@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmframe.h'
 **
-** Created: Tue 22. Nov 13:42:44 2011
+** Created: Wed 23. Nov 16:12:46 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -40,14 +40,14 @@ static const uint qt_meta_data_FrmFrame[] = {
      146,    9,    9,    9, 0x0a,
      169,    9,    9,    9, 0x0a,
      194,    9,    9,    9, 0x08,
-     225,    9,    9,    9, 0x08,
-     249,    9,    9,    9, 0x08,
-     270,    9,    9,    9, 0x08,
-     302,  291,    9,    9, 0x08,
-     326,    9,    9,    9, 0x08,
-     347,  341,    9,    9, 0x08,
-     371,    9,    9,    9, 0x08,
-     410,  389,    9,    9, 0x08,
+     209,    9,    9,    9, 0x08,
+     233,    9,    9,    9, 0x08,
+     254,    9,    9,    9, 0x08,
+     286,  275,    9,    9, 0x08,
+     310,    9,    9,    9, 0x08,
+     331,  325,    9,    9, 0x08,
+     355,    9,    9,    9, 0x08,
+     394,  373,    9,    9, 0x08,
 
        0        // eod
 };
@@ -58,11 +58,10 @@ static const char qt_meta_stringdata_FrmFrame[] = {
     "setFrmSamplingMode(FrmSampling::MODE)\0"
     "bApply\0applyChanges2FrmSampling(bool)\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
-    "onAppliedChanges2FrmSampling()\0"
-    "adjustFrmSamplingMode()\0onHideFrameDetails()\0"
-    "onShowFrameDetails()\0bSubmitted\0"
-    "onHideFrmSampling(bool)\0createRecord()\0"
-    "index\0previewRow(QModelIndex)\0"
+    "editFinished()\0adjustFrmSamplingMode()\0"
+    "onHideFrameDetails()\0onShowFrameDetails()\0"
+    "bSubmitted\0onHideFrmSampling(bool)\0"
+    "createRecord()\0index\0previewRow(QModelIndex)\0"
     "onItemSelection()\0bFinished,bDiscarded\0"
     "onEditLeave(bool,bool)\0"
 };
@@ -104,7 +103,7 @@ int FrmFrame::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: applyChanges2FrmSampling((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         case 4: blockCustomDateCtrls(); break;
         case 5: unblockCustomDateCtrls(); break;
-        case 6: onAppliedChanges2FrmSampling(); break;
+        case 6: editFinished(); break;
         case 7: adjustFrmSamplingMode(); break;
         case 8: onHideFrameDetails(); break;
         case 9: onShowFrameDetails(); break;

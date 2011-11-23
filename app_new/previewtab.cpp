@@ -294,21 +294,14 @@ bool PreviewTab::editRecord(bool on)
                break;
          }
 
-    }else{
-        if (!m_table->selectionModel()->hasSelection()){
+    }else{//Let's force the user to click on the table!
+        if (!m_table->selectionModel()->hasSelection() || !m_groupDetails->isVisible()){
             emit showError(tr("You must select an item to edit!"));
+            m_pushEdit->setChecked(false);
             return false;
         }
-        //Lets make sure this is visible for edits!
-        if (!m_groupDetails->isVisible())
-            m_groupDetails->setVisible(true);
-
         emit editLeave(false);
     }
-/*
-    m_pushNew->setEnabled(!m_pushEdit->isChecked());
-    m_pushRemove->setEnabled(!m_pushEdit->isChecked());
-*/
     m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
     emit lockControls(!on,m_lWidgets);
 

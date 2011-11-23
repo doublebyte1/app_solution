@@ -128,29 +128,31 @@ bool FrmMinorStrata::applyChanges()
         }
     }
 
-    //pushEdit->setChecked(bError);
     emit editLeave(true,false);
     return !bError;
 
 }
 
+void FrmMinorStrata::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    emit lockControls(true,m_lWidgets);
+}
+
+
 void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
     if (bFinished){
-
         if (!bDiscarded){
-            setPreviewQuery();
             //apply changes to temp frame
-            //emit applyChanges2FrmSampling(!bDiscarded);
+            emit applyChanges2FrameDetails();
             return;
         }else{
-
-            pushEdit->setChecked(false);
-            pushNew->setEnabled(!pushEdit->isChecked());
-            pushRemove->setEnabled(!pushEdit->isChecked());
-            emit lockControls(true,m_lWidgets);
+            editFinished();
         }
-
     }
     toolButton->setEnabled(!bFinished);
 
@@ -199,8 +201,6 @@ void FrmMinorStrata::previewRow(QModelIndex index)
     pushNew->setEnabled(true);
     pushEdit->setEnabled(true);
     pushRemove->setEnabled(true);
-//    pushNext->setEnabled(true);
-//    pushPrevious->setEnabled(true);
 
     QString id=idx.data().toString();
 

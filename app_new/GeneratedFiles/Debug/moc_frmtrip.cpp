@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmtrip.h'
 **
-** Created: Mon 21. Nov 16:40:20 2011
+** Created: Wed 23. Nov 16:16:09 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FrmTrip[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,7 @@ static const uint qt_meta_data_FrmTrip[] = {
       72,    8,    8,    8, 0x08,
       95,    8,    8,    8, 0x08,
      141,  120,    8,    8, 0x08,
+     164,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -46,6 +47,7 @@ static const char qt_meta_stringdata_FrmTrip[] = {
     "previewRow(QModelIndex)\0onItemSelection()\0"
     "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
     "bFinished,bDiscarded\0onEditLeave(bool,bool)\0"
+    "editFinished()\0"
 };
 
 const QMetaObject FrmTrip::staticMetaObject = {
@@ -85,9 +87,10 @@ int FrmTrip::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: blockCustomDateCtrls(); break;
         case 4: unblockCustomDateCtrls(); break;
         case 5: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 6: editFinished(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'previewtab.h'
 **
-** Created: Tue 22. Nov 14:22:08 2011
+** Created: Wed 23. Nov 16:12:45 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,30 +23,32 @@ static const uint qt_meta_data_PreviewTab[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       23,   12,   11,   11, 0x05,
       46,   39,   11,   11, 0x05,
       93,   72,   11,   11, 0x05,
      124,  114,   11,   11, 0x25,
+     140,   11,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     140,   11,   11,   11, 0x0a,
-     161,  158,  153,   11, 0x0a,
-     228,  178,  153,   11, 0x0a,
-     298,   72,   11,   11, 0x08,
-     330,  321,   11,   11, 0x08,
-     344,   11,   11,   11, 0x08,
-     359,   11,   11,   11, 0x08,
-     380,  374,   11,   11, 0x08,
-     411,  404,  153,   11, 0x08,
-     443,   11,   11,   11, 0x08,
+     168,   11,   11,   11, 0x0a,
+     189,  186,  181,   11, 0x0a,
+     256,  206,  181,   11, 0x0a,
+     326,   72,   11,   11, 0x08,
+     349,   11,   11,   11, 0x08,
+     373,  364,   11,   11, 0x08,
+     387,   11,   11,   11, 0x08,
+     402,   11,   11,   11, 0x08,
+     423,  417,   11,   11, 0x08,
+     454,  447,  181,   11, 0x08,
+     486,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -55,12 +57,13 @@ static const char qt_meta_stringdata_PreviewTab[] = {
     "PreviewTab\0\0bIsLogbook\0isLogBook(bool)\0"
     "bBlock\0blockCatchUISignals(bool)\0"
     "bFinished,bDiscarded\0editLeave(bool,bool)\0"
-    "bFinished\0editLeave(bool)\0onShowForm()\0"
+    "bFinished\0editLeave(bool)\0"
+    "applyChanges2FrameDetails()\0onShowForm()\0"
     "bool\0on\0editRecord(bool)\0"
     "curTable,curStartDt,curEndDt,strTable,id,strError\0"
     "checkDependantDates(QString,QDateTime,QDateTime,QString,int,QString&)\0"
-    "onEditLeave(bool,bool)\0bLogbook\0"
-    "setTips(bool)\0createRecord()\0"
+    "onEditLeave(bool,bool)\0editFinished()\0"
+    "bLogbook\0setTips(bool)\0createRecord()\0"
     "removeRecord()\0index\0previewRow(QModelIndex)\0"
     "button\0onButtonClick(QAbstractButton*)\0"
     "onItemSelection()\0"
@@ -99,22 +102,24 @@ int PreviewTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: blockCatchUISignals((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         case 2: editLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 3: editLeave((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 4: onShowForm(); break;
-        case 5: { bool _r = editRecord((*reinterpret_cast< bool(*)>(_a[1])));
+        case 4: applyChanges2FrameDetails(); break;
+        case 5: onShowForm(); break;
+        case 6: { bool _r = editRecord((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 6: { bool _r = checkDependantDates((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2])),(*reinterpret_cast< const QDateTime(*)>(_a[3])),(*reinterpret_cast< QString(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5])),(*reinterpret_cast< QString(*)>(_a[6])));
+        case 7: { bool _r = checkDependantDates((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QDateTime(*)>(_a[2])),(*reinterpret_cast< const QDateTime(*)>(_a[3])),(*reinterpret_cast< QString(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5])),(*reinterpret_cast< QString(*)>(_a[6])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 7: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
-        case 8: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 9: createRecord(); break;
-        case 10: removeRecord(); break;
-        case 11: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 12: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
+        case 8: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 9: editFinished(); break;
+        case 10: setTips((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 11: createRecord(); break;
+        case 12: removeRecord(); break;
+        case 13: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 14: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 13: onItemSelection(); break;
+        case 15: onItemSelection(); break;
         default: ;
         }
-        _id -= 14;
+        _id -= 16;
     }
     return _id;
 }
@@ -138,5 +143,11 @@ void PreviewTab::editLeave(const bool _t1, const bool _t2)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+
+// SIGNAL 4
+void PreviewTab::applyChanges2FrameDetails()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, 0);
 }
 QT_END_MOC_NAMESPACE

@@ -13,6 +13,7 @@ QWidget(parent, flags){
     m_sample=0;
     m_submitted=false;
     m_verified=false;
+    m_dirty=false;
     model=0;
     treeView=0;
     modelInterface=0;
@@ -53,6 +54,7 @@ void FrmFrameDetails::cancel()
 
 void FrmFrameDetails::enableVerify()
 {
+    m_dirty=true;
     m_verified=false;
     pushVerify->setEnabled(!m_verified);
     pushApply->setEnabled(m_verified);
@@ -76,9 +78,32 @@ void FrmFrameDetails::verify()
     //TODO: changes on the tree (other than editing), reset the verify state again
 }
 
-void FrmFrameDetails::apply()
+bool FrmFrameDetails::onNoChanges()
 {
-    if (!m_verified) return;
+    pushVerify->setEnabled(true);
+    pushApply->setEnabled(false);
+    pushUndo->setEnabled(false);
+
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setText(tr("The frame has not been modified."));
+    msgBox.exec();
+
+    m_submitted=false;
+    m_verified=true;
+
+    return true;
+}
+
+bool FrmFrameDetails::apply()
+{
+    if (!m_dirty && m_persistence==FrmFrameDetails::TEMPORARY)
+        return onNoChanges();
+
+    if (!m_verified) {
+        emit showError(tr("Please verify the reasons on temporary frame changes!"));
+        return false;
+    }
 
     bool bError=false;
 
@@ -117,7 +142,7 @@ void FrmFrameDetails::apply()
 
                 bError=true;
             }
-
+/*
             if (ct<1){
                 pushVerify->setEnabled(true);
                 pushApply->setEnabled(false);
@@ -128,14 +153,18 @@ void FrmFrameDetails::apply()
                 msgBox.setIcon(QMessageBox::Information);
                 msgBox.setText(tr("The frame has not been modified."));
                 msgBox.exec();
-                return;
-            }
 
+                m_verified=true;
+                return false;
+            }
+*/
     }
 
     pushApply->setEnabled(bError);
     pushUndo->setEnabled(!bError);
     m_submitted=!bError;
+
+    return !bError;
 }
 
 void FrmFrameDetails::undo()
@@ -202,6 +231,7 @@ bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     m_persistence=persistence;
     m_verified=false;
     m_submitted=false;
+    m_dirty=false;
 
     //Now fix the UI
     lbPersistence->setText
@@ -542,4 +572,13 @@ void FrmFrameDetails::isClonedFromPreviousFrame(QString str)
         checkClone->setChecked(str.compare(
             qApp->translate("null_replacements", strNa)
             , Qt::CaseInsensitive)!=0);
+}
+
+void FrmFrameDetails::onApplyChanges2FrameDetails()
+{
+    m_persistence=FrmFrameDetails::TEMPORARY;
+    //everything is ready: we just have to comit...
+    apply();
+    if (m_verified)
+        emit AppliedChanges2FrameDetails();
 }
