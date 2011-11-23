@@ -57,13 +57,13 @@ void ModelInterface::initModels()
 {
     if (tRefFrame!=0) delete tRefFrame;
     tRefFrame=new QSqlRelationalTableModel;
-    tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Frame"),
+    tRefFrame->setTable(QSqlDatabase().driver()->escapeIdentifier("FR_Frame",
         QSqlDriver::TableName));
-    tRefFrame->setRelation(5, QSqlRelation(tr("Ref_Source"), tr("ID"), tr("Name")));
+    tRefFrame->setRelation(5, QSqlRelation("Ref_Source", "ID", "Name"));
 
     filterTable(tRefFrame->relationModel(5));
 
-    tRefFrame->setRelation(4, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
+    tRefFrame->setRelation(4, QSqlRelation("FR_Frame", "ID", "Name"));
     tRefFrame->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tRefFrame->sort(0,Qt::AscendingOrder);
 
@@ -93,20 +93,20 @@ void ModelInterface::initModels()
     if (tChangesPermGLS!=0) delete tChangesPermGLS;
     tChangesPermGLS=new QSqlTableModel();
 
-    initModel(tSubFrame,tr("FR_Sub_Frame"));
-    initModel(tRefGLS,tr("Ref_Group_of_LandingSites"));
+    initModel(tSubFrame,"FR_Sub_Frame");
+    initModel(tRefGLS,"Ref_Group_of_LandingSites");
     filterTable(tRefGLS);
-    initModel(tRefLS,tr("Ref_Abstract_LandingSite"));
+    initModel(tRefLS,"Ref_Abstract_LandingSite");
     filterTable(tRefLS);
-    initModel(tRefVessels,tr("Ref_Vessels"));
+    initModel(tRefVessels,"Ref_Vessels");
     filterTable(tRefVessels);
-    initModel(tLinkFr2GLS,tr("FR_F2GLS"));
-    initModel(tLinkGLS2LS,tr("FR_GLS2ALS"));
-    initModel(tLinkLS2Vessels,tr("FR_ALS2Vessel"));
-    initModel(tChangesPermVessel,tr("Changes_Perm_Vessel"));
-    initModel(tChangesTempVessel,tr("Abstract_Changes_Temp_Vessel"));
-    initModel(tChangesPermLS,tr("Changes_Perm_LS"));
-    initModel(tChangesPermGLS,tr("Changes_Perm_GLS"));
+    initModel(tLinkFr2GLS,"FR_F2GLS");
+    initModel(tLinkGLS2LS,"FR_GLS2ALS");
+    initModel(tLinkLS2Vessels,"FR_ALS2Vessel");
+    initModel(tChangesPermVessel,"Changes_Perm_Vessel");
+    initModel(tChangesTempVessel,"Abstract_Changes_Temp_Vessel");
+    initModel(tChangesPermLS,"Changes_Perm_LS");
+    initModel(tChangesPermGLS,"Changes_Perm_GLS");
 }
 
 bool ModelInterface::filterTables()
@@ -206,9 +206,9 @@ bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
 bool ModelInterface::getNonAbstractProperties(Sample* sample, int& id_source, int& id_cell, int& id_minor_strata)
 {
     QSqlQuery query;
-    query.prepare( tr("SELECT     ID") +
-                   tr(" FROM         dbo.Ref_Source") +
-                   tr(" WHERE     (Name = :name)") );
+    query.prepare( "SELECT     ID"
+                   " FROM         dbo.Ref_Source"
+                   " WHERE     (Name = :name)" );
     query.bindValue(0,qApp->translate("frame", (sample->bLogBook? strLogbook: strSampling) ));
 
     if (!query.exec() || query.numRowsAffected()!=1){
@@ -221,9 +221,9 @@ bool ModelInterface::getNonAbstractProperties(Sample* sample, int& id_source, in
         id_minor_strata=sample->minorStrataId;
         //id_cell=1;
 
-        query.prepare(tr(" SELECT ID FROM         Sampled_Cell") +
-                       tr(" WHERE id_Minor_Strata=(SELECT ID from Ref_Minor_Strata") +
-                       tr(" WHERE     (Name = 'n/a') )") );
+        query.prepare(" SELECT ID FROM         Sampled_Cell"
+                       " WHERE id_Minor_Strata=(SELECT ID from Ref_Minor_Strata"
+                       " WHERE     (Name = 'n/a') )" );
 
         if (!query.exec() || query.numRowsAffected()!=1){
             return false;
@@ -235,8 +235,8 @@ bool ModelInterface::getNonAbstractProperties(Sample* sample, int& id_source, in
         id_cell=sample->cellId;
         //id_minor_strata=3;
 
-        query.prepare(tr(" SELECT ID FROM         Ref_Minor_Strata") +
-                       tr(" WHERE     (Name = 'n/a') ") );
+        query.prepare(" SELECT ID FROM         Ref_Minor_Strata"
+                      " WHERE     (Name = 'n/a') " );
 
         if (!query.exec() || query.numRowsAffected()!=1){
             return false;
@@ -600,9 +600,9 @@ bool ModelInterface::getIdofSubFrameType(const QString strType, int& id)
 {
     QSqlQuery query;
     query.prepare(
-    tr("SELECT     ID")+
-    tr(" FROM         Ref_Frame")+
-    tr(" WHERE     (Name = :name)")
+    "SELECT     ID"
+    " FROM         Ref_Frame"
+    " WHERE     (Name = :name)"
     );
 
     query.bindValue(0, strType);
@@ -1070,7 +1070,7 @@ bool ModelInterface::readRefVS(const QModelIndex& parent, const QVector<int>& vV
     return true;
 }
 
-bool ModelInterface::readModel(const Sample* sample, const FrmFrameDetails::Options options)
+bool ModelInterface::readModel(const Sample* sample, const int options)
 {
     //TODO: if tmp, initialize query to have the vessel list: pass the list to the vessels -> if they re in, they re unmovable
 

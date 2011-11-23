@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainfrm.h'
 **
-** Created: Thu 17. Nov 10:01:52 2011
+** Created: Wed 23. Nov 11:18:30 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -113,25 +113,25 @@ static const uint qt_meta_data_MainFrm[] = {
        9,    8,    8,    8, 0x08,
       29,   19,    8,    8, 0x08,
      101,   59,    8,    8, 0x08,
-     215,    8,    8,    8, 0x08,
-     234,    8,    8,    8, 0x08,
-     252,    8,    8,    8, 0x08,
-     274,  270,    8,    8, 0x08,
-     294,  270,    8,    8, 0x08,
-     336,  315,    8,    8, 0x08,
-     363,    8,    8,    8, 0x08,
-     381,    8,    8,    8, 0x08,
-     400,    8,    8,    8, 0x08,
-     423,  416,    8,    8, 0x08,
-     446,    8,    8,    8, 0x08,
-     457,    8,    8,    8, 0x08,
-     474,    8,    8,    8, 0x08,
-     486,    8,    8,    8, 0x08,
-     498,    8,    8,    8, 0x08,
-     522,  518,    8,    8, 0x08,
-     555,    8,    8,    8, 0x08,
-     574,  518,    8,    8, 0x08,
-     606,    8,    8,    8, 0x08,
+     194,    8,    8,    8, 0x08,
+     213,    8,    8,    8, 0x08,
+     231,    8,    8,    8, 0x08,
+     253,  249,    8,    8, 0x08,
+     273,  249,    8,    8, 0x08,
+     315,  294,    8,    8, 0x08,
+     342,    8,    8,    8, 0x08,
+     360,    8,    8,    8, 0x08,
+     379,    8,    8,    8, 0x08,
+     402,  395,    8,    8, 0x08,
+     425,    8,    8,    8, 0x08,
+     436,    8,    8,    8, 0x08,
+     453,    8,    8,    8, 0x08,
+     465,    8,    8,    8, 0x08,
+     477,    8,    8,    8, 0x08,
+     501,  497,    8,    8, 0x08,
+     534,    8,    8,    8, 0x08,
+     553,  497,    8,    8, 0x08,
+     585,    8,    8,    8, 0x08,
 
        0        // eod
 };
@@ -141,7 +141,7 @@ static const char qt_meta_stringdata_MainFrm[] = {
     "navigateThroughTabs(bool,int)\0"
     "mode,persistence,sample,blackList,options\0"
     "showFrameDetails(FrmFrameDetails::Mode,FrmFrameDetails::Persistence,Sa"
-    "mple*,QList<int>&,FrmFrameDetails::Options)\0"
+    "mple*,QList<int>&,int)\0"
     "hideFrameDetails()\0showFrmSampling()\0"
     "hideFrmSampling()\0str\0statusShow(QString)\0"
     "statusClean(QString)\0strError,bShowMsgBox\0"
@@ -188,7 +188,7 @@ int MainFrm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: newTabs(); break;
         case 1: navigateThroughTabs((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2]))); break;
-        case 2: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const FrmFrameDetails::Options(*)>(_a[5]))); break;
+        case 2: showFrameDetails((*reinterpret_cast< const FrmFrameDetails::Mode(*)>(_a[1])),(*reinterpret_cast< const FrmFrameDetails::Persistence(*)>(_a[2])),(*reinterpret_cast< Sample*(*)>(_a[3])),(*reinterpret_cast< QList<int>(*)>(_a[4])),(*reinterpret_cast< const int(*)>(_a[5]))); break;
         case 3: hideFrameDetails(); break;
         case 4: showFrmSampling(); break;
         case 5: hideFrmSampling(); break;

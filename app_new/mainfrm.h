@@ -198,7 +198,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 
                                         const FrmFrameDetails::Persistence persistence,Sample* sample, 
-                                        QList<int>& blackList, const FrmFrameDetails::Options options);
+                                        QList<int>& blackList, const int options);
         void                    hideFrameDetails();
         void                    showFrmSampling();
         void                    hideFrmSampling();

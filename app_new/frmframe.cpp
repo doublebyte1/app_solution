@@ -645,10 +645,10 @@ bool FrmFrame::isLogBook(const int frameId, bool& bLogbook)
 {
     //check which type of frame we have...
     QString strQuery=
-    tr("SELECT     dbo.Ref_Source.Name") +
-    tr(" FROM         dbo.FR_Frame INNER JOIN") +
-    tr("                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID") +
-    tr(" WHERE     (dbo.FR_Frame.ID = ?)");
+    "SELECT     dbo.Ref_Source.Name"
+    " FROM         dbo.FR_Frame INNER JOIN"
+    "                      dbo.Ref_Source ON dbo.FR_Frame.id_source = dbo.Ref_Source.ID"
+    " WHERE     (dbo.FR_Frame.ID = ?)";
 
     QSqlQuery query;
     query.prepare(strQuery);
@@ -687,38 +687,13 @@ bool FrmFrame::getNextLabel(QString& strLabel)
     strLabel=idx.data().toString();
     return true;
 }
-/*
-bool FrmFrame::updateSample(const QModelIndex& idx)
-{
-    m_sample->frameTimeId=idx.data().toInt();
 
-    QModelIndex idx2=viewFrameTime->index(idx.row(),4);
-
-    if (!idx2.isValid()) return false;
-    m_sample->frameId=idx2.data().toInt();
-
-    bool bLogbook;
-    if (!isLogBook(m_sample->frameId,bLogbook)) return false;
-    m_sample->bLogBook=bLogbook;
-
-    return true;
-}
-
-bool FrmFrame::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
-
-    //updating the sample structure
-    QModelIndex idx=viewFrameTime->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    if (!idx.isValid()) return false;
-    return updateSample(idx);
-}
-*/
 void FrmFrame::adjustFrmSamplingMode()
 {
-    if (!pushEdit->isChecked()) return;
+    if ( !pushEdit->isChecked() ||
+        cmbPrexistent->currentText().compare(
+                    qApp->translate("null_replacements", strNa))==0 )
+                                                                            return;
 
     //set here if it is logbook or not
     m_sample->frameId=cmbPrexistent->model()->index(cmbPrexistent->currentIndex(),0).data().toInt();
@@ -727,6 +702,7 @@ void FrmFrame::adjustFrmSamplingMode()
         emit showError(tr("Could not determine the type of this frame!"));
         return;
     }
+
     m_sample->bLogBook=bLogbook;
 
     emit setFrmSamplingMode(FrmSampling::REPLACE);

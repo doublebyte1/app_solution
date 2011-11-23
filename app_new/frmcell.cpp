@@ -60,7 +60,7 @@ void FrmCell::onShowFrameDetails()
 
     QList<int> blackList;
     blackList << 1 << 2;
-    FrmFrameDetails::Options options=FrmFrameDetails::READ_TMP;
+    int options=FrmFrameDetails::READ_TMP;
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
         m_sample, blackList, options);
 }

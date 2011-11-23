@@ -62,17 +62,14 @@ void FrmMinorStrata::onShowFrameDetails()
         return;
     }
 
-/*
-    QModelIndex idx=viewMinorStrata->index(tableView->selectionModel()->currentIndex().row(),0);
-    if (m_sample->minorStrataId!=idx.data().toInt()){
-        emit showError(tr("We only support changes in the last inserted minor strata!"));
-        return;
-    }
-*/
-
     QList<int> blackList;
-    blackList << 1 << 2;
-    FrmFrameDetails::Options options=FrmFrameDetails::READ_TMP;
+    blackList << 1 << 2;//TODO: what are this hardcoded values? tests?
+    int options=FrmFrameDetails::READ_TMP;
+
+    if (pushEdit->isChecked()){
+        options= options | FrmFrameDetails::CACHE_CHANGES;
+    }
+
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
         m_sample, blackList, options);
 }
@@ -141,15 +138,22 @@ void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
     if (bFinished){
 
-        setPreviewQuery();
-        //everything went ok, so we can check it off!
-        pushEdit->setChecked(false);
-        pushNew->setEnabled(!pushEdit->isChecked());
-        pushRemove->setEnabled(!pushEdit->isChecked());
-        emit lockControls(true,m_lWidgets);
+        if (!bDiscarded){
+            setPreviewQuery();
+            //apply changes to temp frame
+            //emit applyChanges2FrmSampling(!bDiscarded);
+            return;
+        }else{
+
+            pushEdit->setChecked(false);
+            pushNew->setEnabled(!pushEdit->isChecked());
+            pushRemove->setEnabled(!pushEdit->isChecked());
+            emit lockControls(true,m_lWidgets);
+        }
 
     }
     toolButton->setEnabled(!bFinished);
+
 }
 
 void FrmMinorStrata::disableReasonCombo()
@@ -404,17 +408,7 @@ bool FrmMinorStrata::reallyApply()
             }else{
                 toolButton->setEnabled(true);
 
-                                /*
-                while(tRefMinorStrata->canFetchMore())
-                    tRefMinorStrata->fetchMore();
-
-                QModelIndex idx=tRefMinorStrata->index(tRefMinorStrata->rowCount()-1,0);
-                if (!idx.isValid()) bError=false;
-                else m_sample->minorStrataId=idx.data().toInt();//updating the id here, because of the frame details
-                */
                 updateSample();
-
-                toolButton->setFocus();
 
                 QToolTip::showText(toolButton->mapToGlobal(toolButton->pos()), 
                     tr("You have just initialized a minor strata!\n Now before starting to introduce information, ")
@@ -468,9 +462,6 @@ void FrmMinorStrata::initUI()
     m_lWidgets << label_2;
     m_lWidgets << customDtStart;
     m_lWidgets << customDtEnd;
-
-    //connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
-        //SLOT(setEnabled(bool)));
 
     toolButton->setEnabled(false);
 }

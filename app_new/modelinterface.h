@@ -34,7 +34,7 @@ public:
 
     void                                   setTree(TreeModel* aTreeModel){treeModel=aTreeModel;}
     bool                                   createModel();
-    bool                                   readModel(const Sample* sample,const FrmFrameDetails::Options options);
+    bool                                   readModel(const Sample* sample,const int options);
     QSqlRelationalTableModel*              tRefFrame;
     QSqlTableModel*                        tSubFrame;
     QSqlTableModel*                        tRefGLS;

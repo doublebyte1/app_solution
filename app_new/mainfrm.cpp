@@ -689,8 +689,8 @@ void MainFrm::initTabs()
          connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
         SLOT(navigateThroughTabs(const bool, const int)),Qt::UniqueConnection);
 
-         connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)), this,
-        SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const FrmFrameDetails::Options)),Qt::UniqueConnection);
+         connect(vTabs.at(i), SIGNAL(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const int)), this,
+        SLOT(showFrameDetails(const FrmFrameDetails::Mode, const FrmFrameDetails::Persistence, Sample*,QList<int>&, const int)),Qt::UniqueConnection);
 
          connect(pFrmFrameDetails, SIGNAL(hideFrameDetails(bool)), vTabs.at(i),
         SIGNAL(hideFrameDetails(bool)),Qt::UniqueConnection);
@@ -838,7 +838,7 @@ void MainFrm::hideFrameDetails()
 
 void MainFrm::showFrameDetails(const FrmFrameDetails::Mode mode,
                                const FrmFrameDetails::Persistence persistence,Sample* sample,
-                               QList<int>& blackList, const FrmFrameDetails::Options options){
+                               QList<int>& blackList, const int options){
 
    if (!pFrmFrameDetails->setFrameDetails(mode,persistence,sample,blackList, options)){
        //displayError(tr("Could not initialize form with frame details!"),true);

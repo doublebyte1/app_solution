@@ -48,15 +48,16 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
 
         //! An enum for generic options in this form        */
         enum Options { 
-              READ_TMP    = 0x01,/*!< Read also temporary changes on the frame. */
-              ALLOW_NEW   = 0x02/*!<Allow new items. */
+              READ_TMP    = 0x1,/*!< Read also temporary changes on the frame. */
+              ALLOW_NEW   = 0x2,/*!<Allow new items. */
+              CACHE_CHANGES   = 0x4,/*!<Cache changes (for edit mode). */
                     };
 
         FrmFrameDetails(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmFrameDetails();
 
         bool                    setFrameDetails(const Mode mode, const Persistence persistence,
-            Sample* sample, QList<int>& blackList, const Options options);
+            Sample* sample, QList<int>& blackList, const int options);
 
     public slots:
 
@@ -90,9 +91,9 @@ class FrmFrameDetails : public QWidget, public Ui::frmframedetails
         NullRelationalDelegate  *nullDellegate;
         FrmLegend               *pFrmLegend;
 
-        bool                    setupItems(const Mode mode, const Sample* sample, const Options options);
+        bool                    setupItems(const Mode mode, const Sample* sample, const int options);
         void                    setupModel();
-        bool                    initModel(const Mode mode, const Sample* sample, const Options options);
+        bool                    initModel(const Mode mode, const Sample* sample, const int options);
         void                    initTree();
         void                    initMapper();
         bool                    readModel();

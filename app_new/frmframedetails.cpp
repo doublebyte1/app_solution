@@ -186,7 +186,7 @@ bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
 }
 
 bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persistence, Sample* sample, 
-                                      QList<int>& blackList, const Options options)
+                                      QList<int>& blackList, const int options)
 {
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
@@ -212,9 +212,12 @@ bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     pushUndo->setEnabled(!pushVerify->isEnabled());
 
     pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
-    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
-    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
     pushBack->setVisible(true);
+
+    bool invis=options & FrmFrameDetails::CACHE_CHANGES;
+
+    pushApply->setVisible(mode!=FrmFrameDetails::VIEW || (persistence==FrmFrameDetails::TEMPORARY && !invis));
+    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY && !invis);
 
     lineName->clear();
     textComments->clear();
@@ -336,7 +339,7 @@ void FrmFrameDetails::initTree()
     treeView->setSortingEnabled(true);
 }
 
-bool FrmFrameDetails::initModel(const Mode mode, /*const int frameId*/const Sample* sample, const Options options)
+bool FrmFrameDetails::initModel(const Mode mode, /*const int frameId*/const Sample* sample, const int options)
 {
     if (model!=0) delete model;
     model = new DragDropModel(this);
@@ -378,7 +381,7 @@ bool FrmFrameDetails::initModel(const Mode mode, /*const int frameId*/const Samp
     return true;
 }
 
-bool FrmFrameDetails::setupItems(const Mode mode, /*const int frameId*/const Sample* sample, const Options options)
+bool FrmFrameDetails::setupItems(const Mode mode, /*const int frameId*/const Sample* sample, const int options)
 {
     switch (mode) {
     case FrmFrameDetails::VIEW:
