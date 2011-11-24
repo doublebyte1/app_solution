@@ -805,7 +805,7 @@ void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
     tabWidget->blockSignals(true);//lets block the signals to prevent entering the next again...
 
     int newIndex=-1;
-
+/*
     bool bEnable=!vTabs.at(idx)->getSample()->bLogBook;
     for (int i=JUMP+1; i < JUMP+STEP; ++i)
         tabWidget->setTabEnabled(i,bEnable);
@@ -814,7 +814,7 @@ void MainFrm::navigateThroughTabs(const bool bNext, const int idx)
         vTabs.at(idx)->getSample()->cellId=-1;
         vTabs.at(idx)->getSample()->vesselTypeId=-1;
     }
-
+*/
     if (bNext){
         if (!getNextIndex(idx,vTabs.at(curIdx)->getSample()->bLogBook,newIndex)){
             displayError(tr("Could not navigate to the next tab!"),false);
