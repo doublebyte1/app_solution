@@ -664,6 +664,12 @@ void MainFrm::initTabs()
      connect(pFrmFrameDetails, SIGNAL(AppliedChanges2FrameDetails()), pFrmMinorStrata,
     SLOT(editFinished()));
 
+     connect(pFrmCell, SIGNAL(applyChanges2FrameDetails()), pFrmFrameDetails,
+    SLOT(onApplyChanges2FrameDetails()));
+
+     connect(pFrmFrameDetails, SIGNAL(AppliedChanges2FrameDetails()), pFrmCell,
+    SLOT(editFinished()));
+
     gridLayout->addWidget(pFrmFrameDetails);
     pFrmFrameDetails->hide();
 

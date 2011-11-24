@@ -41,8 +41,9 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
-        void                                   editFinished(){;}
-        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
+        void                                   editFinished();
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        void                                   onHideFrameDetails();
 
     private:
         //! Really Apply
@@ -53,7 +54,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         //! Apply Changes
         /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
         */
-        bool                                   applyChanges(){return false;}//TODO: implement this!
+        bool                                   applyChanges();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

@@ -159,6 +159,12 @@ void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
         (const QItemSelection &, const QItemSelection &)), this,
             SLOT(onItemSelection()));
 
+    connect(m_table->model(), SIGNAL(rowsInserted ( const QModelIndex, int, int)), this,
+        SLOT(adjustEnables()));
+
+    connect(m_table->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
+        SLOT(adjustEnables()));
+
     m_table->setAlternatingRowColors(true);
     m_table->verticalHeader()->hide();
     m_table->setSelectionMode(
@@ -224,10 +230,15 @@ void PreviewTab::onShowForm()
 
     if (m_pushEdit==0 || m_pushRemove==0) return;
 
-    m_pushEdit->setEnabled(m_table->model()->rowCount()>0);
-    m_pushRemove->setEnabled(m_table->model()->rowCount()>0);
+    adjustEnables();
 
      emit isLogBook(m_sample->bLogBook);
+}
+
+void PreviewTab::adjustEnables()
+{
+    m_pushEdit->setEnabled(m_table->model()->rowCount()>0);
+    m_pushRemove->setEnabled(m_table->model()->rowCount()>0);
 }
 
 bool PreviewTab::next()

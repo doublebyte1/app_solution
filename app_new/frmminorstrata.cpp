@@ -139,9 +139,9 @@ void FrmMinorStrata::editFinished()
     pushEdit->setChecked(false);
     pushNew->setEnabled(!pushEdit->isChecked());
     pushRemove->setEnabled(!pushEdit->isChecked());
+    toolButton->setEnabled(false);
     emit lockControls(true,m_lWidgets);
 }
-
 
 void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
@@ -158,7 +158,6 @@ void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
     }
 
     toolButton->setEnabled(!bFinished);
-
 }
 
 void FrmMinorStrata::disableReasonCombo()

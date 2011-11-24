@@ -18,6 +18,9 @@ PreviewTab(2,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent, flags){
     connect(toolButton, SIGNAL(clicked()), this,
         SLOT(onShowFrameDetails()));
 
+    connect(this, SIGNAL(hideFrameDetails(bool)), this,
+        SLOT(onHideFrameDetails()));
+
     tSampCell=0;
     viewCell=0;
     mapper1=0;
@@ -42,7 +45,22 @@ FrmCell::~FrmCell()
 
 void FrmCell::onItemSelection()
 {
-    pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection()
+        && !toolButton->isEnabled());
+
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection()
+        && !toolButton->isEnabled());
+
+    //pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+}
+
+void FrmCell::onHideFrameDetails()
+{
+    if (!pushEdit->isChecked()){
+        toolButton->setEnabled(false);
+        pushNext->setEnabled(true);
+        pushPrevious->setEnabled(true);
+    }
 }
 
 void FrmCell::onShowFrameDetails()
@@ -60,7 +78,12 @@ void FrmCell::onShowFrameDetails()
 
     QList<int> blackList;
     blackList << 1 << 2;
+
     int options=FrmFrameDetails::READ_TMP;
+    if (pushEdit->isChecked()){
+        options= options | FrmFrameDetails::CACHE_CHANGES;
+    }
+
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
         m_sample, blackList, options);
 }
@@ -165,10 +188,8 @@ void FrmCell::initUI()
 {
     setHeader();
 
-    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
-        SLOT(setEnabled(bool)));
-
-    toolButton->setEnabled(false);
+//    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
+//        SLOT(setEnabled(bool)));
 
     this->groupDetails->setVisible(false);
 
@@ -203,7 +224,8 @@ void FrmCell::initUI()
     m_lWidgets << spinIE;
     m_lWidgets << spinOE;
 
-    pushNext->setEnabled(false);
+    //pushNext->setEnabled(false);
+    toolButton->setEnabled(false);
 }
 
 void FrmCell::initMapper1()
@@ -371,14 +393,30 @@ bool FrmCell::reallyApply()
         if (!bError){
             if (!afterApply()) bError=false;
             else{
+
                 toolButton->setEnabled(true);
 
+                updateSample();
+
+                QToolTip::showText(toolButton->mapToGlobal(toolButton->pos()), 
+                    tr("You have just initialized a cell!\n Now before starting to introduce information, ")
+                    + tr("take a moment to have a look at the frame.\n ")
+                    + tr("If you wish to do any temporary changes, *please do it NOW*! ")
+                    , toolButton);
+
+                //lets disable next till we review the frame
+                pushNext->setEnabled(false);
+                pushPrevious->setEnabled(false);
+
+                /*
                 while(tSampCell->canFetchMore())
                     tSampCell->fetchMore();
 
                 QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
                 if (!idx.isValid()) bError=false;
                 else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
+                */
+
             }
         }
         return !bError;
@@ -524,4 +562,63 @@ bool FrmCell::getNextLabel(QString& strLabel)
     if (!idx.isValid()) return false;
     strLabel=idx.data().toString();
     return true;
+}
+
+void FrmCell::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    toolButton->setEnabled(false);
+    emit lockControls(true,m_lWidgets);
+}
+
+void FrmCell::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+    if (bFinished){
+
+        if (!bDiscarded){
+            emit applyChanges2FrameDetails();
+            return;
+        }else{
+            editFinished();
+        }
+
+    }
+    toolButton->setEnabled(!bFinished);
+}
+
+bool FrmCell::applyChanges()
+{
+    bool bError=true;
+
+    QString strError;
+    if (!checkDependantDates("Sampled_Cell", customDtStart->dateTime(),
+        customDtEnd->dateTime(),"Sampled_Cell",m_sample->minorStrataId, strError))
+    {
+        emit showError(strError);
+    }else{
+
+        int cur= mapper1->currentIndex();
+        bError=!submitMapperAndModel(mapper1);
+        if (!bError){
+            mapper1->setCurrentIndex(cur);
+            int curStart, curEnd;
+            curStart=mapperStartDt->currentIndex();
+            curEnd=mapperEndDt->currentIndex();
+
+            bError=submitDates(mapperStartDt, mapperEndDt);
+
+            if (!bError){
+                mapperStartDt->setCurrentIndex(curStart);
+                mapperEndDt->setCurrentIndex(curEnd);
+            }
+
+        }
+    }
+
+    emit editLeave(true,false);
+    return !bError;
+
 }

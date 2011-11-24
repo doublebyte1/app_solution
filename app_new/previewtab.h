@@ -227,6 +227,8 @@ class PreviewTab : public GenericTab
                                                     const QDateTime& curEndDt, QString strTable, int id,QString& strError);
 
     private slots:
+        void                                  adjustEnables();
+
         virtual void                          onEditLeave(const bool bFinished, const bool bDiscarded)=0;
         virtual void                          editFinished()=0;
         //! Set Header Label Tips
