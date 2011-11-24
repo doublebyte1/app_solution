@@ -237,6 +237,8 @@ void PreviewTab::onShowForm()
 
 void PreviewTab::adjustEnables()
 {
+    if (!m_table || !m_pushEdit || !m_pushRemove) return;
+
     m_pushEdit->setEnabled(m_table->model()->rowCount()>0);
     m_pushRemove->setEnabled(m_table->model()->rowCount()>0);
 }

@@ -66,6 +66,12 @@ class PreviewTab : public GenericTab
         void                                  setLoading(const bool bLoading){m_bLoading=bLoading;}
 
     protected:
+        //! Abstract Preview Row
+        /*! A common implementation of preview row, that can be called by all members on previewRow.
+           \par index index of the clicked row
+           \return bool as cuccess or failure
+          \sa previewRow(QModelIndex index)
+        */
         bool                                  abstractPreviewRow(QModelIndex index);
         //! Interface for really apply
         /*! Implemented from the base class. Here we decide if we want to call reallyApply() or applyChanges,
@@ -198,7 +204,18 @@ class PreviewTab : public GenericTab
     signals:
         void                                  isLogBook(const bool bIsLogbook);/**< signal to indicate if this is a logbook or sampling form*/
         void                                  blockCatchUISignals(const bool bBlock);/**< signal to block/unblock the CatchInputCtrl signals*/
-        void                                  editLeave(const bool bFinished, const bool bDiscarded=false);/**< signal to inform if we are *really* leaving the edit mode, or not*/
+        //! Leaving Edit Mode
+        /*! Signal to inform if we are *really* leaving the edit mode, or not
+          \par bFinished flag that indicates if we started/finished editing
+          \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
+        */
+        void                                  editLeave(const bool bFinished, const bool bDiscarded=false);
+        //! Apply Changes to Frame Details
+        /*! This signal is used when we are in editing mode and we want to cache the changes
+        in form framedetails, till the user decides to comit the changes. The signal informs 
+          framedetails that we want to apply the changes in the temporary sampling frame. After they
+          are successfully applied, we can finish the editing process.
+        */
         void                                  applyChanges2FrameDetails();
 
     public slots:
@@ -227,9 +244,23 @@ class PreviewTab : public GenericTab
                                                     const QDateTime& curEndDt, QString strTable, int id,QString& strError);
 
     private slots:
+        //! Enable/Disable edit/remove buttons
+        /*! This is an utility function, that enables the edit/remove buttons in according to the existence of
+        records on tableView. It is fired by tableView signals of add/remove records.
+        */
         void                                  adjustEnables();
-
+        //! Pure virtual function
+        /*! This the function that is called after the editRecord(bool on) is over (using the signal editLeave(const bool bFinished, const bool bDiscarded=false). After this, we call
+        editFinished() for the "final touches" on the UI!
+         \par bFinished flag that indicates if we started/finished editing
+         \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
+        /sa editRecord(bool on), editFinished(), editLeave(const bool bFinished, const bool bDiscarded=false)
+        */
         virtual void                          onEditLeave(const bool bFinished, const bool bDiscarded)=0;
+        //! Pure virtual function
+        /*! Final touches on the UI, after the editing process is (successfully) complete!
+        /sa editRecord(bool on), onEditLeave(const bool bFinished, const bool bDiscarded), editLeave(const bool bFinished, const bool bDiscarded=false)
+        */
         virtual void                          editFinished()=0;
         //! Set Header Label Tips
         /*! In this function we set the tooltip, status tip and WhatsThis text,
@@ -239,9 +270,13 @@ class PreviewTab : public GenericTab
         void                                  setTips(const bool bLogbook);
         //! A pure virtual member.
         /*! Slot that inititializes a new record
-          \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button), onItemSelection()
+          \sa previewRow(QModelIndex index), onButtonClick(QAbstractButton * button), onItemSelection(), removeRecord()
         */
         virtual void                          createRecord()=0;
+        //! Remove record
+        /*! Slot that removes a record
+          \sa createRecord()
+        */
         void                                  removeRecord();
         //! A pure virtual member.
         /*! Slot that previews a selected row
@@ -255,7 +290,7 @@ class PreviewTab : public GenericTab
         virtual bool                          onButtonClick(QAbstractButton * button);
         //! A pure virtual member.
         /*! Slot that implements the behaviour corresponding to select an item on the table
-        (most of the times, it enables the pushNext button);
+        (most of the times, it enables the pushNext/pusprevious buttons);
           \sa createRecord(), previewRow(QModelIndex index), onButtonClick(QAbstractButton * button)
           */
         virtual void                          onItemSelection()=0;

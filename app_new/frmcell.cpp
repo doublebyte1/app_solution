@@ -50,8 +50,6 @@ void FrmCell::onItemSelection()
 
     pushPrevious->setEnabled(tableView->selectionModel()->hasSelection()
         && !toolButton->isEnabled());
-
-    //pushNext->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmCell::onHideFrameDetails()
@@ -90,13 +88,6 @@ void FrmCell::onShowFrameDetails()
 
 void FrmCell::previewRow(QModelIndex index)
 {
-/*
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->hide();
-*/
     QModelIndex idx=viewCell->index(index.row(),0);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this cell!"));
@@ -109,13 +100,6 @@ void FrmCell::previewRow(QModelIndex index)
         emit showError (tr("Could not preview this record!"));
     }else{
 
-    /*
-        QString id=idx.data().toString();
-
-        tSampCell->setFilter(tr("Sampled_Cell.ID=")+id);
-        if (tSampCell->rowCount()!=1)
-            return;
-    */
         mapper1->toLast();
 
         //Now fix the dates
@@ -138,7 +122,7 @@ void FrmCell::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+        m_tDateTime->setFilter("ID=" + strStartDt + " OR ID=" + strEndDt);
 
         if (m_tDateTime->rowCount()!=2)
             return;
@@ -161,14 +145,14 @@ void FrmCell::previewRow(QModelIndex index)
 void FrmCell::setPreviewQuery()
 {
     viewCell->setQuery(
-    tr("SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), ") +
-    tr("                      F2.Date_Local, 103) AS [End Date] ") +
-    tr("FROM         dbo.Sampled_Cell INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_dt = F1.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_dt = F2.ID INNER JOIN") +
-    tr("                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite ") +
-    tr("WHERE     (dbo.Sampled_Cell.id_Minor_Strata = ")  + QVariant(m_sample->minorStrataId).toString() + tr(")") +
-    tr(" ORDER BY dbo.Sampled_Cell.ID DESC")
+    "SELECT     TOP (100) PERCENT dbo.Sampled_Cell.ID, dbo.Ref_Abstract_LandingSite.Name as [Landing Site], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], CONVERT(CHAR(10), "
+    "                      F2.Date_Local, 103) AS [End Date] "
+    "FROM         dbo.Sampled_Cell INNER JOIN"
+    "                      dbo.GL_Dates AS F1 ON dbo.Sampled_Cell.id_start_dt = F1.ID INNER JOIN"
+    "                      dbo.GL_Dates AS F2 ON dbo.Sampled_Cell.id_end_dt = F2.ID INNER JOIN"
+    "                      dbo.Ref_Abstract_LandingSite ON dbo.Ref_Abstract_LandingSite.ID = dbo.Sampled_Cell.id_abstract_LandingSite "
+    "WHERE     (dbo.Sampled_Cell.id_Minor_Strata = "  + QVariant(m_sample->minorStrataId).toString() +
+    " ) ORDER BY dbo.Sampled_Cell.ID DESC"
     );
 
     tableView->hideColumn(0);
@@ -187,9 +171,6 @@ void FrmCell::initModels()
 void FrmCell::initUI()
 {
     setHeader();
-
-//    connect(this, SIGNAL(hideFrameDetails(bool)), toolButton,
-//        SLOT(setEnabled(bool)));
 
     this->groupDetails->setVisible(false);
 
@@ -224,7 +205,6 @@ void FrmCell::initUI()
     m_lWidgets << spinIE;
     m_lWidgets << spinOE;
 
-    //pushNext->setEnabled(false);
     toolButton->setEnabled(false);
 }
 
@@ -247,7 +227,7 @@ void FrmCell::initMapper1()
 
     cmbLS->setModel(tSampCell->relationModel(4));
     cmbLS->setModelColumn(
-        tSampCell->relationModel(4)->fieldIndex(tr("Name")));
+        tSampCell->relationModel(4)->fieldIndex("Name"));
 
     mapper1->addMapping(cmbLS, 4);
 
@@ -295,13 +275,13 @@ void FrmCell::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,3,QString("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
 }
 
 void FrmCell::beforeShow()
@@ -408,15 +388,6 @@ bool FrmCell::reallyApply()
                 pushNext->setEnabled(false);
                 pushPrevious->setEnabled(false);
 
-                /*
-                while(tSampCell->canFetchMore())
-                    tSampCell->fetchMore();
-
-                QModelIndex idx=tSampCell->index(tSampCell->rowCount()-1,0);
-                if (!idx.isValid()) bError=false;
-                else m_sample->cellId=idx.data().toInt();//updating the id here, because of the frame details
-                */
-
             }
         }
         return !bError;
@@ -494,9 +465,9 @@ void FrmCell::initCellModel()
     if (tSampCell!=0) delete tSampCell;
 
     tSampCell=new QSqlRelationalTableModel();
-    tSampCell->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Cell"),
+    tSampCell->setTable(QSqlDatabase().driver()->escapeIdentifier("Sampled_Cell",
         QSqlDriver::TableName));
-    tSampCell->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
+    tSampCell->setRelation(4, QSqlRelation("Ref_Abstract_LandingSite", "ID", "Name"));
     tSampCell->relationModel(4)->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSampCell->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSampCell->sort(0,Qt::AscendingOrder);
@@ -509,13 +480,13 @@ void FrmCell::initCellModel()
 void FrmCell::filterModel4Combo()
 {
     QString strQuery =
-tr("SELECT     dbo.FR_GLS2ALS.id_abstract_landingsite AS ls, dbo.Ref_Minor_Strata.id_gls, dbo.FR_GLS2ALS.id_gls AS Expr1") +
-tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
-tr("                      dbo.FR_Time ON dbo.Ref_Minor_Strata.id_frame_time = dbo.FR_Time.ID INNER JOIN") +
-tr("                      dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID INNER JOIN") +
-tr("                      dbo.FR_Sub_Frame ON dbo.FR_Frame.ID = dbo.FR_Sub_Frame.id_frame INNER JOIN") +
-tr("                      dbo.FR_GLS2ALS ON dbo.FR_Sub_Frame.ID = dbo.FR_GLS2ALS.id_sub_frame AND dbo.Ref_Minor_Strata.id_gls = dbo.FR_GLS2ALS.id_gls") +
-tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
+"SELECT     dbo.FR_GLS2ALS.id_abstract_landingsite AS ls, dbo.Ref_Minor_Strata.id_gls, dbo.FR_GLS2ALS.id_gls AS Expr1"
+" FROM         dbo.Ref_Minor_Strata INNER JOIN"
+"                      dbo.FR_Time ON dbo.Ref_Minor_Strata.id_frame_time = dbo.FR_Time.ID INNER JOIN"
+"                      dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID INNER JOIN"
+"                      dbo.FR_Sub_Frame ON dbo.FR_Frame.ID = dbo.FR_Sub_Frame.id_frame INNER JOIN"
+"                      dbo.FR_GLS2ALS ON dbo.FR_Sub_Frame.ID = dbo.FR_GLS2ALS.id_sub_frame AND dbo.Ref_Minor_Strata.id_gls = dbo.FR_GLS2ALS.id_gls"
+" WHERE     (dbo.Ref_Minor_Strata.ID = :id)"
 ;
 
     QSqlQuery query;
@@ -526,32 +497,19 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
         return;
     }
 
-    QString strFilter(tr(""));
+    QString strFilter("");
      while (query.next()) {
-        strFilter.append(tr("ID=") + query.value(0).toString());
-        strFilter.append(tr(" OR "));
+        strFilter.append("ID=" + query.value(0).toString());
+        strFilter.append(" OR ");
      }
      if (!strFilter.isEmpty())
-         strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+         strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
 
     tSampCell->relationModel(4)->setFilter(strFilter);
     //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
     initMapper1();
 }
-/*
-bool FrmCell::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
 
-    //updating the sample structure
-    QModelIndex idx=viewCell->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    if (!idx.isValid()) return false;
-    m_sample->cellId=idx.data().toInt();
-    return true;
-}
-*/
 bool FrmCell::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())

@@ -37,12 +37,31 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   previewRow(QModelIndex index);
-        void                                   onShowFrameDetails();
+        //! On item selection
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
+        //! Edit finished
+        /*! Reimplemented from the PreviewTab base class
+        /sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
+        */
         void                                   editFinished();
+        //! On Edit Leave
+        /*! Reimplemented from the PreviewTab base class
+         \par bFinished flag that indicates if we started/finished editing
+         \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
+        /sa previewRow(QModelIndex index), editFinished()
+        */
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        //! On Show FrameDetails
+        /*! Slot that is called, when FrameDetails Form show event
+        */
+        void                                   onShowFrameDetails();
+        //! On Hide FrameDetails
+        /*! Slot that is called, when FrameDetails Form hide event
+        */
         void                                   onHideFrameDetails();
 
     private:
@@ -71,7 +90,6 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   beforeShow();
-
         //! Set Header widget
         /*! Reimplemented from the genericTab base class
         */
@@ -92,10 +110,6 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
-        //! Update the sample structure
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   updateSample();
         void                                   initCellModel();
         void                                   initMapper1();
 

@@ -70,14 +70,14 @@ FrmFrame::~FrmFrame()
 void FrmFrame::setPreviewQuery()
 {
     viewFrameTime->setQuery(
-        tr("SELECT     dbo.FR_Time.ID, dbo.FR_Frame.Name, CONVERT(CHAR(10), A.Date_Local, 103) AS [Lower Limit], CONVERT(CHAR(10), B.Date_Local, 103) AS [Upper Limit],")+
-        tr("                  dbo.FR_Time.id_frame") +
-        tr(" FROM         dbo.FR_Time INNER JOIN") +
-        tr("                  dbo.GL_Dates AS A ON dbo.FR_Time.id_start_dt = A.ID INNER JOIN")+
-        tr("                 dbo.GL_Dates AS B ON dbo.FR_Time.id_end_dt = B.ID INNER JOIN")+
-        tr("                  dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID")+
-        tr(" WHERE     (dbo.FR_Time.comments NOT LIKE '%n/a%')") +
-        tr(" ORDER BY dbo.FR_Time.ID DESC")
+        "SELECT     dbo.FR_Time.ID, dbo.FR_Frame.Name, CONVERT(CHAR(10), A.Date_Local, 103) AS [Lower Limit], CONVERT(CHAR(10), B.Date_Local, 103) AS [Upper Limit],"
+        "                  dbo.FR_Time.id_frame"
+        " FROM         dbo.FR_Time INNER JOIN"
+        "                  dbo.GL_Dates AS A ON dbo.FR_Time.id_start_dt = A.ID INNER JOIN"
+        "                 dbo.GL_Dates AS B ON dbo.FR_Time.id_end_dt = B.ID INNER JOIN"
+        "                  dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID"
+        " WHERE     (dbo.FR_Time.comments NOT LIKE '%n/a%')"
+        " ORDER BY dbo.FR_Time.ID DESC"
         //Important: do not show the n/a record!
     );
 
@@ -126,8 +126,8 @@ bool FrmFrame::applyChanges()
     bool bError=true;
 
     QString strError;
-    if (!checkDependantDates(tr("Fr_Time"), customDtStart->dateTime(),
-        customDtEnd->dateTime(),tr("Fr_Time"),m_sample->frameTimeId, strError))
+    if (!checkDependantDates("Fr_Time", customDtStart->dateTime(),
+        customDtEnd->dateTime(),"Fr_Time",m_sample->frameTimeId, strError))
     {
         emit showError(strError);
     }else{
@@ -150,7 +150,6 @@ bool FrmFrame::applyChanges()
         }
     }
 
-    //pushEdit->setChecked(bError);
     emit editLeave(true,false);
     return !bError;
 }
@@ -246,29 +245,8 @@ void FrmFrame::previewRow(QModelIndex index)
         emit showError (tr("Could not preview this record!"));
     }else{
 
-        /*
-        //its on a new record
-        if (!discardNewRecord()) return;
-
-        //its on a edit
-        if (pushEdit->isChecked()){
-            pushEdit->setChecked(false);
-            if (!editRecord(false)) return;
-        }
-
-        if (!this->groupDetails->isVisible())
-            this->groupDetails->setVisible(true);
-
-        emit lockControls(true,m_lWidgets);*/
         groupProcess->setEnabled(false);
-    /*
-        buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
-        buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
-        pushNew->setEnabled(true);
-        pushEdit->setEnabled(true);
-        pushRemove->setEnabled(true);
-    */
         QModelIndex pIdx;
         if (!translateIndex(index,pIdx)) return;
 
@@ -308,7 +286,7 @@ void FrmFrame::previewRow(QModelIndex index)
 
 void FrmFrame::onItemSelection()
 {
-    //if (!pushEdit->isChecked())
+    //no pusPrevious in this form!
     pushNext->setEnabled(tableView->selectionModel()->hasSelection() && !m_bSampling);
 }
 
@@ -326,14 +304,14 @@ void FrmFrame::unblockCustomDateCtrls()
     customDtEnd->blockSignals(false);
 }
 
-
+/*
 void FrmFrame::showEvent ( QShowEvent * event )
 {
     //Since this is the first form, we have to force the call here!
     //if (m_curMode == FrmFrameDetails::NONE && !pushEdit->isChecked())
         //onShowForm();
 }
-
+*/
 
 void FrmFrame::initModels()
 {
@@ -353,7 +331,6 @@ void FrmFrame::initUI()
     radioCopy->setChecked(true);
 
     initPreviewTable(tableView,viewFrameTime);
-    //tableView->selectRow(0);
     setButtonBox(buttonBox);
     setNewButton(pushNew);
     setEditButton(pushEdit);
@@ -370,10 +347,10 @@ void FrmFrame::initFrModel()
     if (tFrameTime!=0) delete tFrameTime;
 
     tFrameTime=new QSqlRelationalTableModel();
-    tFrameTime->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("FR_Time"),
+    tFrameTime->setTable(QSqlDatabase().driver()->escapeIdentifier("FR_Time",
         QSqlDriver::TableName));
 
-    tFrameTime->setRelation(1, QSqlRelation(tr("FR_Frame"), tr("ID"), tr("Name")));
+    tFrameTime->setRelation(1, QSqlRelation("FR_Frame", "ID", "Name"));
 
     tFrameTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tFrameTime->sort(0,Qt::AscendingOrder);
@@ -483,13 +460,9 @@ void FrmFrame::initMapper2()
 
     cmbPrexistent->setModel(tFrameTime->relationModel(1));
     cmbPrexistent->setModelColumn(
-        tFrameTime->relationModel(1)->fieldIndex(tr("Name")));
+        tFrameTime->relationModel(1)->fieldIndex("Name"));
 
     mapper->addMapping(this->cmbPrexistent, 1/*, tr("currentIndex").toAscii()*/);
-    //mapper->toLast();
-
-    //connect(tableView->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-      //   this, SLOT(previewRow(QModelIndex)));
 
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper << mapperStartDt << mapperEndDt;
@@ -521,7 +494,7 @@ void FrmFrame::initMappers()
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
 
     initMapper2();
     mapper->toLast();
@@ -578,7 +551,6 @@ bool FrmFrame::reallyApply()
             while(tFrameTime->canFetchMore())
                 tFrameTime->fetchMore();
 
-            //tFrameTime->insertRow(tFrameTime->rowCount());
             QModelIndex idx=tFrameTime->index(tFrameTime->rowCount()-1,1);//id frame
             if (idx.isValid()){
                     tFrameTime->setData(idx,id);

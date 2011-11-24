@@ -73,20 +73,7 @@ void FrmMinorStrata::onShowFrameDetails()
     emit showFrameDetails(FrmFrameDetails::VIEW,FrmFrameDetails::TEMPORARY,
         m_sample, blackList, options);
 }
-/*
-bool FrmMinorStrata::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
 
-    //updating the sample structure
-    QModelIndex idx=viewMinorStrata->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    if (!idx.isValid()) return false;
-    m_sample->minorStrataId=idx.data().toInt();
-    return true;
-}
-*/
 bool FrmMinorStrata::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -104,8 +91,8 @@ bool FrmMinorStrata::applyChanges()
     bool bError=true;
 
     QString strError;
-    if (!checkDependantDates(tr("Ref_Minor_Strata"), customDtStart->dateTime(),
-        customDtEnd->dateTime(),tr("Ref_Minor_Strata"),m_sample->minorStrataId, strError))
+    if (!checkDependantDates("Ref_Minor_Strata", customDtStart->dateTime(),
+        customDtEnd->dateTime(),"Ref_Minor_Strata",m_sample->minorStrataId, strError))
     {
         emit showError(strError);
     }else{
@@ -212,7 +199,7 @@ void FrmMinorStrata::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+        m_tDateTime->setFilter("ID=" + strStartDt + " OR ID=" + strEndDt);
 
         if (m_tDateTime->rowCount()!=2)
             return;
@@ -226,14 +213,7 @@ void FrmMinorStrata::previewRow(QModelIndex index)
 void FrmMinorStrata::uI4NewRecord()
 {
     genericUI4NewRecord();
-/*
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
 
-    emit lockControls(false,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
-*/
     lineNew->clear();
     radioActive->click();
     textComments->clear();
@@ -244,15 +224,15 @@ void FrmMinorStrata::uI4NewRecord()
 void FrmMinorStrata::filterModel4Combo()
 {
     QString strQuery=
-    tr("SELECT     dbo.FR_F2GLS.id_gls ") +
-    tr("FROM         dbo.FR_Sub_Frame INNER JOIN") +
-    tr("                 dbo.FR_F2GLS ON dbo.FR_Sub_Frame.ID = dbo.FR_F2GLS.id_sub_frame INNER JOIN") +
-    tr("                  dbo.FR_Frame INNER JOIN") +
-    tr("                  dbo.FR_Time ON dbo.FR_Frame.ID = dbo.FR_Time.id_frame ON dbo.FR_Sub_Frame.id_frame = dbo.FR_Frame.ID ") +
-    tr("WHERE     (dbo.FR_Time.ID = :id) AND (dbo.FR_Sub_Frame.Type =") +
-    tr("                      (SELECT     ID") +
-    tr("                        FROM          dbo.Ref_Frame") +
-    tr("                        WHERE      (Name = :root)) )");
+    "SELECT     dbo.FR_F2GLS.id_gls "
+    "FROM         dbo.FR_Sub_Frame INNER JOIN"
+    "                 dbo.FR_F2GLS ON dbo.FR_Sub_Frame.ID = dbo.FR_F2GLS.id_sub_frame INNER JOIN"
+    "                  dbo.FR_Frame INNER JOIN"
+    "                  dbo.FR_Time ON dbo.FR_Frame.ID = dbo.FR_Time.id_frame ON dbo.FR_Sub_Frame.id_frame = dbo.FR_Frame.ID "
+    "WHERE     (dbo.FR_Time.ID = :id) AND (dbo.FR_Sub_Frame.Type ="
+    "                      (SELECT     ID"
+    "                        FROM          dbo.Ref_Frame"
+    "                        WHERE      (Name = :root)) )";
 
     QSqlQuery query;
     query.prepare(strQuery);
@@ -270,7 +250,7 @@ void FrmMinorStrata::filterModel4Combo()
         strFilter.append(tr(" OR "));
      }
      if (!strFilter.isEmpty())
-         strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+         strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
      else{
         emit showError(tr("Could not obtain a filter for Group of Landing Sites!"));
         return;
@@ -474,13 +454,13 @@ void FrmMinorStrata::onItemSelection()
 void FrmMinorStrata::setPreviewQuery()
 {
     viewMinorStrata->setQuery(
-    tr("SELECT     dbo.Ref_Minor_Strata.ID, dbo.Ref_Minor_Strata.Name, CONVERT(CHAR(10),F1.Date_Local,103) AS [Start Date], CONVERT(CHAR(10),F2.Date_Local,103) AS [End Date], ") +
-    tr("CASE WHEN dbo.Ref_Minor_Strata.IsClosed=0 THEN 'false' ELSE 'true' END Closed ") +
-    tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID") +
-    tr("                      WHERE     (dbo.Ref_Minor_Strata.id_frame_time = ") + QVariant(m_sample->frameTimeId).toString() + tr(")") +
-    tr("                      ORDER BY dbo.Ref_Minor_Strata.ID DESC")
+    "SELECT     dbo.Ref_Minor_Strata.ID, dbo.Ref_Minor_Strata.Name, CONVERT(CHAR(10),F1.Date_Local,103) AS [Start Date], CONVERT(CHAR(10),F2.Date_Local,103) AS [End Date], "
+    "CASE WHEN dbo.Ref_Minor_Strata.IsClosed=0 THEN 'false' ELSE 'true' END Closed "
+    " FROM         dbo.Ref_Minor_Strata INNER JOIN"
+    "                      dbo.GL_Dates AS F1 ON dbo.Ref_Minor_Strata.id_start_dt = F1.ID INNER JOIN"
+    "                      dbo.GL_Dates AS F2 ON dbo.Ref_Minor_Strata.id_end_dt = F2.ID"
+    "                      WHERE     (dbo.Ref_Minor_Strata.id_frame_time = " + QVariant(m_sample->frameTimeId).toString() + ")"
+    "                      ORDER BY dbo.Ref_Minor_Strata.ID DESC"
     );
 
     tableView->hideColumn(0);
@@ -491,10 +471,10 @@ void FrmMinorStrata::initModels()
 {
     //Minor Strata
     tRefMinorStrata=new QSqlRelationalTableModel();
-    tRefMinorStrata->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Ref_Minor_Strata"),
+    tRefMinorStrata->setTable(QSqlDatabase().driver()->escapeIdentifier("Ref_Minor_Strata",
         QSqlDriver::TableName));
-    tRefMinorStrata->setRelation(4, QSqlRelation(tr("Ref_Group_of_LandingSites"), tr("ID"), tr("Name")));
-    tRefMinorStrata->setRelation(6, QSqlRelation(tr("Ref_No_Recording_Activities"), tr("ID"), tr("Name")));
+    tRefMinorStrata->setRelation(4, QSqlRelation("Ref_Group_of_LandingSites", "ID", "Name"));
+    tRefMinorStrata->setRelation(6, QSqlRelation("Ref_No_Recording_Activities", "ID", "Name"));
     tRefMinorStrata->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tRefMinorStrata->sort(0,Qt::AscendingOrder);
     tRefMinorStrata->select();
@@ -527,11 +507,11 @@ void FrmMinorStrata::initMappers()
 
     cmbGLS->setModel(tRefMinorStrata->relationModel(4));
     cmbGLS->setModelColumn(
-        tRefMinorStrata->relationModel(4)->fieldIndex(tr("Name")));
+        tRefMinorStrata->relationModel(4)->fieldIndex("Name"));
 
     cmbReasons->setModel(tRefMinorStrata->relationModel(6));
     cmbReasons->setModelColumn(
-        tRefMinorStrata->relationModel(6)->fieldIndex(tr("Name")));
+        tRefMinorStrata->relationModel(6)->fieldIndex("Name"));
 
     mapper1->addMapping(lineNew, 8);
     mapper1->addMapping(cmbGLS, 4);
@@ -546,13 +526,13 @@ void FrmMinorStrata::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,3,QString("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
 
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapperStartDt << mapperEndDt;

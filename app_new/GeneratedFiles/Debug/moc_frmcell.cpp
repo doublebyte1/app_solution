@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmcell.h'
 **
-** Created: Thu 24. Nov 15:36:18 2011
+** Created: Thu 24. Nov 18:03:20 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -34,11 +34,11 @@ static const uint qt_meta_data_FrmCell[] = {
        9,    8,    8,    8, 0x08,
       30,   24,    8,    8, 0x08,
       54,    8,    8,    8, 0x08,
-      75,    8,    8,    8, 0x08,
-      93,    8,    8,    8, 0x08,
-     116,    8,    8,    8, 0x08,
-     141,    8,    8,    8, 0x08,
-     177,  156,    8,    8, 0x08,
+      72,    8,    8,    8, 0x08,
+      95,    8,    8,    8, 0x08,
+     120,    8,    8,    8, 0x08,
+     156,  135,    8,    8, 0x08,
+     179,    8,    8,    8, 0x08,
      200,    8,    8,    8, 0x08,
 
        0        // eod
@@ -46,10 +46,10 @@ static const uint qt_meta_data_FrmCell[] = {
 
 static const char qt_meta_stringdata_FrmCell[] = {
     "FrmCell\0\0createRecord()\0index\0"
-    "previewRow(QModelIndex)\0onShowFrameDetails()\0"
-    "onItemSelection()\0blockCustomDateCtrls()\0"
-    "unblockCustomDateCtrls()\0editFinished()\0"
-    "bFinished,bDiscarded\0onEditLeave(bool,bool)\0"
+    "previewRow(QModelIndex)\0onItemSelection()\0"
+    "blockCustomDateCtrls()\0unblockCustomDateCtrls()\0"
+    "editFinished()\0bFinished,bDiscarded\0"
+    "onEditLeave(bool,bool)\0onShowFrameDetails()\0"
     "onHideFrameDetails()\0"
 };
 
@@ -86,12 +86,12 @@ int FrmCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: createRecord(); break;
         case 1: previewRow((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 2: onShowFrameDetails(); break;
-        case 3: onItemSelection(); break;
-        case 4: blockCustomDateCtrls(); break;
-        case 5: unblockCustomDateCtrls(); break;
-        case 6: editFinished(); break;
-        case 7: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 2: onItemSelection(); break;
+        case 3: blockCustomDateCtrls(); break;
+        case 4: unblockCustomDateCtrls(); break;
+        case 5: editFinished(); break;
+        case 6: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 7: onShowFrameDetails(); break;
         case 8: onHideFrameDetails(); break;
         default: ;
         }

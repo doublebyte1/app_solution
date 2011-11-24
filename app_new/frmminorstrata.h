@@ -67,11 +67,6 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
-        //! Update the sample structure
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   updateSample();
-
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;
         QDataWidgetMapper*                     mapper1;

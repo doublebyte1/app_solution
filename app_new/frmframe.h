@@ -33,17 +33,40 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   unblockCustomDateCtrls();
 
     private slots:
+        //! Edit finished
+        /*! Reimplemented from the PreviewTab base class
+        /sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
+        */
         void                                   editFinished();
-        void                                   adjustFrmSamplingMode();
-
+        //! On Hide FrameDetails
+        /*! Slot that is called, when FrameDetails Form hide event
+        */
         void                                   onHideFrameDetails();
+        //! On Show FrameDetails
+        /*! Slot that is called, when FrameDetails Form show event
+        */
         void                                   onShowFrameDetails();
 
+        void                                   adjustFrmSamplingMode();
         void                                   onHideFrmSampling(bool bSubmitted);
-
+        //! Create Record
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   createRecord();
+        //! Preview Row
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   previewRow(QModelIndex index);
+        //! On item selection
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   onItemSelection();
+        //! On Edit Leave
+        /*! Reimplemented from the PreviewTab base class
+         \par bFinished flag that indicates if we started/finished editing
+         \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
+        /sa previewRow(QModelIndex index), editFinished()
+        */
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
 
     signals:
@@ -52,23 +75,40 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   setFrmSamplingMode(const FrmSampling::MODE mode);
         void                                   applyChanges2FrmSampling(const bool bApply);
 
-    protected:
-        void                                   showEvent ( QShowEvent * event );
-
     private:
-
         bool                                   updateFrameSample();
         bool                                   updateFrameSample(const QModelIndex index);
         bool                                   updateFrameSampleParts();
         bool                                   updateFrameSampleParts(const QModelIndex index);
 
         bool                                   isLogBook(const int frameId, bool& bLogbook);
+        //! Set main model query
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   setPreviewQuery();
-        void                                   filterModel4Combo(){;}
+        //! Filter combo box
+        /*! Reimplemented from the PreviewTab base class
+        */
+        void                                   filterModel4Combo(){;}/**< Here it does nothing! */
+        //! Initialize UI for new record
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   uI4NewRecord();
+        //! Set Header widget
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   setHeader(){setLbHead(this->lbHeader);}
+        //! Initializations before calling the onShow PreviewTab function
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   beforeShow();
+        //! Get the title label of the next form
+        /*! Reimplemented from the PreviewTab base class
+        */
         bool                                   getNextLabel(QString& strLabel);
+        //! Apply Changes
+        /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
+        */
         bool                                   applyChanges();
 
         //! Really Apply
@@ -90,8 +130,8 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         QDataWidgetMapper*                     mapperStartDt;
         QDataWidgetMapper*                     mapperEndDt;
         FrmFrameDetails::Mode                  m_curMode;
-        bool                                   m_submitted;;/**< flag to define if the record was finalised and successfully submitted */
-        bool                                   m_bSampling;;/**< flag to define if the sampling process definition is ongoing */
+        bool                                   m_submitted;/**< flag to define if the record was finalised and successfully submitted */
+        bool                                   m_bSampling;/**< flag to define if the sampling process definition is ongoing */
         bool                                   m_tabsDefined;
         bool                                   m_bInsert;
 };
