@@ -94,7 +94,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         //! Update the sample structure
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   updateSample();
+        //bool                                   updateSample();
         void                                   initCellModel();
         void                                   initMapper1();
 

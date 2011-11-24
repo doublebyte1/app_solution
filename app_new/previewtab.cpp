@@ -222,6 +222,11 @@ void PreviewTab::onShowForm()
         m_table->selectionModel()->setCurrentIndex(idx, QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
     }
 
+    if (m_pushEdit==0 || m_pushRemove==0) return;
+
+    m_pushEdit->setEnabled(m_table->model()->rowCount()>0);
+    m_pushRemove->setEnabled(m_table->model()->rowCount()>0);
+
      emit isLogBook(m_sample->bLogBook);
 }
 
@@ -431,6 +436,44 @@ bool PreviewTab::discardNewRecord()
                break;
          }
     }
+
+    return true;
+}
+
+bool PreviewTab::abstractPreviewRow(QModelIndex index)
+{
+    //its on a new record
+    if (!discardNewRecord()) return false;
+
+    //its on a edit
+    if (m_pushEdit->isChecked()){
+        m_pushEdit->setChecked(false);
+        if (!editRecord(false)) return false;
+    }
+
+    if (!this->m_groupDetails->isVisible())
+        this->m_groupDetails->setVisible(true);
+
+    emit lockControls(true,m_lWidgets);
+    m_buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
+    m_buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
+
+    m_pushNew->setEnabled(true);
+    m_pushEdit->setEnabled(true);
+    m_pushRemove->setEnabled(true);
+
+    //setting the filter
+    QModelIndex idx=m_table->model()->index(index.row(),0);
+    if (!idx.isValid()){
+        return false;
+    }
+
+    QString id=idx.data().toString();
+
+    m_model->setFilter(m_model->tableName()+".ID="+id);
+
+    if (m_model->rowCount()!=1)
+        return false;
 
     return true;
 }

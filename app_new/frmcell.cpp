@@ -67,63 +67,72 @@ void FrmCell::onShowFrameDetails()
 
 void FrmCell::previewRow(QModelIndex index)
 {
-
+/*
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->hide();
-
+*/
     QModelIndex idx=viewCell->index(index.row(),0);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this cell!"));
         return;
     }
 
-    QString id=idx.data().toString();
+    updateSample(idx);
 
-    tSampCell->setFilter(tr("Sampled_Cell.ID=")+id);
-    if (tSampCell->rowCount()!=1)
-        return;
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
 
-    mapper1->toLast();
+    /*
+        QString id=idx.data().toString();
 
-    //Now fix the dates
-    idx=tSampCell->index(0,1);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
-        return;
+        tSampCell->setFilter(tr("Sampled_Cell.ID=")+id);
+        if (tSampCell->rowCount()!=1)
+            return;
+    */
+        mapper1->toLast();
+
+        //Now fix the dates
+        idx=tSampCell->index(0,1);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this cell!"));
+            return;
+        }
+        idx=tSampCell->index(0,2);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this cell!"));
+            return;
+        }
+        QString strStartDt=idx.data().toString();
+
+        idx=tSampCell->index(0,3);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this cell!"));
+            return;
+        }
+        QString strEndDt=idx.data().toString();
+
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+        if (m_tDateTime->rowCount()!=2)
+            return;
+
+        //adjusting the display format of the dates on preview
+        QModelIndex idxDType=m_tDateTime->index(0,4);
+        if (!idxDType.isValid()) return;
+        customDtStart->adjustDateTime(idxDType,idxDType.data());
+        idxDType=m_tDateTime->index(1,4);
+        if (!idxDType.isValid()) return;
+        customDtEnd->adjustDateTime(idxDType,idxDType.data());
+
+        mapperEndDt->toLast();
+        mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
+      //  pushNext->setEnabled(true);
     }
-    idx=tSampCell->index(0,2);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
-        return;
-    }
-    QString strStartDt=idx.data().toString();
-
-    idx=tSampCell->index(0,3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this cell!"));
-        return;
-    }
-    QString strEndDt=idx.data().toString();
-
-    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
-
-    if (m_tDateTime->rowCount()!=2)
-        return;
-
-    //adjusting the display format of the dates on preview
-    QModelIndex idxDType=m_tDateTime->index(0,4);
-    if (!idxDType.isValid()) return;
-    customDtStart->adjustDateTime(idxDType,idxDType.data());
-    idxDType=m_tDateTime->index(1,4);
-    if (!idxDType.isValid()) return;
-    customDtEnd->adjustDateTime(idxDType,idxDType.data());
-
-    mapperEndDt->toLast();
-    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-    pushNext->setEnabled(true);
 }
 
 void FrmCell::setPreviewQuery()
@@ -178,6 +187,11 @@ void FrmCell::initUI()
     initPreviewTable(tableView,viewCell);
     setButtonBox(buttonBox);
     setGroupDetails(groupDetails);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
+    setNextButton(pushNext);
+    setPreviousButton(pushPrevious);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbLS;
@@ -486,7 +500,7 @@ tr(" WHERE     (dbo.Ref_Minor_Strata.ID = :id)")
     //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
     initMapper1();
 }
-
+/*
 bool FrmCell::updateSample()
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -499,7 +513,7 @@ bool FrmCell::updateSample()
     m_sample->cellId=idx.data().toInt();
     return true;
 }
-
+*/
 bool FrmCell::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())

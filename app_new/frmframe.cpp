@@ -236,71 +236,74 @@ void FrmFrame::previewRow(QModelIndex index)
 {
     if (m_bSampling) return;
 
-    if (!index.isValid()) return;
-
     QModelIndex idx=tableView->model()->index(index.row(),0);
     if (!updateFrameSample(idx)){
         emit showError(tr("Could not update sample with values of this row!"));
         return;
     }
 
-    //its on a new record
-    if (!discardNewRecord()) return;
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
 
-    //its on a edit
-    if (pushEdit->isChecked()){
-        pushEdit->setChecked(false);
-        if (!editRecord(false)) return;
+        /*
+        //its on a new record
+        if (!discardNewRecord()) return;
+
+        //its on a edit
+        if (pushEdit->isChecked()){
+            pushEdit->setChecked(false);
+            if (!editRecord(false)) return;
+        }
+
+        if (!this->groupDetails->isVisible())
+            this->groupDetails->setVisible(true);
+
+        emit lockControls(true,m_lWidgets);*/
+        groupProcess->setEnabled(false);
+    /*
+        buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
+        buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
+
+        pushNew->setEnabled(true);
+        pushEdit->setEnabled(true);
+        pushRemove->setEnabled(true);
+    */
+        QModelIndex pIdx;
+        if (!translateIndex(index,pIdx)) return;
+
+        idx=viewFrameTime->index(index.row(),0);
+
+        mapper->setCurrentModelIndex(pIdx);
+
+        blockCustomDateCtrls();
+
+        //Now fix the dates
+        idx=tFrameTime->index(pIdx.row(),2);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview start date of this sampling frame!"));
+            return;
+        }
+
+        QString strStartDt=idx.data().toString();
+
+        idx=tFrameTime->index(pIdx.row(),3);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview end date of this sampling frame!"));
+            return;
+        }
+        QString strEndDt=idx.data().toString();
+
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+        if (m_tDateTime->rowCount()!=2)
+            return;
+
+        mapperEndDt->toLast();
+        mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
+        unblockCustomDateCtrls();
     }
-
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    groupProcess->setEnabled(false);
-
-    buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
-    buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
-
-    pushNew->setEnabled(true);
-    pushEdit->setEnabled(true);
-    pushRemove->setEnabled(true);
-
-    QModelIndex pIdx;
-    if (!translateIndex(index,pIdx)) return;
-
-    idx=viewFrameTime->index(index.row(),0);
-
-    mapper->setCurrentModelIndex(pIdx);
-
-    blockCustomDateCtrls();
-
-    //Now fix the dates
-    idx=tFrameTime->index(pIdx.row(),2);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview start date of this sampling frame!"));
-        return;
-    }
-
-    QString strStartDt=idx.data().toString();
-
-    idx=tFrameTime->index(pIdx.row(),3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview end date of this sampling frame!"));
-        return;
-    }
-    QString strEndDt=idx.data().toString();
-
-    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
-
-    if (m_tDateTime->rowCount()!=2)
-        return;
-
-    mapperEndDt->toLast();
-    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-
-    unblockCustomDateCtrls();
-
 }
 
 void FrmFrame::onItemSelection()

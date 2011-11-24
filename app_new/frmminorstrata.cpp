@@ -146,14 +146,17 @@ void FrmMinorStrata::editFinished()
 void FrmMinorStrata::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
     if (bFinished){
-        if (!bDiscarded){
+
+        if (!bDiscarded && m_sample->bLogBook){
             //apply changes to temp frame
             emit applyChanges2FrameDetails();
             return;
         }else{
             editFinished();
         }
+
     }
+
     toolButton->setEnabled(!bFinished);
 
 }
@@ -175,62 +178,50 @@ void FrmMinorStrata::setActiveReason(bool bActive)
 
 void FrmMinorStrata::previewRow(QModelIndex index)
 {
+    //updating the sample
     QModelIndex idx=viewMinorStrata->index(index.row(),0);
     if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
+        emit showError (tr("Could not preview this record!"));
         return;
     }
 
     updateSample(idx);
 
-    //its on a new record
-    if (!discardNewRecord()) return;
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
 
-    //its on a edit
-    if (pushEdit->isChecked()){
-        pushEdit->setChecked(false);
-        if (!editRecord(false)) return;
+        QModelIndex idx=viewMinorStrata->index(index.row(),0);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this minor strata!"));
+            return;
+        }
+
+        mapper1->toLast();
+
+        //Now fix the dates
+        idx=tRefMinorStrata->index(0,1);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this minor strata!"));
+            return;
+        }
+        QString strStartDt=idx.data().toString();
+        idx=tRefMinorStrata->index(0,2);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this minor strata!"));
+            return;
+        }
+        QString strEndDt=idx.data().toString();
+
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+        if (m_tDateTime->rowCount()!=2)
+            return;
+
+        mapperEndDt->toLast();
+        mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
     }
-
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);
-
-    pushNew->setEnabled(true);
-    pushEdit->setEnabled(true);
-    pushRemove->setEnabled(true);
-
-    QString id=idx.data().toString();
-
-    tRefMinorStrata->setFilter(tr("Ref_Minor_Strata.ID=")+id);
-    if (tRefMinorStrata->rowCount()!=1)
-        return;
-
-    mapper1->toLast();
-
-    //Now fix the dates
-    idx=tRefMinorStrata->index(0,1);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
-        return;
-    }
-    QString strStartDt=idx.data().toString();
-    idx=tRefMinorStrata->index(0,2);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this minor strata!"));
-        return;
-    }
-    QString strEndDt=idx.data().toString();
-
-    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
-
-    if (m_tDateTime->rowCount()!=2)
-        return;
-
-    mapperEndDt->toLast();
-    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
 }
 
 void FrmMinorStrata::uI4NewRecord()
@@ -405,7 +396,8 @@ bool FrmMinorStrata::reallyApply()
         if (!bError){
             if (!afterApply()){
                 bError=false;
-            }else{
+            }else if (m_sample->bLogBook) {
+
                 toolButton->setEnabled(true);
 
                 updateSample();
@@ -419,6 +411,7 @@ bool FrmMinorStrata::reallyApply()
                 //lets disable next till we review the frame
                 pushNext->setEnabled(false);
                 pushPrevious->setEnabled(false);
+
             }
         }
         return !bError;
@@ -476,7 +469,6 @@ void FrmMinorStrata::onItemSelection()
         && !toolButton->isEnabled());
 
     pushPrevious->setEnabled(tableView->selectionModel()->hasSelection()
-        && idx.data().toBool()==false
         && !toolButton->isEnabled());
 }
 

@@ -66,6 +66,7 @@ class PreviewTab : public GenericTab
         void                                  setLoading(const bool bLoading){m_bLoading=bLoading;}
 
     protected:
+        bool                                  abstractPreviewRow(QModelIndex index);
         //! Interface for really apply
         /*! Implemented from the base class. Here we decide if we want to call reallyApply() or applyChanges,
         according if we are in edit mode, or not;
