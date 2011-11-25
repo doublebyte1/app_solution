@@ -33,6 +33,7 @@ FrmVesselType::~FrmVesselType()
 void FrmVesselType::onItemSelection()
 {
     pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmVesselType::initMappers()
@@ -83,11 +84,13 @@ void FrmVesselType::initMapper1()
 
 void FrmVesselType::previewRow(QModelIndex index)
 {
+    /*
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     emit lockControls(true,m_lWidgets);
     buttonBox->button(QDialogButtonBox::Apply)->hide();
+*/
 
     QModelIndex idx=this->viewVesselTypes->index(index.row(),0);
     if (!idx.isValid()){
@@ -95,15 +98,24 @@ void FrmVesselType::previewRow(QModelIndex index)
         return;
     }
 
+    updateSample(idx);
+
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
+
+/*
     QString id=idx.data().toString();
 
     tSVesselTypes->setFilter(tr("Sampled_Cell_Vessel_Types.ID=")+id);
     if (tSVesselTypes->rowCount()!=1)
         return;
+*/
+        mapper1->toLast();
 
-    mapper1->toLast();
+    //pushNext->setEnabled(true);
 
-    pushNext->setEnabled(true);
+    }
 }
 
 void FrmVesselType::setPreviewQuery()
@@ -256,6 +268,11 @@ void FrmVesselType::initUI()
     initPreviewTable(tableView,viewVesselTypes);
     setButtonBox(buttonBox);
     setGroupDetails(groupDetails);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
+    setNextButton(pushNext);
+    setPreviousButton(pushPrevious);
 
     //initializing the container for the readonly!
     m_lWidgets << cmbTypes;
@@ -267,7 +284,7 @@ void FrmVesselType::initUI()
 
     pushNext->setEnabled(false);
 }
-
+/*
 bool FrmVesselType::updateSample()
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -280,7 +297,7 @@ bool FrmVesselType::updateSample()
     m_sample->vesselTypeId=idx.data().toInt();
     return true;
 }
-
+*/
 bool FrmVesselType::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -315,3 +332,32 @@ void FrmVesselType::initModels()
     if (viewVesselTypes!=0) delete viewVesselTypes;
     viewVesselTypes = new QSqlQueryModel;
 }
+
+bool FrmVesselType::applyChanges()
+{
+    bool bError=true;
+
+    int cur= mapper1->currentIndex();
+    bError=!submitMapperAndModel(mapper1);
+    if (!bError){
+        mapper1->setCurrentIndex(cur);
+    }
+
+    emit editLeave(true,false);
+    return !bError;
+}
+
+void FrmVesselType::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    emit lockControls(true,m_lWidgets);
+}
+
+void FrmVesselType::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+    if (bFinished){
+        editFinished();
+    }}

@@ -318,6 +318,10 @@ bool PreviewTab::editRecord(bool on)
             m_pushEdit->setChecked(false);
             return false;
         }
+       //lets disable navigation for now
+        m_pushNext->setEnabled(false);
+        m_pushPrevious->setEnabled(false);
+
         emit editLeave(false);
     }
     m_buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);

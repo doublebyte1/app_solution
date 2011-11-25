@@ -553,7 +553,7 @@ bool FrmCell::applyChanges()
 
     QString strError;
     if (!checkDependantDates("Sampled_Cell", customDtStart->dateTime(),
-        customDtEnd->dateTime(),"Sampled_Cell",m_sample->minorStrataId, strError))
+        customDtEnd->dateTime(),"Sampled_Cell",m_sample->cellId, strError))
     {
         emit showError(strError);
     }else{
