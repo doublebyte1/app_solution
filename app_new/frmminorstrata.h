@@ -26,22 +26,43 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         FrmMinorStrata(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmMinorStrata();
 
-    public slots:
-
     private slots:
+        //! Create Record
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   createRecord();
+        //! Preview Row
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   previewRow(QModelIndex index);
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
 
         void                                   setActiveReason(bool bActive);
         void                                   disableReasonCombo();
+        //! On item selection
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   onItemSelection();
-
+        //! On Edit Leave
+        /*! Reimplemented from the PreviewTab base class
+         \par bFinished flag that indicates if we started/finished editing
+         \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
+        /sa previewRow(QModelIndex index), editFinished()
+        */
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        //! Edit finished
+        /*! Reimplemented from the PreviewTab base class
+        /sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
+        */
         void                                   editFinished();
-
+        //! On Show FrameDetails
+        /*! Slot that is called, when FrameDetails Form show event
+        */
         void                                   onShowFrameDetails();
+        //! On Hide FrameDetails
+        /*! Slot that is called, when FrameDetails Form hide event
+        */
         void                                   onHideFrameDetails();
 
     private:
@@ -53,10 +74,22 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         //! Apply Changes
         /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
         */
-        bool                                   applyChanges();//TODO: implement this!
+        bool                                   applyChanges();
+        //! Set main model query
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   setPreviewQuery();
+        //! Filter combo box
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   filterModel4Combo();
+        //! Initialize UI for new record
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   uI4NewRecord();
+        //! Set Header widget
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   initModels();
         void                                   initMappers();

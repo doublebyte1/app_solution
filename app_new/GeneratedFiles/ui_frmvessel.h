@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvessel.ui'
 **
-** Created: Wed 16. Nov 19:44:57 2011
+** Created: Fri 25. Nov 10:17:13 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -43,6 +43,8 @@ public:
     QTableView *tableView;
     QVBoxLayout *verticalLayout;
     QPushButton *pushNew;
+    QPushButton *pushEdit;
+    QPushButton *pushRemove;
     QGroupBox *groupDetails;
     QHBoxLayout *horizontalLayout_6;
     QVBoxLayout *verticalLayout_4;
@@ -136,6 +138,30 @@ public:
 
         verticalLayout->addWidget(pushNew);
 
+        pushEdit = new QPushButton(frmVessel);
+        pushEdit->setObjectName(QString::fromUtf8("pushEdit"));
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(pushEdit->sizePolicy().hasHeightForWidth());
+        pushEdit->setSizePolicy(sizePolicy2);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEdit->setIcon(icon1);
+        pushEdit->setCheckable(true);
+
+        verticalLayout->addWidget(pushEdit);
+
+        pushRemove = new QPushButton(frmVessel);
+        pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
+        sizePolicy2.setHeightForWidth(pushRemove->sizePolicy().hasHeightForWidth());
+        pushRemove->setSizePolicy(sizePolicy2);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon2);
+
+        verticalLayout->addWidget(pushRemove);
+
 
         horizontalLayout->addLayout(verticalLayout);
 
@@ -200,9 +226,6 @@ public:
 
         groupFT = new QGroupBox(groupDetails);
         groupFT->setObjectName(QString::fromUtf8("groupFT"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(groupFT->sizePolicy().hasHeightForWidth());
         groupFT->setSizePolicy(sizePolicy2);
         groupFT->setFlat(true);
@@ -292,17 +315,17 @@ public:
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         pushPrevious = new QPushButton(groupBox);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon1);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon3);
 
         horizontalLayout_2->addWidget(pushPrevious);
 
         pushNext = new QPushButton(groupBox);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon2);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon4);
 
         horizontalLayout_2->addWidget(pushNext);
 
@@ -337,6 +360,8 @@ public:
         QObject::connect(pushNew, SIGNAL(clicked()), frmVessel, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmVessel, SLOT(onButtonClick(QAbstractButton*)));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), frmVessel, SLOT(previewRow(QModelIndex)));
+        QObject::connect(pushEdit, SIGNAL(clicked(bool)), frmVessel, SLOT(editRecord(bool)));
+        QObject::connect(pushRemove, SIGNAL(clicked()), frmVessel, SLOT(removeRecord()));
 
         QMetaObject::connectSlotsByName(frmVessel);
     } // setupUi
@@ -357,6 +382,26 @@ public:
         pushNew->setWhatsThis(QApplication::translate("frmVessel", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushEdit->setToolTip(QApplication::translate("frmVessel", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushEdit->setStatusTip(QApplication::translate("frmVessel", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushEdit->setWhatsThis(QApplication::translate("frmVessel", "Edits record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushEdit->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove->setToolTip(QApplication::translate("frmVessel", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove->setStatusTip(QApplication::translate("frmVessel", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove->setWhatsThis(QApplication::translate("frmVessel", "Removes record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove->setText(QString());
         groupDetails->setTitle(QApplication::translate("frmVessel", "Details", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmVessel", "Vessel:", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmVessel", "Sample Origin:", 0, QApplication::UnicodeUTF8));

@@ -79,6 +79,7 @@ bool PreviewTab::submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* 
 
 bool PreviewTab::submitMapperAndModel(QDataWidgetMapper* aMapper)
 {
+    //ATTENTION: read instruction for use on declaration!
     bool bError=false;
 
     if (aMapper->submit()){
@@ -88,7 +89,7 @@ bool PreviewTab::submitMapperAndModel(QDataWidgetMapper* aMapper)
             if (m_model->lastError().type()!=QSqlError::NoError)
                 emit showError(m_model->lastError().text());
             else
-                emit showError(tr("Could not write Sampling Frame in the database!"));
+                emit showError(tr("Could not write changes in the database!"));
         }
     }else bError=true;
 
@@ -228,6 +229,9 @@ void PreviewTab::onShowForm()
         m_table->selectionModel()->setCurrentIndex(idx, QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
     }
 
+    if (!m_pushNext) return;
+    m_pushNext->setEnabled(m_table->selectionModel()->hasSelection());
+
     if (m_pushEdit==0 || m_pushRemove==0) return;
 
     adjustEnables();
@@ -279,6 +283,8 @@ bool PreviewTab::editRecord(bool on)
     if (m_pushNew==0) return false;
     if (m_pushEdit==0) return false;
     if (m_pushRemove==0) return false;
+    if (m_pushNext==0) return false;
+    if (m_pushPrevious==0) return false;
 
     if (!on){
 
@@ -398,7 +404,8 @@ void PreviewTab::removeRecord()
                 else{
                     showStatus(tr("Record successfully removed from the database!"));
                     setPreviewQuery();
-                    m_table->selectRow(0);//to avoid a selection on a non existent row!
+                    if (m_table->model()->rowCount()>0) m_table->selectRow(0);//to avoid a selection on a non existent row!
+                    else m_groupDetails->hide();
                 }
             }
 

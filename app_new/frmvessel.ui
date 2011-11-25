@@ -104,6 +104,61 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="pushEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Edit record</string>
+         </property>
+         <property name="statusTip">
+          <string>Edit record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Edits record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/pencil.png</normaloff>:/app_new/pencil.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushRemove">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Remove record</string>
+         </property>
+         <property name="statusTip">
+          <string>Remove record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Removes record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/cancel.png</normaloff>:/app_new/cancel.png</iconset>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -405,10 +460,44 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushEdit</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>frmVessel</receiver>
+   <slot>editRecord(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>676</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>frmVessel</receiver>
+   <slot>removeRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>676</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
   <slot>previewRow(QModelIndex)</slot>
+  <slot>editRecord(bool)</slot>
+  <slot>removeRecord()</slot>
  </slots>
 </ui>

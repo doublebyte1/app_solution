@@ -395,6 +395,9 @@ bool FrmCell::reallyApply()
 
 void FrmCell::uI4NewRecord()
 {
+    genericUI4NewRecord();
+
+    /*
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
@@ -402,7 +405,9 @@ void FrmCell::uI4NewRecord()
 
     buttonBox->button(QDialogButtonBox::Apply)->show();
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+*/
 
+    
     customDtStart->setIsDateTime(true,true,true);
     customDtStart->checkBox()->click();//the click is necessary to imit the relevant signal
 

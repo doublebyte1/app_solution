@@ -35,8 +35,21 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         void                                   previewRow(QModelIndex index);
+        //! On item selection
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   onItemSelection();
+        //! On Edit Leave
+        /*! Reimplemented from the PreviewTab base class
+         \par bFinished flag that indicates if we started/finished editing
+         \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
+        /sa previewRow(QModelIndex index), editFinished()
+        */
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        //! Edit finished
+        /*! Reimplemented from the PreviewTab base class
+        /sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
+        */
         void                                   editFinished();
 
     private:
@@ -89,10 +102,6 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
-        //! Update the sample structure
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   updateSample();
 
         QSqlQueryModel*                        viewVesselTypes;
         QSqlRelationalTableModel*              tSVesselTypes;

@@ -13,7 +13,6 @@ PreviewTab(4,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,flags){
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 
-    //m_mapperBinderPtr=0;
     tAVessel=0;
     tCellVessels=0;
     tStrataVessels=0;
@@ -33,7 +32,6 @@ FrmVessel::~FrmVessel()
     if (tAVessel!=0) delete tAVessel;
     if (viewVessel!=0) delete viewVessel;
     if (nullDelegate!=0) delete nullDelegate;
-    //if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
     if (mapper1!=0) delete mapper1;
     if (mapper2!=0) delete mapper2;
     if (tCellVessels!=0) delete tCellVessels;
@@ -43,50 +41,53 @@ FrmVessel::~FrmVessel()
 void FrmVessel::onItemSelection()
 {
     pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection());
+
 }
 
-void FrmVessel::previewRow(QModelIndex index)
+bool FrmVessel::filterSampledCellVessels(QModelIndex index)
 {
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->hide();
-
-    QModelIndex idx=viewVessel->index(index.row(),0);
+    //id_Sampled_Cell_Vessels
+    QModelIndex idx=viewVessel->index(index.row(),3);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this vessel!"));
-        return;
+        return false;
     }
 
     QString id=idx.data().toString();
 
-    tAVessel->setFilter(tr("Abstract_Sampled_Vessels.ID=")+id);
-    if (tAVessel->rowCount()!=1)
-        return;
-
-    mapper1->toLast();
-
-    if (!m_sample->bLogBook){
-
-        //id_Sampled_Cell_Vessels
-        idx=viewVessel->index(index.row(),3);
-        if (!idx.isValid()){
-            emit showError (tr("Could not preview this vessel!"));
-            return;
-        }
-
-        id=idx.data().toString();
-
-        tCellVessels->setFilter(tr("ID=")+id);
-        if (tCellVessels->rowCount()!=1)
-            return;
-
-        mapper2->toLast();
+    tCellVessels->setFilter("ID="+id);
+    if (tCellVessels->rowCount()!=1){
+        emit showError (tr("Could not preview this vessel!"));
+        return false;
     }
 
-    pushNext->setEnabled(true);
+    return true;
+}
 
+void FrmVessel::previewRow(QModelIndex index)
+{
+    QModelIndex idx=this->viewVessel->index(index.row(),0);
+    if (!idx.isValid()){
+        emit showError (tr("Could not preview this cell!"));
+        return;
+    }
+
+    updateSample(idx);
+
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
+        mapper1->toLast();
+
+        if (!m_sample->bLogBook){
+            if (!filterSampledCellVessels(index)){
+                emit showError (tr("Could not preview this record!"));
+            }else{
+                mapper2->toLast();
+            }
+        }
+    }
 }
 
 void FrmVessel::setPreviewQuery()
@@ -97,25 +98,25 @@ void FrmVessel::setPreviewQuery()
     if (m_sample->bLogBook){//logbook
 
         strQuery=
-            tr("                SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name as [Vessel Name], dbo.Ref_Sample_Status.name AS Status") +
-        tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
-        tr("                      dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +
-        tr("                      dbo.Sampled_Strata_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Strata_Vessels = dbo.Sampled_Strata_Vessels.ID INNER JOIN") +
-        tr("                      dbo.Ref_Sample_Status ON dbo.Abstract_Sampled_Vessels.id_sample_status = dbo.Ref_Sample_Status.ID") +
-        tr("                      WHERE     (dbo.Sampled_Strata_Vessels.id_minor_strata = :id)") +
-        tr("                      ORDER BY dbo.Abstract_Sampled_Vessels.ID DESC")
+        "                SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name as [Vessel Name], dbo.Ref_Sample_Status.name AS Status"
+        " FROM         dbo.Abstract_Sampled_Vessels INNER JOIN"
+        "                      dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN"
+        "                      dbo.Sampled_Strata_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Strata_Vessels = dbo.Sampled_Strata_Vessels.ID INNER JOIN"
+        "                      dbo.Ref_Sample_Status ON dbo.Abstract_Sampled_Vessels.id_sample_status = dbo.Ref_Sample_Status.ID"
+        "                      WHERE     (dbo.Sampled_Strata_Vessels.id_minor_strata = :id)"
+        "                      ORDER BY dbo.Abstract_Sampled_Vessels.ID DESC"
         ;
         id=m_sample->minorStrataId;
 
     } else{//sampling
         strQuery=
-         tr("            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name as [Vessel Name], dbo.Ref_Sample_Status.name AS Status, id_Sampled_Cell_Vessels") +
-         tr(" FROM         dbo.Abstract_Sampled_Vessels INNER JOIN") +
-         tr("                     dbo.Sampled_Cell_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels = dbo.Sampled_Cell_Vessels.ID INNER JOIN") +
-         tr("                     dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN") +
-         tr("                     dbo.Ref_Sample_Status ON dbo.Abstract_Sampled_Vessels.id_sample_status = dbo.Ref_Sample_Status.ID") +
-         tr("             WHERE     (dbo.Sampled_Cell_Vessels.id_cell_vessel_types = :id)") +
-         tr("                      ORDER BY dbo.Abstract_Sampled_Vessels.ID DESC")
+         "            SELECT     dbo.Abstract_Sampled_Vessels.ID, dbo.Ref_Vessels.Name as [Vessel Name], dbo.Ref_Sample_Status.name AS Status, id_Sampled_Cell_Vessels"
+         " FROM         dbo.Abstract_Sampled_Vessels INNER JOIN"
+         "                     dbo.Sampled_Cell_Vessels ON dbo.Abstract_Sampled_Vessels.id_Sampled_Cell_Vessels = dbo.Sampled_Cell_Vessels.ID INNER JOIN"
+         "                     dbo.Ref_Vessels ON dbo.Abstract_Sampled_Vessels.VesselID = dbo.Ref_Vessels.VesselID INNER JOIN"
+         "                     dbo.Ref_Sample_Status ON dbo.Abstract_Sampled_Vessels.id_sample_status = dbo.Ref_Sample_Status.ID"
+         "             WHERE     (dbo.Sampled_Cell_Vessels.id_cell_vessel_types = :id)"
+         "                      ORDER BY dbo.Abstract_Sampled_Vessels.ID DESC"
          ;
         id=m_sample->vesselTypeId;
     }
@@ -142,8 +143,10 @@ void FrmVessel::initModels()
 
     if (tCellVessels!=0) delete tCellVessels;
 
+    //two mappers to implement the polymorphism of abstract sampled vessels
+
      tCellVessels = new QSqlTableModel;
-     tCellVessels->setTable(tr("Sampled_Cell_Vessels"));
+     tCellVessels->setTable("Sampled_Cell_Vessels");
      tCellVessels->setEditStrategy(QSqlTableModel::OnManualSubmit);
      tCellVessels->sort(0,Qt::AscendingOrder);
      tCellVessels->select();
@@ -151,7 +154,7 @@ void FrmVessel::initModels()
     if (tStrataVessels!=0) delete tStrataVessels;
 
      tStrataVessels = new QSqlTableModel;
-     tStrataVessels->setTable(tr("Sampled_Strata_Vessels"));
+     tStrataVessels->setTable("Sampled_Strata_Vessels");
      tStrataVessels->setEditStrategy(QSqlTableModel::OnManualSubmit);
      tStrataVessels->sort(0,Qt::AscendingOrder);
      tStrataVessels->select();
@@ -166,6 +169,11 @@ void FrmVessel::initUI()
     setGroupDetails(groupDetails);
     setButtonBox(buttonBox);
     initPreviewTable(tableView,viewVessel);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
+    setNextButton(pushNext);
+    setPreviousButton(pushPrevious);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbVessel;
@@ -175,7 +183,7 @@ void FrmVessel::initUI()
     m_lWidgets << spinET;
     //m_lWidgets << spinCT;
 
-    pushNext->setEnabled(false);
+    //pushNext->setEnabled(false);
 }
 
 void FrmVessel::initMapper1()
@@ -199,15 +207,15 @@ void FrmVessel::initMapper1()
 
     cmbVessel->setModel(tAVessel->relationModel(2));
     cmbVessel->setModelColumn(
-        tAVessel->relationModel(2)->fieldIndex(tr("Name")));
+        tAVessel->relationModel(2)->fieldIndex("Name"));
 
     cmbOrigin->setModel(tAVessel->relationModel(3));
     cmbOrigin->setModelColumn(
-        tAVessel->relationModel(3)->fieldIndex(tr("Name")));
+        tAVessel->relationModel(3)->fieldIndex("Name"));
 
     cmbStatus->setModel(tAVessel->relationModel(4));
     cmbStatus->setModelColumn(
-        tAVessel->relationModel(4)->fieldIndex(tr("Name")));
+        tAVessel->relationModel(4)->fieldIndex("Name"));
 
     mapper1->addMapping(cmbVessel, 2);
     mapper1->addMapping(cmbOrigin, 3);
@@ -223,6 +231,7 @@ void FrmVessel::initMapper1()
 
 void FrmVessel::initMappers()
 {
+    //mapper for the stuff on Sampled cell Vessels
     if (mapper2!=0) delete mapper2;
     mapper2= new QDataWidgetMapper(this);
     mapper2->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -246,9 +255,9 @@ bool FrmVessel::comitNonAbstractVessels(const bool bLogbook, int& id_Sampled_Cel
 
     if (bLogbook)
     {
-        query.prepare( tr("SELECT     ID FROM Sampled_Cell_Vessels WHERE id_cell_vessel_types=") +
-                       tr(" (SELECT ID FROM         Sampled_Cell_Vessel_Types") +
-                       tr(" WHERE     (comments = 'n/a'))") );//n.b.: when there are no names, we rely on the comment..
+        query.prepare( "SELECT     ID FROM Sampled_Cell_Vessels WHERE id_cell_vessel_types="
+                       " (SELECT ID FROM         Sampled_Cell_Vessel_Types"
+                       " WHERE     (comments = 'n/a'))" );//n.b.: when there are no names, we rely on the comment..
 
         if (!query.exec() || query.numRowsAffected()!=1){
             emit showError(tr("Could not create a non abstract record for this vessel (logbook)!"));
@@ -258,9 +267,9 @@ bool FrmVessel::comitNonAbstractVessels(const bool bLogbook, int& id_Sampled_Cel
         id_Sampled_Cell_Vessels=query.value(0).toInt();
         return comitStrataVessels(id_Sampled_Strata_Vessels);
     }else{
-        query.prepare( tr("SELECT     ID FROM Sampled_Strata_Vessels WHERE id_minor_strata=") +
-                       tr("( SELECT ID FROM         Ref_Minor_Strata") +
-                       tr(" WHERE     (Name = 'n/a') )") );
+        query.prepare( "SELECT     ID FROM Sampled_Strata_Vessels WHERE id_minor_strata="
+                       "( SELECT ID FROM         Ref_Minor_Strata"
+                       " WHERE     (Name = 'n/a') )" );
 
         if (!query.exec() || query.numRowsAffected()!=1){
             emit showError(tr("Could not create a non abstract record for this vessel (sampled)!"));
@@ -323,9 +332,9 @@ bool FrmVessel::reallyApply()
 
         //setting the vessel source
         QSqlQuery query;
-        query.prepare( tr("SELECT     ID") +
-                       tr(" FROM         dbo.Ref_Source") +
-                       tr(" WHERE     (Name = :name)") );
+        query.prepare( "SELECT     ID"
+                       " FROM         dbo.Ref_Source"
+                       " WHERE     (Name = :name)");
         query.bindValue(0,qApp->translate("frame", (m_sample->bLogBook? strLogbook: strSampling) ));
 
         if (!query.exec() || query.numRowsAffected()!=1){
@@ -355,13 +364,16 @@ bool FrmVessel::reallyApply()
             bError=true;
         }else{
 
+            //commit sampled cell vessels
             QModelIndex idx=tAVessel->index(tAVessel->rowCount()-1,5);
             if (!idx.isValid()) return false;
             tAVessel->setData(idx,id_cell);
+            //commit sampled strata vessels
             idx=tAVessel->index(tAVessel->rowCount()-1,6);
             if (!idx.isValid()) return false;
             tAVessel->setData(idx,id_strata);
 
+            //comiting abstract sampled vessels
             bError=!
                 tAVessel->submitAll();
             if (bError){
@@ -374,40 +386,28 @@ bool FrmVessel::reallyApply()
     }
 
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
-    //button->setEnabled(bError);
 
     emit lockControls(!bError,m_lWidgets);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(!bError);
+
     if (!bError){
-        buttonBox->button(QDialogButtonBox::Apply)->hide();
-    }else{
-        buttonBox->button(QDialogButtonBox::Apply)->show();
-    }
-
-    if (!bError)
+        mapper1->toLast();
+        mapper2->toLast();
         return afterApply();
-
-    mapper1->toLast();
-    mapper2->toLast();
+    }
 
     return false;
 }
 
 void FrmVessel::uI4NewRecord()
 {
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(false,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->show();
-
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+    genericUI4NewRecord();
 
     textComments->clear();
 
     //if there are records, defaults for the first one
     if (cmbVessel->count()>0)
         cmbVessel->setCurrentIndex(0);
-
 }
 
 void FrmVessel::createRecord()
@@ -434,11 +434,11 @@ void FrmVessel::initVesselModel()
     if (tAVessel!=0) delete tAVessel;
 
     tAVessel=new QSqlRelationalTableModel();
-    tAVessel->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Abstract_Sampled_Vessels"),
+    tAVessel->setTable(QSqlDatabase().driver()->escapeIdentifier("Abstract_Sampled_Vessels",
         QSqlDriver::TableName));
-    tAVessel->setRelation(2, QSqlRelation(tr("Ref_Vessels"), tr("VesselID"), tr("Name")));
-    tAVessel->setRelation(3, QSqlRelation(tr("Ref_Sample_Origin"), tr("ID"), tr("Name")));
-    tAVessel->setRelation(4, QSqlRelation(tr("Ref_Sample_Status"), tr("ID"), tr("Name")));
+    tAVessel->setRelation(2, QSqlRelation("Ref_Vessels", "VesselID", "Name"));
+    tAVessel->setRelation(3, QSqlRelation("Ref_Sample_Origin", "ID", "Name"));
+    tAVessel->setRelation(4, QSqlRelation("Ref_Sample_Status", "ID", "Name"));
     tAVessel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tAVessel->sort(0,Qt::AscendingOrder);
     tAVessel->select();
@@ -454,62 +454,62 @@ void FrmVessel::filterModel4Combo()
     if (!m_sample->bLogBook){
 
         strQuery =
-        tr("SELECT     dbo.Ref_Vessels.VesselID") +
-        tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
-        tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID") +
-        tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
-        tr("                          (SELECT     ID") +
-        tr("                            FROM          dbo.FR_Sub_Frame") +
-        tr("                            WHERE      (Type =") +
-        tr("                                                       (SELECT     ID") +
-        tr("                                                         FROM          dbo.Ref_Frame") +
-        tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.id_abstract_landingsite =") +
-        tr("                          (SELECT     id_abstract_LandingSite") +
-        tr("                            FROM          dbo.Sampled_Cell") +
-        tr("                            WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr("))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN") +
-        tr("                          (SELECT     VesselID") +
-        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel") +
-        tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =") +
-        tr("                                                       (SELECT     ID") +
-        tr("                                                         FROM          dbo.Ref_Abstract_LandingSite") +
-        tr("                                                         WHERE      (Name = 'outside'))))) AND ") +
+        "SELECT     dbo.Ref_Vessels.VesselID"
+        " FROM         dbo.FR_ALS2Vessel INNER JOIN"
+        "                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID"
+        " WHERE     (dbo.FR_ALS2Vessel.id_sub_frame ="
+        "                          (SELECT     ID"
+        "                            FROM          dbo.FR_Sub_Frame"
+        "                            WHERE      (Type ="
+        "                                                       (SELECT     ID"
+        "                                                         FROM          dbo.Ref_Frame"
+        "                                                         WHERE      (Name = 'root'))) AND (id_frame =" + QVariant(m_sample->frameId).toString() + "))) AND (dbo.FR_ALS2Vessel.id_abstract_landingsite ="
+        "                          (SELECT     id_abstract_LandingSite"
+        "                            FROM          dbo.Sampled_Cell"
+        "                            WHERE      (ID = " + QVariant(m_sample->cellId).toString() + "))) AND (dbo.FR_ALS2Vessel.vesselID NOT IN"
+        "                          (SELECT     VesselID"
+        "                            FROM          dbo.Abstract_Changes_Temp_Vessel"
+        "                            WHERE      (id_cell = " + QVariant(m_sample->cellId).toString() + ") AND (To_LS ="
+        "                                                       (SELECT     ID"
+        "                                                         FROM          dbo.Ref_Abstract_LandingSite"
+        "                                                         WHERE      (Name = 'outside'))))) AND "
 
         //filter by vessel types here
-        tr(" dbo.Ref_Vessels.VesselType=(SELECT id_vessel_type ") +
-        tr(" FROM         dbo.Sampled_Cell_Vessel_Types ") +
-        tr(" WHERE     (ID =") + QVariant(m_sample->vesselTypeId).toString() + tr("))") +
+        " dbo.Ref_Vessels.VesselType=(SELECT id_vessel_type "
+        " FROM         dbo.Sampled_Cell_Vessel_Types "
+        " WHERE     (ID =" + QVariant(m_sample->vesselTypeId).toString() + "))"
 
-        tr(" UNION") +
-        tr(" SELECT     Ref_Vessels_1.VesselID") +
-        tr(" FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN")+
-        tr("                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID")+
-        tr(" WHERE     (Ref_Vessels_1.VesselID IN")+
-        tr("                          (SELECT     VesselID")+
-        tr("                            FROM          dbo.Abstract_Changes_Temp_Vessel AS Abstract_Changes_Temp_Vessel_1")+
-        tr("                            WHERE      (id_cell = ")+ QVariant(m_sample->cellId).toString() + tr(") AND (To_LS =")+
-        tr("                                                       (SELECT     id_abstract_LandingSite")+
-        tr("                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1")+
-        tr("                                                         WHERE      (ID = ")+ QVariant(m_sample->cellId).toString() + tr(")))))")
+        " UNION"
+        " SELECT     Ref_Vessels_1.VesselID"
+        " FROM         dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 INNER JOIN"
+        "                      dbo.Ref_Vessels AS Ref_Vessels_1 ON FR_ALS2Vessel_1.vesselID = Ref_Vessels_1.VesselID"
+        " WHERE     (Ref_Vessels_1.VesselID IN"
+        "                          (SELECT     VesselID"
+        "                            FROM          dbo.Abstract_Changes_Temp_Vessel AS Abstract_Changes_Temp_Vessel_1"
+        "                            WHERE      (id_cell = " + QVariant(m_sample->cellId).toString() + ") AND (To_LS ="
+        "                                                       (SELECT     id_abstract_LandingSite"
+        "                                                         FROM          dbo.Sampled_Cell AS Sampled_Cell_1"
+        "                                                         WHERE      (ID = " + QVariant(m_sample->cellId).toString() + ")))))"
             ;
 
     }else{
         strQuery =
-        tr("SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls") +
-        tr(" FROM         dbo.FR_ALS2Vessel INNER JOIN") +
-        tr("                      dbo.FR_GLS2ALS ON dbo.FR_ALS2Vessel.ID = dbo.FR_GLS2ALS.ID INNER JOIN") +
-        tr("                      dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 ON dbo.FR_ALS2Vessel.ID = FR_ALS2Vessel_1.ID INNER JOIN") +
-        tr("                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID AND FR_ALS2Vessel_1.vesselID = dbo.Ref_Vessels.VesselID") +
-        tr(" WHERE     (dbo.FR_ALS2Vessel.id_sub_frame =") +
-        tr("                          (SELECT     ID") +
-        tr("                            FROM          dbo.FR_Sub_Frame") +
-        tr("                            WHERE      (Type =") +
-        tr("                                                       (SELECT     ID") +
-        tr("                                                         FROM          dbo.Ref_Frame") +
-        tr("                                                         WHERE      (Name = 'root'))) AND (id_frame =")+ QVariant(m_sample->frameId).toString() + tr("))) AND") +
-        tr(" (dbo.FR_GLS2ALS.id_gls=") +
-        tr(" (SELECT     id_gls") +
-        tr(" FROM         dbo.Ref_Minor_Strata") +
-        tr(" WHERE     (ID = ")+ QVariant(m_sample->minorStrataId).toString() + tr(")))")
+        "SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls"
+        " FROM         dbo.FR_ALS2Vessel INNER JOIN"
+        "                      dbo.FR_GLS2ALS ON dbo.FR_ALS2Vessel.ID = dbo.FR_GLS2ALS.ID INNER JOIN"
+        "                      dbo.FR_ALS2Vessel AS FR_ALS2Vessel_1 ON dbo.FR_ALS2Vessel.ID = FR_ALS2Vessel_1.ID INNER JOIN"
+        "                      dbo.Ref_Vessels ON dbo.FR_ALS2Vessel.vesselID = dbo.Ref_Vessels.VesselID AND FR_ALS2Vessel_1.vesselID = dbo.Ref_Vessels.VesselID"
+        " WHERE     (dbo.FR_ALS2Vessel.id_sub_frame ="
+        "                          (SELECT     ID"
+        "                            FROM          dbo.FR_Sub_Frame"
+        "                            WHERE      (Type ="
+        "                                                       (SELECT     ID"
+        "                                                         FROM          dbo.Ref_Frame"
+        "                                                         WHERE      (Name = 'root'))) AND (id_frame =" + QVariant(m_sample->frameId).toString() + "))) AND"
+        " (dbo.FR_GLS2ALS.id_gls="
+        " (SELECT     id_gls"
+        " FROM         dbo.Ref_Minor_Strata"
+        " WHERE     (ID = " + QVariant(m_sample->minorStrataId).toString() + ")))"
          ;
     }
 
@@ -519,31 +519,18 @@ void FrmVessel::filterModel4Combo()
         return;
     }
 
-    QString strFilter(tr(""));
+    QString strFilter("");
      while (query.next()) {
-        strFilter.append(tr("VesselID=") + query.value(0).toString());
-        strFilter.append(tr(" OR "));
+        strFilter.append("VesselID=" + query.value(0).toString());
+        strFilter.append(" OR ");
      }
      if (!strFilter.isEmpty())
-         strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+         strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
 
     tAVessel->relationModel(2)->setFilter(strFilter);
 
         //first we set the relation; then we create a mapper and assign the (amended) model to the mapper;
     initMapper1();
-}
-
-bool FrmVessel::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
-
-    //updating the sample structure
-    QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    //TODO: update the vessel here
-    m_sample->sampVesselId=idx.data().toInt();
-    return true;
 }
 
 bool FrmVessel::getNextLabel(QString& strLabel)
@@ -555,4 +542,54 @@ bool FrmVessel::getNextLabel(QString& strLabel)
     QModelIndex idx=viewVessel->index(tableView->selectionModel()->currentIndex().row(),1);
     strLabel=idx.data().toString();
     return true;
+}
+
+bool FrmVessel::applyChanges()
+{
+    bool bError=true;
+    int cur1= mapper1->currentIndex();
+
+    bError=!submitMapperAndModel(mapper1);
+    if (!bError){
+        mapper1->setCurrentIndex(cur1);
+        if (!m_sample->bLogBook){
+
+            int cur2= mapper2->currentIndex();
+
+            //submit
+            bError=!mapper2->submit();
+            if (!bError){
+                bError=!tCellVessels->submitAll();
+                if (bError){
+                    if (tCellVessels->lastError().type()!=QSqlError::NoError)
+                        emit showError(tCellVessels->lastError().text());
+                    else
+                        emit showError(tr("Could not write sampled cell vessel changes in the database!"));
+                }
+            }
+
+            mapper2->setCurrentIndex(cur2);
+        }
+
+    }else{
+        emit showError (tr("Could not submit changes to this record!"));
+    }
+    emit editLeave(true,false);
+    return !bError;
+}
+
+void FrmVessel::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    emit lockControls(true,m_lWidgets);
+}
+
+void FrmVessel::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+    if (bFinished){
+        editFinished();
+    }
 }

@@ -188,6 +188,14 @@ class PreviewTab : public GenericTab
         we just update the preview query to show the inserted record on the table, and select this record;
         */
         bool                                  afterApply();
+        //! Submit Mapper and Model
+        /*! This function was design to submit the mapper connected to the main model of the form (m_model),
+        and the respective model; the mapper is sent as an argument, but the model no, so be sure to use
+        this function with caution *being absolutely sure* that the mapper you are sending its connected
+        to the main model of the form; otherwise, unexpected results will occur!
+        /par aMapper a Mapper
+        /return boolean as success or failure
+        */
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
         bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);

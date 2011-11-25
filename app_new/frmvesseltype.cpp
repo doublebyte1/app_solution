@@ -84,14 +84,6 @@ void FrmVesselType::initMapper1()
 
 void FrmVesselType::previewRow(QModelIndex index)
 {
-    /*
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->hide();
-*/
-
     QModelIndex idx=this->viewVesselTypes->index(index.row(),0);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this cell!"));
@@ -103,18 +95,7 @@ void FrmVesselType::previewRow(QModelIndex index)
     if (!abstractPreviewRow(index)){
         emit showError (tr("Could not preview this record!"));
     }else{
-
-/*
-    QString id=idx.data().toString();
-
-    tSVesselTypes->setFilter(tr("Sampled_Cell_Vessel_Types.ID=")+id);
-    if (tSVesselTypes->rowCount()!=1)
-        return;
-*/
         mapper1->toLast();
-
-    //pushNext->setEnabled(true);
-
     }
 }
 
@@ -175,16 +156,11 @@ bool FrmVesselType::reallyApply()
 
 void FrmVesselType::uI4NewRecord()
 {
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
+    genericUI4NewRecord();
 
     textComments->clear();
     cmbTypes->setCurrentIndex(-1);
 
-    emit lockControls(false,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->show();
-
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
 
 void FrmVesselType::createRecord()
@@ -284,20 +260,7 @@ void FrmVesselType::initUI()
 
     pushNext->setEnabled(false);
 }
-/*
-bool FrmVesselType::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
 
-    //updating the sample structure
-    QModelIndex idx=viewVesselTypes->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    if (!idx.isValid()) return false;
-    m_sample->vesselTypeId=idx.data().toInt();
-    return true;
-}
-*/
 bool FrmVesselType::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -316,9 +279,9 @@ void FrmVesselType::initVesselTypeModel()
     if (tSVesselTypes!=0) delete tSVesselTypes;
 
     tSVesselTypes=new QSqlRelationalTableModel();
-    tSVesselTypes->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Cell_Vessel_Types"),
+    tSVesselTypes->setTable(QSqlDatabase().driver()->escapeIdentifier("Sampled_Cell_Vessel_Types",
         QSqlDriver::TableName));
-    tSVesselTypes->setRelation(2, QSqlRelation(tr("Ref_Vessel_Types"), tr("ID"), tr("Name")));
+    tSVesselTypes->setRelation(2, QSqlRelation("Ref_Vessel_Types", "ID", "Name"));
     tSVesselTypes->relationModel(2)->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSVesselTypes->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSVesselTypes->sort(0,Qt::AscendingOrder);
