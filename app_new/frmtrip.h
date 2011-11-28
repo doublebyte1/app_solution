@@ -38,8 +38,8 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
-        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
-        void                                   editFinished(){;}
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        void                                   editFinished();
 
     private:
         //! Really Apply
@@ -50,7 +50,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         //! Apply Changes
         /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
         */
-        bool                                   applyChanges(){return false;}//TODO: implement this!
+        bool                                   applyChanges();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */

@@ -21,6 +21,7 @@ class DateModel: public QSqlTableModel
     public:
         bool            insertNewRecord(const bool bAuto, const bool bDate, const bool bTime);
         void            setAuto(const bool bAuto){m_bAuto=bAuto;}
+        bool            getDateTimeType( const bool bDate, const bool bTime, int& typeID);
 
     signals:
         void            getDateType(QModelIndex index, QVariant var) const;
@@ -40,7 +41,6 @@ class DateModel: public QSqlTableModel
           \return Success or failure as a boolean
         */
         bool            getLocationID(int& ID);
-        bool            getDateTimeType( const bool bDate, const bool bTime, int& typeID);
         bool            m_bAuto;
 
 };

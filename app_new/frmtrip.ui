@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
@@ -71,7 +71,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_15">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QTableView" name="tableView">
        <property name="sizePolicy">
@@ -98,7 +98,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QPushButton" name="pushNew">
          <property name="toolTip">
@@ -116,6 +116,61 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          <property name="icon">
           <iconset resource="app_new.qrc">
            <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Edit record</string>
+         </property>
+         <property name="statusTip">
+          <string>Edit record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Edits record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/pencil.png</normaloff>:/app_new/pencil.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushRemove">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Remove record</string>
+         </property>
+         <property name="statusTip">
+          <string>Remove record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Removes record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/cancel.png</normaloff>:/app_new/cancel.png</iconset>
          </property>
         </widget>
        </item>
@@ -342,6 +397,19 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
            </widget>
           </item>
           <item>
+           <widget class="QLabel" name="label_13">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Comments:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPlainTextEdit" name="textComments">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -357,19 +425,6 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             </property>
             <property name="whatsThis">
              <string>Input comments</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_13">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Comments:</string>
             </property>
            </widget>
           </item>
@@ -520,6 +575,32 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               <widget class="QLabel" name="label_8">
                <property name="text">
                 <string>Catch</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="3">
+              <widget class="QPushButton" name="pushClear">
+               <property name="toolTip">
+                <string>Clear selection</string>
+               </property>
+               <property name="statusTip">
+                <string>Clear selection</string>
+               </property>
+               <property name="whatsThis">
+                <string>Clears selection</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="app_new.qrc">
+                 <normaloff>:/app_new/locationbar_erase.png</normaloff>:/app_new/locationbar_erase.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>16</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -676,10 +757,60 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushEdit</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>FrmTrip</receiver>
+   <slot>editRecord(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>725</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>383</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>FrmTrip</receiver>
+   <slot>removeRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>725</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>375</x>
+     <y>383</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushClear</sender>
+   <signal>clicked()</signal>
+   <receiver>listGears</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>502</x>
+     <y>633</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>502</x>
+     <y>552</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
   <slot>previewRow(QModelIndex)</slot>
+  <slot>editRecord(bool)</slot>
+  <slot>removeRecord()</slot>
  </slots>
 </ui>

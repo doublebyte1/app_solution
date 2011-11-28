@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmtrip.ui'
 **
-** Created: Wed 16. Nov 19:44:57 2011
+** Created: Mon 28. Nov 17:34:11 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -37,15 +37,17 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmTrip
 {
 public:
-    QVBoxLayout *verticalLayout_4;
+    QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_9;
     QLabel *lbHeader;
     QLabel *lbSource;
     QLabel *label_23;
-    QHBoxLayout *horizontalLayout_15;
+    QHBoxLayout *horizontalLayout_2;
     QTableView *tableView;
-    QVBoxLayout *verticalLayout_5;
+    QVBoxLayout *verticalLayout_4;
     QPushButton *pushNew;
+    QPushButton *pushEdit;
+    QPushButton *pushRemove;
     QGroupBox *groupDetails;
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_11;
@@ -63,8 +65,8 @@ public:
     CustomTimeCtrl *customDtStart;
     QLabel *label_25;
     CustomTimeCtrl *customDtEnd;
-    QPlainTextEdit *textComments;
     QLabel *label_13;
+    QPlainTextEdit *textComments;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupTotals;
     QGridLayout *gridLayout_2;
@@ -79,6 +81,7 @@ public:
     QListView *listGears;
     QLabel *label_7;
     QLabel *label_8;
+    QPushButton *pushClear;
     QHBoxLayout *horizontalLayout_12;
     QDialogButtonBox *buttonBox;
     QHBoxLayout *horizontalLayout_16;
@@ -93,8 +96,8 @@ public:
         if (FrmTrip->objectName().isEmpty())
             FrmTrip->setObjectName(QString::fromUtf8("FrmTrip"));
         FrmTrip->resize(752, 767);
-        verticalLayout_4 = new QVBoxLayout(FrmTrip);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_5 = new QVBoxLayout(FrmTrip);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
         lbHeader = new QLabel(FrmTrip);
@@ -124,15 +127,15 @@ public:
         horizontalLayout_9->addWidget(lbSource);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_9);
+        verticalLayout_5->addLayout(horizontalLayout_9);
 
         label_23 = new QLabel(FrmTrip);
         label_23->setObjectName(QString::fromUtf8("label_23"));
 
-        verticalLayout_4->addWidget(label_23);
+        verticalLayout_5->addWidget(label_23);
 
-        horizontalLayout_15 = new QHBoxLayout();
-        horizontalLayout_15->setObjectName(QString::fromUtf8("horizontalLayout_15"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         tableView = new QTableView(FrmTrip);
         tableView->setObjectName(QString::fromUtf8("tableView"));
         QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -143,23 +146,44 @@ public:
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-        horizontalLayout_15->addWidget(tableView);
+        horizontalLayout_2->addWidget(tableView);
 
-        verticalLayout_5 = new QVBoxLayout();
-        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         pushNew = new QPushButton(FrmTrip);
         pushNew->setObjectName(QString::fromUtf8("pushNew"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNew->setIcon(icon);
 
-        verticalLayout_5->addWidget(pushNew);
+        verticalLayout_4->addWidget(pushNew);
+
+        pushEdit = new QPushButton(FrmTrip);
+        pushEdit->setObjectName(QString::fromUtf8("pushEdit"));
+        sizePolicy.setHeightForWidth(pushEdit->sizePolicy().hasHeightForWidth());
+        pushEdit->setSizePolicy(sizePolicy);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEdit->setIcon(icon1);
+        pushEdit->setCheckable(true);
+
+        verticalLayout_4->addWidget(pushEdit);
+
+        pushRemove = new QPushButton(FrmTrip);
+        pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
+        sizePolicy.setHeightForWidth(pushRemove->sizePolicy().hasHeightForWidth());
+        pushRemove->setSizePolicy(sizePolicy);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon2);
+
+        verticalLayout_4->addWidget(pushRemove);
 
 
-        horizontalLayout_15->addLayout(verticalLayout_5);
+        horizontalLayout_2->addLayout(verticalLayout_4);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_15);
+        verticalLayout_5->addLayout(horizontalLayout_2);
 
         groupDetails = new QGroupBox(FrmTrip);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -271,6 +295,13 @@ public:
 
         verticalLayout->addWidget(customDtEnd);
 
+        label_13 = new QLabel(groupDetails);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+        sizePolicy.setHeightForWidth(label_13->sizePolicy().hasHeightForWidth());
+        label_13->setSizePolicy(sizePolicy);
+
+        verticalLayout->addWidget(label_13);
+
         textComments = new QPlainTextEdit(groupDetails);
         textComments->setObjectName(QString::fromUtf8("textComments"));
         QSizePolicy sizePolicy6(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -280,13 +311,6 @@ public:
         textComments->setSizePolicy(sizePolicy6);
 
         verticalLayout->addWidget(textComments);
-
-        label_13 = new QLabel(groupDetails);
-        label_13->setObjectName(QString::fromUtf8("label_13"));
-        sizePolicy.setHeightForWidth(label_13->sizePolicy().hasHeightForWidth());
-        label_13->setSizePolicy(sizePolicy);
-
-        verticalLayout->addWidget(label_13);
 
 
         horizontalLayout->addLayout(verticalLayout);
@@ -366,6 +390,15 @@ public:
 
         gridLayout_2->addWidget(label_8, 2, 1, 1, 1);
 
+        pushClear = new QPushButton(groupTotals);
+        pushClear->setObjectName(QString::fromUtf8("pushClear"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/locationbar_erase.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushClear->setIcon(icon3);
+        pushClear->setIconSize(QSize(32, 16));
+
+        gridLayout_2->addWidget(pushClear, 5, 3, 1, 1);
+
 
         verticalLayout_2->addWidget(groupTotals);
 
@@ -387,7 +420,7 @@ public:
         verticalLayout_3->addLayout(horizontalLayout);
 
 
-        verticalLayout_4->addWidget(groupDetails);
+        verticalLayout_5->addWidget(groupDetails);
 
         horizontalLayout_16 = new QHBoxLayout();
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
@@ -403,18 +436,18 @@ public:
 
         pushPrevious = new QPushButton(groupBox_2);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon1);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon4);
 
         horizontalLayout_10->addWidget(pushPrevious);
 
         pushNext = new QPushButton(groupBox_2);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
         pushNext->setEnabled(false);
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon2);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon5);
 
         horizontalLayout_10->addWidget(pushNext);
 
@@ -422,7 +455,7 @@ public:
         horizontalLayout_16->addWidget(groupBox_2);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_16);
+        verticalLayout_5->addLayout(horizontalLayout_16);
 
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
@@ -440,6 +473,9 @@ public:
         QObject::connect(pushNew, SIGNAL(clicked()), FrmTrip, SLOT(createRecord()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), FrmTrip, SLOT(onButtonClick(QAbstractButton*)));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), FrmTrip, SLOT(previewRow(QModelIndex)));
+        QObject::connect(pushEdit, SIGNAL(clicked(bool)), FrmTrip, SLOT(editRecord(bool)));
+        QObject::connect(pushRemove, SIGNAL(clicked()), FrmTrip, SLOT(removeRecord()));
+        QObject::connect(pushClear, SIGNAL(clicked()), listGears, SLOT(clearSelection()));
 
         QMetaObject::connectSlotsByName(FrmTrip);
     } // setupUi
@@ -469,6 +505,26 @@ public:
         pushNew->setWhatsThis(QApplication::translate("FrmTrip", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushEdit->setToolTip(QApplication::translate("FrmTrip", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushEdit->setStatusTip(QApplication::translate("FrmTrip", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushEdit->setWhatsThis(QApplication::translate("FrmTrip", "Edits record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushEdit->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove->setToolTip(QApplication::translate("FrmTrip", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove->setStatusTip(QApplication::translate("FrmTrip", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove->setWhatsThis(QApplication::translate("FrmTrip", "Removes record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove->setText(QString());
         groupDetails->setTitle(QApplication::translate("FrmTrip", "Details", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("FrmTrip", "Sampler", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -524,6 +580,7 @@ public:
 #ifndef QT_NO_WHATSTHIS
         customDtEnd->setWhatsThis(QApplication::translate("FrmTrip", "Input the finishing datetime of the fishing trip", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
+        label_13->setText(QApplication::translate("FrmTrip", "Comments:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         textComments->setToolTip(QApplication::translate("FrmTrip", "Comments", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -533,7 +590,6 @@ public:
 #ifndef QT_NO_WHATSTHIS
         textComments->setWhatsThis(QApplication::translate("FrmTrip", "Input comments", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        label_13->setText(QApplication::translate("FrmTrip", "Comments:", 0, QApplication::UnicodeUTF8));
         groupTotals->setTitle(QApplication::translate("FrmTrip", "Totals", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("FrmTrip", "Estimated", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("FrmTrip", "Calculated", 0, QApplication::UnicodeUTF8));
@@ -577,6 +633,16 @@ public:
 #endif // QT_NO_WHATSTHIS
         label_7->setText(QApplication::translate("FrmTrip", "Gear(s) used", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("FrmTrip", "Catch", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushClear->setToolTip(QApplication::translate("FrmTrip", "Clear selection", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushClear->setStatusTip(QApplication::translate("FrmTrip", "Clear selection", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushClear->setWhatsThis(QApplication::translate("FrmTrip", "Clears selection", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushClear->setText(QString());
         groupBox_2->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmTrip", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmTrip", "Next", 0, QApplication::UnicodeUTF8));

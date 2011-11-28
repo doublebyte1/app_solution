@@ -187,6 +187,11 @@ void FrmTrip::initUI()
     initPreviewTable(tableView,viewTrips);
     setButtonBox(buttonBox);
     setGroupDetails(groupDetails);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
+    setNextButton(pushNext);
+    setPreviousButton(pushPrevious);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbSampler;
@@ -200,6 +205,8 @@ void FrmTrip::initUI()
     //m_lWidgets << spinNOC;
     m_lWidgets << cmbFishingZone;
     m_lWidgets << listGears;
+    m_lWidgets << cmbSite;
+    m_lWidgets << pushClear;
 
     customDtStart->setIsUTC(false);
     customDtStart->setIsAuto(false);
@@ -410,7 +417,7 @@ bool FrmTrip::reallyApply()
                     if (tTrips->lastError().type()!=QSqlError::NoError)
                         emit showError(tTrips->lastError().text());
                     else
-                        emit showError(tr("Could not write cell in the database!"));
+                        emit showError(tr("Could not write trip in the database!"));
             }else{
                 //Comiting Sampled_Fishing_Trips_Gears
                 QModelIndex idd=tTrips->index(tTrips->rowCount()-1,0);
@@ -441,10 +448,14 @@ bool FrmTrip::reallyApply()
 
 void FrmTrip::uI4NewRecord()
 {
+    /*
     if (!this->groupDetails->isVisible())
         this->groupDetails->setVisible(true);
 
     emit lockControls(false,m_lWidgets);
+*/
+
+    genericUI4NewRecord();
 
     customDtStart->setIsDateTime(true,true,true);
     customDtEnd->setIsDateTime(true,true,true);
@@ -456,8 +467,6 @@ void FrmTrip::uI4NewRecord()
     if (cmbSampler->count()> 0) cmbSampler->setCurrentIndex(0);
     if (cmbSite->count()> 0) cmbSite->setCurrentIndex(0);
 
-    buttonBox->button(QDialogButtonBox::Apply)->show();
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
 
 void FrmTrip::createRecord()
@@ -639,3 +648,102 @@ bool FrmTrip::getNextLabel(QString& strLabel)
     strLabel=idx.data().toString();
     return true;
 }
+
+void FrmTrip::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    emit lockControls(true,m_lWidgets);
+}
+
+void FrmTrip::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+    if (bFinished){
+        editFinished();
+    }
+}
+
+bool FrmTrip::applyChanges()
+{
+    bool bError=false;
+
+    if (!listGears->selectionModel()->hasSelection()){
+        emit showError(tr("You must select one or more gears for this trip!"));
+        bError=true;
+    }else{
+
+        int startIdx=mapperStartDt->currentIndex();
+        int endIdx=mapperEndDt->currentIndex();
+
+        bool bDate, bTime;
+        int typeID;
+
+        customDtStart->getIsDateTime(bDate,bTime);
+        if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+            return false;
+        }
+        m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
+
+        customDtEnd->getIsDateTime(bDate,bTime);
+        if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+            return false;
+        }
+        m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
+
+        //Now comit the dates...
+        if (!mapperStartDt->submit() 
+            || !mapperEndDt->submit()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
+            else
+                emit showError(tr("Could not submit mapper!"));
+            bError=true;
+        }
+        else{
+            if (!m_tDateTime->submitAll()){
+                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_tDateTime->lastError().text());
+                else
+                    emit showError(tr("Could not write DateTime in the database!"));
+
+                bError=true;
+            }
+        }
+
+        mapperStartDt->setCurrentIndex(startIdx);
+        mapperEndDt->setCurrentIndex(endIdx);
+
+        if (bError) {
+            emit showError(tr("Could not edit dates in the database!"));
+        }else{
+
+        if (mapper1->submit()){
+            bError=!
+                    tTrips->submitAll();
+            if (bError){
+                    if (tTrips->lastError().type()!=QSqlError::NoError)
+                        emit showError(tTrips->lastError().text());
+                    else
+                        emit showError(tr("Could not write trip in the database!"));
+            }else{
+
+                //Comiting Sampled_Fishing_Trips_Gears
+                if (tTrips->rowCount()!=1) return false;
+
+                QModelIndex idd=tTrips->index(0,0);
+                multiModelI->setParentId(idd.data().toInt());
+                if (!multiModelI->list2Model(false)){
+                    emit showError(tr("Could not associate gears to this fishing trip!"));
+                    bError=true;
+                }
+            }
+        }
+        }
+    }
+
+    emit editLeave(true,false);
+    return !bError;
+}
+

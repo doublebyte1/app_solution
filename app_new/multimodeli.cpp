@@ -20,8 +20,12 @@ void MultiModelI::init()
     m_listView->setModelColumn(1);
 }
 
-bool MultiModelI::list2Model()
+bool MultiModelI::list2Model(const bool bNew)
 {
+    if (!bNew) 
+        if (!m_output->removeRows(0,m_output->rowCount()))
+            return false;
+
     if (m_parentId==-1) return false;
     //1 - for each selected index: see the id and create a new record on the main table with it
     QModelIndexList mil = m_listView->selectionModel()->selectedIndexes();
@@ -73,6 +77,7 @@ bool MultiModelI::model2List(const QString strField)
 
         if (!idx2.isValid()) return false;
         m_listView->selectionModel()->select(idx2,QItemSelectionModel::Rows | QItemSelectionModel::Select);
+        m_listView->scrollTo(m_listView->selectionModel()->selectedIndexes().last());
     }
 
     return true;

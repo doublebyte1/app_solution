@@ -29,7 +29,7 @@ class MultiModelI
         /*! This is the function that translates the multiple choices on the List, to multiple records on the model
         //createRecord + submit
         */
-        bool                list2Model();
+        bool                list2Model(const bool bNew=true);
         //! Model to List
         /*! This is the function that translates the multiple choices on the model, to the list widget
         \param strField field that will be used for the filter, as string
