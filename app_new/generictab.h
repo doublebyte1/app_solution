@@ -143,7 +143,7 @@ class GenericTab : public QWidget
     public slots:
         //! Fill header
         /*! This function, uses the pointer to the header label, to fill it with a string;
-          \par str text that we want to display in the label (normally: "logbook" or "sampling")
+          \par str text that we want to display in the label (normally: "logbook" or "Artisanal Fisheries")
         */
         void                    fillHeader(const QString str){lbHead->setText(str);}
         //! Apply

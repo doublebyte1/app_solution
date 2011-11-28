@@ -31,9 +31,9 @@ FrmSampling::~FrmSampling()
 
 void FrmSampling::setTips(const bool bLogbook)
 {
-    lbSource->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-    lbSource->setStatusTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
-    lbSource->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
+    lbSource->setToolTip(tr("This is a ") + (bLogbook? qApp->translate("frame", strLogbook): qApp->translate("frame", strSampling)) + tr(" frame"));
+    lbSource->setStatusTip(tr("This is a ") + (bLogbook? qApp->translate("frame", strLogbook): qApp->translate("frame", strSampling)) + tr(" frame"));
+    lbSource->setWhatsThis(tr("This is a ") + (bLogbook? qApp->translate("frame", strLogbook): qApp->translate("frame", strSampling)) + tr(" frame"));
 }
 
 bool FrmSampling::createRecords ()

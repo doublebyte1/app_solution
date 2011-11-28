@@ -283,8 +283,6 @@ bool PreviewTab::editRecord(bool on)
     if (m_pushNew==0) return false;
     if (m_pushEdit==0) return false;
     if (m_pushRemove==0) return false;
-    if (m_pushNext==0) return false;
-    if (m_pushPrevious==0) return false;
 
     if (!on){
 
@@ -325,8 +323,8 @@ bool PreviewTab::editRecord(bool on)
             return false;
         }
        //lets disable navigation for now
-        m_pushNext->setEnabled(false);
-        m_pushPrevious->setEnabled(false);
+        if (m_pushNext!=0) m_pushNext->setEnabled(false);
+        if (m_pushPrevious!=0) m_pushPrevious->setEnabled(false);
 
         emit editLeave(false);
     }
@@ -542,5 +540,5 @@ void setSourceText(QLabel* label, const bool bIsLogbook)
     label->setStyleSheet(bIsLogbook?
         QObject::tr("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));font: 75 10pt \"Fixedsys\"")
     : QObject::tr("background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(255, 0, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 85, 0, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.573864 rgba(255, 255, 255, 130), stop:0.57754 rgba(255, 255, 255, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));font: 75 10pt \"Fixedsys\"") );
-    label->setText(bIsLogbook? QObject::tr("Logbook"): QObject::tr("Sampling"));
+    label->setText(bIsLogbook? qApp->translate("frame", strLogbook): qApp->translate("frame", strSampling));
 }

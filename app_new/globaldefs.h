@@ -35,7 +35,8 @@ static const char *strLogbook =
      QT_TRANSLATE_NOOP("frame", "logbook");
 
 static const char *strSampling = 
-     QT_TRANSLATE_NOOP("frame", "Sampling");
+     QT_TRANSLATE_NOOP("frame", "Artisanal Fisheries");
+     //QT_TRANSLATE_NOOP("frame", "Sampling");
 
 static const char *strReportsDir = 
      QT_TRANSLATE_NOOP("dir", "C:\\projects\\VS\\app_solution\\reports");
