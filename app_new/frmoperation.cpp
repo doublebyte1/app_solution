@@ -56,62 +56,58 @@ void FrmOperation::previewRow(QModelIndex index)
 {
     emit blockCatchUISignals(true);
 
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->hide();
-
     QModelIndex idx=viewOperations->index(index.row(),0);
     if (!idx.isValid()){
         emit showError (tr("Could not preview this operation!"));
         return;
     }
 
-    int intId=idx.data().toInt();//for the MultiModelI
-    QString id=idx.data().toString();
+    updateSample(idx);
 
-    tOperations->setFilter(tr("Sampled_Fishing_Operations.ID=")+id);
-    if (tOperations->rowCount()!=1)
-        return;
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
 
-    mapper1->toLast();
+        int intId=idx.data().toInt();//for the MultiModelI
+        //QString id=idx.data().toString();
 
-    //Now fix the dates
-    idx=tOperations->index(0,2);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this trip!"));
-        return;
+        mapper1->toLast();
+
+        //Now fix the dates
+        idx=tOperations->index(0,2);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this operation!"));
+            return;
+        }
+        QString strStartDt=idx.data().toString();
+        idx=tOperations->index(0,3);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this operation!"));
+            return;
+        }
+        QString strEndDt=idx.data().toString();
+
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+
+        if (m_tDateTime->rowCount()!=2)
+            return;
+
+        //adjusting the display format of the dates on preview
+        QModelIndex idxDType=m_tDateTime->index(0,4);
+        if (!idxDType.isValid()) return;
+        customDtStart->adjustDateTime(idxDType,idxDType.data());
+        idxDType=m_tDateTime->index(1,4);
+        if (!idxDType.isValid()) return;
+        customDtEnd->adjustDateTime(idxDType,idxDType.data());
+
+        mapperEndDt->toLast();
+        mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
+        //preview record on the listView
+        multiModelI->setParentId(intId);
+        multiModelI->model2List("id_fishing_operation");
+
     }
-    QString strStartDt=idx.data().toString();
-    idx=tOperations->index(0,3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this trip!"));
-        return;
-    }
-    QString strEndDt=idx.data().toString();
-
-    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
-
-    if (m_tDateTime->rowCount()!=2)
-        return;
-
-    //adjusting the display format of the dates on preview
-    QModelIndex idxDType=m_tDateTime->index(0,4);
-    if (!idxDType.isValid()) return;
-    customDtStart->adjustDateTime(idxDType,idxDType.data());
-    idxDType=m_tDateTime->index(1,4);
-    if (!idxDType.isValid()) return;
-    customDtEnd->adjustDateTime(idxDType,idxDType.data());
-
-    mapperEndDt->toLast();
-    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-
-    //preview record on the listView
-    multiModelI->setParentId(intId);
-    multiModelI->model2List(tr("id_fishing_operation"));
-
-    pushNext->setEnabled(true);
 
     emit blockCatchUISignals(false);
 }
@@ -121,17 +117,17 @@ void FrmOperation::setPreviewQuery()
     if (m_sample==0) return;
     QString strQuery=
 
-    tr("SELECT     dbo.Sampled_Fishing_Operations.ID, dbo.Ref_Gears.Name as [Gear Used], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], ") +
-    tr(" CASE WHEN F1.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE") +
-    tr(" CONVERT(VARCHAR(8), F1.Date_Local, 108) END [Start Time]") +
-    tr(" , CONVERT(CHAR(10), F2.Date_Local, 103) AS [End Date], ") +
-    tr(" CASE WHEN F2.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE") +
-    tr(" CONVERT(VARCHAR(8), F2.Date_Local, 108) END [End Time] ") +
-    tr(" FROM         dbo.Sampled_Fishing_Operations INNER JOIN") +
-    tr("                      dbo.Ref_Gears ON dbo.Sampled_Fishing_Operations.id_gear = dbo.Ref_Gears.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Operations.id_start_dt = F1.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Operations.id_end_dt = F2.ID") +
-    tr(" WHERE     (dbo.Sampled_Fishing_Operations.id_fishing_trip = :id) ORDER BY ID DESC")
+    "SELECT     dbo.Sampled_Fishing_Operations.ID, dbo.Ref_Gears.Name as [Gear Used], CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], "
+    " CASE WHEN F1.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE"
+    " CONVERT(VARCHAR(8), F1.Date_Local, 108) END [Start Time]"
+    " , CONVERT(CHAR(10), F2.Date_Local, 103) AS [End Date], "
+    " CASE WHEN F2.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE"
+    " CONVERT(VARCHAR(8), F2.Date_Local, 108) END [End Time] "
+    " FROM         dbo.Sampled_Fishing_Operations INNER JOIN"
+    "                      dbo.Ref_Gears ON dbo.Sampled_Fishing_Operations.id_gear = dbo.Ref_Gears.ID INNER JOIN"
+    "                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Operations.id_start_dt = F1.ID INNER JOIN"
+    "                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Operations.id_end_dt = F2.ID"
+    " WHERE     (dbo.Sampled_Fishing_Operations.id_fishing_trip = :id) ORDER BY ID DESC"
     ;
 
     QSqlQuery query;
@@ -157,13 +153,13 @@ void FrmOperation::initModels()
 
      tRefCat = new QSqlQueryModel;
      tRefCat->setQuery(
-        tr("SELECT   ID, Name FROM         dbo.Ref_Commercial_Categories ORDER BY ID")
+        "SELECT   ID, Name FROM         dbo.Ref_Commercial_Categories ORDER BY ID"
          );
 
     if (tOpCat!=0) delete tOpCat;
 
     tOpCat=new QSqlTableModel();
-    tOpCat->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Operations_Categories"),
+    tOpCat->setTable(QSqlDatabase().driver()->escapeIdentifier("Sampled_Fishing_Operations_Categories",
         QSqlDriver::TableName));
     tOpCat->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tOpCat->sort(0,Qt::AscendingOrder);
@@ -180,6 +176,11 @@ void FrmOperation::initUI()
     initPreviewTable(tableView,viewOperations);
     setButtonBox(buttonBox);
     setGroupDetails(groupDetails);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
+    setNextButton(pushNext);
+    setPreviousButton(pushPrevious);
 
     //initializing the container for the readonly!S
     m_lWidgets << spinOrder;
@@ -192,6 +193,7 @@ void FrmOperation::initUI()
     m_lWidgets << catchInputCtrl;
     m_lWidgets << textComments;
     m_lWidgets << listCategories;
+    m_lWidgets << pushClear;
 
     customDtStart->setIsUTC(false);
     customDtStart->setIsAuto(false);
@@ -205,7 +207,7 @@ void FrmOperation::initUI()
     connect(customDtEnd, SIGNAL(isDateTime(bool,int)), m_tDateTime,
         SLOT(amendDateTimeType(bool,int)));
 
-    pushNext->setEnabled(false);
+    //pushNext->setEnabled(false);
 }
 
 void FrmOperation::initMapper1()
@@ -234,19 +236,19 @@ void FrmOperation::initMapper1()
 
     cmbFishingZone->setModel(tOperations->relationModel(18));
     cmbFishingZone->setModelColumn(
-        tOperations->relationModel(18)->fieldIndex(tr("Name")));
+        tOperations->relationModel(18)->fieldIndex("Name"));
 
     cmbGear->setModel(tOperations->relationModel(4));
     cmbGear->setModelColumn(
-        tOperations->relationModel(4)->fieldIndex(tr("Name")));
+        tOperations->relationModel(4)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbWeightUnits()->setModel(tOperations->relationModel(7));
     catchInputCtrl->pCmbWeightUnits()->setModelColumn(
-        tOperations->relationModel(7)->fieldIndex(tr("Name")));
+        tOperations->relationModel(7)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbBoxUnits()->setModel(tOperations->relationModel(10));
     catchInputCtrl->pCmbBoxUnits()->setModelColumn(
-        tOperations->relationModel(10)->fieldIndex(tr("Name")));
+        tOperations->relationModel(10)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbUnitUnits()->setModel(tOperations->relationModel(14));
     catchInputCtrl->pCmbUnitUnits()->setModelColumn(
@@ -306,13 +308,13 @@ void FrmOperation::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,3,QString("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
 }
 
 void FrmOperation::beforeShow()
@@ -421,10 +423,7 @@ bool FrmOperation::reallyApply()
 
 void FrmOperation::uI4NewRecord()
 {
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(false,m_lWidgets);
+    genericUI4NewRecord();
 
     customDtStart->setIsDateTime(true,true,true);
     customDtEnd->setIsDateTime(true,true,true);
@@ -433,9 +432,6 @@ void FrmOperation::uI4NewRecord()
 
     if (cmbFishingZone->count()) cmbFishingZone->setCurrentIndex(0);
     if (cmbGear->count()) cmbGear->setCurrentIndex(0);
-
-    buttonBox->button(QDialogButtonBox::Apply)->show();
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
 
 void FrmOperation::createRecord()
@@ -493,14 +489,14 @@ void FrmOperation::initOperationModel()
     if (tOperations!=0) delete tOperations;
 
     tOperations=new QSqlRelationalTableModel();
-    tOperations->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Operations"),
+    tOperations->setTable(QSqlDatabase().driver()->escapeIdentifier("Sampled_Fishing_Operations",
         QSqlDriver::TableName));
 
-    tOperations->setRelation(4, QSqlRelation(tr("Ref_Gears"), tr("ID"), tr("Name")));
-    tOperations->setRelation(7, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tOperations->setRelation(10, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tOperations->setRelation(14, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tOperations->setRelation(18, QSqlRelation(tr("Ref_Fishing_Zones"), tr("ID"), tr("Name")));
+    tOperations->setRelation(4, QSqlRelation("Ref_Gears", "ID", "Name"));
+    tOperations->setRelation(7, QSqlRelation("Ref_Units", "ID", "Name"));
+    tOperations->setRelation(10, QSqlRelation("Ref_Units", "ID", "Name"));
+    tOperations->setRelation(14, QSqlRelation("Ref_Units", "ID", "Name"));
+    tOperations->setRelation(18, QSqlRelation("Ref_Fishing_Zones", "ID", "Name"));
 
     tOperations->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tOperations->sort(0,Qt::AscendingOrder);
@@ -522,9 +518,9 @@ void FrmOperation::filterModel4Combo()
         }
 
     strQuery=
-        tr("SELECT     id_fishing_gear")+
-        tr(" FROM         dbo.Sampled_Fishing_Trips_Gears")+
-        tr(" WHERE     (id_fishing_trip = ") + QVariant(m_sample->tripId).toString() + tr(")");
+        "SELECT     id_fishing_gear"
+        " FROM         dbo.Sampled_Fishing_Trips_Gears"
+        " WHERE     (id_fishing_trip = " + QVariant(m_sample->tripId).toString() + ")";
 
     query.prepare(strQuery);
     if (!query.exec()){
@@ -532,29 +528,17 @@ void FrmOperation::filterModel4Combo()
         return;
     }
 
-    QString strFilter(tr(""));
+    QString strFilter("");
     while (query.next()) {
-        strFilter.append(tr("ID=") + query.value(0).toString());
-        strFilter.append(tr(" OR "));
+        strFilter.append("ID=" + query.value(0).toString());
+        strFilter.append(" OR ");
     }
     if (!strFilter.isEmpty())
-        strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+        strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
 
     tOperations->relationModel(4)->setFilter(strFilter);
 
     initMapper1();
-}
-
-bool FrmOperation::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
-
-    //updating the sample structure
-    QModelIndex idx=viewOperations->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    m_sample->operationId=idx.data().toInt();
-    return true;
 }
 
 bool FrmOperation::getNextLabel(QString& strLabel)
@@ -566,4 +550,102 @@ bool FrmOperation::getNextLabel(QString& strLabel)
     QModelIndex idx=viewOperations->index(tableView->selectionModel()->currentIndex().row(),3);
     strLabel=idx.data().toString();
     return true;
+}
+
+void FrmOperation::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    emit lockControls(true,m_lWidgets);
+}
+
+void FrmOperation::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+    if (bFinished){
+        editFinished();
+    }
+}
+
+bool FrmOperation::applyChanges()
+{
+    bool bError=false;
+
+    if (!listCategories->selectionModel()->hasSelection()){
+        emit showError(tr("You must select one or more categories for this operation!"));
+        bError=true;
+    }else{
+
+        int startIdx=mapperStartDt->currentIndex();
+        int endIdx=mapperEndDt->currentIndex();
+
+        bool bDate, bTime;
+        int typeID;
+
+        customDtStart->getIsDateTime(bDate,bTime);
+        if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+            return false;
+        }
+        m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
+
+        customDtEnd->getIsDateTime(bDate,bTime);
+        if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+            return false;
+        }
+        m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
+
+        //Now comit the dates...
+        if (!mapperStartDt->submit() 
+            || !mapperEndDt->submit()){
+            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                emit showError(m_tDateTime->lastError().text());
+            else
+                emit showError(tr("Could not submit mapper!"));
+            bError=true;
+        }
+        else{
+            if (!m_tDateTime->submitAll()){
+                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
+                    emit showError(m_tDateTime->lastError().text());
+                else
+                    emit showError(tr("Could not write DateTime in the database!"));
+
+                bError=true;
+            }
+        }
+
+        mapperStartDt->setCurrentIndex(startIdx);
+        mapperEndDt->setCurrentIndex(endIdx);
+
+        if (bError) {
+            emit showError(tr("Could not edit dates in the database!"));
+        }else{
+
+        if (mapper1->submit()){
+            bError=!
+                tOperations->submitAll();
+            if (bError){
+                    if (tOperations->lastError().type()!=QSqlError::NoError)
+                        emit showError(tOperations->lastError().text());
+                    else
+                        emit showError(tr("Could not write operations in the database!"));
+            }else{
+
+                //Comiting Sampled_Fishing_Operations_Categories
+                if (tOperations->rowCount()!=1) return false;
+
+                QModelIndex idd=tOperations->index(0,0);
+                multiModelI->setParentId(idd.data().toInt());
+                if (!multiModelI->list2Model(false)){
+                    emit showError(tr("Could not associate categories to this fishing operation!"));
+                    bError=true;
+                }
+            }
+        }
+        }
+    }
+
+    emit editLeave(true,false);
+    return !bError;
 }

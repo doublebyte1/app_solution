@@ -38,8 +38,8 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         void                                   onItemSelection();
         void                                   blockCustomDateCtrls();
         void                                   unblockCustomDateCtrls();
-        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
-        void                                   editFinished(){;}
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        void                                   editFinished();
 
     private:
         //! Really Apply
@@ -50,7 +50,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         //! Apply Changes
         /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
         */
-        bool                                   applyChanges(){return false;}//TODO: implement this!
+        bool                                   applyChanges();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */
@@ -91,7 +91,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         //! Update the sample structure
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   updateSample();
+        //bool                                   updateSample();
         void                                   initOperationModel();
         void                                   initMapper1();
 

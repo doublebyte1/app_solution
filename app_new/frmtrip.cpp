@@ -56,64 +56,59 @@ void FrmTrip::previewRow(QModelIndex index)
 {
     emit blockCatchUISignals(true);
 
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->hide();
-
     QModelIndex idx=viewTrips->index(index.row(),0);
     if (!idx.isValid()){
-        emit showError (tr("Could not preview this vessel!"));
-        return;
-    }
-
-    int intId=idx.data().toInt();//for the MultiModelI
-    QString id=idx.data().toString();
-
-    tTrips->setFilter(tr("Sampled_Fishing_Trips.ID=")+id);
-    if (tTrips->rowCount()!=1)
-        return;
-
-    mapper1->toLast();
-
-    //Now fix the dates
-    idx=tTrips->index(0,2);
-    if (!idx.isValid()){
         emit showError (tr("Could not preview this trip!"));
         return;
     }
-    QString strStartDt=idx.data().toString();
-    idx=tTrips->index(0,3);
-    if (!idx.isValid()){
-        emit showError (tr("Could not preview this trip!"));
-        return;
+
+    updateSample(idx);
+
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
+
+        int intId=idx.data().toInt();//for the MultiModelI
+
+        mapper1->toLast();
+
+        //Now fix the dates
+        idx=tTrips->index(0,2);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this trip!"));
+            return;
+        }
+        QString strStartDt=idx.data().toString();
+        idx=tTrips->index(0,3);
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this trip!"));
+            return;
+        }
+        QString strEndDt=idx.data().toString();
+
+        m_tDateTime->setFilter("ID=" + strStartDt + " OR ID=" + strEndDt);
+
+        if (m_tDateTime->rowCount()!=2)
+            return;
+
+        //adjusting the display format of the dates on preview
+        QModelIndex idxDType=m_tDateTime->index(0,4);
+        if (!idxDType.isValid()) return;
+        customDtStart->adjustDateTime(idxDType,idxDType.data());
+        idxDType=m_tDateTime->index(1,4);
+        if (!idxDType.isValid()) return;
+        customDtEnd->adjustDateTime(idxDType,idxDType.data());
+
+        mapperEndDt->toLast();
+        mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
+
+        //preview record on the listView
+        multiModelI->setParentId(intId);
+        multiModelI->model2List("id_fishing_trip");
+
     }
-    QString strEndDt=idx.data().toString();
 
-    m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
-
-    if (m_tDateTime->rowCount()!=2)
-        return;
-
-    //adjusting the display format of the dates on preview
-    QModelIndex idxDType=m_tDateTime->index(0,4);
-    if (!idxDType.isValid()) return;
-    customDtStart->adjustDateTime(idxDType,idxDType.data());
-    idxDType=m_tDateTime->index(1,4);
-    if (!idxDType.isValid()) return;
-    customDtEnd->adjustDateTime(idxDType,idxDType.data());
-
-    mapperEndDt->toLast();
-    mapperStartDt->setCurrentIndex(mapperEndDt->currentIndex()-1);
-
-    //preview record on the listView
-    multiModelI->setParentId(intId);
-    multiModelI->model2List(tr("id_fishing_trip"));
-
-    pushNext->setEnabled(true);
-
-    emit blockCatchUISignals(false);
+    emit blockCatchUISignals(true);
 }
 
 void FrmTrip::setPreviewQuery()
@@ -121,17 +116,17 @@ void FrmTrip::setPreviewQuery()
     if (m_sample==0) return;
     QString strQuery=
 
-    tr("SELECT     dbo.Sampled_Fishing_Trips.ID, dbo.Ref_Samplers.Name as Sampler, CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], ") +
-    tr(" CASE WHEN F1.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE") +
-    tr(" CONVERT(VARCHAR(8), F1.Date_Local, 108) END [Start Time]") +
-    tr(" , CONVERT(CHAR(10), F2.Date_Local, 103) AS [End Date], ") +
-    tr(" CASE WHEN F2.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE") +
-    tr(" CONVERT(VARCHAR(8), F2.Date_Local, 108) END [End Time] ") +
-    tr(" FROM         dbo.Sampled_Fishing_Trips INNER JOIN") +
-    tr("                      dbo.Ref_Samplers ON dbo.Sampled_Fishing_Trips.id_sampler = dbo.Ref_Samplers.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Trips.id_start_dt = F1.ID INNER JOIN") +
-    tr("                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Trips.id_end_dt = F2.ID") +
-    tr(" WHERE     (dbo.Sampled_Fishing_Trips.id_abstract_sampled_vessels = :id) ORDER BY ID DESC")
+    "SELECT     dbo.Sampled_Fishing_Trips.ID, dbo.Ref_Samplers.Name as Sampler, CONVERT(CHAR(10), F1.Date_Local, 103) AS [Start Date], "
+    " CASE WHEN F1.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE"
+    " CONVERT(VARCHAR(8), F1.Date_Local, 108) END [Start Time]"
+    " , CONVERT(CHAR(10), F2.Date_Local, 103) AS [End Date], "
+    " CASE WHEN F2.Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='Date') THEN 'missing' ELSE"
+    " CONVERT(VARCHAR(8), F2.Date_Local, 108) END [End Time] "
+    " FROM         dbo.Sampled_Fishing_Trips INNER JOIN"
+    "                      dbo.Ref_Samplers ON dbo.Sampled_Fishing_Trips.id_sampler = dbo.Ref_Samplers.ID INNER JOIN"
+    "                      dbo.GL_Dates AS F1 ON dbo.Sampled_Fishing_Trips.id_start_dt = F1.ID INNER JOIN"
+    "                      dbo.GL_Dates AS F2 ON dbo.Sampled_Fishing_Trips.id_end_dt = F2.ID"
+    " WHERE     (dbo.Sampled_Fishing_Trips.id_abstract_sampled_vessels = :id) ORDER BY ID DESC"
     ;
 
     QSqlQuery query;
@@ -219,8 +214,6 @@ void FrmTrip::initUI()
 
     connect(customDtEnd, SIGNAL(isDateTime(bool,int)), m_tDateTime,
         SLOT(amendDateTimeType(bool,int)));
-
-    pushNext->setEnabled(false);
 }
 
 void FrmTrip::initMapper1()
@@ -448,13 +441,6 @@ bool FrmTrip::reallyApply()
 
 void FrmTrip::uI4NewRecord()
 {
-    /*
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(false,m_lWidgets);
-*/
-
     genericUI4NewRecord();
 
     customDtStart->setIsDateTime(true,true,true);
@@ -466,7 +452,6 @@ void FrmTrip::uI4NewRecord()
     if (cmbFishingZone->count()> 0) cmbFishingZone->setCurrentIndex(0);
     if (cmbSampler->count()> 0) cmbSampler->setCurrentIndex(0);
     if (cmbSite->count()> 0) cmbSite->setCurrentIndex(0);
-
 }
 
 void FrmTrip::createRecord()
@@ -624,7 +609,7 @@ void FrmTrip::filterModel4Combo()
 
     initMapper1();
 }
-
+/*
 bool FrmTrip::updateSample()
 {
     if (!tableView->selectionModel()->hasSelection())
@@ -637,7 +622,7 @@ bool FrmTrip::updateSample()
     m_sample->tripId=idx.data().toInt();
     return true;
 }
-
+*/
 bool FrmTrip::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())

@@ -91,7 +91,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         //! Update the sample structure
         /*! Reimplemented from the PreviewTab base class
         */
-        bool                                   updateSample();
+        //bool                                   updateSample();
         void                                   initTripModel();
         void                                   initMapper1();
 

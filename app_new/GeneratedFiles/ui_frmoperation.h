@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Wed 16. Nov 19:44:57 2011
+** Created: Tue 29. Nov 09:50:22 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -37,14 +37,17 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmOperation
 {
 public:
-    QVBoxLayout *verticalLayout_3;
+    QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_9;
     QLabel *lbHeader;
     QLabel *lbSource;
     QLabel *label_23;
     QHBoxLayout *horizontalLayout_4;
     QTableView *tableView;
+    QVBoxLayout *verticalLayout_3;
     QPushButton *pushNew;
+    QPushButton *pushEdit;
+    QPushButton *pushRemove;
     QGroupBox *groupDetails;
     QHBoxLayout *horizontalLayout_3;
     QVBoxLayout *verticalLayout_4;
@@ -74,6 +77,7 @@ public:
     CatchInputCtrl *catchInputCtrl;
     QLabel *label_10;
     QListView *listCategories;
+    QPushButton *pushClear;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
     QDialogButtonBox *buttonBox;
@@ -89,8 +93,8 @@ public:
         if (FrmOperation->objectName().isEmpty())
             FrmOperation->setObjectName(QString::fromUtf8("FrmOperation"));
         FrmOperation->resize(790, 785);
-        verticalLayout_3 = new QVBoxLayout(FrmOperation);
-        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_5 = new QVBoxLayout(FrmOperation);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_9 = new QHBoxLayout();
         horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
         lbHeader = new QLabel(FrmOperation);
@@ -120,12 +124,12 @@ public:
         horizontalLayout_9->addWidget(lbSource);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_9);
+        verticalLayout_5->addLayout(horizontalLayout_9);
 
         label_23 = new QLabel(FrmOperation);
         label_23->setObjectName(QString::fromUtf8("label_23"));
 
-        verticalLayout_3->addWidget(label_23);
+        verticalLayout_5->addWidget(label_23);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
@@ -141,16 +145,42 @@ public:
 
         horizontalLayout_4->addWidget(tableView);
 
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
         pushNew = new QPushButton(FrmOperation);
         pushNew->setObjectName(QString::fromUtf8("pushNew"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNew->setIcon(icon);
 
-        horizontalLayout_4->addWidget(pushNew);
+        verticalLayout_3->addWidget(pushNew);
+
+        pushEdit = new QPushButton(FrmOperation);
+        pushEdit->setObjectName(QString::fromUtf8("pushEdit"));
+        sizePolicy.setHeightForWidth(pushEdit->sizePolicy().hasHeightForWidth());
+        pushEdit->setSizePolicy(sizePolicy);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEdit->setIcon(icon1);
+        pushEdit->setCheckable(true);
+
+        verticalLayout_3->addWidget(pushEdit);
+
+        pushRemove = new QPushButton(FrmOperation);
+        pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
+        sizePolicy.setHeightForWidth(pushRemove->sizePolicy().hasHeightForWidth());
+        pushRemove->setSizePolicy(sizePolicy);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon2);
+
+        verticalLayout_3->addWidget(pushRemove);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_4);
+        horizontalLayout_4->addLayout(verticalLayout_3);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_4);
 
         groupDetails = new QGroupBox(FrmOperation);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -322,6 +352,15 @@ public:
 
         verticalLayout_2->addWidget(groupCatch);
 
+        pushClear = new QPushButton(groupDetails);
+        pushClear->setObjectName(QString::fromUtf8("pushClear"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/locationbar_erase.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushClear->setIcon(icon3);
+        pushClear->setIconSize(QSize(32, 16));
+
+        verticalLayout_2->addWidget(pushClear);
+
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -341,7 +380,7 @@ public:
         horizontalLayout_3->addLayout(verticalLayout_2);
 
 
-        verticalLayout_3->addWidget(groupDetails);
+        verticalLayout_5->addWidget(groupDetails);
 
         horizontalLayout_16 = new QHBoxLayout();
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
@@ -355,18 +394,18 @@ public:
         horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
         pushPrevious = new QPushButton(groupBox_2);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon1);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon4);
 
         horizontalLayout_10->addWidget(pushPrevious);
 
         pushNext = new QPushButton(groupBox_2);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
         pushNext->setEnabled(false);
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon2);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon5);
 
         horizontalLayout_10->addWidget(pushNext);
 
@@ -374,7 +413,7 @@ public:
         horizontalLayout_16->addWidget(groupBox_2);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_16);
+        verticalLayout_5->addLayout(horizontalLayout_16);
 
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
@@ -389,6 +428,9 @@ public:
         QObject::connect(pushNew, SIGNAL(clicked()), FrmOperation, SLOT(createRecord()));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), FrmOperation, SLOT(previewRow(QModelIndex)));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), FrmOperation, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(pushEdit, SIGNAL(clicked(bool)), FrmOperation, SLOT(editRecord(bool)));
+        QObject::connect(pushRemove, SIGNAL(clicked()), FrmOperation, SLOT(removeRecord()));
+        QObject::connect(pushClear, SIGNAL(clicked()), listCategories, SLOT(clearSelection()));
 
         QMetaObject::connectSlotsByName(FrmOperation);
     } // setupUi
@@ -418,6 +460,26 @@ public:
         pushNew->setWhatsThis(QApplication::translate("FrmOperation", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushEdit->setToolTip(QApplication::translate("FrmOperation", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushEdit->setStatusTip(QApplication::translate("FrmOperation", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushEdit->setWhatsThis(QApplication::translate("FrmOperation", "Edits record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushEdit->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove->setToolTip(QApplication::translate("FrmOperation", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove->setStatusTip(QApplication::translate("FrmOperation", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove->setWhatsThis(QApplication::translate("FrmOperation", "Removes record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove->setText(QString());
         groupDetails->setTitle(QApplication::translate("FrmOperation", "Details", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("FrmOperation", "Order Number", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("FrmOperation", "Fishing zone", 0, QApplication::UnicodeUTF8));
@@ -440,6 +502,16 @@ public:
 #ifndef QT_NO_WHATSTHIS
         listCategories->setWhatsThis(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        pushClear->setToolTip(QApplication::translate("FrmOperation", "Clear selection", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushClear->setStatusTip(QApplication::translate("FrmOperation", "Clear selection", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushClear->setWhatsThis(QApplication::translate("FrmOperation", "Clears selection", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushClear->setText(QString());
         groupBox_2->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmOperation", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmOperation", "Next", 0, QApplication::UnicodeUTF8));
