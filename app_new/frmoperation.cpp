@@ -578,6 +578,59 @@ bool FrmOperation::applyChanges()
         bError=true;
     }else{
 
+        QString strError;
+        if (!checkDependantDates(tOperations->tableName(), customDtStart->dateTime(),
+            customDtEnd->dateTime(),tOperations->tableName(),m_sample->operationId, strError))
+        {
+            emit showError(strError);
+            bError=true;
+        }else{
+
+            int startIdx=mapperStartDt->currentIndex();
+            int endIdx=mapperEndDt->currentIndex();
+
+            //Setting the datetime type changes here!
+            bool bDate, bTime;
+            int typeID;
+
+            customDtStart->getIsDateTime(bDate,bTime);
+            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                return false;
+            }
+            m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
+
+            customDtEnd->getIsDateTime(bDate,bTime);
+            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                return false;
+            }
+            m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
+
+            bError=submitDates(mapperStartDt, mapperEndDt);
+
+            if (!bError){
+                mapperStartDt->setCurrentIndex(startIdx);
+                mapperEndDt->setCurrentIndex(endIdx);
+
+                int cur= mapper1->currentIndex();
+                bError=!submitMapperAndModel(mapper1);
+                if (!bError){
+                    mapper1->setCurrentIndex(cur);
+
+                    //Comiting Sampled_Fishing_Operations_Categories
+                    if (tOperations->rowCount()!=1) return false;
+
+                    QModelIndex idd=tOperations->index(0,0);
+                    multiModelI->setParentId(idd.data().toInt());
+                    if (!multiModelI->list2Model(false)){
+                        emit showError(tr("Could not associate categories to this fishing operation!"));
+                        bError=true;
+                    }
+
+                }// mapper 1 submission
+            } else emit showError(tr("Could not edit dates in the database!"));
+        }//check dependant dates
+
+/*
         int startIdx=mapperStartDt->currentIndex();
         int endIdx=mapperEndDt->currentIndex();
 
@@ -645,8 +698,9 @@ bool FrmOperation::applyChanges()
             }
         }
         }
+        */
     }
 
-    emit editLeave(true,false);
+    if (!bError) emit editLeave(true,false);
     return !bError;
 }

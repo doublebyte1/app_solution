@@ -115,7 +115,7 @@ bool FrmMinorStrata::applyChanges()
         }
     }
 
-    emit editLeave(true,false);
+    if (!bError) emit editLeave(true,false);
     return !bError;
 
 }

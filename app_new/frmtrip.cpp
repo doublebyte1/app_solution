@@ -647,76 +647,58 @@ bool FrmTrip::applyChanges()
         bError=true;
     }else{
 
-        int startIdx=mapperStartDt->currentIndex();
-        int endIdx=mapperEndDt->currentIndex();
-
-        bool bDate, bTime;
-        int typeID;
-
-        customDtStart->getIsDateTime(bDate,bTime);
-        if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
-            return false;
-        }
-        m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
-
-        customDtEnd->getIsDateTime(bDate,bTime);
-        if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
-            return false;
-        }
-        m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
-
-        //Now comit the dates...
-        if (!mapperStartDt->submit() 
-            || !mapperEndDt->submit()){
-            if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                emit showError(m_tDateTime->lastError().text());
-            else
-                emit showError(tr("Could not submit mapper!"));
+        QString strError;
+        if (!checkDependantDates(tTrips->tableName(), customDtStart->dateTime(),
+            customDtEnd->dateTime(),tTrips->tableName(),m_sample->tripId, strError))
+        {
+            emit showError(strError);
             bError=true;
-        }
-        else{
-            if (!m_tDateTime->submitAll()){
-                if (m_tDateTime->lastError().type()!=QSqlError::NoError)
-                    emit showError(m_tDateTime->lastError().text());
-                else
-                    emit showError(tr("Could not write DateTime in the database!"));
-
-                bError=true;
-            }
-        }
-
-        mapperStartDt->setCurrentIndex(startIdx);
-        mapperEndDt->setCurrentIndex(endIdx);
-
-        if (bError) {
-            emit showError(tr("Could not edit dates in the database!"));
         }else{
 
-        if (mapper1->submit()){
-            bError=!
-                    tTrips->submitAll();
-            if (bError){
-                    if (tTrips->lastError().type()!=QSqlError::NoError)
-                        emit showError(tTrips->lastError().text());
-                    else
-                        emit showError(tr("Could not write trip in the database!"));
-            }else{
+            int startIdx=mapperStartDt->currentIndex();
+            int endIdx=mapperEndDt->currentIndex();
 
-                //Comiting Sampled_Fishing_Trips_Gears
-                if (tTrips->rowCount()!=1) return false;
+            //Setting the datetime type changes here!
+            bool bDate, bTime;
+            int typeID;
 
-                QModelIndex idd=tTrips->index(0,0);
-                multiModelI->setParentId(idd.data().toInt());
-                if (!multiModelI->list2Model(false)){
-                    emit showError(tr("Could not associate gears to this fishing trip!"));
-                    bError=true;
-                }
+            customDtStart->getIsDateTime(bDate,bTime);
+            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                return false;
             }
-        }
-        }
-    }
+            m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
 
-    emit editLeave(true,false);
+            customDtEnd->getIsDateTime(bDate,bTime);
+            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                return false;
+            }
+            m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
+
+            bError=submitDates(mapperStartDt, mapperEndDt);
+
+            if (!bError){
+                mapperStartDt->setCurrentIndex(startIdx);
+                mapperEndDt->setCurrentIndex(endIdx);
+
+                int cur= mapper1->currentIndex();
+                bError=!submitMapperAndModel(mapper1);
+                if (!bError){
+                    mapper1->setCurrentIndex(cur);
+                    //Comiting Sampled_Fishing_Trips_Gears
+                    if (tTrips->rowCount()!=1) return false;
+
+                    QModelIndex idd=tTrips->index(0,0);
+                    multiModelI->setParentId(idd.data().toInt());
+                    if (!multiModelI->list2Model(false)){
+                        emit showError(tr("Could not associate gears to this fishing trip!"));
+                        bError=true;
+                    }
+                }// mapper 1 submission
+            } else emit showError(tr("Could not edit dates in the database!"));
+        }//check dependant dates
+    }//if list gears has selection
+
+    if (!bError) emit editLeave(true,false);
     return !bError;
 }
 

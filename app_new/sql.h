@@ -8,6 +8,7 @@
 #include <QVariant>
 #include <QtSql>
 #include <boost/shared_ptr.hpp>
+#include "globaldefs.h"
 
 using namespace boost;
 
@@ -1777,6 +1778,9 @@ static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const Q
         return false;
     }
 
+    //it does not have anything after! (last table with dates)
+    if (it.value().m_next.compare(qApp->translate("null_replacements", strNa))==0) return true;
+
     if (strTable.compare(curTable)==0){
         return onCheckDependantDates(mapTables,curTable,curStartDt,curEndDt,it.value().m_next,id,strError);
     }else{
@@ -1790,8 +1794,9 @@ static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const Q
 
          for (int i=0; i < model.rowCount(); ++i)
          {
-            return onCheckDependantDates(mapTables,curTable,
-                curStartDt,curEndDt,it.value().m_next,model.record(i).value("ID").toInt(),strError);
+            if (!onCheckDependantDates(mapTables,curTable,
+                curStartDt,curEndDt,it.value().m_next,model.record(i).value("ID").toInt(),strError))
+                return false;
          }
 
      }else{

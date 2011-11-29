@@ -557,8 +557,8 @@ bool FrmCell::applyChanges()
     bool bError=true;
 
     QString strError;
-    if (!checkDependantDates("Sampled_Cell", customDtStart->dateTime(),
-        customDtEnd->dateTime(),"Sampled_Cell",m_sample->cellId, strError))
+    if (!checkDependantDates(tSampCell->tableName(), customDtStart->dateTime(),
+        customDtEnd->dateTime(),tSampCell->tableName(),m_sample->cellId, strError))
     {
         emit showError(strError);
     }else{
@@ -567,9 +567,26 @@ bool FrmCell::applyChanges()
         bError=!submitMapperAndModel(mapper1);
         if (!bError){
             mapper1->setCurrentIndex(cur);
+
             int curStart, curEnd;
             curStart=mapperStartDt->currentIndex();
             curEnd=mapperEndDt->currentIndex();
+
+            //Setting the datetime type changes here!
+            bool bDate, bTime;
+            int typeID;
+
+            customDtStart->getIsDateTime(bDate,bTime);
+            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                return false;
+            }
+            m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
+
+            customDtEnd->getIsDateTime(bDate,bTime);
+            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                return false;
+            }
+            m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
 
             bError=submitDates(mapperStartDt, mapperEndDt);
 
@@ -581,7 +598,7 @@ bool FrmCell::applyChanges()
         }
     }
 
-    emit editLeave(true,false);
+    if (!bError) emit editLeave(true,false);
     return !bError;
 
 }
