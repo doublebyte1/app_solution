@@ -50,6 +50,7 @@ FrmOperation::~FrmOperation()
 void FrmOperation::onItemSelection()
 {
     pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmOperation::previewRow(QModelIndex index)

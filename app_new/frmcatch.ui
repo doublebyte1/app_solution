@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
@@ -98,24 +98,83 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushNew">
-       <property name="toolTip">
-        <string>Create new record</string>
-       </property>
-       <property name="statusTip">
-        <string>Create new record</string>
-       </property>
-       <property name="whatsThis">
-        <string>Creates new record</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="app_new.qrc">
-         <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pushNew">
+         <property name="toolTip">
+          <string>Create new record</string>
+         </property>
+         <property name="statusTip">
+          <string>Create new record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Creates new record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/filenew.png</normaloff>:/app_new/filenew.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Edit record</string>
+         </property>
+         <property name="statusTip">
+          <string>Edit record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Edits record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/pencil.png</normaloff>:/app_new/pencil.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushRemove">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Remove record</string>
+         </property>
+         <property name="statusTip">
+          <string>Remove record</string>
+         </property>
+         <property name="whatsThis">
+          <string>Removes record</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="app_new.qrc">
+           <normaloff>:/app_new/cancel.png</normaloff>:/app_new/cancel.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -480,10 +539,44 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushEdit</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>FrmCatch</receiver>
+   <slot>editRecord(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>743</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>384</x>
+     <y>323</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushRemove</sender>
+   <signal>clicked()</signal>
+   <receiver>FrmCatch</receiver>
+   <slot>removeRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>743</x>
+     <y>184</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>384</x>
+     <y>323</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>createRecord()</slot>
   <slot>previewRow(QModelIndex)</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>editRecord(bool)</slot>
+  <slot>removeRecord()</slot>
  </slots>
 </ui>

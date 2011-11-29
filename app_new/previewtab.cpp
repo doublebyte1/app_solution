@@ -229,8 +229,8 @@ void PreviewTab::onShowForm()
         m_table->selectionModel()->setCurrentIndex(idx, QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows);
     }
 
-    if (!m_pushNext) return;
-    m_pushNext->setEnabled(m_table->selectionModel()->hasSelection());
+    if (m_pushNext!=0)
+        m_pushNext->setEnabled(m_table->selectionModel()->hasSelection());
 
     if (m_pushEdit==0 || m_pushRemove==0) return;
 

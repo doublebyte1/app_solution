@@ -32,18 +32,13 @@ FrmCatch::~FrmCatch()
 
 void FrmCatch::onItemSelection()
 {
-    //pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    //n.b.: we don't enable next for now!
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmCatch::previewRow(QModelIndex index)
 {
     emit blockCatchUISignals(true);
-
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(true,m_lWidgets);
-    buttonBox->button(QDialogButtonBox::Apply)->hide();
 
     QModelIndex idx=viewCatch->index(index.row(),0);
     if (!idx.isValid()){
@@ -51,15 +46,14 @@ void FrmCatch::previewRow(QModelIndex index)
         return;
     }
 
-    QString id=idx.data().toString();
+    updateSample(idx);
 
-    tCatch->setFilter(tr("Sampled_Catch.ID=")+id);
-    if (tCatch->rowCount()!=1)
-        return;
+    if (!abstractPreviewRow(index)){
+        emit showError (tr("Could not preview this record!"));
+    }else{
+        mapper1->toLast();
+    }
 
-    mapper1->toLast();
-
-    //pushNext->setEnabled(true);
     emit blockCatchUISignals(false);
 }
 
@@ -68,14 +62,14 @@ void FrmCatch::setPreviewQuery()
     if (m_sample==0) return;
 
     QString strQuery=
-    tr("SELECT     dbo.Sampled_Catch.ID, dbo.Ref_Commercial_Categories.Name AS [Commercial Category], ")+
-    tr("                      dbo.Sampled_Catch.catch_weight_estimated AS [Total Catch], dbo.Ref_Units.Name AS Units")+
-    tr(" FROM         dbo.Sampled_Catch INNER JOIN")+
-    tr("                      dbo.Ref_Commercial_Categories ON dbo.Sampled_Catch.id_commercial_category = dbo.Ref_Commercial_Categories.ID INNER JOIN")+
-    tr("                      dbo.Ref_Units ON dbo.Sampled_Catch.id_catch_no_boxes_units = dbo.Ref_Units.ID AND ")+
-    tr("                      dbo.Sampled_Catch.id_catch_units_units = dbo.Ref_Units.ID AND dbo.Sampled_Catch.id_catch_weight_units = dbo.Ref_Units.ID AND ")+
-    tr("                      dbo.Sampled_Catch.id_sample_units = dbo.Ref_Units.ID")+
-    tr("                      WHERE     (dbo.Sampled_Catch.id_fishing_operation = :id) ORDER BY ID DESC")
+    "SELECT     dbo.Sampled_Catch.ID, dbo.Ref_Commercial_Categories.Name AS [Commercial Category], "
+    "                      dbo.Sampled_Catch.catch_weight_estimated AS [Total Catch], dbo.Ref_Units.Name AS Units"
+    " FROM         dbo.Sampled_Catch INNER JOIN"
+    "                      dbo.Ref_Commercial_Categories ON dbo.Sampled_Catch.id_commercial_category = dbo.Ref_Commercial_Categories.ID INNER JOIN"
+    "                      dbo.Ref_Units ON dbo.Sampled_Catch.id_catch_no_boxes_units = dbo.Ref_Units.ID AND "
+    "                      dbo.Sampled_Catch.id_catch_units_units = dbo.Ref_Units.ID AND dbo.Sampled_Catch.id_catch_weight_units = dbo.Ref_Units.ID AND "
+    "                      dbo.Sampled_Catch.id_sample_units = dbo.Ref_Units.ID"
+    "                      WHERE     (dbo.Sampled_Catch.id_fishing_operation = :id) ORDER BY ID DESC"
     ;
 
     QSqlQuery query;
@@ -108,6 +102,11 @@ void FrmCatch::initUI()
     initPreviewTable(tableView,viewCatch);
     setButtonBox(buttonBox);
     setGroupDetails(groupDetails);
+    setNewButton(pushNew);
+    setEditButton(pushEdit);
+    setRemoveButton(pushRemove);
+
+    setPreviousButton(pushPrevious);
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbCategory;
@@ -116,8 +115,6 @@ void FrmCatch::initUI()
     m_lWidgets << doubleSpinWeight;
     m_lWidgets << cmbUnits;
     m_lWidgets << textComments;
-
-    pushNext->setEnabled(false);
 }
 
 void FrmCatch::initMapper1()
@@ -221,7 +218,6 @@ bool FrmCatch::reallyApply()
     }else bError=true;
 
     buttonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
-    //button->setEnabled(bError);
 
     emit lockControls(!bError,m_lWidgets);
     if (!bError){
@@ -238,17 +234,10 @@ bool FrmCatch::reallyApply()
 
 void FrmCatch::uI4NewRecord()
 {
-    if (!this->groupDetails->isVisible())
-        this->groupDetails->setVisible(true);
-
-    emit lockControls(false,m_lWidgets);
+    genericUI4NewRecord();
 
     textComments->clear();
-
     if (cmbCategory->count()>0) cmbCategory->setCurrentIndex(0);
-
-    buttonBox->button(QDialogButtonBox::Apply)->show();
-    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 }
 
 void FrmCatch::createRecord()
@@ -331,25 +320,38 @@ void FrmCatch::filterModel4Combo()
     initMapper1();
 }
 
-bool FrmCatch::updateSample()
-{/*
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
-
-    //updating the sample structure
-    QModelIndex idx=viewOperations->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    m_sample->operationId=idx.data().toInt();*/
+bool FrmCatch::getNextLabel(QString& strLabel)
+{
+    //n.b.: we don't need this implementation, for tge time being!
     return true;
 }
 
-bool FrmCatch::getNextLabel(QString& strLabel)
-{/*
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
+void FrmCatch::editFinished()
+{
+    setPreviewQuery();
+    pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
+    emit lockControls(true,m_lWidgets);
+}
 
-    //sending the name
-    QModelIndex idx=viewOperations->index(tableView->selectionModel()->currentIndex().row(),3);
-    strLabel=idx.data().toString();*/
-    return true;
+void FrmCatch::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+    if (bFinished){
+        editFinished();
+    }
+}
+
+bool FrmCatch::applyChanges()
+{
+   bool bError=true;
+
+    int cur= mapper1->currentIndex();
+    bError=!submitMapperAndModel(mapper1);
+    if (!bError){
+        mapper1->setCurrentIndex(cur);
+    }
+
+    emit editLeave(true,false);
+    return !bError;
 }

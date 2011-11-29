@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmTables.ui'
 **
-** Created: Tue 28. Jun 09:54:35 2011
+** Created: Tue 29. Nov 10:15:23 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

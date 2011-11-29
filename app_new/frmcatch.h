@@ -35,8 +35,8 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         */
         void                                   previewRow(QModelIndex index);
         void                                   onItemSelection();
-        void                                   onEditLeave(const bool bFinished, const bool bDiscarded){;}
-        void                                   editFinished(){;}
+        void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
+        void                                   editFinished();
 
     private:
         //! Really Apply
@@ -47,7 +47,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         //! Apply Changes
         /*! Reimplemented from the PreviewTab base class; this is where we effectively apply the edits, after confirming through a dialog;
         */
-        bool                                   applyChanges(){return false;}//TODO: implement this!
+        bool                                   applyChanges();
         //! Filter combo box
         /*! Reimplemented from the PreviewTab base class
         */
@@ -85,10 +85,6 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
-        //! Update the sample structure
-        /*! Reimplemented from the PreviewTab base class
-        */
-        bool                                   updateSample();
         void                                   initCatchModel();
         void                                   initMapper1();
 

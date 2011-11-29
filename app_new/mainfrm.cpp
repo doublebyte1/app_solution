@@ -225,7 +225,6 @@ void MainFrm::initSecondaryFrm(SecondaryFrm* frm)
     SLOT(closeSecondaryFrm()),Qt::UniqueConnection);
 }
 
-
 bool MainFrm::readXMLFile(const QString strFileName)
 {
     //TODO: add some XML semantic  validation?
@@ -296,13 +295,15 @@ void MainFrm::loadTabs()
                                 break;
                             }
 
-                         vTabs.at(ct)->setLoading(true);
-                         if (!vTabs.at(ct)->next()){
-                            bOk=false;
-                            vTabs.at(ct)->setLoading(false);
-                            break;
-                         }
-                         vTabs.at(ct)->setLoading(false);
+                        if (ct<vTabs.size()-1){
+                             vTabs.at(ct)->setLoading(true);
+                             if (!vTabs.at(ct)->next()){
+                                bOk=false;
+                                vTabs.at(ct)->setLoading(false);
+                                break;
+                             }
+                             vTabs.at(ct)->setLoading(false);
+                        }
                     }
                      ct++;
 
@@ -390,7 +391,7 @@ void MainFrm::openRecentFile()
      QAction *action = qobject_cast<QAction *>(sender());
      if (action){
         if (!readXMLFile(action->data().toString()))
-            this->displayError(tr("Could not parse XML file! Are you sure this is a valid project file?"),true);
+            this->displayError(tr("Could not parse XML file! Are you sure it exists and is a valid project file?"),true);
         else
             loadTabs();
      }

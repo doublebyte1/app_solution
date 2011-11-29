@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcatch.ui'
 **
-** Created: Wed 16. Nov 19:44:57 2011
+** Created: Tue 29. Nov 10:24:04 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -36,14 +36,17 @@ QT_BEGIN_NAMESPACE
 class Ui_FrmCatch
 {
 public:
-    QVBoxLayout *verticalLayout_4;
+    QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_5;
     QLabel *lbHeader;
     QLabel *lbSource;
     QLabel *label_23;
     QHBoxLayout *horizontalLayout_4;
     QTableView *tableView;
+    QVBoxLayout *verticalLayout_4;
     QPushButton *pushNew;
+    QPushButton *pushEdit;
+    QPushButton *pushRemove;
     QGroupBox *groupDetails;
     QHBoxLayout *horizontalLayout_3;
     QVBoxLayout *verticalLayout_3;
@@ -80,8 +83,8 @@ public:
         if (FrmCatch->objectName().isEmpty())
             FrmCatch->setObjectName(QString::fromUtf8("FrmCatch"));
         FrmCatch->resize(770, 648);
-        verticalLayout_4 = new QVBoxLayout(FrmCatch);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_5 = new QVBoxLayout(FrmCatch);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         lbHeader = new QLabel(FrmCatch);
@@ -111,12 +114,12 @@ public:
         horizontalLayout_5->addWidget(lbSource);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_5);
+        verticalLayout_5->addLayout(horizontalLayout_5);
 
         label_23 = new QLabel(FrmCatch);
         label_23->setObjectName(QString::fromUtf8("label_23"));
 
-        verticalLayout_4->addWidget(label_23);
+        verticalLayout_5->addWidget(label_23);
 
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
@@ -132,16 +135,42 @@ public:
 
         horizontalLayout_4->addWidget(tableView);
 
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         pushNew = new QPushButton(FrmCatch);
         pushNew->setObjectName(QString::fromUtf8("pushNew"));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app_new/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNew->setIcon(icon);
 
-        horizontalLayout_4->addWidget(pushNew);
+        verticalLayout_4->addWidget(pushNew);
+
+        pushEdit = new QPushButton(FrmCatch);
+        pushEdit->setObjectName(QString::fromUtf8("pushEdit"));
+        sizePolicy.setHeightForWidth(pushEdit->sizePolicy().hasHeightForWidth());
+        pushEdit->setSizePolicy(sizePolicy);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app_new/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEdit->setIcon(icon1);
+        pushEdit->setCheckable(true);
+
+        verticalLayout_4->addWidget(pushEdit);
+
+        pushRemove = new QPushButton(FrmCatch);
+        pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
+        sizePolicy.setHeightForWidth(pushRemove->sizePolicy().hasHeightForWidth());
+        pushRemove->setSizePolicy(sizePolicy);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app_new/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon2);
+
+        verticalLayout_4->addWidget(pushRemove);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_4);
+        horizontalLayout_4->addLayout(verticalLayout_4);
+
+
+        verticalLayout_5->addLayout(horizontalLayout_4);
 
         groupDetails = new QGroupBox(FrmCatch);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
@@ -277,7 +306,7 @@ public:
         horizontalLayout_3->addLayout(verticalLayout_2);
 
 
-        verticalLayout_4->addWidget(groupDetails);
+        verticalLayout_5->addWidget(groupDetails);
 
         horizontalLayout_16 = new QHBoxLayout();
         horizontalLayout_16->setObjectName(QString::fromUtf8("horizontalLayout_16"));
@@ -291,18 +320,18 @@ public:
         horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
         pushPrevious = new QPushButton(groupBox_2);
         pushPrevious->setObjectName(QString::fromUtf8("pushPrevious"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushPrevious->setIcon(icon1);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushPrevious->setIcon(icon3);
 
         horizontalLayout_10->addWidget(pushPrevious);
 
         pushNext = new QPushButton(groupBox_2);
         pushNext->setObjectName(QString::fromUtf8("pushNext"));
         pushNext->setEnabled(false);
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNext->setIcon(icon2);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app_new/forward.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNext->setIcon(icon4);
 
         horizontalLayout_10->addWidget(pushNext);
 
@@ -310,7 +339,7 @@ public:
         horizontalLayout_16->addWidget(groupBox_2);
 
 
-        verticalLayout_4->addLayout(horizontalLayout_16);
+        verticalLayout_5->addLayout(horizontalLayout_16);
 
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
@@ -334,6 +363,8 @@ public:
         QObject::connect(pushNew, SIGNAL(clicked()), FrmCatch, SLOT(createRecord()));
         QObject::connect(tableView, SIGNAL(clicked(QModelIndex)), FrmCatch, SLOT(previewRow(QModelIndex)));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), FrmCatch, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(pushEdit, SIGNAL(clicked(bool)), FrmCatch, SLOT(editRecord(bool)));
+        QObject::connect(pushRemove, SIGNAL(clicked()), FrmCatch, SLOT(removeRecord()));
 
         QMetaObject::connectSlotsByName(FrmCatch);
     } // setupUi
@@ -363,6 +394,26 @@ public:
         pushNew->setWhatsThis(QApplication::translate("FrmCatch", "Creates new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushNew->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushEdit->setToolTip(QApplication::translate("FrmCatch", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushEdit->setStatusTip(QApplication::translate("FrmCatch", "Edit record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushEdit->setWhatsThis(QApplication::translate("FrmCatch", "Edits record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushEdit->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove->setToolTip(QApplication::translate("FrmCatch", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove->setStatusTip(QApplication::translate("FrmCatch", "Remove record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove->setWhatsThis(QApplication::translate("FrmCatch", "Removes record", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove->setText(QString());
         groupDetails->setTitle(QApplication::translate("FrmCatch", "Details", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("FrmCatch", "Commercial Category", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP

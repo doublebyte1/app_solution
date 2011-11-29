@@ -50,6 +50,7 @@ FrmTrip::~FrmTrip()
 void FrmTrip::onItemSelection()
 {
     pushNext->setEnabled(tableView->selectionModel()->hasSelection());
+    pushPrevious->setEnabled(tableView->selectionModel()->hasSelection());
 }
 
 void FrmTrip::previewRow(QModelIndex index)

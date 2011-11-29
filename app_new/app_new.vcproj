@@ -1554,7 +1554,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\ktip.png;.\pencil.png;.\add.png;.\launch.png;.\configure_toolbars.png;.\kget.png;.\tree.png;.\reload.png;.\bt.png;.\folder_inbox.png;.\folder_outbox.png;.\kpresenter.png;.\taskbar.png;.\exit.png;.\fileclose.png;.\qmessagebox-crit.ico;.\folder.png;.\kcoloredit.png;.\vesself.png;.\3floppy_unmount.png;.\editcopy.png;.\unmovable.png;.\kontact.png;.\qt-logo.gif;.\qt-logo.jpg;.\empty.png;.\filenew.png;.\pencil.png;.\lsd.png;.\vesseld.png;.\glsd.png;.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png;.\trashcan.png;.\exec.png;.\stylesheet.qss;.\mail_find.png;.\msdata.xsd;.\konqueror.png"
+						AdditionalDependencies="$(InputPath);.\locationbar_erase.png;.\ktip.png;.\pencil.png;.\add.png;.\launch.png;.\configure_toolbars.png;.\kget.png;.\tree.png;.\reload.png;.\bt.png;.\folder_inbox.png;.\folder_outbox.png;.\kpresenter.png;.\taskbar.png;.\exit.png;.\fileclose.png;.\qmessagebox-crit.ico;.\folder.png;.\kcoloredit.png;.\vesself.png;.\3floppy_unmount.png;.\editcopy.png;.\unmovable.png;.\kontact.png;.\qt-logo.gif;.\qt-logo.jpg;.\empty.png;.\filenew.png;.\lsd.png;.\vesseld.png;.\glsd.png;.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png;.\trashcan.png;.\exec.png;.\stylesheet.qss;.\mail_find.png;.\msdata.xsd;.\konqueror.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -1565,7 +1565,7 @@
 						Name="VCCustomBuildTool"
 						Description="Rcc&apos;ing $(InputFileName)..."
 						CommandLine="&quot;$(QTDIR)\bin\rcc.exe&quot; -name &quot;$(InputName)&quot; -no-compress &quot;$(InputPath)&quot; -o .\GeneratedFiles\qrc_$(InputName).cpp&#x0D;&#x0A;"
-						AdditionalDependencies="$(InputPath);.\ktip.png;.\pencil.png;.\add.png;.\launch.png;.\configure_toolbars.png;.\kget.png;.\tree.png;.\reload.png;.\bt.png;.\folder_inbox.png;.\folder_outbox.png;.\kpresenter.png;.\taskbar.png;.\exit.png;.\fileclose.png;.\qmessagebox-crit.ico;.\folder.png;.\kcoloredit.png;.\vesself.png;.\3floppy_unmount.png;.\editcopy.png;.\unmovable.png;.\kontact.png;.\qt-logo.gif;.\qt-logo.jpg;.\empty.png;.\filenew.png;.\pencil.png;.\lsd.png;.\vesseld.png;.\glsd.png;.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png;.\trashcan.png;.\exec.png;.\stylesheet.qss;.\mail_find.png;.\msdata.xsd;.\konqueror.png"
+						AdditionalDependencies="$(InputPath);.\locationbar_erase.png;.\ktip.png;.\pencil.png;.\add.png;.\launch.png;.\configure_toolbars.png;.\kget.png;.\tree.png;.\reload.png;.\bt.png;.\folder_inbox.png;.\folder_outbox.png;.\kpresenter.png;.\taskbar.png;.\exit.png;.\fileclose.png;.\qmessagebox-crit.ico;.\folder.png;.\kcoloredit.png;.\vesself.png;.\3floppy_unmount.png;.\editcopy.png;.\unmovable.png;.\kontact.png;.\qt-logo.gif;.\qt-logo.jpg;.\empty.png;.\filenew.png;.\lsd.png;.\vesseld.png;.\glsd.png;.\ok.png;.\cancel.png;.\password.png;.\medfisis.ico;.\forward.png;.\back.png;.\khexedit.png;.\kview.png;.\gls.png;.\ls.png;.\vessel.png;.\trashcan.png;.\exec.png;.\stylesheet.qss;.\mail_find.png;.\msdata.xsd;.\konqueror.png"
 						Outputs=".\GeneratedFiles\qrc_$(InputName).cpp"
 					/>
 				</FileConfiguration>
@@ -2072,6 +2072,26 @@
 			</File>
 			<File
 				RelativePath=".\launch.png"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\locationbar_erase.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"

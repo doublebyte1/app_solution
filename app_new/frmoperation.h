@@ -88,10 +88,6 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
-        //! Update the sample structure
-        /*! Reimplemented from the PreviewTab base class
-        */
-        //bool                                   updateSample();
         void                                   initOperationModel();
         void                                   initMapper1();
 
