@@ -144,23 +144,23 @@ void FrmCatch::initMapper1()
 
     cmbCategory->setModel(tCatch->relationModel(2));
     cmbCategory->setModelColumn(
-        tCatch->relationModel(2)->fieldIndex(tr("Name")));
+        tCatch->relationModel(2)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbWeightUnits()->setModel(tCatch->relationModel(5));
     catchInputCtrl->pCmbWeightUnits()->setModelColumn(
-        tCatch->relationModel(5)->fieldIndex(tr("Name")));
+        tCatch->relationModel(5)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbBoxUnits()->setModel(tCatch->relationModel(8));
     catchInputCtrl->pCmbBoxUnits()->setModelColumn(
-        tCatch->relationModel(8)->fieldIndex(tr("Name")));
+        tCatch->relationModel(8)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbUnitUnits()->setModel(tCatch->relationModel(11));
     catchInputCtrl->pCmbUnitUnits()->setModelColumn(
-        tCatch->relationModel(11)->fieldIndex(tr("Name")));
+        tCatch->relationModel(11)->fieldIndex("Name"));
 
     cmbUnits->setModel(tCatch->relationModel(14));
     cmbUnits->setModelColumn(
-        tCatch->relationModel(14)->fieldIndex(tr("Name")));
+        tCatch->relationModel(14)->fieldIndex("Name"));
 
     mapper1->addMapping(cmbCategory, 2);
     mapper1->addMapping(catchInputCtrl->pDoubleSpinTotalE(), 3);
@@ -191,7 +191,7 @@ void FrmCatch::initMapper1()
 
 void FrmCatch::initMappers()
 {
-    //Nothing
+    //Does Nothing
 }
 
 void FrmCatch::beforeShow()
@@ -267,15 +267,15 @@ void FrmCatch::initCatchModel()
     if (tCatch!=0) delete tCatch;
 
     tCatch=new QSqlRelationalTableModel();
-    tCatch->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Catch"),
+    tCatch->setTable(QSqlDatabase().driver()->escapeIdentifier("Sampled_Catch",
         QSqlDriver::TableName));
 
-    tCatch->setRelation(2, QSqlRelation(tr("Ref_Commercial_Categories"), tr("ID"), tr("Name")));
+    tCatch->setRelation(2, QSqlRelation("Ref_Commercial_Categories", "ID", "Name"));
 
-    tCatch->setRelation(5, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));//catch_weight units
-    tCatch->setRelation(8, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));//no_boxes_units
-    tCatch->setRelation(11, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));//units units
-    tCatch->setRelation(14, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));//sample units
+    tCatch->setRelation(5, QSqlRelation("Ref_Units", "ID", "Name"));//catch_weight units
+    tCatch->setRelation(8, QSqlRelation("Ref_Units", "ID", "Name"));//no_boxes_units
+    tCatch->setRelation(11, QSqlRelation("Ref_Units", "ID", "Name"));//units units
+    tCatch->setRelation(14, QSqlRelation("Ref_Units", "ID", "Name"));//sample units
 
     tCatch->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tCatch->sort(0,Qt::AscendingOrder);
@@ -297,9 +297,9 @@ void FrmCatch::filterModel4Combo()
         }
 
     strQuery=
-        tr("SELECT     id_commercial_category")+
-        tr(" FROM         dbo.Sampled_Fishing_Operations_Categories")+
-        tr(" WHERE     (id_fishing_operation = ") + QVariant(m_sample->operationId).toString() + tr(")");
+        "SELECT     id_commercial_category"
+        " FROM         dbo.Sampled_Fishing_Operations_Categories"
+        " WHERE     (id_fishing_operation = " + QVariant(m_sample->operationId).toString() + ")";
 
     query.prepare(strQuery);
     if (!query.exec()){
@@ -307,13 +307,13 @@ void FrmCatch::filterModel4Combo()
         return;
     }
 
-    QString strFilter(tr(""));
+    QString strFilter("");
     while (query.next()) {
-        strFilter.append(tr("ID=") + query.value(0).toString());
-        strFilter.append(tr(" OR "));
+        strFilter.append("ID=" + query.value(0).toString());
+        strFilter.append(" OR ");
     }
     if (!strFilter.isEmpty())
-        strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+        strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
 
     tCatch->relationModel(2)->setFilter(strFilter);
 

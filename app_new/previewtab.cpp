@@ -173,9 +173,6 @@ void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
     m_table->setSelectionBehavior( QAbstractItemView::SelectRows);
     m_table->horizontalHeader()->setClickable(false);
     m_table->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
-
-    //m_table->setItemDelegate(new QSqlRelationalDelegate(m_table));
-
 }
 
 bool PreviewTab::afterApply()
@@ -257,8 +254,6 @@ bool PreviewTab::next()
 
     if (!updateSample()) return false;
 
-    //QString strLabel;
-    //emit forward(lbHead->text().isEmpty()? strLabel :lbHead->text()+ tr("-> ") + strLabel);
     emit forward("");
     return true;
 }

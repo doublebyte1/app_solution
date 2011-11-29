@@ -93,7 +93,13 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         void                                   setHeader(){setLbHead(this->lbHeader);}
         void                                   initModels();
         void                                   initMappers();
+        //! Init UI
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   initUI();
+        //! Initializations before calling the onShow PreviewTab function
+        /*! Reimplemented from the PreviewTab base class
+        */
         void                                   beforeShow();
 
         //! Get the title label of the next form

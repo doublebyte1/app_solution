@@ -199,10 +199,15 @@ class PreviewTab : public GenericTab
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
         bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);
+
         bool                                  discardNewRecord();
+        //! Update Sample
+        /*! Helper function that updates the sample structure, from a given index
+          \sa updateSample()
+        */
         bool                                  updateSample(const QModelIndex& idx);
         //! Update Sample
-        /*! Helper function that updates the sample structure
+        /*! Override of updateSample(const QModelIndex& idx) that uses the current selected index, for perfoming the update.
           \sa updateSample(const QModelIndex& idx, const int id)
         */
         bool                                  updateSample();

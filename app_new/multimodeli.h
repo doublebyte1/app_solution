@@ -28,6 +28,8 @@ class MultiModelI
         //! List to Model
         /*! This is the function that translates the multiple choices on the List, to multiple records on the model
         //createRecord + submit
+        /par bNew flag to indicate if we are inserting a new record (true) or on an edit (false)
+        /return boolean as success or failure
         */
         bool                list2Model(const bool bNew=true);
         //! Model to List

@@ -141,12 +141,12 @@ QWidget(parent, flags){
 
 void filterTable(QSqlTableModel* table)
 {
-    table->setFilter(QObject::tr("Name<>'") + qApp->translate("null_replacements", strNa)
-            + QObject::tr("' AND Name<>'") + qApp->translate("bin", strOutside)
-            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strMissing)
-            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strOther)
-            + QObject::tr("' AND Name<>'") + qApp->translate("null_replacements", strUnknown)
-            + QObject::tr("'"));
+    table->setFilter("Name<>'" + qApp->translate("null_replacements", strNa)
+            + "' AND Name<>'" + qApp->translate("bin", strOutside)
+            + "' AND Name<>'" + qApp->translate("null_replacements", strMissing)
+            + "' AND Name<>'" + qApp->translate("null_replacements", strOther)
+            + "' AND Name<>'" + qApp->translate("null_replacements", strUnknown)
+            + "'");
 }
 
 void resizeToVisibleColumns ( QTableView* table )

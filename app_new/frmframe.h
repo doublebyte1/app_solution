@@ -121,8 +121,10 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   initFrModel();
         void                                   initMappers();
         void                                   initMapper2();
+        //! Init UI
+        /*! Reimplemented from the genericTab base class
+        */
         void                                   initUI();
-
         QSqlQueryModel*                        viewFrameTime;
         QSqlRelationalTableModel*              tFrameTime;
         QSqlTableModel*                        frModel;

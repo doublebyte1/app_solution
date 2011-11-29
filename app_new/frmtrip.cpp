@@ -159,14 +159,14 @@ void FrmTrip::initModels()
 
      tRefGears = new QSqlQueryModel;
      tRefGears->setQuery(
-        tr("SELECT     ID, Name") +
-        tr(" FROM         dbo.Ref_Gears ORDER BY ID ASC")
+        "SELECT     ID, Name"
+        " FROM         dbo.Ref_Gears ORDER BY ID ASC"
          );
 
     if (tTripGears!=0) delete tTripGears;
 
     tTripGears=new QSqlTableModel();
-    tTripGears->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Trips_Gears"),
+    tTripGears->setTable(QSqlDatabase().driver()->escapeIdentifier("Sampled_Fishing_Trips_Gears",
         QSqlDriver::TableName));
     tTripGears->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tTripGears->sort(0,Qt::AscendingOrder);
@@ -246,27 +246,27 @@ void FrmTrip::initMapper1()
 
     cmbSite->setModel(tTrips->relationModel(4));
     cmbSite->setModelColumn(
-        tTrips->relationModel(4)->fieldIndex(tr("Name")));
+        tTrips->relationModel(4)->fieldIndex("Name"));
 
     cmbSampler->setModel(tTrips->relationModel(5));
     cmbSampler->setModelColumn(
-        tTrips->relationModel(5)->fieldIndex(tr("Name")));
+        tTrips->relationModel(5)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbWeightUnits()->setModel(tTrips->relationModel(12));
     catchInputCtrl->pCmbWeightUnits()->setModelColumn(
-        tTrips->relationModel(12)->fieldIndex(tr("Name")));
+        tTrips->relationModel(12)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbBoxUnits()->setModel(tTrips->relationModel(15));
     catchInputCtrl->pCmbBoxUnits()->setModelColumn(
-        tTrips->relationModel(15)->fieldIndex(tr("Name")));
+        tTrips->relationModel(15)->fieldIndex("Name"));
 
     catchInputCtrl->pCmbUnitUnits()->setModel(tTrips->relationModel(20));
     catchInputCtrl->pCmbUnitUnits()->setModelColumn(
-        tTrips->relationModel(20)->fieldIndex(tr("Name")));
+        tTrips->relationModel(20)->fieldIndex("Name"));
 
     cmbFishingZone->setModel(tTrips->relationModel(22));
     cmbFishingZone->setModelColumn(
-        tTrips->relationModel(22)->fieldIndex(tr("Name")));
+        tTrips->relationModel(22)->fieldIndex("Name"));
 
     mapper1->addMapping(cmbSite, 4);
     mapper1->addMapping(cmbSampler, 5);
@@ -326,13 +326,13 @@ void FrmTrip::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,3,QString("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,tr("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
 }
 
 void FrmTrip::beforeShow()
@@ -521,12 +521,12 @@ void FrmTrip::initTripModel()
     tTrips=new QSqlRelationalTableModel();
     tTrips->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Fishing_Trips"),
         QSqlDriver::TableName));
-    tTrips->setRelation(4, QSqlRelation(tr("Ref_Abstract_LandingSite"), tr("ID"), tr("Name")));
-    tTrips->setRelation(5, QSqlRelation(tr("Ref_Samplers"), tr("ID"), tr("Name")));
-    tTrips->setRelation(12, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tTrips->setRelation(15, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tTrips->setRelation(20, QSqlRelation(tr("Ref_Units"), tr("ID"), tr("Name")));
-    tTrips->setRelation(22, QSqlRelation(tr("Ref_Fishing_Zones"), tr("ID"), tr("Name")));
+    tTrips->setRelation(4, QSqlRelation("Ref_Abstract_LandingSite", "ID", "Name"));
+    tTrips->setRelation(5, QSqlRelation("Ref_Samplers", "ID", "Name"));
+    tTrips->setRelation(12, QSqlRelation("Ref_Units", "ID", "Name"));
+    tTrips->setRelation(15, QSqlRelation("Ref_Units", "ID", "Name"));
+    tTrips->setRelation(20, QSqlRelation("Ref_Units", "ID", "Name"));
+    tTrips->setRelation(22, QSqlRelation("Ref_Fishing_Zones", "ID", "Name"));
     tTrips->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tTrips->sort(0,Qt::AscendingOrder);
     tTrips->select();
@@ -549,17 +549,17 @@ void FrmTrip::filterModel4Combo()
         }
 
         strQuery=
-        tr("SELECT     TOP (100) PERCENT dbo.Ref_Abstract_LandingSite.ID") +
-        tr(" FROM         dbo.Ref_Minor_Strata INNER JOIN") +
-        tr("                      dbo.FR_Time ON dbo.Ref_Minor_Strata.id_frame_time = dbo.FR_Time.ID INNER JOIN") +
-        tr("                      dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID INNER JOIN") +
-        tr("                      dbo.FR_Sub_Frame ON dbo.FR_Frame.ID = dbo.FR_Sub_Frame.id_frame INNER JOIN") +
-        tr("                      dbo.FR_GLS2ALS ON dbo.FR_Sub_Frame.ID = dbo.FR_GLS2ALS.id_sub_frame INNER JOIN") +
-        tr("                      dbo.Ref_Abstract_LandingSite ON dbo.FR_GLS2ALS.id_abstract_landingsite = dbo.Ref_Abstract_LandingSite.ID") +
-        tr(" WHERE     (dbo.Ref_Minor_Strata.ID = ") + QVariant(m_sample->minorStrataId).toString() + (" ) AND (dbo.FR_GLS2ALS.id_gls =") +
-        tr("                  (SELECT     id_gls") +
-        tr("                    FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1") +
-        tr("                    WHERE      (ID = ") + QVariant(m_sample->minorStrataId).toString() + (")))")
+        "SELECT     TOP (100) PERCENT dbo.Ref_Abstract_LandingSite.ID"
+        " FROM         dbo.Ref_Minor_Strata INNER JOIN"
+        "                      dbo.FR_Time ON dbo.Ref_Minor_Strata.id_frame_time = dbo.FR_Time.ID INNER JOIN"
+        "                      dbo.FR_Frame ON dbo.FR_Time.id_frame = dbo.FR_Frame.ID INNER JOIN"
+        "                      dbo.FR_Sub_Frame ON dbo.FR_Frame.ID = dbo.FR_Sub_Frame.id_frame INNER JOIN"
+        "                      dbo.FR_GLS2ALS ON dbo.FR_Sub_Frame.ID = dbo.FR_GLS2ALS.id_sub_frame INNER JOIN"
+        "                      dbo.Ref_Abstract_LandingSite ON dbo.FR_GLS2ALS.id_abstract_landingsite = dbo.Ref_Abstract_LandingSite.ID"
+        " WHERE     (dbo.Ref_Minor_Strata.ID = " + QVariant(m_sample->minorStrataId).toString() + " ) AND (dbo.FR_GLS2ALS.id_gls ="
+        "                  (SELECT     id_gls"
+        "                    FROM          dbo.Ref_Minor_Strata AS Ref_Minor_Strata_1"
+        "                    WHERE      (ID = " + QVariant(m_sample->minorStrataId).toString() + ")))"
         ;//for getting all the boats on the frame, just remove the last condition
 
         query.prepare(strQuery);
@@ -568,22 +568,22 @@ void FrmTrip::filterModel4Combo()
         return;
         }
 
-        QString strFilter(tr(""));
+        QString strFilter("");
         while (query.next()) {
-            strFilter.append(tr("ID=") + query.value(0).toString());
-            strFilter.append(tr(" OR "));
+            strFilter.append("ID=" + query.value(0).toString());
+            strFilter.append(" OR ");
         }
         if (!strFilter.isEmpty())
-            strFilter=strFilter.remove(strFilter.size()-tr(" OR ").length(),tr(" OR ").length());
+            strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
 
         tTrips->relationModel(4)->setFilter(strFilter);
 
     }else{
 
         strQuery=
-        tr("SELECT     id_abstract_LandingSite") +
-        tr(" FROM         dbo.Sampled_Cell") +
-        tr(" WHERE     (ID = :id)")
+        "SELECT     id_abstract_LandingSite"
+        " FROM         dbo.Sampled_Cell"
+        " WHERE     (ID = :id)"
         ;
 
         query.prepare(strQuery);
@@ -600,7 +600,7 @@ void FrmTrip::filterModel4Combo()
         }
 
         query.first();
-        strFilter.append(tr("ID=") + query.value(0).toString());
+        strFilter.append("ID=" + query.value(0).toString());
 
         if (!strFilter.isEmpty()){
             tTrips->relationModel(4)->setFilter(strFilter);
@@ -610,20 +610,7 @@ void FrmTrip::filterModel4Combo()
 
     initMapper1();
 }
-/*
-bool FrmTrip::updateSample()
-{
-    if (!tableView->selectionModel()->hasSelection())
-        return false;
 
-    //updating the sample structure
-    QModelIndex idx=viewTrips->index(tableView->selectionModel()->currentIndex().row(),0);
-
-    //TODO: update the vessel here
-    m_sample->tripId=idx.data().toInt();
-    return true;
-}
-*/
 bool FrmTrip::getNextLabel(QString& strLabel)
 {
     if (!tableView->selectionModel()->hasSelection())
