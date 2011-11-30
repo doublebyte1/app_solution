@@ -166,7 +166,7 @@ void FrmOperation::initModels()
     tOpCat->sort(0,Qt::AscendingOrder);
     tOpCat->select();
 
-     multiModelI=new MultiModelI(listCategories,tRefCat,tOpCat);
+    multiModelI=new MultiModelI(listCategories,tRefCat,tOpCat,"select count(id) from Sampled_catch WHERE (id_fishing_operation=:id)");
 }
 
 void FrmOperation::initUI()

@@ -172,7 +172,8 @@ void FrmTrip::initModels()
     tTripGears->sort(0,Qt::AscendingOrder);
     tTripGears->select();
 
-     multiModelI=new MultiModelI(listGears,tRefGears,tTripGears);
+     multiModelI=new MultiModelI(listGears,tRefGears,tTripGears,
+         "select count(id) from Sampled_Fishing_operations WHERE (id_fishing_trip=:id)");
 }
 
 void FrmTrip::initUI()

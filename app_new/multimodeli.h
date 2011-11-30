@@ -22,7 +22,7 @@ class MultiModelI
     //Q_OBJECT
 
     public:
-        MultiModelI(QListView* listView, QSqlQueryModel* source, QSqlTableModel* output);
+        MultiModelI(QListView* listView, QSqlQueryModel* source, QSqlTableModel* output, QString strSql);
         ~MultiModelI();
 
         //! List to Model
@@ -47,11 +47,13 @@ class MultiModelI
     private:
         void                init();
         bool                findId4Item(const int row, int& id);
-
+        bool                checkDependants(const int fid, bool& hasDependants);
         int                 m_parentId;/**< parent ID for  the multiple records on the output table */
         QListView*          m_listView;
         QSqlQueryModel*     m_source;/**< table to feed the widget */
         QSqlTableModel*     m_output;/**< table to write the choices */
+        QString             m_strSql;/**< dependant table string*/
+        QModelIndexList     m_selectedIndexes;/**< indexes that are read from the model */
 
 };
 #endif //MULTIMODELI_H
