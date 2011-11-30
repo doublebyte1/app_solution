@@ -20,11 +20,11 @@ void MultiModelI::init()
     m_listView->setModelColumn(1);
 }
 
-bool MultiModelI::list2Model(const bool bNew)
+bool MultiModelI::list2Model(QString& strError, const bool bNew)
 {
-    if (!bNew) 
-        if (!m_output->removeRows(0,m_output->rowCount()))
-            return false;
+    if (!bNew){
+        if (!m_output->removeRows(0,m_output->rowCount())) return false;
+    }
 
     if (m_parentId==-1) return false;
     //1 - for each selected index: see the id and create a new record on the main table with it
@@ -44,7 +44,12 @@ bool MultiModelI::list2Model(const bool bNew)
             m_output->setData(idx,m_parentId);
             idx=m_output->index(m_output->rowCount()-1,2);
             m_output->setData(idx,itemId);
-            if (!m_output->submitAll()) return false;
+            if (!m_output->submitAll()){
+                if (m_output->lastError().type()!=QSqlError::NoError){
+                        strError=m_output->lastError().text();
+                }else strError=QObject::tr("Error submiting records to multimodel!");
+                return false;
+            }
             prevRow=index.row();
         }
     }

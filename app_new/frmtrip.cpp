@@ -416,8 +416,9 @@ bool FrmTrip::reallyApply()
                 //Comiting Sampled_Fishing_Trips_Gears
                 QModelIndex idd=tTrips->index(tTrips->rowCount()-1,0);
                 multiModelI->setParentId(idd.data().toInt());
-                if (!multiModelI->list2Model()){
-                    emit showError(tr("Could not associate gears to this fishing trip!"));
+                QString strError;
+                if (!multiModelI->list2Model(strError)){
+                    emit showError(strError);
                     bError=true;
                 }
             }
@@ -674,7 +675,7 @@ bool FrmTrip::applyChanges()
             }
             m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
 
-            bError=submitDates(mapperStartDt, mapperEndDt);
+            bError=!submitDates(mapperStartDt, mapperEndDt);
 
             if (!bError){
                 mapperStartDt->setCurrentIndex(startIdx);
@@ -689,8 +690,9 @@ bool FrmTrip::applyChanges()
 
                     QModelIndex idd=tTrips->index(0,0);
                     multiModelI->setParentId(idd.data().toInt());
-                    if (!multiModelI->list2Model(false)){
-                        emit showError(tr("Could not associate gears to this fishing trip!"));
+                    QString strError;
+                    if (!multiModelI->list2Model(strError,false)){
+                        emit showError(strError);
                         bError=true;
                     }
                 }// mapper 1 submission

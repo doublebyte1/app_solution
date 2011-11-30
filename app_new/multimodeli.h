@@ -31,7 +31,7 @@ class MultiModelI
         /par bNew flag to indicate if we are inserting a new record (true) or on an edit (false)
         /return boolean as success or failure
         */
-        bool                list2Model(const bool bNew=true);
+        bool                list2Model(QString& strError, const bool bNew=true);
         //! Model to List
         /*! This is the function that translates the multiple choices on the model, to the list widget
         \param strField field that will be used for the filter, as string

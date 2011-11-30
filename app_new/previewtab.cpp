@@ -74,7 +74,7 @@ bool PreviewTab::submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* 
             bError=true;
         }
     }
-    return bError;
+    return !bError;
 }
 
 bool PreviewTab::submitMapperAndModel(QDataWidgetMapper* aMapper)
@@ -350,7 +350,7 @@ bool PreviewTab::translateIndex(const QModelIndex inIdx, QModelIndex& outIdx)
 void PreviewTab::removeRecord()
 {
     if (!m_table->selectionModel()->hasSelection()){
-        emit showError(tr("You have not selected any record to removed!"));
+        emit showError(tr("You have not selected any record to remove!"));
         return;
     }
 
@@ -370,7 +370,7 @@ void PreviewTab::removeRecord()
     QMessageBox msgBox;
     msgBox.setText(tr("You have selected record '") + idName.data().toString() +
         tr("' for deletion."));
-    msgBox.setInformativeText(tr("Are you sure you want to remove this record?"));
+    msgBox.setInformativeText(tr("Are you sure you want to remove this record and all its dependants?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
     int ret = msgBox.exec();

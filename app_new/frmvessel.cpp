@@ -551,7 +551,6 @@ bool FrmVessel::applyChanges()
 
     bError=!submitMapperAndModel(mapper1);
     if (!bError){
-        mapper1->setCurrentIndex(cur1);
         if (!m_sample->bLogBook){
 
             int cur2= mapper2->currentIndex();
@@ -571,10 +570,10 @@ bool FrmVessel::applyChanges()
             mapper2->setCurrentIndex(cur2);
         }
 
-    }else{
-        emit showError (tr("Could not submit changes to this record!"));
     }
-    emit editLeave(true,false);
+    mapper1->setCurrentIndex(cur1);
+
+    if (!bError) emit editLeave(true,false);
     return !bError;
 }
 

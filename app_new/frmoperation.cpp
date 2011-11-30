@@ -396,7 +396,8 @@ bool FrmOperation::reallyApply()
                         //Comiting Sampled_Fishing_Operations_Categories
                         QModelIndex idd=tOperations->index(tOperations->rowCount()-1,0);
                         multiModelI->setParentId(idd.data().toInt());
-                        if (!multiModelI->list2Model()){
+                        QString strError;
+                        if (!multiModelI->list2Model(strError)){
                             emit showError(tr("Could not associate commercial categories to this fishing operation!"));
                             bError=true;
                         }
@@ -621,8 +622,9 @@ bool FrmOperation::applyChanges()
 
                     QModelIndex idd=tOperations->index(0,0);
                     multiModelI->setParentId(idd.data().toInt());
-                    if (!multiModelI->list2Model(false)){
-                        emit showError(tr("Could not associate categories to this fishing operation!"));
+                    QString strError;
+                    if (!multiModelI->list2Model(strError,false)){
+                        emit showError(strError);
                         bError=true;
                     }
 

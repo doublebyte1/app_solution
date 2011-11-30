@@ -306,7 +306,7 @@ bool FrmVesselType::applyChanges()
         mapper1->setCurrentIndex(cur);
     }
 
-    emit editLeave(true,false);
+    if (!bError) emit editLeave(true,false);
     return !bError;
 }
 
