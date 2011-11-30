@@ -1778,10 +1778,9 @@ static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const Q
         return false;
     }
 
-    //it does not have anything after! (last table with dates)
-    if (it.value().m_next.compare(qApp->translate("null_replacements", strNa))==0) return true;
-
     if (strTable.compare(curTable)==0){
+        //it does not have anything after! (last table with dates)
+        if (it.value().m_next.compare(qApp->translate("null_replacements", strNa))==0) return true;
         return onCheckDependantDates(mapTables,curTable,curStartDt,curEndDt,it.value().m_next,id,strError);
     }else{
 
