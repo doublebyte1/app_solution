@@ -720,14 +720,12 @@ void MainFrm::initTabs()
          connect(vTabs.at(i), SIGNAL(showStatus(QString)), this,
         SLOT(statusShow(QString)),Qt::UniqueConnection);
 
-         /*
-         if (i < vTabs.size()-1){
-             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
-            SLOT(fillHeader(const QString)),Qt::UniqueConnection);
-
-             connect(vTabs.at(i), SIGNAL(forward(const QString)), vTabs.at(i+1),
-            SLOT(onShowForm()),Qt::UniqueConnection);
-         }*/
+         //each remove on a table, triggers a preview wuery on the following tabs
+         //(so that we don't have "ghost" records lying around the tables!)
+         for (int j=i+1; j < vTabs.size(); ++j){
+             connect(vTabs.at(i), SIGNAL(recordRemoved()), vTabs.at(j),
+            SLOT(setPreviewQuery()));
+         }
 
         this->tabWidget->insertTab(vTabs.size()
         ,vTabs.at(i), vTabs.at(i)->title());

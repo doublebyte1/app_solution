@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>814</width>
+    <width>830</width>
     <height>536</height>
    </rect>
   </property>
@@ -148,6 +148,9 @@
          <property name="icon">
           <iconset resource="app_new.qrc">
            <normaloff>:/app_new/cancel.png</normaloff>:/app_new/cancel.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Del</string>
          </property>
         </widget>
        </item>

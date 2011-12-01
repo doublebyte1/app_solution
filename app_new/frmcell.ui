@@ -163,6 +163,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <iconset resource="app_new.qrc">
            <normaloff>:/app_new/cancel.png</normaloff>:/app_new/cancel.png</iconset>
          </property>
+         <property name="shortcut">
+          <string>Del</string>
+         </property>
         </widget>
        </item>
        <item>

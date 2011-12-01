@@ -116,14 +116,12 @@ bool MultiModelI::model2List(const QString strField)
 
         if (list.isEmpty()) return false;
         QModelIndex idx2=list.at(0);//m_source->index(j,0);//index on source table
-        //QModelIndex idx3=m_source->index(list.at(0).row(),1);
 
         if (!idx2.isValid()) return false;
         m_listView->selectionModel()->select(idx2,QItemSelectionModel::Rows | QItemSelectionModel::Select);
         m_listView->scrollTo(m_listView->selectionModel()->selectedIndexes().last());
 
         m_selectedIndexes.push_back(idx2);
-        //m_selectedIndexes.push_back(idx3);
     }
 
     return true;

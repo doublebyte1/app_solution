@@ -139,11 +139,6 @@ class PreviewTab : public GenericTab
         */
         void                                  initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
         //! A pure virtual member.
-        /*! In this function we set the query that displays the records on the preview container;
-         /sa filterModel4Combo(), uI4NewRecord(), genericCreateRecord()
-        */
-        virtual void                          setPreviewQuery()=0;
-        //! A pure virtual member.
         /*! In this function we set the query that filters the combobox for the selected top-level id;
          /sa setPreviewQuery(), uI4NewRecord(), genericCreateRecord()
         */
@@ -215,6 +210,7 @@ class PreviewTab : public GenericTab
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 
     signals:
+        void                                  recordRemoved();/**< signal to indicate that a record has been removed from the model (and table view)*/
         void                                  isLogBook(const bool bIsLogbook);/**< signal to indicate if this is a logbook or sampling form*/
         void                                  blockCatchUISignals(const bool bBlock);/**< signal to block/unblock the CatchInputCtrl signals*/
         //! Leaving Edit Mode
@@ -257,6 +253,11 @@ class PreviewTab : public GenericTab
                                                     const QDateTime& curEndDt, QString strTable, int id,QString& strError);
 
     private slots:
+        //! A pure virtual member.
+        /*! In this function we set the query that displays the records on the preview container;
+         /sa filterModel4Combo(), uI4NewRecord(), genericCreateRecord()
+        */
+        virtual void                          setPreviewQuery()=0;
         //! Enable/Disable edit/remove buttons
         /*! This is an utility function, that enables the edit/remove buttons in according to the existence of
         records on tableView. It is fired by tableView signals of add/remove records.

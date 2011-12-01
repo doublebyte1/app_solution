@@ -397,6 +397,7 @@ void PreviewTab::removeRecord()
                 else{
                     showStatus(tr("Record successfully removed from the database!"));
                     setPreviewQuery();
+                    emit recordRemoved();
                     if (m_table->model()->rowCount()>0) m_table->selectRow(0);//to avoid a selection on a non existent row!
                     else m_groupDetails->hide();
                 }
