@@ -60,6 +60,15 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!</string>
+       </property>
+       <property name="statusTip">
+        <string>Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!</string>
+       </property>
+       <property name="whatsThis">
+        <string>Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!</string>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>
@@ -160,12 +169,30 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupDetails">
+     <property name="toolTip">
+      <string>Input data to physically and temporally describe the process of data collection;</string>
+     </property>
+     <property name="statusTip">
+      <string>Input data to physically and temporally describe the process of data collection;</string>
+     </property>
+     <property name="whatsThis">
+      <string>Input data to physically and temporally describe the process of data collection;</string>
+     </property>
      <property name="title">
       <string>Details</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0" colspan="2">
        <widget class="QGroupBox" name="groupPhysical">
+        <property name="toolTip">
+         <string>Describe physical characteristics of the frame;</string>
+        </property>
+        <property name="statusTip">
+         <string>Describe physical characteristics of the frame;</string>
+        </property>
+        <property name="whatsThis">
+         <string>Describe physical characteristics of the frame;</string>
+        </property>
         <property name="title">
          <string>Physical Frame</string>
         </property>
@@ -178,7 +205,11 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="cmbPrexistent"/>
+          <widget class="QComboBox" name="cmbPrexistent">
+           <property name="toolTip">
+            <string/>
+           </property>
+          </widget>
          </item>
          <item row="0" column="2">
           <widget class="QToolButton" name="toolView">
@@ -208,6 +239,15 @@
          </item>
          <item row="1" column="1" rowspan="2">
           <widget class="QGroupBox" name="groupNew">
+           <property name="toolTip">
+            <string>Input new frame to be created;</string>
+           </property>
+           <property name="statusTip">
+            <string>Input new frame to be created;</string>
+           </property>
+           <property name="whatsThis">
+            <string>Input new frame to be created;</string>
+           </property>
            <property name="title">
             <string/>
            </property>
@@ -304,6 +344,15 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="toolTip">
+            <string>Input start date for current frame;</string>
+           </property>
+           <property name="statusTip">
+            <string>Input start date for current frame;</string>
+           </property>
+           <property name="whatsThis">
+            <string>Input start date for current frame;</string>
+           </property>
           </widget>
          </item>
          <item row="1" column="1">
@@ -313,6 +362,15 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Input end date for current frame;</string>
+           </property>
+           <property name="statusTip">
+            <string>Input end date for current frame;</string>
+           </property>
+           <property name="whatsThis">
+            <string>Input end date for current frame;</string>
            </property>
           </widget>
          </item>
@@ -341,6 +399,15 @@
              </item>
              <item>
               <widget class="QToolButton" name="toolProcess">
+               <property name="toolTip">
+                <string>Characterise the sampling methodology(ies);</string>
+               </property>
+               <property name="statusTip">
+                <string>Characterise the sampling methodology(ies);</string>
+               </property>
+               <property name="whatsThis">
+                <string>Characterise the sampling methodology(ies);</string>
+               </property>
                <property name="text">
                 <string>...</string>
                </property>
@@ -455,7 +522,20 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>tableView</tabstop>
+  <tabstop>pushNext</tabstop>
+  <tabstop>cmbPrexistent</tabstop>
+  <tabstop>toolView</tabstop>
+  <tabstop>toolEdit</tabstop>
+  <tabstop>radioCreate</tabstop>
+  <tabstop>radioCopy</tabstop>
+  <tabstop>cmbCopy</tabstop>
   <tabstop>pushPrevious</tabstop>
+  <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
+  <tabstop>toolProcess</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
   <include location="app_new.qrc"/>

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Thu 1. Dec 15:44:05 2011
+** Created: Fri 2. Dec 12:44:18 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -362,6 +362,15 @@ public:
         frmframe->setWindowTitle(QApplication::translate("frmframe", "Form", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("frmframe", "Choose Sampling Frame:", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
+        tableView->setToolTip(QApplication::translate("frmframe", "Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tableView->setStatusTip(QApplication::translate("frmframe", "Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        tableView->setWhatsThis(QApplication::translate("frmframe", "Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
         pushNew->setToolTip(QApplication::translate("frmframe", "Create new record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
@@ -392,9 +401,30 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushRemove->setText(QString());
         pushRemove->setShortcut(QApplication::translate("frmframe", "Del", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        groupDetails->setToolTip(QApplication::translate("frmframe", "Input data to physically and temporally describe the process of data collection;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        groupDetails->setStatusTip(QApplication::translate("frmframe", "Input data to physically and temporally describe the process of data collection;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        groupDetails->setWhatsThis(QApplication::translate("frmframe", "Input data to physically and temporally describe the process of data collection;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupDetails->setTitle(QApplication::translate("frmframe", "Details", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        groupPhysical->setToolTip(QApplication::translate("frmframe", "Describe physical characteristics of the frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        groupPhysical->setStatusTip(QApplication::translate("frmframe", "Describe physical characteristics of the frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        groupPhysical->setWhatsThis(QApplication::translate("frmframe", "Describe physical characteristics of the frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupPhysical->setTitle(QApplication::translate("frmframe", "Physical Frame", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmframe", "Choose frame", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        cmbPrexistent->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
         toolView->setToolTip(QApplication::translate("frmframe", "View Frame", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -406,6 +436,15 @@ public:
 #endif // QT_NO_WHATSTHIS
         toolView->setText(QApplication::translate("frmframe", "...", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("frmframe", "Create New", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        groupNew->setToolTip(QApplication::translate("frmframe", "Input new frame to be created;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        groupNew->setStatusTip(QApplication::translate("frmframe", "Input new frame to be created;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        groupNew->setWhatsThis(QApplication::translate("frmframe", "Input new frame to be created;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupNew->setTitle(QString());
         radioCreate->setText(QApplication::translate("frmframe", "Create from Scratch", 0, QApplication::UnicodeUTF8));
         radioCopy->setText(QApplication::translate("frmframe", "Copy from pre-existent", 0, QApplication::UnicodeUTF8));
@@ -422,8 +461,35 @@ public:
         groupTime->setTitle(QApplication::translate("frmframe", "Time Frame", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("frmframe", "Start Date", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("frmframe", "End Date", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        customDtStart->setToolTip(QApplication::translate("frmframe", "Input start date for current frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        customDtStart->setStatusTip(QApplication::translate("frmframe", "Input start date for current frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        customDtStart->setWhatsThis(QApplication::translate("frmframe", "Input start date for current frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+#ifndef QT_NO_TOOLTIP
+        customDtEnd->setToolTip(QApplication::translate("frmframe", "Input end date for current frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        customDtEnd->setStatusTip(QApplication::translate("frmframe", "Input end date for current frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        customDtEnd->setWhatsThis(QApplication::translate("frmframe", "Input end date for current frame;", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupProcess->setTitle(QString());
         label_5->setText(QApplication::translate("frmframe", "Sampling Technique", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolProcess->setToolTip(QApplication::translate("frmframe", "Characterise the sampling methodology(ies);", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        toolProcess->setStatusTip(QApplication::translate("frmframe", "Characterise the sampling methodology(ies);", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        toolProcess->setWhatsThis(QApplication::translate("frmframe", "Characterise the sampling methodology(ies);", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         toolProcess->setText(QApplication::translate("frmframe", "...", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmframe", "LBHEADER", 0, QApplication::UnicodeUTF8));
         groupBackNext->setTitle(QString());
