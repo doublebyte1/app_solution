@@ -109,7 +109,10 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
 
         QSqlTableModel*                        tTripGears;
         QSqlQueryModel*                        tRefGears;
+        QSqlTableModel*                        tTripZones;
+        QSqlQueryModel*                        tRefZones;
         MultiModelI*                           multiModelI;
+        MultiModelI*                           multiModelI2;
 
         QSqlQueryModel*                        viewTrips;
         QDataWidgetMapper*                     mapper1;

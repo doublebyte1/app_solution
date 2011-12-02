@@ -54,6 +54,5 @@ class MultiModelI
         QSqlTableModel*     m_output;/**< table to write the choices */
         QString             m_strSql;/**< dependant table string*/
         QModelIndexList     m_selectedIndexes;/**< indexes that are read from the model */
-
 };
 #endif //MULTIMODELI_H

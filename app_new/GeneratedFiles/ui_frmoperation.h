@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Tue 29. Nov 10:15:23 2011
+** Created: Thu 1. Dec 15:44:04 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -480,6 +480,7 @@ public:
         pushRemove->setWhatsThis(QApplication::translate("FrmOperation", "Removes record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushRemove->setText(QString());
+        pushRemove->setShortcut(QApplication::translate("FrmOperation", "Del", 0, QApplication::UnicodeUTF8));
         groupDetails->setTitle(QApplication::translate("FrmOperation", "Details", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("FrmOperation", "Order Number", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("FrmOperation", "Fishing zone", 0, QApplication::UnicodeUTF8));

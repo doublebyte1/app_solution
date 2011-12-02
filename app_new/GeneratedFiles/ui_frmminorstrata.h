@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Tue 29. Nov 10:15:23 2011
+** Created: Thu 1. Dec 15:44:04 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -446,6 +446,7 @@ public:
         pushRemove->setWhatsThis(QApplication::translate("frmminorstrata", "Removes record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushRemove->setText(QString());
+        pushRemove->setShortcut(QApplication::translate("frmminorstrata", "Del", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         toolButton->setToolTip(QApplication::translate("frmminorstrata", "Setup temporary frame changes", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

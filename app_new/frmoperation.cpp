@@ -526,7 +526,11 @@ void FrmOperation::filterModel4Combo()
 
     query.prepare(strQuery);
     if (!query.exec()){
-        emit showError(tr("Could not obtain filter for Gears!"));
+
+        if (query.lastError().type()!=QSqlError::NoError){
+                emit showError(query.lastError().text());
+        }else emit showError(tr("Could not obtain filter for gears!"));
+
         return;
     }
 
@@ -539,6 +543,31 @@ void FrmOperation::filterModel4Combo()
         strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
 
     tOperations->relationModel(4)->setFilter(strFilter);
+
+    strQuery=
+        "SELECT     id_fishing_zone"
+        " FROM         dbo.Sampled_fishing_trips_zones"
+        " WHERE     (id_fishing_trip = " + QVariant(m_sample->tripId).toString() + ")";
+
+    query.prepare(strQuery);
+    if (!query.exec()){
+
+        if (query.lastError().type()!=QSqlError::NoError){
+                emit showError(query.lastError().text());
+        }else emit showError(tr("Could not obtain filter for Zones!"));
+
+        return;
+    }
+
+    strFilter="";
+    while (query.next()) {
+        strFilter.append("ID=" + query.value(0).toString());
+        strFilter.append(" OR ");
+    }
+    if (!strFilter.isEmpty())
+        strFilter=strFilter.remove(strFilter.size()-QString(" OR ").length(),QString(" OR ").length());
+
+    tOperations->relationModel(18)->setFilter(strFilter);
 
     initMapper1();
 }

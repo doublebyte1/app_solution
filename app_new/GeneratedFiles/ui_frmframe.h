@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Tue 29. Nov 10:15:23 2011
+** Created: Thu 1. Dec 15:44:05 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -85,7 +85,7 @@ public:
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
-        frmframe->resize(814, 536);
+        frmframe->resize(830, 536);
         verticalLayout_4 = new QVBoxLayout(frmframe);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         horizontalLayout = new QHBoxLayout();
@@ -391,6 +391,7 @@ public:
         pushRemove->setWhatsThis(QApplication::translate("frmframe", "Removes record", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushRemove->setText(QString());
+        pushRemove->setShortcut(QApplication::translate("frmframe", "Del", 0, QApplication::UnicodeUTF8));
         groupDetails->setTitle(QApplication::translate("frmframe", "Details", 0, QApplication::UnicodeUTF8));
         groupPhysical->setTitle(QApplication::translate("frmframe", "Physical Frame", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("frmframe", "Choose frame", 0, QApplication::UnicodeUTF8));

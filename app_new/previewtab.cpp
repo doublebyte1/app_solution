@@ -523,12 +523,12 @@ bool PreviewTab::updateSample()
 
 //////////////////////////////////////////////////////////////
 
-void insertRecordIntoModel(QSqlTableModel* m)
+bool insertRecordIntoModel(QSqlTableModel* m)
 {
     while(m->canFetchMore())
         m->fetchMore();
 
-    m->insertRow(m->rowCount());
+    return m->insertRow(m->rowCount());
 }
 
 void setSourceText(QLabel* label, const bool bIsLogbook)

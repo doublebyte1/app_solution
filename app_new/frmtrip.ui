@@ -192,8 +192,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
      <property name="title">
       <string>Details</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="QLabel" name="label_6">
@@ -208,6 +208,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="buddy">
+           <cstring>cmbSampler</cstring>
           </property>
          </widget>
         </item>
@@ -237,6 +240,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="buddy">
+           <cstring>cmbSite</cstring>
           </property>
          </widget>
         </item>
@@ -337,289 +343,368 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+      <item row="1" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QLabel" name="label_14">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Start</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="CustomTimeCtrl" name="customDtStart">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>Start datetime</string>
-            </property>
-            <property name="whatsThis">
-             <string>Input the starting datetime of the fishing trip</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_25">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>End</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="CustomTimeCtrl" name="customDtEnd">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>End datetime</string>
-            </property>
-            <property name="whatsThis">
-             <string>Input the finishing datetime of the fishing trip</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_13">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Comments:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPlainTextEdit" name="textComments">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>Comments</string>
-            </property>
-            <property name="statusTip">
-             <string>Comments</string>
-            </property>
-            <property name="whatsThis">
-             <string>Input comments</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="QLabel" name="label_14">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Start</string>
+          </property>
+         </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QGroupBox" name="groupTotals">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="title">
-             <string>Totals</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="0" column="4">
-              <widget class="QLabel" name="label">
-               <property name="text">
-                <string>Estimated</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="5">
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Calculated</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
+         <widget class="CustomTimeCtrl" name="customDtStart">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Start datetime</string>
+          </property>
+          <property name="whatsThis">
+           <string>Input the starting datetime of the fishing trip</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_25">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>End</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="CustomTimeCtrl" name="customDtEnd">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>End datetime</string>
+          </property>
+          <property name="whatsThis">
+           <string>Input the finishing datetime of the fishing trip</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_13">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Comments:</string>
+          </property>
+          <property name="buddy">
+           <cstring>textComments</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="textComments">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Comments</string>
+          </property>
+          <property name="statusTip">
+           <string>Comments</string>
+          </property>
+          <property name="whatsThis">
+           <string>Input comments</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <widget class="QGroupBox" name="groupTotals">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Totals</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
                 <string>No of operations</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="4">
-              <widget class="QSpinBox" name="spinNOE">
-               <property name="toolTip">
-                <string>Number of fishing operations (estimated)</string>
-               </property>
-               <property name="statusTip">
-                <string>Number of fishing operations (estimated)</string>
-               </property>
-               <property name="whatsThis">
-                <string>Number of fishing operations (estimated)</string>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-              </widget>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Estimated</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinNOE">
+                 <property name="toolTip">
+                  <string>Number of fishing operations (estimated)</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Number of fishing operations (estimated)</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Number of fishing operations (estimated)</string>
+                 </property>
+                 <property name="maximum">
+                  <number>1000</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
-             <item row="1" column="5">
-              <widget class="QSpinBox" name="spinNOC">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="toolTip">
-                <string>Number of fishing operations (calculated)</string>
-               </property>
-               <property name="statusTip">
-                <string>Number of fishing operations (calculated)</string>
-               </property>
-               <property name="whatsThis">
-                <string>Number of fishing operations (calculated)</string>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1" colspan="5">
-              <widget class="CatchInputCtrl" name="catchInputCtrl">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="4">
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Fishing Zone</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="5">
-              <widget class="QComboBox" name="cmbFishingZone">
-               <property name="toolTip">
-                <string>Select the fishing zone of this fishing trip</string>
-               </property>
-               <property name="statusTip">
-                <string>Select the fishing zone of this fishing trip</string>
-               </property>
-               <property name="whatsThis">
-                <string>Select the fishing zone of this fishing trip</string>
-               </property>
-               <property name="editable">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="3">
-              <widget class="QListView" name="listGears">
-               <property name="toolTip">
-                <string>Select the gear(s) used during this fishing trip</string>
-               </property>
-               <property name="statusTip">
-                <string>Select the gear(s) used during this fishing trip</string>
-               </property>
-               <property name="whatsThis">
-                <string>Select the gear(s) used during this fishing trip</string>
-               </property>
-               <property name="editTriggers">
-                <set>QAbstractItemView::NoEditTriggers</set>
-               </property>
-               <property name="alternatingRowColors">
-                <bool>false</bool>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::MultiSelection</enum>
-               </property>
-               <property name="selectionBehavior">
-                <enum>QAbstractItemView::SelectRows</enum>
-               </property>
-               <property name="resizeMode">
-                <enum>QListView::Adjust</enum>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>Gear(s) used</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>Catch</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="3">
-              <widget class="QPushButton" name="pushClear">
-               <property name="toolTip">
-                <string>Clear selection</string>
-               </property>
-               <property name="statusTip">
-                <string>Clear selection</string>
-               </property>
-               <property name="whatsThis">
-                <string>Clears selection</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="app_new.qrc">
-                 <normaloff>:/app_new/locationbar_erase.png</normaloff>:/app_new/locationbar_erase.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_7">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Calculated</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinNOC">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="toolTip">
+                  <string>Number of fishing operations (calculated)</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Number of fishing operations (calculated)</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Number of fishing operations (calculated)</string>
+                 </property>
+                 <property name="maximum">
+                  <number>1000</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
-           </widget>
-          </item>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Catch</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="CatchInputCtrl" name="catchInputCtrl">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Gear(s) used</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>listGears</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QListView" name="listGears">
+                 <property name="toolTip">
+                  <string>Select the gear(s) used during this fishing trip</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Select the gear(s) used during this fishing trip</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Select the gear(s) used during this fishing trip</string>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="alternatingRowColors">
+                  <bool>false</bool>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::MultiSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <property name="isWrapping" stdset="0">
+                  <bool>false</bool>
+                 </property>
+                 <property name="resizeMode">
+                  <enum>QListView::Adjust</enum>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushClear">
+                 <property name="toolTip">
+                  <string>Clear selection</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Clear selection</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Clears selection</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="app_new.qrc">
+                   <normaloff>:/app_new/locationbar_erase.png</normaloff>:/app_new/locationbar_erase.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Fishing Zone(s)</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>listZones</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QListView" name="listZones">
+                 <property name="toolTip">
+                  <string>Select the gear(s) used during this fishing trip</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Select the gear(s) used during this fishing trip</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Select the gear(s) used during this fishing trip</string>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="showDropIndicator" stdset="0">
+                  <bool>false</bool>
+                 </property>
+                 <property name="alternatingRowColors">
+                  <bool>false</bool>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::MultiSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <property name="isWrapping" stdset="0">
+                  <bool>false</bool>
+                 </property>
+                 <property name="resizeMode">
+                  <enum>QListView::Adjust</enum>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushClear2">
+                 <property name="toolTip">
+                  <string>Clear selection</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Clear selection</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Clears selection</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="app_new.qrc">
+                   <normaloff>:/app_new/locationbar_erase.png</normaloff>:/app_new/locationbar_erase.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_12">
-            <item>
-             <widget class="QDialogButtonBox" name="buttonBox">
-              <property name="standardButtons">
-               <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QDialogButtonBox" name="buttonBox">
+            <property name="standardButtons">
+             <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -805,6 +890,22 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     <hint type="destinationlabel">
      <x>502</x>
      <y>552</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushClear2</sender>
+   <signal>clicked()</signal>
+   <receiver>listZones</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>625</x>
+     <y>632</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>625</x>
+     <y>557</y>
     </hint>
    </hints>
   </connection>

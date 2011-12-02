@@ -63,27 +63,34 @@ bool MultiModelI::list2Model(QString& strError, const bool bNew)
     }
 
     if (m_parentId==-1) return false;
+
     int prevRow=-1;
     foreach (QModelIndex index, mil)
     {
         if (index.row()!=prevRow){
             int itemId;
             if (!findId4Item(index.row(),itemId)) return false;
-            insertRecordIntoModel(m_output);
 
-            while(m_output->canFetchMore())
-                m_output->fetchMore();
+            if (!insertRecordIntoModel(m_output)){
+                strError=QObject::tr("Could not introduce a record in the model!");
+                return false;
+            }
 
             QModelIndex idx=m_output->index(m_output->rowCount()-1,1);
-            m_output->setData(idx,m_parentId);
+            if (!idx.isValid()) return false;
+            if (!m_output->setData(idx,m_parentId,Qt::EditRole)) return false;
+
             idx=m_output->index(m_output->rowCount()-1,2);
-            m_output->setData(idx,itemId);
+            if (!idx.isValid()) return false;
+            if (!m_output->setData(idx,itemId,Qt::EditRole)) return false;
+
             if (!m_output->submitAll()){
                 if (m_output->lastError().type()!=QSqlError::NoError){
                         strError=m_output->lastError().text();
                 }else strError=QObject::tr("Error submiting records to multimodel!");
                 return false;
             }
+
             prevRow=index.row();
         }
     }
@@ -123,6 +130,8 @@ bool MultiModelI::model2List(const QString strField)
 
         m_selectedIndexes.push_back(idx2);
     }
+
+    m_output->setFilter(QString());
 
     return true;
 }
