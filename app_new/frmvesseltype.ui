@@ -458,6 +458,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
  <tabstops>
   <tabstop>tableView</tabstop>
   <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
   <tabstop>cmbTypes</tabstop>
   <tabstop>spinNE</tabstop>
   <tabstop>spinNC</tabstop>
@@ -483,8 +485,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>createRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>684</x>
-     <y>101</y>
+     <x>698</x>
+     <y>84</y>
     </hint>
     <hint type="destinationlabel">
      <x>354</x>

@@ -523,19 +523,21 @@
  </customwidgets>
  <tabstops>
   <tabstop>tableView</tabstop>
-  <tabstop>pushNext</tabstop>
-  <tabstop>cmbPrexistent</tabstop>
-  <tabstop>toolView</tabstop>
-  <tabstop>toolEdit</tabstop>
-  <tabstop>radioCreate</tabstop>
-  <tabstop>radioCopy</tabstop>
-  <tabstop>cmbCopy</tabstop>
-  <tabstop>pushPrevious</tabstop>
   <tabstop>pushNew</tabstop>
   <tabstop>pushEdit</tabstop>
   <tabstop>pushRemove</tabstop>
+  <tabstop>cmbPrexistent</tabstop>
+  <tabstop>toolView</tabstop>
+  <tabstop>radioCreate</tabstop>
+  <tabstop>radioCopy</tabstop>
+  <tabstop>cmbCopy</tabstop>
+  <tabstop>toolEdit</tabstop>
+  <tabstop>customDtStart</tabstop>
+  <tabstop>customDtEnd</tabstop>
   <tabstop>toolProcess</tabstop>
   <tabstop>buttonBox</tabstop>
+  <tabstop>pushPrevious</tabstop>
+  <tabstop>pushNext</tabstop>
  </tabstops>
  <resources>
   <include location="app_new.qrc"/>

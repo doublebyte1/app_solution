@@ -35,10 +35,16 @@
      <item>
       <widget class="QLabel" name="lbSource">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>19</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(220, 220, 220, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));
@@ -356,6 +362,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="text">
            <string>Start</string>
           </property>
+          <property name="buddy">
+           <cstring>customDtStart</cstring>
+          </property>
          </widget>
         </item>
         <item>
@@ -384,6 +393,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           </property>
           <property name="text">
            <string>End</string>
+          </property>
+          <property name="buddy">
+           <cstring>customDtEnd</cstring>
           </property>
          </widget>
         </item>
@@ -458,8 +470,17 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
                 <string>No of operations</string>
+               </property>
+               <property name="buddy">
+                <cstring>spinNOE</cstring>
                </property>
               </widget>
              </item>
@@ -467,6 +488,18 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
                 <widget class="QLabel" name="label">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>13</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>Estimated</string>
                  </property>
@@ -494,6 +527,18 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               <layout class="QVBoxLayout" name="verticalLayout_7">
                <item>
                 <widget class="QLabel" name="label_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>13</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>Calculated</string>
                  </property>
@@ -523,21 +568,46 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
             </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Catch</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="CatchInputCtrl" name="catchInputCtrl">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_8">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Catch</string>
+               </property>
+               <property name="buddy">
+                <cstring>catchInputCtrl</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="CatchInputCtrl" name="catchInputCtrl">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>270</width>
+                 <height>160</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
@@ -545,8 +615,20 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
                 <widget class="QLabel" name="label_7">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>36</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="text">
-                  <string>Gear(s) used</string>
+                  <string>Gear(s)</string>
                  </property>
                  <property name="buddy">
                   <cstring>listGears</cstring>
@@ -554,41 +636,19 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                 </widget>
                </item>
                <item>
-                <widget class="QListView" name="listGears">
-                 <property name="toolTip">
-                  <string>Select the gear(s) used during this fishing trip</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Select the gear(s) used during this fishing trip</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Select the gear(s) used during this fishing trip</string>
-                 </property>
-                 <property name="editTriggers">
-                  <set>QAbstractItemView::NoEditTriggers</set>
-                 </property>
-                 <property name="alternatingRowColors">
-                  <bool>false</bool>
-                 </property>
-                 <property name="selectionMode">
-                  <enum>QAbstractItemView::MultiSelection</enum>
-                 </property>
-                 <property name="selectionBehavior">
-                  <enum>QAbstractItemView::SelectRows</enum>
-                 </property>
-                 <property name="isWrapping" stdset="0">
-                  <bool>false</bool>
-                 </property>
-                 <property name="resizeMode">
-                  <enum>QListView::Adjust</enum>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="pushClear">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>26</height>
+                  </size>
+                 </property>
                  <property name="toolTip">
                   <string>Clear selection</string>
                  </property>
@@ -616,11 +676,63 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
               </layout>
              </item>
              <item>
+              <widget class="QListView" name="listGears">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Select the gear(s) used during this fishing trip</string>
+               </property>
+               <property name="statusTip">
+                <string>Select the gear(s) used during this fishing trip</string>
+               </property>
+               <property name="whatsThis">
+                <string>Select the gear(s) used during this fishing trip</string>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>false</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::MultiSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="isWrapping" stdset="0">
+                <bool>false</bool>
+               </property>
+               <property name="resizeMode">
+                <enum>QListView::Adjust</enum>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <item>
                 <widget class="QLabel" name="label_5">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>36</width>
+                   <height>16</height>
+                  </size>
+                 </property>
                  <property name="text">
-                  <string>Fishing Zone(s)</string>
+                  <string>Zone(s)</string>
                  </property>
                  <property name="buddy">
                   <cstring>listZones</cstring>
@@ -628,44 +740,19 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                 </widget>
                </item>
                <item>
-                <widget class="QListView" name="listZones">
-                 <property name="toolTip">
-                  <string>Select the gear(s) used during this fishing trip</string>
-                 </property>
-                 <property name="statusTip">
-                  <string>Select the gear(s) used during this fishing trip</string>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Select the gear(s) used during this fishing trip</string>
-                 </property>
-                 <property name="editTriggers">
-                  <set>QAbstractItemView::NoEditTriggers</set>
-                 </property>
-                 <property name="showDropIndicator" stdset="0">
-                  <bool>false</bool>
-                 </property>
-                 <property name="alternatingRowColors">
-                  <bool>false</bool>
-                 </property>
-                 <property name="selectionMode">
-                  <enum>QAbstractItemView::MultiSelection</enum>
-                 </property>
-                 <property name="selectionBehavior">
-                  <enum>QAbstractItemView::SelectRows</enum>
-                 </property>
-                 <property name="isWrapping" stdset="0">
-                  <bool>false</bool>
-                 </property>
-                 <property name="resizeMode">
-                  <enum>QListView::Adjust</enum>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="pushClear2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>26</height>
+                  </size>
+                 </property>
                  <property name="toolTip">
                   <string>Clear selection</string>
                  </property>
@@ -691,6 +778,49 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                 </widget>
                </item>
               </layout>
+             </item>
+             <item>
+              <widget class="QListView" name="listZones">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Select the gear(s) used during this fishing trip</string>
+               </property>
+               <property name="statusTip">
+                <string>Select the gear(s) used during this fishing trip</string>
+               </property>
+               <property name="whatsThis">
+                <string>Select the gear(s) used during this fishing trip</string>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="showDropIndicator" stdset="0">
+                <bool>false</bool>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>false</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::MultiSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="isWrapping" stdset="0">
+                <bool>false</bool>
+               </property>
+               <property name="resizeMode">
+                <enum>QListView::Adjust</enum>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -718,10 +848,16 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
      <item>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>48</height>
+        </size>
        </property>
        <property name="title">
         <string/>
@@ -787,8 +923,22 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
  <tabstops>
   <tabstop>tableView</tabstop>
   <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
+  <tabstop>cmbSampler</tabstop>
+  <tabstop>cmbSite</tabstop>
   <tabstop>spinProf</tabstop>
   <tabstop>spinPart</tabstop>
+  <tabstop>customDtStart</tabstop>
+  <tabstop>customDtEnd</tabstop>
+  <tabstop>textComments</tabstop>
+  <tabstop>spinNOE</tabstop>
+  <tabstop>spinNOC</tabstop>
+  <tabstop>catchInputCtrl</tabstop>
+  <tabstop>listGears</tabstop>
+  <tabstop>listZones</tabstop>
+  <tabstop>pushClear</tabstop>
+  <tabstop>pushClear2</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>pushPrevious</tabstop>
   <tabstop>pushNext</tabstop>

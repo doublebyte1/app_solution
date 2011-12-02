@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvessel.ui'
 **
-** Created: Thu 1. Dec 15:44:04 2011
+** Created: Fri 2. Dec 16:14:29 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -346,7 +346,9 @@ public:
         label_8->setBuddy(textComments);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
-        QWidget::setTabOrder(pushNew, cmbVessel);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, cmbVessel);
         QWidget::setTabOrder(cmbVessel, cmbOrigin);
         QWidget::setTabOrder(cmbOrigin, cmbStatus);
         QWidget::setTabOrder(cmbStatus, textComments);

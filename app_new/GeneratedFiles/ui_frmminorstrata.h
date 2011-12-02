@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Thu 1. Dec 15:44:04 2011
+** Created: Fri 2. Dec 16:14:29 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -383,10 +383,28 @@ public:
         verticalLayout_3->addLayout(horizontalLayout_4);
 
 #ifndef QT_NO_SHORTCUT
+        label_6->setBuddy(tableView);
         label_5->setBuddy(lineNew);
         label_3->setBuddy(cmbGLS);
         label_4->setBuddy(textComments);
+        label->setBuddy(customDtStart);
+        label_2->setBuddy(customDtEnd);
 #endif // QT_NO_SHORTCUT
+        QWidget::setTabOrder(tableView, pushNew);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, toolButton);
+        QWidget::setTabOrder(toolButton, lineNew);
+        QWidget::setTabOrder(lineNew, cmbGLS);
+        QWidget::setTabOrder(cmbGLS, radioActive);
+        QWidget::setTabOrder(radioActive, radioInactive);
+        QWidget::setTabOrder(radioInactive, cmbReasons);
+        QWidget::setTabOrder(cmbReasons, textComments);
+        QWidget::setTabOrder(textComments, customDtStart);
+        QWidget::setTabOrder(customDtStart, customDtEnd);
+        QWidget::setTabOrder(customDtEnd, buttonBox);
+        QWidget::setTabOrder(buttonBox, pushPrevious);
+        QWidget::setTabOrder(pushPrevious, pushNext);
 
         retranslateUi(frmminorstrata);
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), frmminorstrata, SLOT(onButtonClick(QAbstractButton*)));

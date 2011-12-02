@@ -71,6 +71,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
      <property name="text">
       <string>Choose Minor Strata</string>
      </property>
+     <property name="buddy">
+      <cstring>tableView</cstring>
+     </property>
     </widget>
    </item>
    <item>
@@ -341,12 +344,18 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="text">
            <string>Start Date</string>
           </property>
+          <property name="buddy">
+           <cstring>customDtStart</cstring>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>End Date</string>
+          </property>
+          <property name="buddy">
+           <cstring>customDtEnd</cstring>
           </property>
          </widget>
         </item>
@@ -485,6 +494,24 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <header>customtimectrl.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tableView</tabstop>
+  <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>lineNew</tabstop>
+  <tabstop>cmbGLS</tabstop>
+  <tabstop>radioActive</tabstop>
+  <tabstop>radioInactive</tabstop>
+  <tabstop>cmbReasons</tabstop>
+  <tabstop>textComments</tabstop>
+  <tabstop>customDtStart</tabstop>
+  <tabstop>customDtEnd</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>pushPrevious</tabstop>
+  <tabstop>pushNext</tabstop>
+ </tabstops>
  <resources>
   <include location="app_new.qrc"/>
  </resources>
@@ -496,8 +523,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>onButtonClick(QAbstractButton*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>552</x>
-     <y>527</y>
+     <x>689</x>
+     <y>639</y>
     </hint>
     <hint type="destinationlabel">
      <x>355</x>
@@ -512,8 +539,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>setActiveReason(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>527</x>
-     <y>183</y>
+     <x>175</x>
+     <y>304</y>
     </hint>
     <hint type="destinationlabel">
      <x>355</x>
@@ -528,8 +555,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>disableReasonCombo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>527</x>
-     <y>183</y>
+     <x>175</x>
+     <y>304</y>
     </hint>
     <hint type="destinationlabel">
      <x>355</x>
@@ -544,8 +571,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <slot>disableReasonCombo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>407</x>
-     <y>209</y>
+     <x>94</x>
+     <y>385</y>
     </hint>
     <hint type="destinationlabel">
      <x>355</x>

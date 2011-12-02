@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Thu 1. Dec 15:44:04 2011
+** Created: Fri 2. Dec 16:14:29 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -49,7 +49,7 @@ public:
     QPushButton *pushEdit;
     QPushButton *pushRemove;
     QGroupBox *groupDetails;
-    QHBoxLayout *horizontalLayout_3;
+    QHBoxLayout *horizontalLayout_6;
     QVBoxLayout *verticalLayout_4;
     QHBoxLayout *horizontalLayout_5;
     QLabel *label_3;
@@ -62,7 +62,7 @@ public:
     CustomTimeCtrl *customDtEnd;
     QLabel *label_8;
     QPlainTextEdit *textComments;
-    QVBoxLayout *verticalLayout_2;
+    QVBoxLayout *verticalLayout_6;
     QGroupBox *groupGear;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_5;
@@ -72,12 +72,14 @@ public:
     QLabel *label_7;
     QDoubleSpinBox *doubleSpinSize;
     QGroupBox *groupCatch;
-    QVBoxLayout *verticalLayout;
+    QVBoxLayout *verticalLayout_2;
     QLabel *label_9;
     CatchInputCtrl *catchInputCtrl;
+    QHBoxLayout *horizontalLayout_3;
+    QVBoxLayout *verticalLayout;
     QLabel *label_10;
-    QListView *listCategories;
     QPushButton *pushClear;
+    QListView *listCategories;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
     QDialogButtonBox *buttonBox;
@@ -189,8 +191,8 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
         groupDetails->setSizePolicy(sizePolicy3);
-        horizontalLayout_3 = new QHBoxLayout(groupDetails);
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        horizontalLayout_6 = new QHBoxLayout(groupDetails);
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         horizontalLayout_5 = new QHBoxLayout();
@@ -264,10 +266,10 @@ public:
         verticalLayout_4->addWidget(textComments);
 
 
-        horizontalLayout_3->addLayout(verticalLayout_4);
+        horizontalLayout_6->addLayout(verticalLayout_4);
 
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_6 = new QVBoxLayout();
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
         groupGear = new QGroupBox(groupDetails);
         groupGear->setObjectName(QString::fromUtf8("groupGear"));
         horizontalLayout_2 = new QHBoxLayout(groupGear);
@@ -313,16 +315,16 @@ public:
         horizontalLayout_2->addWidget(doubleSpinSize);
 
 
-        verticalLayout_2->addWidget(groupGear);
+        verticalLayout_6->addWidget(groupGear);
 
         groupCatch = new QGroupBox(groupDetails);
         groupCatch->setObjectName(QString::fromUtf8("groupCatch"));
-        verticalLayout = new QVBoxLayout(groupCatch);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout_2 = new QVBoxLayout(groupCatch);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         label_9 = new QLabel(groupCatch);
         label_9->setObjectName(QString::fromUtf8("label_9"));
 
-        verticalLayout->addWidget(label_9);
+        verticalLayout_2->addWidget(label_9);
 
         catchInputCtrl = new CatchInputCtrl(groupCatch);
         catchInputCtrl->setObjectName(QString::fromUtf8("catchInputCtrl"));
@@ -331,13 +333,31 @@ public:
         sizePolicy6.setVerticalStretch(0);
         sizePolicy6.setHeightForWidth(catchInputCtrl->sizePolicy().hasHeightForWidth());
         catchInputCtrl->setSizePolicy(sizePolicy6);
+        catchInputCtrl->setMinimumSize(QSize(270, 160));
 
-        verticalLayout->addWidget(catchInputCtrl);
+        verticalLayout_2->addWidget(catchInputCtrl);
 
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         label_10 = new QLabel(groupCatch);
         label_10->setObjectName(QString::fromUtf8("label_10"));
 
         verticalLayout->addWidget(label_10);
+
+        pushClear = new QPushButton(groupCatch);
+        pushClear->setObjectName(QString::fromUtf8("pushClear"));
+        pushClear->setMinimumSize(QSize(0, 26));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app_new/locationbar_erase.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushClear->setIcon(icon3);
+        pushClear->setIconSize(QSize(32, 16));
+
+        verticalLayout->addWidget(pushClear);
+
+
+        horizontalLayout_3->addLayout(verticalLayout);
 
         listCategories = new QListView(groupCatch);
         listCategories->setObjectName(QString::fromUtf8("listCategories"));
@@ -347,19 +367,13 @@ public:
         listCategories->setSelectionMode(QAbstractItemView::MultiSelection);
         listCategories->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-        verticalLayout->addWidget(listCategories);
+        horizontalLayout_3->addWidget(listCategories);
 
 
-        verticalLayout_2->addWidget(groupCatch);
+        verticalLayout_2->addLayout(horizontalLayout_3);
 
-        pushClear = new QPushButton(groupDetails);
-        pushClear->setObjectName(QString::fromUtf8("pushClear"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/app_new/locationbar_erase.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushClear->setIcon(icon3);
-        pushClear->setIconSize(QSize(32, 16));
 
-        verticalLayout_2->addWidget(pushClear);
+        verticalLayout_6->addWidget(groupCatch);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -374,10 +388,10 @@ public:
         horizontalLayout->addWidget(buttonBox);
 
 
-        verticalLayout_2->addLayout(horizontalLayout);
+        verticalLayout_6->addLayout(horizontalLayout);
 
 
-        horizontalLayout_3->addLayout(verticalLayout_2);
+        horizontalLayout_6->addLayout(verticalLayout_6);
 
 
         verticalLayout_5->addWidget(groupDetails);
@@ -419,10 +433,32 @@ public:
         label_23->setBuddy(tableView);
         label_3->setBuddy(spinOrder);
         label_4->setBuddy(cmbFishingZone);
+        label->setBuddy(customDtStart);
+        label_2->setBuddy(customDtEnd);
+        label_8->setBuddy(textComments);
         label_5->setBuddy(cmbGear);
         label_6->setBuddy(spinNoUnits);
         label_7->setBuddy(doubleSpinSize);
+        label_9->setBuddy(catchInputCtrl);
+        label_10->setBuddy(listCategories);
 #endif // QT_NO_SHORTCUT
+        QWidget::setTabOrder(tableView, pushNew);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, spinOrder);
+        QWidget::setTabOrder(spinOrder, cmbFishingZone);
+        QWidget::setTabOrder(cmbFishingZone, customDtStart);
+        QWidget::setTabOrder(customDtStart, customDtEnd);
+        QWidget::setTabOrder(customDtEnd, textComments);
+        QWidget::setTabOrder(textComments, cmbGear);
+        QWidget::setTabOrder(cmbGear, spinNoUnits);
+        QWidget::setTabOrder(spinNoUnits, doubleSpinSize);
+        QWidget::setTabOrder(doubleSpinSize, catchInputCtrl);
+        QWidget::setTabOrder(catchInputCtrl, listCategories);
+        QWidget::setTabOrder(listCategories, pushClear);
+        QWidget::setTabOrder(pushClear, buttonBox);
+        QWidget::setTabOrder(buttonBox, pushPrevious);
+        QWidget::setTabOrder(pushPrevious, pushNext);
 
         retranslateUi(FrmOperation);
         QObject::connect(pushNew, SIGNAL(clicked()), FrmOperation, SLOT(createRecord()));
@@ -493,16 +529,7 @@ public:
         label_7->setText(QApplication::translate("FrmOperation", "Size", 0, QApplication::UnicodeUTF8));
         groupCatch->setTitle(QApplication::translate("FrmOperation", "Totals", 0, QApplication::UnicodeUTF8));
         label_9->setText(QApplication::translate("FrmOperation", "Catch", 0, QApplication::UnicodeUTF8));
-        label_10->setText(QApplication::translate("FrmOperation", "Commercial category/categories", 0, QApplication::UnicodeUTF8));
-#ifndef QT_NO_TOOLTIP
-        listCategories->setToolTip(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_TOOLTIP
-#ifndef QT_NO_STATUSTIP
-        listCategories->setStatusTip(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_STATUSTIP
-#ifndef QT_NO_WHATSTHIS
-        listCategories->setWhatsThis(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
-#endif // QT_NO_WHATSTHIS
+        label_10->setText(QApplication::translate("FrmOperation", "Commercial category(ies)", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushClear->setToolTip(QApplication::translate("FrmOperation", "Clear selection", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -513,6 +540,15 @@ public:
         pushClear->setWhatsThis(QApplication::translate("FrmOperation", "Clears selection", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushClear->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        listCategories->setToolTip(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        listCategories->setStatusTip(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        listCategories->setWhatsThis(QApplication::translate("FrmOperation", "Commercial categories of the catch corresponding to this fishing operation", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupBox_2->setTitle(QString());
         pushPrevious->setText(QApplication::translate("FrmOperation", "Previous", 0, QApplication::UnicodeUTF8));
         pushNext->setText(QApplication::translate("FrmOperation", "Next", 0, QApplication::UnicodeUTF8));

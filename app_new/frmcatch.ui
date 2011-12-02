@@ -239,6 +239,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
              <property name="text">
               <string>Catch</string>
              </property>
+             <property name="buddy">
+              <cstring>catchInputCtrl</cstring>
+             </property>
             </widget>
            </item>
            <item>
@@ -481,10 +484,13 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
  <tabstops>
   <tabstop>tableView</tabstop>
   <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
   <tabstop>cmbCategory</tabstop>
   <tabstop>spinNoInd</tabstop>
   <tabstop>doubleSpinWeight</tabstop>
   <tabstop>cmbUnits</tabstop>
+  <tabstop>catchInputCtrl</tabstop>
   <tabstop>textComments</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>pushPrevious</tabstop>

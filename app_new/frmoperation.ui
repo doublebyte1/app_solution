@@ -192,7 +192,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
      <property name="title">
       <string>Details</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -246,6 +246,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="text">
            <string>Start</string>
           </property>
+          <property name="buddy">
+           <cstring>customDtStart</cstring>
+          </property>
          </widget>
         </item>
         <item>
@@ -261,6 +264,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           </property>
           <property name="text">
            <string>End</string>
+          </property>
+          <property name="buddy">
+           <cstring>customDtEnd</cstring>
           </property>
          </widget>
         </item>
@@ -281,6 +287,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
+          <property name="buddy">
+           <cstring>textComments</cstring>
+          </property>
          </widget>
         </item>
         <item>
@@ -296,7 +305,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
          <widget class="QGroupBox" name="groupGear">
           <property name="title">
@@ -373,11 +382,14 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
           <property name="title">
            <string>Totals</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>Catch</string>
+             </property>
+             <property name="buddy">
+              <cstring>catchInputCtrl</cstring>
              </property>
             </widget>
            </item>
@@ -389,70 +401,93 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Commercial category/categories</string>
+             <property name="minimumSize">
+              <size>
+               <width>270</width>
+               <height>160</height>
+              </size>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QListView" name="listCategories">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="toolTip">
-              <string>Commercial categories of the catch corresponding to this fishing operation</string>
-             </property>
-             <property name="statusTip">
-              <string>Commercial categories of the catch corresponding to this fishing operation</string>
-             </property>
-             <property name="whatsThis">
-              <string>Commercial categories of the catch corresponding to this fishing operation</string>
-             </property>
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::MultiSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <item>
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>Commercial category(ies)</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>listCategories</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushClear">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>26</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Clear selection</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Clear selection</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Clears selection</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="app_new.qrc">
+                   <normaloff>:/app_new/locationbar_erase.png</normaloff>:/app_new/locationbar_erase.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>32</width>
+                   <height>16</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QListView" name="listCategories">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="toolTip">
+                <string>Commercial categories of the catch corresponding to this fishing operation</string>
+               </property>
+               <property name="statusTip">
+                <string>Commercial categories of the catch corresponding to this fishing operation</string>
+               </property>
+               <property name="whatsThis">
+                <string>Commercial categories of the catch corresponding to this fishing operation</string>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::MultiSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushClear">
-          <property name="toolTip">
-           <string>Clear selection</string>
-          </property>
-          <property name="statusTip">
-           <string>Clear selection</string>
-          </property>
-          <property name="whatsThis">
-           <string>Clears selection</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="app_new.qrc">
-            <normaloff>:/app_new/locationbar_erase.png</normaloff>:/app_new/locationbar_erase.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>16</height>
-           </size>
-          </property>
          </widget>
         </item>
         <item>
@@ -549,6 +584,26 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    <header>customtimectrl.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tableView</tabstop>
+  <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
+  <tabstop>spinOrder</tabstop>
+  <tabstop>cmbFishingZone</tabstop>
+  <tabstop>customDtStart</tabstop>
+  <tabstop>customDtEnd</tabstop>
+  <tabstop>textComments</tabstop>
+  <tabstop>cmbGear</tabstop>
+  <tabstop>spinNoUnits</tabstop>
+  <tabstop>doubleSpinSize</tabstop>
+  <tabstop>catchInputCtrl</tabstop>
+  <tabstop>listCategories</tabstop>
+  <tabstop>pushClear</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>pushPrevious</tabstop>
+  <tabstop>pushNext</tabstop>
+ </tabstops>
  <resources>
   <include location="app_new.qrc"/>
  </resources>

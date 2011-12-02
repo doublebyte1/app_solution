@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Fri 2. Dec 12:44:18 2011
+** Created: Fri 2. Dec 14:17:48 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -344,6 +344,21 @@ public:
 #ifndef QT_NO_SHORTCUT
         label_6->setBuddy(tableView);
 #endif // QT_NO_SHORTCUT
+        QWidget::setTabOrder(tableView, pushNew);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, cmbPrexistent);
+        QWidget::setTabOrder(cmbPrexistent, toolView);
+        QWidget::setTabOrder(toolView, radioCreate);
+        QWidget::setTabOrder(radioCreate, radioCopy);
+        QWidget::setTabOrder(radioCopy, cmbCopy);
+        QWidget::setTabOrder(cmbCopy, toolEdit);
+        QWidget::setTabOrder(toolEdit, customDtStart);
+        QWidget::setTabOrder(customDtStart, customDtEnd);
+        QWidget::setTabOrder(customDtEnd, toolProcess);
+        QWidget::setTabOrder(toolProcess, buttonBox);
+        QWidget::setTabOrder(buttonBox, pushPrevious);
+        QWidget::setTabOrder(pushPrevious, pushNext);
 
         retranslateUi(frmframe);
         QObject::connect(pushNext, SIGNAL(clicked()), frmframe, SLOT(next()));

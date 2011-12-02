@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Thu 1. Dec 15:44:04 2011
+** Created: Fri 2. Dec 16:14:29 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -344,7 +344,9 @@ public:
         label_10->setBuddy(spinOE);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
-        QWidget::setTabOrder(pushNew, cmbTypes);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, cmbTypes);
         QWidget::setTabOrder(cmbTypes, spinNE);
         QWidget::setTabOrder(spinNE, spinNC);
         QWidget::setTabOrder(spinNC, spinAE);

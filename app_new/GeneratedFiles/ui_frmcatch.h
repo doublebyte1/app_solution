@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcatch.ui'
 **
-** Created: Thu 1. Dec 15:44:04 2011
+** Created: Fri 2. Dec 16:19:41 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -344,17 +344,21 @@ public:
 #ifndef QT_NO_SHORTCUT
         label_23->setBuddy(tableView);
         label_4->setBuddy(cmbCategory);
+        label_9->setBuddy(catchInputCtrl);
         label_6->setBuddy(spinNoInd);
         label_7->setBuddy(doubleSpinWeight);
         label->setBuddy(cmbUnits);
         label_8->setBuddy(textComments);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
-        QWidget::setTabOrder(pushNew, cmbCategory);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, cmbCategory);
         QWidget::setTabOrder(cmbCategory, spinNoInd);
         QWidget::setTabOrder(spinNoInd, doubleSpinWeight);
         QWidget::setTabOrder(doubleSpinWeight, cmbUnits);
-        QWidget::setTabOrder(cmbUnits, textComments);
+        QWidget::setTabOrder(cmbUnits, catchInputCtrl);
+        QWidget::setTabOrder(catchInputCtrl, textComments);
         QWidget::setTabOrder(textComments, buttonBox);
         QWidget::setTabOrder(buttonBox, pushPrevious);
         QWidget::setTabOrder(pushPrevious, pushNext);

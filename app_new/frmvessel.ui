@@ -401,6 +401,8 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
  <tabstops>
   <tabstop>tableView</tabstop>
   <tabstop>pushNew</tabstop>
+  <tabstop>pushEdit</tabstop>
+  <tabstop>pushRemove</tabstop>
   <tabstop>cmbVessel</tabstop>
   <tabstop>cmbOrigin</tabstop>
   <tabstop>cmbStatus</tabstop>

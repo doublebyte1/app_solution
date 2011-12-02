@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Thu 1. Dec 15:44:04 2011
+** Created: Fri 2. Dec 16:14:29 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -400,12 +400,24 @@ public:
         verticalLayout_5->addLayout(horizontalLayout_8);
 
 #ifndef QT_NO_SHORTCUT
+        label_13->setBuddy(tableView);
         label->setBuddy(cmbLS);
+        label_2->setBuddy(customDtStart);
+        label_3->setBuddy(customDtEnd);
+        label_7->setBuddy(spinNE);
+        label_8->setBuddy(spinAE);
+        label_9->setBuddy(spinIE);
+        label_10->setBuddy(spinOE);
         label_12->setBuddy(textComments);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(tableView, pushNew);
-        QWidget::setTabOrder(pushNew, cmbLS);
-        QWidget::setTabOrder(cmbLS, spinNE);
+        QWidget::setTabOrder(pushNew, pushEdit);
+        QWidget::setTabOrder(pushEdit, pushRemove);
+        QWidget::setTabOrder(pushRemove, toolButton);
+        QWidget::setTabOrder(toolButton, cmbLS);
+        QWidget::setTabOrder(cmbLS, customDtStart);
+        QWidget::setTabOrder(customDtStart, customDtEnd);
+        QWidget::setTabOrder(customDtEnd, spinNE);
         QWidget::setTabOrder(spinNE, spinNC);
         QWidget::setTabOrder(spinNC, spinAE);
         QWidget::setTabOrder(spinAE, spinAC);
