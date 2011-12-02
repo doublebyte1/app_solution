@@ -210,7 +210,7 @@ bool FrmSampling::comitSampledLevels()
             QModelIndex indexId=tSampLevels->index(i,0);
             if (!indexId.isValid()) return false;
             if (tSampLevels->isDirty(indexId)){
-                QModelIndex indexFr=tSampLevels->index(i,6);
+                QModelIndex indexFr=tSampLevels->index(i,7);
                 if (!indexFr.isValid()) return false;
                 if (!tSampLevels->setData(indexFr,id)) return false;
                 ++ct;
@@ -276,11 +276,11 @@ void FrmSampling::initModels()
     tSampLevels->setTable(QSqlDatabase().driver()->escapeIdentifier(tr("Sampled_Levels"),
         QSqlDriver::TableName));
     tSampLevels->setRelation(1, QSqlRelation(tr("Ref_Levels"), tr("ID"), tr("Name")));
-    tSampLevels->setRelation(3, QSqlRelation(tr("Ref_Strategy"), tr("ID"), tr("Name")));
+    tSampLevels->setRelation(4, QSqlRelation(tr("Ref_Strategy"), tr("ID"), tr("Name")));
 
     //filter n/a records
     filterTable(tSampLevels->relationModel(1));
-    filterTable(tSampLevels->relationModel(3));
+    filterTable(tSampLevels->relationModel(4));
 
     tSampLevels->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tSampLevels->sort(0,Qt::AscendingOrder);
@@ -288,12 +288,13 @@ void FrmSampling::initModels()
 
     tSampLevels->setHeaderData(1,Qt::Horizontal, tr("Level"));
     tSampLevels->setHeaderData(2,Qt::Horizontal, tr("Sample size"));
-    tSampLevels->setHeaderData(3,Qt::Horizontal, tr("Strategy"));
-    tSampLevels->setHeaderData(4,Qt::Horizontal, tr("Description"));
-    tSampLevels->setHeaderData(5,Qt::Horizontal, tr("Comments"));
+    tSampLevels->setHeaderData(3,Qt::Horizontal, tr("Population size"));
+    tSampLevels->setHeaderData(4,Qt::Horizontal, tr("Strategy"));
+    tSampLevels->setHeaderData(5,Qt::Horizontal, tr("Description"));
+    tSampLevels->setHeaderData(6,Qt::Horizontal, tr("Comments"));
 
     tRefLevels = new QSqlTableModel;
-    tRefLevels->setTable(tr("Ref_Levels"));
+    tRefLevels->setTable("Ref_Levels");
     tRefLevels->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tRefLevels->sort(0,Qt::AscendingOrder);
     tRefLevels->select();
@@ -310,7 +311,7 @@ void FrmSampling::initTable()
     tableView->setModel(tSampLevels);
     tableView->sortByColumn(0, Qt::AscendingOrder);
     tableView->hideColumn(0);// identity
-    tableView->hideColumn(6);//id frame time
+    tableView->hideColumn(7);//id sampling technique
 
     tableView->setItemDelegate(new QSqlRelationalDelegate(tableView));
 

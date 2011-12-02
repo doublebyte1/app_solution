@@ -140,12 +140,10 @@ bool FrmFrame::applyChanges()
             curStart=mapperStartDt->currentIndex();
             curEnd=mapperEndDt->currentIndex();
 
-            bError=submitDates(mapperStartDt, mapperEndDt);
+            bError=!submitDates(mapperStartDt, mapperEndDt);
 
-            if (!bError){
-                mapperStartDt->setCurrentIndex(curStart);
-                mapperEndDt->setCurrentIndex(curEnd);
-            }
+            mapperStartDt->setCurrentIndex(curStart);
+            mapperEndDt->setCurrentIndex(curEnd);
 
         }
     }
@@ -532,7 +530,7 @@ bool FrmFrame::reallyApply()
             bError=true;
         }else{
 
-            bError=submitDates(mapperStartDt, mapperEndDt);
+            bError=!submitDates(mapperStartDt, mapperEndDt);
 
             while(m_tDateTime->canFetchMore())
                 m_tDateTime->fetchMore();
