@@ -525,13 +525,13 @@ void FrmMinorStrata::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,QString("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,2,QString("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,2,QString("dateTime").toAscii());
 
     QList<QDataWidgetMapper*> lMapper;
     lMapper << mapper1 << mapperStartDt << mapperEndDt;

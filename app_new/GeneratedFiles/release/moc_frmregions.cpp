@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmregions.h'
 **
-** Created: Mon 7. Nov 14:12:25 2011
+** Created: Mon 5. Dec 08:43:27 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

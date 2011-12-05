@@ -4,7 +4,7 @@ void DateModel::amendDateTimeType(bool bIsDateTime, int row)
 {
     if (row==-1) return; //row not initialized!
 
-    QModelIndex idx=index(row,4);//Type
+    QModelIndex idx=index(row,3);//Type
     if (!idx.isValid()) return;
     int typeID;
     if (!getDateTimeType(true,bIsDateTime,typeID)) return;
@@ -62,23 +62,17 @@ bool DateModel::insertNewRecord(const bool bAuto, const bool bDate, const bool b
 
     this->insertRow(this->rowCount());
 
-    QModelIndex idx=index(this->rowCount()-1,1);//location: for now we always grab it from the session data
-    if (!idx.isValid()) return false;
-    int locationID;
-    if (!getLocationID(locationID)) return false;
-    this->setData(idx,locationID);
-
-    idx=index(this->rowCount()-1,4);//Type
+    QModelIndex idx=index(this->rowCount()-1,3);//Type
     if (!idx.isValid()) return false;
     int typeID;
     if (!getDateTimeType(bDate,bTime,typeID)) return false;
     this->setData(idx,typeID);
 
     if (bAuto){
-        idx=index(this->rowCount()-1,3);//Local Date
+        idx=index(this->rowCount()-1,2);//Local Date
         QDateTime now = QDateTime::currentDateTime();
         this->setData(idx,now);
-        idx=index(this->rowCount()-1,2);//UTC Date
+        idx=index(this->rowCount()-1,1);//UTC Date
         now = QDateTime::currentDateTime();
         this->setData(idx,now.toUTC());
     }

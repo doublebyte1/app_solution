@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmregions.ui'
 **
-** Created: Wed 29. Jun 13:42:40 2011
+** Created: Mon 5. Dec 08:54:15 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

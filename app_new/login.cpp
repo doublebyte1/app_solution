@@ -97,16 +97,16 @@ void Login::validate()
     /*!
     //Settings for the App credentials
     */
-    if (settings.contains(tr("AppUser")))
-        lineUser->setText(settings.value(tr("AppUser")).toString());
-    if (settings.contains(tr("AppPass")))
-        linePasswd->setText(settings.value(tr("AppPass")).toString());
+    if (settings.contains("AppUser"))
+        lineUser->setText(settings.value("AppUser").toString());
+    if (settings.contains("AppPass"))
+        linePasswd->setText(settings.value("AppPass").toString());
 
     /*!
     //Settings for the Db credentials
     */
-    if (settings.contains(tr("alias")))
-        cmbFiles->addItem(settings.value(tr("alias")).toString());
+    if (settings.contains("alias"))
+        cmbFiles->addItem(settings.value("alias").toString());
 
     cmbFiles->addItem(qApp->translate("Login",strLoadDatabase));
  }
@@ -120,24 +120,24 @@ void Login::loadForm(const QString& strName)
             if (dynamic_cast<QLineEdit*>(frmConnectPtr->gridLayout->itemAt(i)->widget())!=0)
                 dynamic_cast<QLineEdit*>(frmConnectPtr->gridLayout->itemAt(i)->widget())->setText(tr(""));
         }
-     else{
+    else{
     /*!
     //Settings for the DB credentials
     */
-        QSettings settings(tr("Medstat"), tr("App"));
+        QSettings settings("Medstat", "App");
 
-        if (settings.contains(tr("alias")) &&
-            settings.value(tr("alias")).toString()==strName){
-                QString strAlias=settings.value(tr("alias")).toString();
+        if (settings.contains("alias") &&
+            settings.value("alias").toString()==strName){
+                QString strAlias=settings.value("alias").toString();
 
                     frmConnectPtr->lineAlias->setText(strAlias);
-                    frmConnectPtr->lineHost->setText(settings.value(tr("host")).toString());
-                    frmConnectPtr->lineDataSource->setText(settings.value(tr("datasource")).toString());
-                    frmConnectPtr->lineUsername->setText(settings.value(tr("username")).toString());
-                    frmConnectPtr->linePassword->setText(settings.value(tr("password")).toString());
+                    frmConnectPtr->lineHost->setText(settings.value("host").toString());
+                    frmConnectPtr->lineDataSource->setText(settings.value("datasource").toString());
+                    frmConnectPtr->lineUsername->setText(settings.value("username").toString());
+                    frmConnectPtr->linePassword->setText(settings.value("password").toString());
                     frmConnectPtr->cmbDriver->setCurrentIndex(
                             frmConnectPtr->cmbDriver->findText(
-                                settings.value(tr("driver")).toString()));
+                                settings.value("driver").toString()));
         }
     }
 }
@@ -161,13 +161,13 @@ void Login::loadForm(const QString& strName)
             cmbFiles->setEnabled(false);
             frmConnectPtr->hide();
 
-                QSettings settings(tr("Medstat"), tr("App"));
-                settings.setValue(tr("host"), strHost);
-                settings.setValue(tr("datasource"), strDataSource);
-                settings.setValue(tr("username"), strUsername);
-                settings.setValue(tr("password"), strPassword);
-                settings.setValue(tr("alias"), strAlias);
-                settings.setValue(tr("driver"), strDriver);
+                QSettings settings("Medstat", "App");
+                settings.setValue("host", strHost);
+                settings.setValue("datasource", strDataSource);
+                settings.setValue("username", strUsername);
+                settings.setValue("password", strPassword);
+                settings.setValue("alias", strAlias);
+                settings.setValue("driver", strDriver);
 
                 if (cmbFiles->count()>1)cmbFiles->removeItem(0);
                 cmbFiles->insertItem(cmbFiles->count()-2,strAlias);
@@ -181,3 +181,16 @@ void Login::loadForm(const QString& strName)
 
         }
  }
+
+ ///////////////////////////////////////////////
+
+QString getMacAddress()
+{
+    foreach(QNetworkInterface interface, QNetworkInterface::allInterfaces())
+    {
+        // Return only the first non-loopback MAC Address
+        if (!(interface.flags() & QNetworkInterface::IsLoopBack))
+            return interface.hardwareAddress();
+    }
+    return QString();
+}

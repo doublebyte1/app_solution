@@ -484,7 +484,7 @@ void FrmFrame::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,tr("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,2,tr("dateTime").toAscii());
 
     if (mapperEndDt!=0) delete mapperEndDt;
 
@@ -492,7 +492,7 @@ void FrmFrame::initMappers()
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,2,QString("dateTime").toAscii());
 
     initMapper2();
     mapper->toLast();

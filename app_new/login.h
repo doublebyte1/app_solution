@@ -1,6 +1,8 @@
 #include <QtGui>
 #include <QtSql>
  #include <QThread>
+#include <QtNetwork/QNetworkInterface>
+
 #include "ui_login.h"
 #include "mainfrm.h"
 #include "frmconnect.h"
@@ -13,6 +15,10 @@
 
 #ifndef STORESETTINGSTHREAD_H
 #define STORESETTINGSTHREAD_H
+
+QString                         getMacAddress();
+
+//////////////////////////////////////////////////////////////////////////////
 
 //! StoreSettingsThread Class
 /*!
@@ -40,9 +46,12 @@ class StoreSettingsThread : public QThread
 
             void run(){
                 //Store settings
-                QSettings settings(tr("Medstat"), tr("App"));
-                settings.setValue(tr("AppUser"), m_strUser);
-                settings.setValue(tr("AppPass"), m_strPassword);
+                QSettings settings("Medstat", "App");
+                settings.setValue("AppUser", m_strUser);
+                settings.setValue("AppPass", m_strPassword);
+
+                qDebug() << getMacAddress() << endl;
+
                  exec();
             }
 

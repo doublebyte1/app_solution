@@ -353,13 +353,13 @@ void FrmTrip::initMappers()
     mapperStartDt->setModel(m_tDateTime);
     mapperStartDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperStartDt->setItemDelegate(new QItemDelegate(this));
-    mapperStartDt->addMapping(customDtStart,3,QString("dateTime").toAscii());
+    mapperStartDt->addMapping(customDtStart,2,QString("dateTime").toAscii());
 
     mapperEndDt= new QDataWidgetMapper(this);
     mapperEndDt->setModel(m_tDateTime);
     mapperEndDt->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapperEndDt->setItemDelegate(new QItemDelegate(this));
-    mapperEndDt->addMapping(customDtEnd,3,QString("dateTime").toAscii());
+    mapperEndDt->addMapping(customDtEnd,2,QString("dateTime").toAscii());
 }
 
 void FrmTrip::beforeShow()
@@ -712,13 +712,13 @@ bool FrmTrip::applyChanges()
                 if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
                     return false;
                 }
-                m_tDateTime->setData(m_tDateTime->index(0,4),typeID);
+                m_tDateTime->setData(m_tDateTime->index(0,3),typeID);
 
                 customDtEnd->getIsDateTime(bDate,bTime);
                 if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
                     return false;
                 }
-                m_tDateTime->setData(m_tDateTime->index(1,4),typeID);
+                m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
 
                 bError=!submitDates(mapperStartDt, mapperEndDt);
 
