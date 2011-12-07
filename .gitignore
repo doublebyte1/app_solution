@@ -1,4 +1,10 @@
 .gitignore
+ app_solution.ncb
+ app_solution.sln 
+ app_new/Debug/mapperrulebinder.obj
+ app_new/customtimectrl.dll
+ app_new/customtimectrld.dll
+ app_new/login.ui
  Debug/app_new.exe
  Debug/app_new.ilk
  Debug/app_new.pdb

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_new", "app_new\app_new.vcproj", "{7C60C570-3CF0-4AC6-BC5C-5480FDA1938C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "conf_app", "conf_app\conf_app.vcproj", "{DFF0DBBB-B426-4F72-A90E-CB03F0566834}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,14 @@ Global
 		{7C60C570-3CF0-4AC6-BC5C-5480FDA1938C}.Release|Win32.Build.0 = Release|Win32
 		{7C60C570-3CF0-4AC6-BC5C-5480FDA1938C}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{7C60C570-3CF0-4AC6-BC5C-5480FDA1938C}.RelWithDebInfo|Win32.Build.0 = Release|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.Debug|Win32.Build.0 = Debug|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.MinSizeRel|Win32.ActiveCfg = Debug|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.MinSizeRel|Win32.Build.0 = Debug|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.Release|Win32.ActiveCfg = Release|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.Release|Win32.Build.0 = Release|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
+		{DFF0DBBB-B426-4F72-A90E-CB03F0566834}.RelWithDebInfo|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
