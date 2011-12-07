@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="conf_app">
+    <file>decrypted.png</file>
+    <file>encrypted.png</file>
+    <file>connect_creating.png</file>
+    <file>conf_app.ico</file>
+    <file>exit.png</file>
+  </qresource>
+</RCC>
