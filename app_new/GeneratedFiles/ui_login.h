@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'login.ui'
 **
-** Created: Tue 29. Nov 10:15:23 2011
+** Created: Wed 7. Dec 15:54:37 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,7 +14,6 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -32,8 +31,6 @@ public:
     QLineEdit *lineUser;
     QLabel *lbPasswd;
     QLineEdit *linePasswd;
-    QLabel *lbFiles;
-    QComboBox *cmbFiles;
     QPushButton *pushLogin;
 
     void setupUi(QWidget *frmLogin)
@@ -76,18 +73,6 @@ public:
 
         gridLayout->addWidget(linePasswd, 1, 1, 1, 1);
 
-        lbFiles = new QLabel(frmLogin);
-        lbFiles->setObjectName(QString::fromUtf8("lbFiles"));
-        lbFiles->setAlignment(Qt::AlignCenter);
-
-        gridLayout->addWidget(lbFiles, 2, 0, 1, 1);
-
-        cmbFiles = new QComboBox(frmLogin);
-        cmbFiles->setObjectName(QString::fromUtf8("cmbFiles"));
-        cmbFiles->setAutoFillBackground(true);
-
-        gridLayout->addWidget(cmbFiles, 2, 1, 1, 1);
-
         pushLogin = new QPushButton(frmLogin);
         pushLogin->setObjectName(QString::fromUtf8("pushLogin"));
         QSizePolicy sizePolicy1(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
@@ -102,18 +87,15 @@ public:
         pushLogin->setIconSize(QSize(16, 16));
         pushLogin->setAutoDefault(true);
 
-        gridLayout->addWidget(pushLogin, 3, 1, 1, 1);
+        gridLayout->addWidget(pushLogin, 2, 1, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
         lbUser->setBuddy(lineUser);
         lbPasswd->setBuddy(linePasswd);
-        lbFiles->setBuddy(cmbFiles);
 #endif // QT_NO_SHORTCUT
 
         retranslateUi(frmLogin);
         QObject::connect(pushLogin, SIGNAL(clicked()), frmLogin, SLOT(validate()));
-        QObject::connect(cmbFiles, SIGNAL(currentIndexChanged(QString)), frmLogin, SLOT(loadForm(QString)));
-        QObject::connect(cmbFiles, SIGNAL(activated(QString)), frmLogin, SLOT(showForm(QString)));
 
         QMetaObject::connectSlotsByName(frmLogin);
     } // setupUi
@@ -129,7 +111,6 @@ public:
 #endif // QT_NO_WHATSTHIS
         lbUser->setText(QApplication::translate("frmLogin", "Username", 0, QApplication::UnicodeUTF8));
         lbPasswd->setText(QApplication::translate("frmLogin", "Password", 0, QApplication::UnicodeUTF8));
-        lbFiles->setText(QApplication::translate("frmLogin", "Database", 0, QApplication::UnicodeUTF8));
         pushLogin->setText(QApplication::translate("frmLogin", "Login", 0, QApplication::UnicodeUTF8));
         pushLogin->setShortcut(QApplication::translate("frmLogin", "Ctrl+L", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

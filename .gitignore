@@ -3,7 +3,6 @@
  conf_app/Release/*
  conf_app/GeneratedFiles/*
  app_solution.ncb
- app_solution.sln 
  app_new/Debug/mapperrulebinder.obj
  app_new/customtimectrl.dll
  app_new/customtimectrld.dll

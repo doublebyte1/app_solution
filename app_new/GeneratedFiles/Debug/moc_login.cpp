@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'login.h'
 **
-** Created: Mon 5. Dec 09:25:18 2011
+** Created: Wed 7. Dec 16:55:48 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,62 +17,13 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_StoreSettingsThread[] = {
-
- // content:
-       5,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       0,    0, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
-
-       0        // eod
-};
-
-static const char qt_meta_stringdata_StoreSettingsThread[] = {
-    "StoreSettingsThread\0"
-};
-
-const QMetaObject StoreSettingsThread::staticMetaObject = {
-    { &QThread::staticMetaObject, qt_meta_stringdata_StoreSettingsThread,
-      qt_meta_data_StoreSettingsThread, 0 }
-};
-
-#ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &StoreSettingsThread::getStaticMetaObject() { return staticMetaObject; }
-#endif //Q_NO_DATA_RELOCATION
-
-const QMetaObject *StoreSettingsThread::metaObject() const
-{
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
-}
-
-void *StoreSettingsThread::qt_metacast(const char *_clname)
-{
-    if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_StoreSettingsThread))
-        return static_cast<void*>(const_cast< StoreSettingsThread*>(this));
-    return QThread::qt_metacast(_clname);
-}
-
-int StoreSettingsThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
-{
-    _id = QThread::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-    return _id;
-}
 static const uint qt_meta_data_Login[] = {
 
  // content:
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -84,17 +35,14 @@ static const uint qt_meta_data_Login[] = {
 
  // slots: signature, parameters, type, tag, flags
       31,    6,    6,    6, 0x0a,
-      50,   42,    6,    6, 0x0a,
-      68,   42,    6,    6, 0x0a,
-     151,   86,    6,    6, 0x0a,
+     112,   47,   42,    6, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Login[] = {
     "Login\0\0bOk\0gotConnection(bool)\0"
-    "validate()\0strName\0loadForm(QString)\0"
-    "showForm(QString)\0"
+    "validate()\0bool\0"
     "strHost,strDataSource,strUsername,strPassword,strAlias,strDriver\0"
     "connectDB(QString,QString,QString,QString,QString,QString)\0"
 };
@@ -132,12 +80,11 @@ int Login::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: gotConnection((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: validate(); break;
-        case 2: loadForm((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 3: showForm((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 4: connectDB((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6]))); break;
+        case 2: { bool _r = connectDB((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6])));
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
-        _id -= 5;
+        _id -= 3;
     }
     return _id;
 }
