@@ -53,7 +53,6 @@ class Login : public QWidget, public Ui::frmLogin
             void                            showEvent ( QShowEvent * event );
 
             MainFrm*                        mainFrmPtr;
-            //bool                            m_connected;
 
 };
 

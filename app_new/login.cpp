@@ -26,9 +26,9 @@ Login::~Login()
 void Login::validate()
 {
         QSqlQuery query;
-        query.prepare( tr("SELECT username, password, name, entry, modify, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].id) AND (username= :user AND password= :pass) )") );
-        query.bindValue(tr(":user"), lineUser->text() );
-        query.bindValue(tr(":pass"), linePasswd->text() );
+        query.prepare( "SELECT username, password, name, entry, modify, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].id) AND (username= :user AND password= :pass) )" );
+        query.bindValue(":user", lineUser->text() );
+        query.bindValue(":pass", linePasswd->text() );
 
         QMessageBox msgBox;
         if (!query.exec()){
@@ -37,10 +37,13 @@ void Login::validate()
                qApp->exit(0);
         }
         else if (query.numRowsAffected()<1){
-            QMessageBox::critical( this, tr("User Error"),
+
+            QString strStyleSheet="background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));";
+            lineUser->setStyleSheet(strStyleSheet);
+            linePasswd->setStyleSheet(strStyleSheet);
+
+            QMessageBox::critical( this, tr("Authentication Error"),
             tr("Username/Password Not Found!"));
-            for (size_t i=0; i < (size_t)gridLayout->count(); ++i)
-                gridLayout->itemAt(i)->widget()->setEnabled(true);
         }
         else{
             /*!
@@ -91,7 +94,6 @@ void Login::showEvent ( QShowEvent * event )
     if ( !settings.contains("host") || !settings.contains("datasource") ||
         !settings.contains("username") || !settings.contains("password") ||
         !settings.contains("driver") ){
-
             return false;
 
     } else{
