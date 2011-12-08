@@ -40,18 +40,29 @@ void Login::loadForms()
 
 void Login::validate()
 {
+    QString strError;
+    QString strStyleSheet="background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));";
     bool gotUser=lineUser->text().compare(strUsername)==0;
     bool gotPasswd=linePasswd->text().compare(strPassword)==0;
 
+    lineUser->setStyleSheet("");
+    linePasswd->setStyleSheet("");
+
     if (!gotUser){
+            lineUser->setStyleSheet(strStyleSheet);
+            strError=tr("Wrong username!");
             QMessageBox msgBox(QMessageBox::Critical,tr("Authentication Error"),
-                tr("Wrong username!"),QMessageBox::Ok,0);
+            strError,QMessageBox::Ok,0);
             msgBox.exec();
-    } else if (!gotPasswd){
+    } 
+    if (!gotPasswd){
+            linePasswd->setStyleSheet(strStyleSheet);
+            strError=tr("Wrong password!");
             QMessageBox msgBox(QMessageBox::Critical,tr("Authentication Error"),
-                tr("Wrong password!"),QMessageBox::Ok,0);
+            strError,QMessageBox::Ok,0);
             msgBox.exec();
-    }else{
+    }if (gotUser && gotPasswd){
         loadForms();
     }
+
 }
