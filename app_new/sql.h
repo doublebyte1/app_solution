@@ -1830,5 +1830,44 @@ static bool onCheckDependantDates(const QMap<QString,sTable>& mapTables, const Q
      return true;
 }
 
+static bool getIDfromLastInsertedTable(const QString strTable, QVariant& outID,QString& strError)
+{
+    QSqlQuery query;
+    query.prepare("select top(1) ID from " + strTable + " order by ID Desc");
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not retrieve last inserted id from ") + strTable + QObject::tr("!");
+         return false;
+        }
+     query.first();
+     outID=query.value(0);
+     return true;
+}
+
+static bool getIDfromLastInsertedDate(QVariant& outID,QString& strError)
+{
+    return getIDfromLastInsertedTable("GL_DATES",outID, strError);
+}
+
+static bool getNADate(QVariant& outID,QString& strError)
+{
+    QSqlQuery query;
+    query.prepare("select ID from GL_DATES WHERE (Date_Type=(SELECT ID from Ref_DateTime_Type WHERE Name='n/a'))");
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not retrieve n/a date!");
+         return false;
+        }
+     query.first();
+     outID=query.value(0);
+     return true;
+}
+
 #endif
 

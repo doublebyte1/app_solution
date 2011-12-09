@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'abstractrulebinder.h'
 **
-** Created: Tue 29. Nov 10:24:03 2011
+** Created: Fri 9. Dec 10:59:18 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

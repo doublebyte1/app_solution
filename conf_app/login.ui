@@ -91,8 +91,8 @@
       <string>Login</string>
      </property>
      <property name="icon">
-      <iconset resource="../app_new/app_new.qrc">
-       <normaloff>:/app_new/password.png</normaloff>:/app_new/password.png</iconset>
+      <iconset resource="conf_app.qrc">
+       <normaloff>:/conf_app/password.png</normaloff>:/conf_app/password.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -112,6 +112,7 @@
  </widget>
  <resources>
   <include location="../app_new/app_new.qrc"/>
+  <include location="conf_app.qrc"/>
  </resources>
  <connections>
   <connection>

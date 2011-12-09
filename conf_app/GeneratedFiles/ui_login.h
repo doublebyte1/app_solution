@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'login.ui'
 **
-** Created: Wed 7. Dec 12:48:56 2011
+** Created: Thu 8. Dec 09:06:55 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -82,7 +82,7 @@ public:
         pushLogin->setSizePolicy(sizePolicy1);
         pushLogin->setAutoFillBackground(true);
         QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app_new/password.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QString::fromUtf8(":/conf_app/password.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushLogin->setIcon(icon1);
         pushLogin->setIconSize(QSize(16, 16));
         pushLogin->setAutoDefault(true);

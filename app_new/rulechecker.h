@@ -246,5 +246,6 @@ class InitRulesThread : public QThread
       Pointer to the RuleChecker object on the main thread.
     */
         RuleChecker*                    rulesPtr;
+        QMutex                          mutex;
 };
 #endif //INITRULESTHREAD_H

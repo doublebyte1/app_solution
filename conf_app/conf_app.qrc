@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="conf_app">
+    <file>password.png</file>
     <file>decrypted.png</file>
     <file>encrypted.png</file>
     <file>connect_creating.png</file>

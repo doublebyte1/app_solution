@@ -268,5 +268,7 @@ void InitRulesThread::run()
 
 void InitRulesThread::doTheWork()
 {
+    mutex.tryLock();
     emit done(rulesPtr->init());
+    mutex.unlock();
 }

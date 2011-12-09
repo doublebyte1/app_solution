@@ -3,15 +3,21 @@
 
 #define MaxRecentFiles 5
 
- static const char *strLoadDatabase = 
-     QT_TRANSLATE_NOOP("Login", "Create new connection...");
+// static const char *strLoadDatabase = 
+//     QT_TRANSLATE_NOOP("Login", "Create new connection...");
 
 Login::Login(QWidget *parent, Qt::WFlags flags):
 QWidget(parent, flags){
 
     mainFrmPtr=0;
+    thread=0;
 
     setupUi(this);
+
+    connect(qApp,
+                   SIGNAL(aboutToQuit()),
+                   this,
+                   SLOT(finalTouches()));
 }
 
 Login::~Login()
@@ -21,6 +27,52 @@ Login::~Login()
     */
 
     if (mainFrmPtr!=0) delete mainFrmPtr;
+    if (thread!=0){
+        //! Make sure we stop the thread before deleting it;
+        while (thread->isRunning()){
+            thread->terminate();
+            thread->wait();
+        }
+        delete thread;
+    }
+}
+
+void Login::finalTouches()
+{
+    endSession();
+}
+
+void Login::endSession()
+{
+    QSqlTableModel* table= new QSqlTableModel();
+    table->setTable(QSqlDatabase().driver()->escapeIdentifier("GL_SESSION",
+    QSqlDriver::TableName));
+    table->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    table->sort(0,Qt::AscendingOrder);
+    table->select();
+
+     //end date
+     QSqlQuery query;
+     query.prepare("exec InsertCurrentDateTime");
+     query.exec();
+     if (query.lastError().type()!=QSqlError::NoError){
+        qDebug() << query.lastError().text() << endl;
+     }
+
+    QVariant enddateID;
+     QString strError;
+     if (!getIDfromLastInsertedDate(enddateID,strError)){
+        qDebug() << strError << endl;
+     }
+
+    QModelIndex idx=table->index(table->rowCount()-1,6);
+    table->setData(idx,enddateID);
+
+    if (!table->submitAll()){
+        qDebug() << tr("Could not submit record into GL_Sessions table!") << endl;
+    }
+
+    delete table;
 }
 
 void Login::validate()
@@ -51,11 +103,35 @@ void Login::validate()
             */
                 hide();
                 update();
+
+                //Store session data through a thread
+                QSettings settings(tr("Medstat"), tr("App"));
+
+                if (thread!=0) {
+                    while (thread->isRunning()){
+                        thread->terminate();
+                        thread->wait();
+                    }
+                    delete thread; thread=0;
+                }
+
+                thread=new StoreSettingsThread();
+                thread->setPars(lineUser->text(),settings.value("city").toString());
+
                 if (mainFrmPtr==0) mainFrmPtr=new MainFrm();
+
+                connect(thread, SIGNAL(showError(QString,bool)), mainFrmPtr,
+                    SLOT(displayError(QString,bool)));
+
+                connect(thread, SIGNAL(showStatus(QString)), mainFrmPtr,
+                    SLOT(statusShow(QString)));
+
+                thread->start(QThread::LowPriority);
+
                 mainFrmPtr->show();
                 mainFrmPtr->repaint();
                 //This is assynchronous, so no point in checking for return value now...
-                mainFrmPtr->initRules();
+                //mainFrmPtr->initRules();
             }
 }
 
@@ -93,7 +169,7 @@ void Login::showEvent ( QShowEvent * event )
 
     if ( !settings.contains("host") || !settings.contains("datasource") ||
         !settings.contains("username") || !settings.contains("password") ||
-        !settings.contains("driver") ){
+        !settings.contains("driver") || !settings.contains("city")){
             return false;
 
     } else{
