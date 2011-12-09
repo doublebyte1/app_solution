@@ -131,7 +131,7 @@ void Login::validate()
                 mainFrmPtr->show();
                 mainFrmPtr->repaint();
                 //This is assynchronous, so no point in checking for return value now...
-                //mainFrmPtr->initRules();
+                mainFrmPtr->initRules();
             }
 }
 

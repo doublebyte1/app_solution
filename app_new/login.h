@@ -50,20 +50,37 @@ class StoreSettingsThread : public QThread
             void run(){
 
                 mutex.tryLock();
+                bool bOk=insertSessionRecord();
+                mutex.unlock();
 
+                if (bOk)
+                    emit showStatus (tr("Session settings sucessfully created in the database!"));
+
+                exec();
+
+            }
+
+        signals:
+            void        showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+            void        showStatus(QString str);//!< signal for showing messages in the status bar
+
+        private:
+
+            bool insertSessionRecord()
+            {
                 //base date
                  QSqlQuery query1;
                  query1.prepare("exec Insert_Base_Date");
                  query1.exec();
                  if (query1.lastError().type()!=QSqlError::NoError){
                     emit showError(query1.lastError().text(),true);
-                    return;
+                    return false;
                  }
                  QVariant basedateID, startdateID;
                  QString strError;
                  if (!getIDfromLastInsertedDate(basedateID,strError)){
                     emit showError(strError,true);
-                    return;
+                    return false;
                  }
 
                  //location
@@ -73,7 +90,7 @@ class StoreSettingsThread : public QThread
                  query2.exec();
                  if (query2.lastError().type()!=QSqlError::NoError){
                     emit showError(query2.lastError().text(),true);
-                    return;
+                    return false;
                  }
                  query2.first();
                  QVariant locationID=query2.value(0);
@@ -84,18 +101,18 @@ class StoreSettingsThread : public QThread
                  query3.exec();
                  if (query3.lastError().type()!=QSqlError::NoError){
                     emit showError(query3.lastError().text(),true);
-                    return;
+                    return false;
                  }
                  if (!getIDfromLastInsertedDate(startdateID,strError)){
                     emit showError(strError,true);
-                    return;
+                    return false;
                  }
 
                  //end date (for now "n/a": ammend in the end!)
                  QVariant enddateID;
                  if (!getNADate(enddateID,strError)){
                     emit showError(strError,true);
-                    return;
+                    return false;
                  }
 
                  //user
@@ -105,7 +122,7 @@ class StoreSettingsThread : public QThread
                  query4.exec();
                  if (query4.lastError().type()!=QSqlError::NoError){
                     emit showError(query4.lastError().text(),true);
-                    return;
+                    return false;
                  }
                  query4.first();
                  QVariant userID=query4.value(0);
@@ -119,7 +136,7 @@ class StoreSettingsThread : public QThread
 
                 if (!insertRecordIntoModel(table)){
                     emit showError(tr("Could not insert record into GL_Sessions table!"),true);
-                    return;
+                    return false;
                 }
 
                 QModelIndex idx=table->index(table->rowCount()-1,1);
@@ -139,22 +156,14 @@ class StoreSettingsThread : public QThread
 
                 if (!table->submitAll()){
                     emit showError(tr("Could not submit record into GL_Sessions table!"),true);
-                    return;
+                    delete table;
+                    return false;
                 }
 
                 delete table;
-
-                mutex.unlock();
-
-                emit showStatus (tr("Session settings sucessfully created in the database!"));
-                exec();
+                return true;
             }
 
-        signals:
-            void        showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
-            void        showStatus(QString str);//!< signal for showing messages in the status bar
-
-        private:
             QString             m_strDatabase;
             QString             m_strUser;
             QString             m_strPassword;
