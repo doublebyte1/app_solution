@@ -71,11 +71,14 @@ class StoreSettingsThread : public QThread
                 //base date
                  QSqlQuery query1;
                  query1.prepare("exec Insert_Base_Date");
+                 query1.setForwardOnly(true);
                  query1.exec();
                  if (query1.lastError().type()!=QSqlError::NoError){
                     emit showError(query1.lastError().text(),true);
                     return false;
                  }
+
+
                  QVariant basedateID, startdateID;
                  QString strError;
                  if (!getIDfromLastInsertedDate(basedateID,strError)){
@@ -87,6 +90,7 @@ class StoreSettingsThread : public QThread
                  QSqlQuery query2;
                  query2.prepare("SELECT ID FROM Ref_Location WHERE (City_Name=:location)");
                  query2.bindValue(":location", m_strLocation);
+                 query2.setForwardOnly(true);
                  query2.exec();
                  if (query2.lastError().type()!=QSqlError::NoError){
                     emit showError(query2.lastError().text(),true);
@@ -98,6 +102,7 @@ class StoreSettingsThread : public QThread
                  //start date
                  QSqlQuery query3;
                  query3.prepare("exec InsertCurrentDateTime");
+                 query3.setForwardOnly(true);
                  query3.exec();
                  if (query3.lastError().type()!=QSqlError::NoError){
                     emit showError(query3.lastError().text(),true);
@@ -119,6 +124,7 @@ class StoreSettingsThread : public QThread
                  QSqlQuery query4;
                  query4.prepare("SELECT ID FROM UI_USER WHERE (username=:username)");
                  query4.bindValue(":username", m_strUser);
+                 query4.setForwardOnly(true);
                  query4.exec();
                  if (query4.lastError().type()!=QSqlError::NoError){
                     emit showError(query4.lastError().text(),true);

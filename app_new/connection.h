@@ -17,7 +17,7 @@ static bool createConnection(const QString strHost, const QString strData, const
        QSqlDatabase db = QSqlDatabase::addDatabase( 
         /*QT_TR_NOOP("QODBC")*/strDriver);
         //db.setConnectOptions(QT_TR_NOOP("SQL_ATTR_ODBC_VERSION=SQL_OV_ODBC3"));
-        db.setConnectOptions(QT_TR_NOOP("SQL_ATTR_LOGIN_TIMEOUT=1000"));
+        db.setConnectOptions(QT_TR_NOOP("SQL_ATTR_LOGIN_TIMEOUT=1000,SQL_COPT_SS_MARS_ENABLED,SQL_MARS_ENABLED_YES,Mars_Connection=yes"));
         db.setHostName(strHost);
         db.setDatabaseName(strData);
         db.setUserName(strUser);
