@@ -277,5 +277,8 @@ bool conf_app::fillLocations()
 bool queryShowStartupMsg()
 {
     QSettings settings("Medstat", "App");
+    if (!settings.contains("showStartupMsg"))
+        return true;
+
     return settings.value("showStartupMsg").toBool();
 }
