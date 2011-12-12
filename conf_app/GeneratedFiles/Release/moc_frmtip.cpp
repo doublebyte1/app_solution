@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmtip.h'
 **
-** Created: Wed 7. Dec 15:13:36 2011
+** Created: Mon 12. Dec 09:19:30 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

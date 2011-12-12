@@ -193,6 +193,8 @@ class Login : public QWidget, public Ui::frmLogin
 
     signals:
         void                                gotConnection(bool bOk);
+        void                                showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+        void                                showStatus(QString str);//!< signal for showing messages in the status bar
 
     public slots:
         void                                validate();
@@ -208,10 +210,10 @@ class Login : public QWidget, public Ui::frmLogin
             bool                            readSettings(QString& strHost, QString& strAlias, QString& strDatasource, QString& strUsername, 
                                                 QString& strPassword, QString& strDriver);
             void                            showEvent ( QShowEvent * event );
+            bool                            startSession(const QString strUser, const QString strLocation);
             void                            endSession();
 
             MainFrm*                        mainFrmPtr;
-            StoreSettingsThread*            thread;
 };
 
 #endif // LOGIN_H
