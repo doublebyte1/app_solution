@@ -15,16 +15,18 @@ HEADERS += ./abstractformat.h \
     ./frmcatch.h \
     ./frmcell.h \
     ./frmchangereasons.h \
-    ./frmconnect.h \
     ./frmexport.h \
     ./frmframe.h \
     ./frmframedetails.h \
     ./frmimport.h \
+    ./frmimportregions.h \
     ./frmlegend.h \
     ./frmminorstrata.h \
     ./frmoperation.h \
     ./frmprjpage.h \
+    ./frmregions.h \
     ./frmreports.h \
+    ./frmsampling.h \
     ./frmtrip.h \
     ./frmvessel.h \
     ./frmvesseltype.h \
@@ -40,6 +42,7 @@ HEADERS += ./abstractformat.h \
     ./rulechecker.h \
     ./sql.h \
     ./tableadapter.h \
+    ./tree.h \
     ./treeitem.h \
     ./treemodel.h \
     ./xmltable.h
@@ -55,16 +58,18 @@ SOURCES += ./abstractformat.cpp \
     ./frmcatch.cpp \
     ./frmcell.cpp \
     ./frmchangereasons.cpp \
-    ./frmconnect.cpp \
     ./frmexport.cpp \
     ./frmframe.cpp \
     ./frmframedetails.cpp \
     ./frmimport.cpp \
+    ./frmimportregions.cpp \
     ./frmlegend.cpp \
     ./frmminorstrata.cpp \
     ./frmoperation.cpp \
     ./frmprjpage.cpp \
+    ./frmregions.cpp \
     ./frmreports.cpp \
+    ./frmsampling.cpp \
     ./frmtrip.cpp \
     ./frmvessel.cpp \
     ./frmvesseltype.cpp \
@@ -79,20 +84,23 @@ SOURCES += ./abstractformat.cpp \
     ./reportinghook.cpp \
     ./rulechecker.cpp \
     ./tableadapter.cpp \
+    ./tree.cpp \
     ./treeitem.cpp \
     ./treemodel.cpp \
     ./xmltable.cpp
 FORMS += ./frmcatch.ui \
     ./frmcell.ui \
     ./frmchangereasons.ui \
-    ./frmconnect.ui \
     ./frmframe.ui \
     ./frmframedetails.ui \
+    ./frmImportRegions.ui \
     ./frmlegend.ui \
     ./frmminorstrata.ui \
     ./frmoperation.ui \
     ./frmprjpage.ui \
+    ./frmregions.ui \
     ./frmreports.ui \
+    ./frmsampling.ui \
     ./frmTables.ui \
     ./frmtrip.ui \
     ./frmvessel.ui \
@@ -100,4 +108,5 @@ FORMS += ./frmcatch.ui \
     ./login.ui \
     ./mainfrm.ui \
     ./msgbox.ui
+TRANSLATIONS += ./app_new_pt.ts
 RESOURCES += ./app_new.qrc

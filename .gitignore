@@ -3,42 +3,14 @@
  conf_app/Release/*
  conf_app/GeneratedFiles/*
  app_solution.ncb
- app_new/Debug/mapperrulebinder.obj
- app_new/customtimectrl.dll
- app_new/customtimectrld.dll
- app_new/login.ui
+ app_new/*.dll
  Debug/app_new.exe
  Debug/app_new.ilk
  Debug/app_new.pdb
- app_new/Debug/BuildLog.htm
- app_new/Debug/frmcatch.obj
- app_new/Debug/frmcell.obj
- app_new/Debug/frmframe.obj
- app_new/Debug/frmminorstrata.obj
- app_new/Debug/frmoperation.obj
- app_new/Debug/frmsampling.obj
- app_new/Debug/frmtrip.obj
- app_new/Debug/frmvessel.obj
- app_new/Debug/frmvesseltype.obj
- app_new/Debug/login.obj
- app_new/Debug/main.obj
- app_new/Debug/mainfrm.obj
- app_new/Debug/moc_frmcatch.obj
- app_new/Debug/moc_frmcell.obj
- app_new/Debug/moc_frmframe.obj
- app_new/Debug/moc_frmminorstrata.obj
- app_new/Debug/moc_frmoperation.obj
- app_new/Debug/moc_frmtrip.obj
- app_new/Debug/moc_frmvessel.obj
- app_new/Debug/moc_frmvesseltype.obj
- app_new/Debug/moc_login.obj
- app_new/Debug/moc_mainfrm.obj
- app_new/Debug/moc_previewtab.obj
- app_new/Debug/mt.dep
- app_new/Debug/multimodeli.obj
- app_new/Debug/previewtab.obj
- app_new/Debug/vc90.idb
- app_new/Debug/vc90.pdb
- app_new/GeneratedFiles/Debug/moc_previewtab.cpp
- app_new/GeneratedFiles/ui_frmtrip.h
+ app_new/Debug/*
+ app_new/Release/*
+ app_new/GeneratedFiles/*
  app_solution.ncb
+ Debug/*
+ Release/*
+ Doxyfile

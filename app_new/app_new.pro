@@ -10,7 +10,7 @@ message("You are running qmake on a generated .pro file. This may not work!")
 TEMPLATE = app
 TARGET = app_new
 DESTDIR = ../Debug
-QT += core gui sql xml script xmlpatterns qtmain webkit
+QT += core gui sql network xml script xmlpatterns qtmain webkit
 CONFIG += qtestlib debug
 DEFINES += QT_LARGEFILE_SUPPORT QT_XML_LIB QT_SQL_LIB QT_XMLPATTERNS_LIB QT_SCRIPT_LIB
 INCLUDEPATH += ./GeneratedFiles \
@@ -33,3 +33,5 @@ OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(app_new.pri)
+TRANSLATIONS += ./app_new_pt.ts
+win32:RC_FILE = app_new.rc

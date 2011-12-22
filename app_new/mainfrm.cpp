@@ -536,11 +536,9 @@ void MainFrm::callAssistant()
 
         QStringList args;
         args << QLatin1String("-collectionFile")
-/*
+
             << QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
-        + QLatin1String("/doc.qhc")*/
-         << QLibraryInfo::location(QLibraryInfo::ExamplesPath)
-         + QLatin1String("/help/simpletextviewer/documentation/simpletextviewer.qhc")
+        + QLatin1String("mycollection.qhc")
         << QLatin1String("-enableRemoteControl");
 
          process->start(app, args);
@@ -550,10 +548,16 @@ void MainFrm::callAssistant()
              return;
          }
 
+        QByteArray ba;
+        ba.append("setSource qthelp://medfisis.app.1_1b/doc/index.htm\n");
+        process->write(ba);
+
+         /*
          // show index page
          QTextStream str(process);
-         str << QLatin1String("SetSource qthelp://mycompany.com/doc/index.html")
+         str << QLatin1String("SetSource qthelp://medfisis.app.1_1b/doc/index.htm")
              << QLatin1Char('\0') << endl;
+*/
 }
 
 void MainFrm::aboutThisProject()

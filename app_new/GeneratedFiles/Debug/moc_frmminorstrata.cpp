@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmminorstrata.h'
 **
-** Created: Fri 9. Dec 10:59:06 2011
+** Created: Thu 22. Dec 12:00:48 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
