@@ -4,10 +4,7 @@
  conf_app/GeneratedFiles/*
  app_solution.ncb
  app_new/*.dll
- Debug/app_new.exe
- Debug/app_new.ilk
- Debug/app_new.pdb
- app_new/Debug/*
+  app_new/Debug/*
  app_new/Release/*
  app_new/GeneratedFiles/*
  app_solution.ncb

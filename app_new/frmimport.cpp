@@ -24,7 +24,7 @@ SecondaryFrm(parent, flags){
     checkAppend->setVisible(!checkCreate->isChecked());
     checkBackups->setVisible(checkCreate->isChecked());
     checkBackups->setChecked(false);
-    checkVerify->setChecked(true);
+    //checkVerify->setChecked(true);
     previewTable->setAlternatingRowColors(true);
     previewTable->setVisible(false);
     previewTable->setSelectionMode(QAbstractItemView::NoSelection);

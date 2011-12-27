@@ -11,6 +11,8 @@ using namespace boost;
      #define new DEBUG_NEW
   #endif
 
+typedef QMultiMap<QString, QMap<QString, QMap<QString, QString> > >            MapKeys;
+
 //! Abstract Format Class
 /*!
 This is the top level class for all formats
@@ -18,7 +20,7 @@ This is the top level class for all formats
 
 class AbstractFormat
 {
-typedef shared_ptr<AbstractFormat>                        absFormatPtr;
+typedef shared_ptr<AbstractFormat>                                             absFormatPtr;
 
     public:
         AbstractFormat(const QString name=0, const QString extension=0, const QString description=0);

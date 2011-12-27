@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmTables.ui'
 **
-** Created: Thu 22. Dec 12:00:28 2011
+** Created: Mon 26. Dec 12:38:07 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -125,6 +125,7 @@ public:
 
         checkCreate = new QCheckBox(groupOptions);
         checkCreate->setObjectName(QString::fromUtf8("checkCreate"));
+        checkCreate->setEnabled(true);
 
         verticalLayout->addWidget(checkCreate);
 
@@ -135,6 +136,8 @@ public:
 
         checkAppend = new QCheckBox(groupOptions);
         checkAppend->setObjectName(QString::fromUtf8("checkAppend"));
+        checkAppend->setEnabled(true);
+        checkAppend->setChecked(false);
 
         verticalLayout->addWidget(checkAppend);
 

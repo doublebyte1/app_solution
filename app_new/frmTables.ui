@@ -157,6 +157,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkCreate">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="toolTip">
          <string>Create new table(s), deleting existing one(s)</string>
         </property>
@@ -180,6 +183,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkAppend">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="toolTip">
          <string>Append data, keeping existing one</string>
         </property>
@@ -191,6 +197,9 @@
         </property>
         <property name="text">
          <string>Append Data to Existing Table(s)</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

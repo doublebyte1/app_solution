@@ -117,11 +117,15 @@ static bool getImportedName(const QString inName, QString& outName, bool& bExist
     //if (inName.isEmpty()) return false;
 
     QSqlQuery query;
-    QString strQuery=QObject::tr("SELECT original_name, imported_name FROM Info_Tables_Import WHERE original_name=:table");
-    if (!query.prepare(strQuery)) return false;
+    QString strQuery="SELECT original_name, imported_name FROM Info_Tables_Import WHERE original_name=:table";
+    if (!query.prepare(strQuery))
+        return false;
     query.bindValue(QObject::tr(":table"),inName);
     query.setForwardOnly(true);
-    if (!query.exec()) return false;
+    if (!query.exec()){
+        qDebug() << query.lastError().text() << endl;
+        return false;
+    }
     query.first();
     if (query.numRowsAffected()>0)
         outName=query.record().value(QObject::tr("imported_name")).toString();
@@ -129,6 +133,7 @@ static bool getImportedName(const QString inName, QString& outName, bool& bExist
         outName=inName;
 
     bExists=query.numRowsAffected()>0;
+    query.finish();
     return true;
 }
 
@@ -369,6 +374,7 @@ static bool getObjects(QSqlQuery& query, const QString strTable=QString())
     query.setForwardOnly(true);
     if (!query.exec()) return false;
 
+    query.finish();
     return (strTable.isEmpty()?query.numRowsAffected()>0:true);
 }
 
@@ -1385,7 +1391,7 @@ static bool copyTable(const QString strTableFrom, const QString strTableTo, bool
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
     if (!query.exec()){
-        qDebug() << strQuery << endl;
+        qDebug() << query.lastError().text() << endl;
         return false;
     }
     return true;

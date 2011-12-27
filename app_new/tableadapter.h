@@ -25,6 +25,7 @@ class TableAdapter : public XmlTable
         ~TableAdapter();
 
     protected:
+        bool                    initializeSet(const QStringList tableList, QXmlStreamReader& xml, MapKeys& mapKeys);
         bool                    createTablesFromXml(const QStringList strTables, QXmlStreamReader& xml, const QMap<QString,QString>& mapTMPNames);
         bool                    readTableXML(const QString strTable, QXmlStreamReader& xml, const QMap<QString,QString>& mapTMPNames);
         bool                    getFieldTypeXML(QXmlStreamReader& xml, QString& strType, int& size, bool bSeparateSize=false);

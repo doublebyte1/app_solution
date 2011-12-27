@@ -115,7 +115,118 @@ void XmlTable::doRollbackImport()
          if (!dropTableIfExists(*constIterator)) emit showError(tr("Could not remove temporary table ") + (*constIterator));
      }
 }
+/*
+bool XmlTable::importNow()
+{
+    QFile file(m_strFileName);
 
+    //1- Validate
+    QString strTmpFile=QDir::tempPath()+tr("/ReferenceExportDataSet"),
+    strSchema=strTmpFile+tr(".xsd"),strInstance=strTmpFile+tr(".xml");
+
+    if (m_bValidate)
+        if (!validate(strSchema,strInstance,false)) return false;
+
+    m_strTmpTables.clear();//store here, to delete just in case something goes wrong
+
+    QMap<QString,QString> mapTMPNames;
+     QStringList::const_iterator constIterator;
+     for (constIterator = m_strTables.constBegin(); constIterator != m_strTables.constEnd();
+            ++constIterator)
+     {
+        bool bNoTable=false;
+        QSqlQuery query;
+        QString strImportedName;
+        bool bExists;
+        if (!getImportedName(*constIterator,strImportedName,bExists)) return false;
+        if (!getObjects(query,strImportedName)) return false;
+
+        QString strTMPname;
+        if (!generateTMPTableName(strImportedName,strTMPname,true)) return false;
+        mapTMPNames.insert(strImportedName,strTMPname);
+        m_strTmpTables << strTMPname;
+     }
+
+    //Initialize the reader
+    if (!file.open(QFile::ReadOnly | QFile::Text)) return false;
+    QXmlStreamReader xml(&file);
+
+    MapKeys mapKeys;
+    if (!initializeSet(m_strTables,xml,mapKeys))
+    {
+        return false;
+    }
+    file.close();
+    if (!file.open(QFile::ReadOnly | QFile::Text)) return false;
+    xml.setDevice(&file);
+
+    return false;
+
+     //Enforce table structure policies, according to what is expressed in [Info_Fields] table
+     if (m_bVerify){
+        verifyTables2Import(m_strTables,xml);
+        //Don't forget to reset the xml reader
+        file.close();
+        if (!file.open(QFile::ReadOnly | QFile::Text)) return false;
+        xml.setDevice(&file);
+     }
+
+     //create TMP table(s) in a bulk
+    if (!createTablesFromXml(m_strTables,xml,mapTMPNames)) return false;
+
+     //Loop to append data
+     for (constIterator = m_strTables.constBegin(); constIterator != m_strTables.constEnd();
+            ++constIterator)
+     {
+        //Don't forget to reset the xml reader
+        file.close();
+        if (!file.open(QFile::ReadOnly | QFile::Text)) return false;
+        xml.setDevice(&file);
+
+        //Check if we need to add a 'n/a' record in the end of the table
+        bool bAppendNull=false;
+        QHash<QString,QString> mapFieldValue;
+        mapFieldValue.insert(tr("original_name"), *constIterator);
+        QSqlRecord rec;
+        if (!selectValue(tr("appendNullFields"), tr("Info_Tables_Import"),mapFieldValue,rec))
+            bAppendNull=false;//if it is an unkown table, we don't append the extra record
+        else
+            bAppendNull=rec.value(0).toBool();
+
+        if (!insertDataFromXml(*constIterator,xml,mapTMPNames,bAppendNull)) return false;
+        //TODO: update FK - create tmp mapping
+     }
+
+     //At this time, just update the FK references (TMP table)
+    //Don't forget to reset the xml reader
+     file.close();
+    if (!file.open(QFile::ReadOnly | QFile::Text)) return false;
+     xml.setDevice(&file);
+    if (!loopThroughXMLFK(m_strTables,xml,mapTMPNames,false)) return false;
+
+     for (constIterator = m_strTables.constBegin(); constIterator != m_strTables.constEnd();
+            ++constIterator)
+     {
+        QString strImportedName,strTMPname;
+        bool bExists;
+        if (!getImportedName(*constIterator,strImportedName,bExists)) return false;
+        if (!getMappedTMPName(strImportedName,mapTMPNames,strTMPname)) return false;
+
+        //Now backup
+        if (m_bBackup){
+            if (!backupTable(strImportedName)) return false;
+        }
+
+        if (!copyTable(strTMPname,strImportedName,true)) return false;
+        //TODO: update FK references
+        if (!dropTableIfExists(strTMPname)) return false;
+
+     }
+
+    if (file.isOpen()) file.close();
+    return true;
+}
+*/
 bool XmlTable::importNow()
 {
     QFile file(m_strFileName);
@@ -143,12 +254,13 @@ bool XmlTable::importNow()
         bool bExists;
         if (!getImportedName(*constIterator,strImportedName,bExists)) return false;
         if (!getObjects(query,strImportedName)) return false;
-        if (query.numRowsAffected()<1) bNoTable=true;
+        //if (query.size()<1) bNoTable=true;
 
+        /*
         if (bNoTable && !m_bCreateTables){// Table does not exist and we don't want to create it
             emit showError(tr("This table does not exist on the database: we must create it, first!"));
             return false;
-        }
+        }*/
 
         QString strTMPname;
         if (!generateTMPTableName(strImportedName,strTMPname,true)) return false;
@@ -431,6 +543,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
              emit showError(tr("Could not turn the field non-nullable!"));
              return false;
          }
+
          ++i;
      }//while multimap
 

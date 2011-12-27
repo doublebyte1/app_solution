@@ -395,6 +395,15 @@ void PreviewTab::removeRecord()
 
                 }
                 else{
+                    /*
+                    QSqlQuery query;
+                    query.prepare("exec reset_all_tables");
+                    if (!query.exec())
+                    {
+                        emit showError(tr("Could not reset tables after removal of ") + m_model->tableName() + tr("!"));
+                        return;
+                    }*/
+
                     showStatus(tr("Record successfully removed from the database!"));
                     setPreviewQuery();
                     emit recordRemoved();

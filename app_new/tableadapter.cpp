@@ -241,6 +241,7 @@ bool TableAdapter::loopThroughXMLFK(const QStringList strTables, QXmlStreamReade
                 xml.skipCurrentElement();
         }else if (xml.name().toString()==tr("appinfo") && xml.isStartElement()){//Foreign Keys
             if (!search4FK(strTables,xml,mapTMPNames,bCreateKeys)){
+                emit showError(tr("Could not find foreign key!!"),true);
                 return false;
             }
             break;
@@ -348,6 +349,51 @@ bool TableAdapter::createTablesFromXml(const QStringList strTables, QXmlStreamRe
     return ct==strTables.size();//We must have a table, but *maybe* we don't have a primary key!
 }
 
+bool TableAdapter::initializeSet(const QStringList tableList,  QXmlStreamReader& xml,MapKeys& mapKeys)
+{
+    QStringList::const_iterator constIterator;
+
+     for (constIterator = m_strTables.constBegin(); constIterator != m_strTables.constEnd();
+            ++constIterator)
+     {
+        while( !(xml.isEndElement() && xml.name().toString()==tr("appinfo")) ) {
+                xml.readNext();
+                if (xml.isStartElement()){
+                    bool bExists;
+                    if (xml.name().toString().compare("Relationship")==0 && xml.namespaceUri().compare(
+                        strMsdata)==0 && xml.attributes().hasAttribute(strMsdata,"child") &&
+                        m_strTables.contains(*constIterator)){
+                            if (!xml.attributes().hasAttribute("name") || 
+                                !xml.attributes().hasAttribute(strMsdata,"parent") ||
+                                !xml.attributes().hasAttribute(strMsdata,"parentkey") ||
+                                !xml.attributes().hasAttribute(strMsdata,"childkey") )
+                                    return false;
+
+                            QString strChild=xml.attributes().value(strMsdata,"child").toString();
+                            if (strChild.compare(*constIterator)==0)
+                            {
+                                //qDebug() << xml.attributes().value(("name")).toString() << endl;
+                                if (!m_strTables.contains(xml.attributes().value(strMsdata,"parent").toString())){
+                                    emit showError(tr("Could not find referenced table ") + xml.attributes().value(strMsdata,"parent").toString()
+                                        + tr(" in this set!"));
+                                    return false;
+                                }
+                                qDebug() << *constIterator << endl;
+                                QMap<QString,QString> mapKeyFields;
+                                mapKeyFields.insert(xml.attributes().value(strMsdata,"parentkey").toString(),xml.attributes().value(strMsdata,"childkey").toString());
+                                QMap<QString, QMap<QString,QString> > mapRefTable;
+                                mapRefTable.insert(xml.attributes().value(strMsdata,"parent").toString(),mapKeyFields);
+                                mapKeys.insert(*constIterator,mapRefTable);
+
+                            }
+                    }
+                }
+                }//while
+     }
+
+    return true;
+}
+
 bool TableAdapter::search4FK(const QStringList strTables, QXmlStreamReader& xml, const QMap<QString,QString>& mapTMPNames, bool bCreateKeys)
 {
     MapFK mapKeys;
@@ -399,7 +445,7 @@ bool TableAdapter::search4FK(const QStringList strTables, QXmlStreamReader& xml,
 
                         if (bFoundParent){
                             //Finally we have to check if that table actually exists in the database (althought it should!)
-                            if (getObjects(query,strParent) && query.numRowsAffected()>0){
+                            if (getObjects(query,strParent) /*&& query.numRowsAffected()>0*/){
                                 mapKeys.insert(xml.attributes().value(tr("name")).toString(),
                                     FK(strParent,
                                     strImportedName,
