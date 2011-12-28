@@ -70,7 +70,7 @@ class FrmSampling : public GenericTab, public Ui::FrmSampling
                     NONE
                     };
 
-        FrmSampling(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmSampling(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmSampling();
 
     public slots:

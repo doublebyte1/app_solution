@@ -25,7 +25,7 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
     Q_OBJECT
 
     public:
-        FrmFrame(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent=0, Qt::WFlags flags=0);
+        FrmFrame(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent=0, Qt::WFlags flags=0);
         ~FrmFrame();
 
     public slots:

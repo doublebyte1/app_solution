@@ -11,6 +11,7 @@ QWidget(parent, flags){
 
     mainFrmPtr=0;
     userModel=0;
+    m_roleDef=0;
 
     setupUi(this);
 
@@ -29,6 +30,7 @@ Login::~Login()
 
     if (mainFrmPtr!=0) delete mainFrmPtr;
     if (userModel!=0) delete userModel;
+    if (m_roleDef!=0) delete m_roleDef;
 }
 
 void Login::finalTouches()
@@ -139,6 +141,11 @@ bool Login::startSession(const QString strUser, const QString strLocation)
     return true;
 }
 
+void Login::updateTooltip(QString user){
+
+    cmbUser->setToolTip(cmbUser->model()->index(cmbUser->currentIndex(),1).data().toString());
+}
+
 void Login::endSession()
 {
     QSqlTableModel* table= new QSqlTableModel();
@@ -200,6 +207,7 @@ void Login::validate()
         query.prepare( "SELECT username, password, name, new, [view], modify, remove, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].id) AND (username= :user AND password= :pass) )" );
         query.bindValue(":user", cmbUser->currentText() );
         query.bindValue(":pass", linePasswd->text() );
+        query.setForwardOnly(true);
 
         QMessageBox msgBox;
         if (!query.exec()){
@@ -228,7 +236,12 @@ void Login::validate()
                 settings.setValue("AppUser", cmbUser->currentText());
                 settings.setValue("AppPass", linePasswd->text());
 
-                if (mainFrmPtr==0) mainFrmPtr=new MainFrm();
+                if (!setRoleDef(&query)){
+                    emit showError(tr("Could not retrieve the role of this user on the database!"));
+                    qApp->exit(0);
+                }
+
+                if (mainFrmPtr==0) mainFrmPtr=new MainFrm(m_roleDef);
 
                 connect(this, SIGNAL(showError(QString,bool)), mainFrmPtr,
                     SLOT(displayError(QString,bool)));
@@ -245,6 +258,25 @@ void Login::validate()
                 //This is assynchronous, so no point in checking for return value now...
                 mainFrmPtr->initRules();
             }
+}
+
+bool Login::setRoleDef(QSqlQuery* query)
+{
+    if (!query->isActive()){
+        emit showError(tr("Could not use the role query!"));
+        return false;
+    }
+    query->first();
+
+    m_roleDef=new RoleDef();
+    m_roleDef->bNew=query->value(3).toBool();
+    m_roleDef->bView=query->value(4).toBool();
+    m_roleDef->bMod=query->value(5).toBool();
+    m_roleDef->bDel=query->value(6).toBool();
+    m_roleDef->bRep=query->value(7).toBool();
+    m_roleDef->bAdmin=query->value(8).toBool();
+
+    return true;
 }
 
 void Login::showEvent ( QShowEvent * event )

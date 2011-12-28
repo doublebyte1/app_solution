@@ -33,10 +33,10 @@
     <normaloff>:/app_new/medfisis.ico</normaloff>:/app_new/medfisis.ico</iconset>
   </property>
   <property name="toolTip">
-   <string>Login Dialog</string>
+   <string>Login Dialog: check the user tooltip to have more information about this user.</string>
   </property>
   <property name="whatsThis">
-   <string>This is a login dialog.</string>
+   <string>This is a login dialog. Check the user tooltip to have more information about this user.</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -123,11 +123,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmbUser</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>frmLogin</receiver>
+   <slot>updateTooltip(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>173</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>67</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>validate()</slot>
   <slot>itemSelected(QString)</slot>
   <slot>loadForm(QString)</slot>
   <slot>showForm(QString)</slot>
+  <slot>updateTooltip(QString)</slot>
  </slots>
 </ui>

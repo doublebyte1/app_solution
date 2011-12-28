@@ -23,7 +23,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
     Q_OBJECT
 
     public:
-        FrmOperation(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmOperation(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmOperation();
 
     private slots:

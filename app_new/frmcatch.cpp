@@ -1,7 +1,7 @@
 #include "frmcatch.h"
 
-FrmCatch::FrmCatch(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
-PreviewTab(7,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
+FrmCatch::FrmCatch(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+PreviewTab(7, inRoleDef,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent, flags){
 
     setupUi(this);
 

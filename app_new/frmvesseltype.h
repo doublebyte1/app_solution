@@ -23,7 +23,7 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
     Q_OBJECT
 
     public:
-        FrmVesselType(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmVesselType(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmVesselType();
 
     private slots:

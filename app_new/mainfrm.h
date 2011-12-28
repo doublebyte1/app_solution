@@ -27,7 +27,6 @@
 
 using namespace boost;
 
-
 //////////////////////////////////////////////////////////////////////
 #ifndef REBUILDINDEXESTHREAD_H
 #define REBUILDINDEXESTHREAD_H
@@ -129,7 +128,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
     Q_OBJECT
 
     public:
-        MainFrm(QWidget *parent = 0, Qt::WFlags flags = 0);
+        MainFrm(RoleDef* roleDef, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~MainFrm();
 
         //! Init Rules
@@ -156,6 +155,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    initTabs();
         void                    loadTabs();
 
+        RoleDef*                m_roleDef;
         DateModel               *tDateTime;
         FrmFrame                *pFrmFrame;
         FrmMinorStrata          *pFrmMinorStrata;

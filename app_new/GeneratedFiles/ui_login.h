@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'login.ui'
 **
-** Created: Wed 28. Dec 09:48:15 2011
+** Created: Wed 28. Dec 11:25:33 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -95,6 +95,7 @@ public:
 
         retranslateUi(frmLogin);
         QObject::connect(pushLogin, SIGNAL(clicked()), frmLogin, SLOT(validate()));
+        QObject::connect(cmbUser, SIGNAL(currentIndexChanged(QString)), frmLogin, SLOT(updateTooltip(QString)));
 
         QMetaObject::connectSlotsByName(frmLogin);
     } // setupUi
@@ -103,10 +104,10 @@ public:
     {
         frmLogin->setWindowTitle(QApplication::translate("frmLogin", "Login", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        frmLogin->setToolTip(QApplication::translate("frmLogin", "Login Dialog", 0, QApplication::UnicodeUTF8));
+        frmLogin->setToolTip(QApplication::translate("frmLogin", "Login Dialog: check the user tooltip to have more information about this user.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_WHATSTHIS
-        frmLogin->setWhatsThis(QApplication::translate("frmLogin", "This is a login dialog.", 0, QApplication::UnicodeUTF8));
+        frmLogin->setWhatsThis(QApplication::translate("frmLogin", "This is a login dialog. Check the user tooltip to have more information about this user.", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         lbUser->setText(QApplication::translate("frmLogin", "Username", 0, QApplication::UnicodeUTF8));
         lbPasswd->setText(QApplication::translate("frmLogin", "Password", 0, QApplication::UnicodeUTF8));

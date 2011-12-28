@@ -4,8 +4,8 @@
 #define JUMP 1 //!< This is the last common form from logbook and sampling (where the "jump" starts for logbook!)
 #define STEP 3 //!< This is the number of forms that only exist on sampling (size of the "jump" for logbook!)
 
-MainFrm::MainFrm(QWidget *parent, Qt::WFlags flags):
-QMainWindow(parent, flags){
+MainFrm::MainFrm(RoleDef* roleDef, QWidget *parent, Qt::WFlags flags):
+m_roleDef(roleDef),QMainWindow(parent, flags){
 
     workerThread=0;
     tDateTime=0;
@@ -636,21 +636,21 @@ void MainFrm::newTabs()
 
 void MainFrm::initTabs()
 {
-    pFrmFrame=new FrmFrame(sSample,tDateTime,ruleCheckerPtr);
+    pFrmFrame=new FrmFrame(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmFrame);
-    pFrmMinorStrata=new FrmMinorStrata(sSample,tDateTime,ruleCheckerPtr);
+    pFrmMinorStrata=new FrmMinorStrata(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmMinorStrata);
-    pFrmCell=new FrmCell(sSample,tDateTime,ruleCheckerPtr);
+    pFrmCell=new FrmCell(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmCell);
-    pFrmVesselType=new FrmVesselType(sSample,tDateTime,ruleCheckerPtr);
+    pFrmVesselType=new FrmVesselType(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmVesselType);
-    pFrmVessel=new FrmVessel(sSample,tDateTime,ruleCheckerPtr);
+    pFrmVessel=new FrmVessel(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmVessel);
-    pFrmTrip=new FrmTrip(sSample,tDateTime,ruleCheckerPtr);
+    pFrmTrip=new FrmTrip(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmTrip);
-    pFrmOperation=new FrmOperation(sSample,tDateTime,ruleCheckerPtr);
+    pFrmOperation=new FrmOperation(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmOperation);
-    pFrmCatch=new FrmCatch(sSample,tDateTime,ruleCheckerPtr);
+    pFrmCatch=new FrmCatch(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmCatch);
 
     pFrmFrameDetails=new FrmFrameDetails();
@@ -678,7 +678,7 @@ void MainFrm::initTabs()
     gridLayout->addWidget(pFrmFrameDetails);
     pFrmFrameDetails->hide();
 
-    pFrmSampling=new FrmSampling(sSample,tDateTime,ruleCheckerPtr);
+    pFrmSampling=new FrmSampling(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
      connect(pFrmSampling, SIGNAL(hideFrmSampling(bool)), this,
     SLOT(hideFrmSampling()));
 

@@ -23,7 +23,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
     Q_OBJECT
 
     public:
-        FrmTrip(Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
+        FrmTrip(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr=0, QWidget *parent = 0, Qt::WFlags flags = 0);
         ~FrmTrip();
 
     private slots:

@@ -21,6 +21,31 @@ the contents of the visible columns.
 void                    resizeToVisibleColumns ( QTableView* table );
 
 //////////////////////////////////////////////////////////////////
+#ifndef ROLEDEF_H
+#define ROLEDEF_H
+
+//! Role structure
+/*!
+//This structure encapsulates a role definition, based on the username.
+The default is all permissions set to false, but they should be defined in the constructor to match the 
+user on table UI_user.
+*/
+
+struct RoleDef{
+    RoleDef(): bNew(false), bView(false), bMod(false), bDel(false), bRep(false), bAdmin(false){;}
+//    bool       setMemberById(const int id, const int val);
+
+    bool        bNew;/**< boolean to indicate if the user can introduce data */
+    bool        bView;/**< boolean to indicate if the user can view data */
+    bool        bMod;/**< boolean to indicate if the user can modify data */
+    bool        bDel;/**< boolean to indicate if the user can remove data */
+    bool        bRep;/**< boolean to indicate if the user can use reports */
+    bool        bAdmin;/**< boolean to indicate if the user can access administrative tools */
+};
+
+#endif //ROLEDEF_H
+//////////////////////////////////////////////////////////////////
+
 #ifndef SAMPLE_H
 #define SAMPLE_H
 
@@ -107,7 +132,7 @@ class GenericTab : public QWidget
     Q_OBJECT
 
     public:
-        GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr=0,
+        GenericTab(const int index, RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr=0,
             QWidget *parent = 0, Qt::WFlags flags = 0);
         ~GenericTab();
 
@@ -229,6 +254,7 @@ class GenericTab : public QWidget
         const QString           m_title;/**< tab title */
         DateModel*              m_tDateTime;/**< pointer to the DateTime Table, hosted on the main form */
         Sample*                 m_sample;/**< pointer to the Sample structure, hosted on the main form */
+        RoleDef*                m_roleDef;/**< pointer to the RoleDef structure, hosted on the login form */
         NullRelationalDelegate* nullDellegate;/**< delegate for handling the null values in AdvancedTextEdit ctrls */
         QLabel*                 lbHead;/**< pointer to the text label on top of the form, indicating if it is logbook or sampling */
         RuleChecker*            m_ruleCheckerPtr;/**< pointer to the rule checker (dynamic business logic layer) */

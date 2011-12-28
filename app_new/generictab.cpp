@@ -1,8 +1,8 @@
 #include <QTest>
 #include "generictab.h"
 
-GenericTab::GenericTab(const int index, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
-QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_sample(inSample), m_title(inStrTitle), m_ruleCheckerPtr(ruleCheckerPtr) {
+GenericTab::GenericTab(const int index, RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, const QString inStrTitle, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
+QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_roleDef(inRoleDef), m_sample(inSample), m_title(inStrTitle), m_ruleCheckerPtr(ruleCheckerPtr) {
 
     lbHead=0;
     m_mapperBinderPtr=0;
