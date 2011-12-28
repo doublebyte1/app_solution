@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="conf_app">
+    <file>add.png</file>
+    <file>cancel.png</file>
     <file>password.png</file>
     <file>decrypted.png</file>
     <file>encrypted.png</file>

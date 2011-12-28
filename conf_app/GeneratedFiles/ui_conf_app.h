@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Wed 28. Dec 09:37:46 2011
+** Created: Wed 28. Dec 17:48:42 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -27,6 +27,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QStatusBar>
+#include <QtGui/QTableView>
 #include <QtGui/QToolBar>
 #include <QtGui/QToolBox>
 #include <QtGui/QVBoxLayout>
@@ -72,6 +73,21 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QSpacerItem *horizontalSpacer;
     QPushButton *pushApply;
+    QWidget *page;
+    QGridLayout *gridLayout_4;
+    QGroupBox *groupTables;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *label_3;
+    QComboBox *cmbTables;
+    QHBoxLayout *horizontalLayout_6;
+    QVBoxLayout *verticalLayout_2;
+    QPushButton *pushInsert;
+    QPushButton *pushRemove;
+    QTableView *tableView;
+    QHBoxLayout *horizontalLayout_7;
+    QSpacerItem *horizontalSpacer_2;
+    QPushButton *pushApply_2;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuTools;
@@ -106,7 +122,7 @@ public:
         toolBox->setObjectName(QString::fromUtf8("toolBox"));
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 496, 278));
+        page_3->setGeometry(QRect(0, 0, 496, 251));
         gridLayout = new QGridLayout(page_3);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -202,7 +218,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 496, 278));
+        page_4->setGeometry(QRect(0, 0, 161, 121));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -264,6 +280,91 @@ public:
         gridLayout_2->addWidget(groupSettings, 0, 0, 1, 1);
 
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
+        page = new QWidget();
+        page->setObjectName(QString::fromUtf8("page"));
+        page->setGeometry(QRect(0, 0, 496, 251));
+        gridLayout_4 = new QGridLayout(page);
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setContentsMargins(11, 11, 11, 11);
+        gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
+        groupTables = new QGroupBox(page);
+        groupTables->setObjectName(QString::fromUtf8("groupTables"));
+        verticalLayout_3 = new QVBoxLayout(groupTables);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
+        label_3 = new QLabel(groupTables);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        horizontalLayout_5->addWidget(label_3);
+
+        cmbTables = new QComboBox(groupTables);
+        cmbTables->setObjectName(QString::fromUtf8("cmbTables"));
+        cmbTables->setEditable(true);
+
+        horizontalLayout_5->addWidget(cmbTables);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_5);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        pushInsert = new QPushButton(groupTables);
+        pushInsert->setObjectName(QString::fromUtf8("pushInsert"));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/conf_app/add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushInsert->setIcon(icon4);
+
+        verticalLayout_2->addWidget(pushInsert);
+
+        pushRemove = new QPushButton(groupTables);
+        pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/conf_app/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon5);
+
+        verticalLayout_2->addWidget(pushRemove);
+
+
+        horizontalLayout_6->addLayout(verticalLayout_2);
+
+        tableView = new QTableView(groupTables);
+        tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setAlternatingRowColors(true);
+        tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+        tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+        horizontalLayout_6->addWidget(tableView);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_6);
+
+        horizontalLayout_7 = new QHBoxLayout();
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_2);
+
+        pushApply_2 = new QPushButton(groupTables);
+        pushApply_2->setObjectName(QString::fromUtf8("pushApply_2"));
+
+        horizontalLayout_7->addWidget(pushApply_2);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_7);
+
+
+        gridLayout_4->addWidget(groupTables, 0, 0, 1, 1);
+
+        toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
 
         gridLayout_3->addWidget(toolBox, 0, 0, 1, 1);
 
@@ -320,8 +421,12 @@ public:
         QObject::connect(pushApply, SIGNAL(clicked()), conf_appClass, SLOT(apply()));
         QObject::connect(cmbCountry, SIGNAL(currentIndexChanged(QString)), conf_appClass, SLOT(enableApply()));
         QObject::connect(cmbCity, SIGNAL(currentIndexChanged(QString)), conf_appClass, SLOT(enableApply()));
+        QObject::connect(cmbTables, SIGNAL(currentIndexChanged(QString)), conf_appClass, SLOT(showTable(QString)));
+        QObject::connect(pushInsert, SIGNAL(clicked()), conf_appClass, SLOT(insertRow()));
+        QObject::connect(pushRemove, SIGNAL(clicked()), conf_appClass, SLOT(removeRow()));
+        QObject::connect(pushApply_2, SIGNAL(clicked()), conf_appClass, SLOT(applyChanges2Table()));
 
-        toolBox->setCurrentIndex(0);
+        toolBox->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(conf_appClass);
@@ -347,6 +452,30 @@ public:
         label->setText(QApplication::translate("conf_appClass", "City", 0, QApplication::UnicodeUTF8));
         pushApply->setText(QApplication::translate("conf_appClass", "Apply", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page_4), QApplication::translate("conf_appClass", "Global Settings", 0, QApplication::UnicodeUTF8));
+        groupTables->setTitle(QString());
+        label_3->setText(QApplication::translate("conf_appClass", "Choose Table:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        pushInsert->setToolTip(QApplication::translate("conf_appClass", "Insert row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushInsert->setStatusTip(QApplication::translate("conf_appClass", "Insert row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushInsert->setWhatsThis(QApplication::translate("conf_appClass", "Inserts row into table", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushInsert->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove->setToolTip(QApplication::translate("conf_appClass", "Remove row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove->setStatusTip(QApplication::translate("conf_appClass", "Remove row", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove->setWhatsThis(QApplication::translate("conf_appClass", "Removes row into table", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove->setText(QString());
+        pushApply_2->setText(QApplication::translate("conf_appClass", "Apply", 0, QApplication::UnicodeUTF8));
+        toolBox->setItemText(toolBox->indexOf(page), QApplication::translate("conf_appClass", "Edit Tables", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("conf_appClass", "File", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("conf_appClass", "Tools", 0, QApplication::UnicodeUTF8));
         menuOptions->setTitle(QApplication::translate("conf_appClass", "Options", 0, QApplication::UnicodeUTF8));

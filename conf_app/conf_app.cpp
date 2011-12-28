@@ -9,6 +9,7 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     m_bConnected=false;
     cityModel=0;
     countryModel=0;
+    tableModel=0;
 
     initUI();
 }
@@ -18,6 +19,7 @@ conf_app::~conf_app()
     if (QSqlDatabase::database().isOpen()){
         if (cityModel!=0) delete cityModel;
         if (countryModel!=0) delete countryModel;
+        if (tableModel!=0) delete tableModel;
     }
 }
 
@@ -67,6 +69,10 @@ void conf_app::initUI()
 
     pushDisconnect->setEnabled(false);
     groupSettings->setEnabled(false);
+    groupTables->setEnabled(false);
+
+    pushInsert->setEnabled(false);
+    pushRemove->setEnabled(true);
 
     connect(this, SIGNAL(connectionChanged()), this,
         SLOT(onConnectionChange()));
@@ -122,6 +128,7 @@ void conf_app::onConnectionChange()
     pushConnect->setEnabled(!m_bConnected);
     pushDisconnect->setEnabled(m_bConnected);
     groupSettings->setEnabled(m_bConnected);
+    groupTables->setEnabled(m_bConnected);
     enableConnectionCtrls(!m_bConnected);
 
 }
@@ -166,6 +173,11 @@ void conf_app::connectDB()
                 tr("Could not read locations from the database!"),QMessageBox::Ok,0);
             msgBox.exec();
         }
+        if (!listTables()){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
+                tr("Could not read table list from the database!"),QMessageBox::Ok,0);
+            msgBox.exec();
+        }
         loadSettings(1);
         emit statusShow(tr("Connection sucessfully created!"));
     }else{
@@ -184,7 +196,7 @@ void conf_app::connectDB()
 
     emit connectionChanged();
     groupSettings->setEnabled(m_bConnected);
-
+    groupTables->setEnabled(m_bConnected);
 }
 
 void conf_app::saveSettings(const int section)
@@ -255,6 +267,138 @@ void conf_app::onStatusShow(const QString str)
      "}"));
 
     this->statusBar()->showMessage(str);
+}
+
+bool conf_app::listTables()
+{
+    QSqlDatabase db=QSqlDatabase::database();
+    cmbTables->addItems(db.tables());
+
+    return(cmbTables->count()>0);
+}
+
+void conf_app::applyChanges2Table()
+{
+    bool bError=false;
+
+    if (!tableModel->submitAll()){
+        if (tableModel->lastError().type()!=QSqlError::NoError){
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Table Edition Error"),
+                tableModel->lastError().text(),QMessageBox::Ok,0);
+            msgBox.exec();
+
+        }else{
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Table Edition Error"),
+                tr("Could not write Sampling levels in the database!"),QMessageBox::Ok,0);
+            msgBox.exec();
+
+        }
+        bError=true;
+    }else{
+        emit statusShow(tr("Changes successfully written in the database!"));
+    }
+
+    pushApply_2->setEnabled(bError);
+    pushInsert->setEnabled(bError);
+    pushRemove->setEnabled(bError);
+    tableView->setEnabled(bError);
+}
+
+void conf_app::showTable(const QString strTable)
+{
+    if (tableModel==0){
+        tableModel= new QSqlRelationalTableModel;
+    }
+
+    bool bDirty=false;
+
+    for (int i=0; i < tableModel->rowCount(); ++i){
+        for (int j=0; j < tableModel->columnCount(); ++j){
+            QModelIndex index=tableModel->index(i,j);
+            if (tableModel->isDirty(index)){
+                bDirty=true;
+                break;
+            }
+        }
+        if (bDirty) break;
+    }
+
+    if (bDirty){
+
+        QMessageBox msgBox;
+        msgBox.setText(tr("You have uncomitted changes!")
+        );
+        msgBox.setInformativeText(tr("Are you sure you want to abandon the edition of this table?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        int ret = msgBox.exec();
+
+         switch (ret) {
+           //case QMessageBox::Yes:
+            case QMessageBox::No:
+                return;
+                break;
+            default:
+                break;
+         }
+    }
+
+    tableModel->setTable(QSqlDatabase().driver()->escapeIdentifier(strTable,
+    QSqlDriver::TableName));
+    tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tableModel->sort(0,Qt::AscendingOrder);
+    tableModel->select();
+
+    tableView->setModel(tableModel);
+
+    QSqlRecord rec=tableModel->record();
+    for (int i=0; i < rec.count(); ++i){
+        if (rec.field(i).isGenerated()){
+            tableView->hideColumn(i);
+            break;
+        }
+    }
+
+    pushInsert->setEnabled(true);
+    pushRemove->setEnabled(true);
+    pushApply_2->setEnabled(true);
+    tableView->setEnabled(true);
+
+}
+
+void conf_app::insertRow()
+{
+    if (!tableModel->insertRow(tableModel->rowCount())){
+
+        QMessageBox msgBox(QMessageBox::Critical,tr("Table Edition Error"),
+            tr("Could not add a row to this table!"),QMessageBox::Ok,0);
+        msgBox.exec();
+
+    }else 
+        emit statusShow(tr("Record successfully initialized!"));
+}
+
+void conf_app::removeRow()
+{
+    if (!tableView->selectionModel()->hasSelection()){
+
+        QMessageBox msgBox(QMessageBox::Critical,tr("Table Edition Error"),
+            tr("If you want to remove a row, you must select it first!"),QMessageBox::Ok,0);
+        msgBox.exec();
+
+    }else{
+        int delRow=tableView->selectionModel()->currentIndex().row();
+        if (!tableModel->removeRow(delRow)){
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Table Edition Error"),
+                tr("Could not remove a row from this table!"),QMessageBox::Ok,0);
+            msgBox.exec();
+
+        }else
+            emit statusShow(tr("Row successfully removed!"));
+    }
 }
 
 bool conf_app::fillLocations()

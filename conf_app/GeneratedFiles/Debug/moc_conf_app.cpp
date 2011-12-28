@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Wed 28. Dec 09:37:51 2011
+** Created: Wed 28. Dec 17:32:15 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_conf_app[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,27 +35,33 @@ static const uint qt_meta_data_conf_app[] = {
       34,   30,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      54,    9,    9,    9, 0x08,
-      66,    9,    9,    9, 0x08,
-      81,    9,    9,    9, 0x08,
-     102,   30,    9,    9, 0x08,
-     135,  124,    9,    9, 0x08,
-     156,    9,    9,    9, 0x08,
-     164,    9,    9,    9, 0x08,
-     186,  178,    9,    9, 0x08,
-     216,  210,    9,    9, 0x08,
+      63,   54,    9,    9, 0x08,
+      82,    9,    9,    9, 0x08,
+     103,    9,    9,    9, 0x08,
+     115,    9,    9,    9, 0x08,
+     130,    9,    9,    9, 0x08,
+     151,   30,    9,    9, 0x08,
+     184,  173,    9,    9, 0x08,
+     205,    9,    9,    9, 0x08,
+     213,    9,    9,    9, 0x08,
+     235,  227,    9,    9, 0x08,
+     265,  259,    9,    9, 0x08,
+     288,    9,    9,    9, 0x08,
+     300,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_conf_app[] = {
     "conf_app\0\0connectionChanged()\0str\0"
-    "statusShow(QString)\0connectDB()\0"
-    "disconnectDB()\0onConnectionChange()\0"
-    "onStatusShow(QString)\0strCountry\0"
-    "filterModel(QString)\0apply()\0enableApply()\0"
-    "bNoShow\0onShowStartupMsgI(bool)\0bShow\0"
-    "onShowStartupMsg(bool)\0"
+    "statusShow(QString)\0strTable\0"
+    "showTable(QString)\0applyChanges2Table()\0"
+    "connectDB()\0disconnectDB()\0"
+    "onConnectionChange()\0onStatusShow(QString)\0"
+    "strCountry\0filterModel(QString)\0apply()\0"
+    "enableApply()\0bNoShow\0onShowStartupMsgI(bool)\0"
+    "bShow\0onShowStartupMsg(bool)\0insertRow()\0"
+    "removeRow()\0"
 };
 
 const QMetaObject conf_app::staticMetaObject = {
@@ -91,18 +97,22 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: connectionChanged(); break;
         case 1: statusShow((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 2: connectDB(); break;
-        case 3: disconnectDB(); break;
-        case 4: onConnectionChange(); break;
-        case 5: onStatusShow((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 6: filterModel((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 7: apply(); break;
-        case 8: enableApply(); break;
-        case 9: onShowStartupMsgI((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 10: onShowStartupMsg((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 2: showTable((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 3: applyChanges2Table(); break;
+        case 4: connectDB(); break;
+        case 5: disconnectDB(); break;
+        case 6: onConnectionChange(); break;
+        case 7: onStatusShow((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 8: filterModel((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 9: apply(); break;
+        case 10: enableApply(); break;
+        case 11: onShowStartupMsgI((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: onShowStartupMsg((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 13: insertRow(); break;
+        case 14: removeRow(); break;
         default: ;
         }
-        _id -= 11;
+        _id -= 15;
     }
     return _id;
 }

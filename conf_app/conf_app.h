@@ -38,6 +38,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    statusShow(const QString str);
 
     private slots:
+        void                    showTable(const QString strTable);
+        void                    applyChanges2Table();
         void                    connectDB();
         void                    disconnectDB();
         void                    onConnectionChange();
@@ -47,6 +49,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    enableApply();
         void                    onShowStartupMsgI(bool bNoShow);
         void                    onShowStartupMsg(const bool bShow);
+        void                    insertRow();
+        void                    removeRow();
 
     private:
         void                    initUI();
@@ -55,12 +59,14 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    loadSettings(const int section);
         void                    saveSettings(const int section);
         bool                    fillLocations();
+        bool                    listTables();
         void                    showEvent ( QShowEvent * event );
 
-        QToolBar*               toolbar;
-        bool                    m_bConnected;
-        QSqlQueryModel          *cityModel;
-        QSqlQueryModel          *countryModel;
+        QToolBar*                         toolbar;
+        bool                              m_bConnected;
+        QSqlQueryModel                    *cityModel;
+        QSqlQueryModel                    *countryModel;
+        QSqlRelationalTableModel*         tableModel;
 
 };
 

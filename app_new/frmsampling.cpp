@@ -216,12 +216,7 @@ bool FrmSampling::comitSampledLevels()
                 ++ct;
             }
     }
-/*
-    if (ct<1 && m_mode==CREATE){
-        emit showError(tr("You must add some level(s) to this sampling strategy!"));
-        return false;
-    }
-*/
+
     if (!tSampLevels->submitAll()){
         if (tSampLevels->lastError().type()!=QSqlError::NoError){
             emit showError(tSampLevels->lastError().text());
