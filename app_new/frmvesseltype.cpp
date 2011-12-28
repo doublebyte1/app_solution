@@ -250,6 +250,8 @@ void FrmVesselType::initUI()
     setNextButton(pushNext);
     setPreviousButton(pushPrevious);
 
+    setUIPermissions();
+
     //initializing the container for the readonly!
     m_lWidgets << cmbTypes;
     m_lWidgets << textComments;

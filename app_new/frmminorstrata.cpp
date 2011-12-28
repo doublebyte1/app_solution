@@ -420,6 +420,8 @@ void FrmMinorStrata::initUI()
     setNextButton(pushNext);
     setPreviousButton(pushPrevious);
 
+    setUIPermissions();
+
     m_lWidgets << lineNew;
     m_lWidgets << label_3;
     m_lWidgets << cmbGLS;

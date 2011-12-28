@@ -105,8 +105,9 @@ void FrmCatch::initUI()
     setNewButton(pushNew);
     setEditButton(pushEdit);
     setRemoveButton(pushRemove);
-
     setPreviousButton(pushPrevious);
+
+    setUIPermissions();
 
     //initializing the container for the readonly!S
     m_lWidgets << cmbCategory;

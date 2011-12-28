@@ -173,12 +173,15 @@ void MainFrm::initUi()
     toolbar->addSeparator();
     toolbar->addAction(this->actionReports);
     toolbar->addAction(this->actionRegions);
-    toolbar->addSeparator();
+    //since it is impossible to remove it later, we must take care on inserting the separator here!
+    if (m_roleDef->bAdmin || m_roleDef->bRep)
+        toolbar->addSeparator();
     toolbar->addAction(this->actionImport);
     toolbar->addAction(this->actionExport);
     toolbar->addAction(actionRebuild_Indexes);
     toolbar->addAction(actionGeneralize_Regions);
-    toolbar->addSeparator();
+    if (m_roleDef->bAdmin)
+        toolbar->addSeparator();
     toolbar->addAction(this->actionAbout_this_project);
     toolbar->addAction(this->actionMedfisis_Help);
     toolbar->addSeparator();
@@ -194,6 +197,29 @@ void MainFrm::initUi()
     initSecondaryFrm(pFrmRegions);
     pFrmImportRegions=new FrmImportRegions();
     initSecondaryFrm(pFrmImportRegions);
+
+    applyReportAdminPermissions();
+}
+
+void MainFrm::applyReportAdminPermissions()
+{
+    if (!m_roleDef->bAdmin){
+        menubar->removeAction(menuTools->menuAction());
+        menuView->removeAction(actionRegions);
+        toolbar->removeAction(actionRegions);
+        toolbar->removeAction(actionImport);
+        toolbar->removeAction(actionExport);
+        toolbar->removeAction(actionRebuild_Indexes);
+        toolbar->removeAction(actionGeneralize_Regions);
+    }
+    if (!m_roleDef->bRep){
+        menuView->removeAction(actionReports);
+        toolbar->removeAction(actionReports);
+    }
+
+    if (!m_roleDef->bAdmin && !m_roleDef->bRep){
+        menubar->removeAction(menuView->menuAction());
+    }
 }
 
 void MainFrm::RebuildIndexes()

@@ -183,6 +183,8 @@ void FrmOperation::initUI()
     setNextButton(pushNext);
     setPreviousButton(pushPrevious);
 
+    setUIPermissions();
+
     //initializing the container for the readonly!S
     m_lWidgets << spinOrder;
     m_lWidgets << cmbFishingZone;

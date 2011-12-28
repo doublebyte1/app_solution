@@ -221,6 +221,8 @@ void FrmTrip::initUI()
     setNextButton(pushNext);
     setPreviousButton(pushPrevious);
 
+    setUIPermissions();
+
     //initializing the container for the readonly!S
     m_lWidgets << cmbSampler;
     m_lWidgets << spinProf;

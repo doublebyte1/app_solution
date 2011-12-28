@@ -66,6 +66,11 @@ class PreviewTab : public GenericTab
         void                                  setLoading(const bool bLoading){m_bLoading=bLoading;}
 
     protected:
+        //! Set UI permissions
+        /*! This function hides/shows buttons/functionality of the UI, according to 
+           the values of the RoleDef Structure
+        */
+        void                                  setUIPermissions();
         //! Abstract Preview Row
         /*! A common implementation of preview row, that can be called by all members on previewRow.
            \par index index of the clicked row

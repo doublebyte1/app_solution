@@ -302,15 +302,6 @@ void FrmFrame::unblockCustomDateCtrls()
     customDtEnd->blockSignals(false);
 }
 
-/*
-void FrmFrame::showEvent ( QShowEvent * event )
-{
-    //Since this is the first form, we have to force the call here!
-    //if (m_curMode == FrmFrameDetails::NONE && !pushEdit->isChecked())
-        //onShowForm();
-}
-*/
-
 void FrmFrame::initModels()
 {
     initFrModel();
@@ -335,6 +326,8 @@ void FrmFrame::initUI()
     setRemoveButton(pushRemove);
     setNextButton(pushNext);
     setGroupDetails(groupDetails);
+
+    setUIPermissions();
 
     m_lWidgets << groupPhysical;
     m_lWidgets << groupTime;
@@ -439,8 +432,7 @@ void FrmFrame::onHideFrmSampling(bool bSubmitted)
         }
     }
 
-    if (!groupDetails->isVisible())
-        groupDetails->setVisible(true);
+    groupDetails->setVisible(m_roleDef->bView && !groupDetails->isVisible());
 }
 
 void FrmFrame::initMapper2()

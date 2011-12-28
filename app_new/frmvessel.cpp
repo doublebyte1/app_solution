@@ -184,6 +184,8 @@ void FrmVessel::initUI()
     //m_lWidgets << spinCT;
 
     //pushNext->setEnabled(false);
+
+    setUIPermissions();
 }
 
 void FrmVessel::initMapper1()

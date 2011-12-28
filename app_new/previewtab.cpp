@@ -40,6 +40,7 @@ GenericTab(index,inRoleDef,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent
 
     connect(this, SIGNAL(editLeave(const bool,const bool)), this,
         SLOT(onEditLeave(const bool,const bool)));
+
 }
 
 PreviewTab::~PreviewTab()
@@ -47,6 +48,12 @@ PreviewTab::~PreviewTab()
     //if (m_model!=0) delete m_model;//N.b.: dont delete model here: it does not belong to this class!
 }
 
+void PreviewTab::setUIPermissions()
+{
+    m_pushNew->setVisible(m_roleDef->bNew);
+    m_pushEdit->setVisible(m_roleDef->bMod);
+    m_pushRemove->setVisible(m_roleDef->bDel);
+}
 void PreviewTab::setTips(const bool bLogbook)
 {
     lbHead->setToolTip(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
@@ -113,8 +120,7 @@ bool PreviewTab::tableSelect(const int id)
 
 void PreviewTab::genericUI4NewRecord()
 {
-    if (!m_groupDetails->isVisible())
-        m_groupDetails->setVisible(true);
+    m_groupDetails->setVisible(m_roleDef->bView && !m_groupDetails->isVisible());
 
     emit lockControls(false,m_lWidgets);
 
@@ -478,8 +484,7 @@ bool PreviewTab::abstractPreviewRow(QModelIndex index)
         if (!editRecord(false)) return false;
     }
 
-    if (!this->m_groupDetails->isVisible())
-        this->m_groupDetails->setVisible(true);
+    this->m_groupDetails->setVisible(m_roleDef->bView && !m_groupDetails->isVisible());
 
     emit lockControls(true,m_lWidgets);
     m_buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);

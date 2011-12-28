@@ -147,13 +147,14 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    resetTabs();
         void                    initPreviewTab(PreviewTab* tab);
         void                    initUi();
-        //void                    updateIndexes(const int from);
 
         bool                    CreateXMLFile(const QString strFileName);
         bool                    readXMLFile(const QString strFileName);
 
         void                    initTabs();
         void                    loadTabs();
+
+        void                    applyReportAdminPermissions();
 
         RoleDef*                m_roleDef;
         DateModel               *tDateTime;
