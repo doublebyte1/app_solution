@@ -10,6 +10,7 @@ Login::Login(QWidget *parent, Qt::WFlags flags):
 QWidget(parent, flags){
 
     mainFrmPtr=0;
+    userModel=0;
 
     setupUi(this);
 
@@ -17,6 +18,7 @@ QWidget(parent, flags){
                    SIGNAL(aboutToQuit()),
                    this,
                    SLOT(finalTouches()));
+
 }
 
 Login::~Login()
@@ -26,6 +28,7 @@ Login::~Login()
     */
 
     if (mainFrmPtr!=0) delete mainFrmPtr;
+    if (userModel!=0) delete userModel;
 }
 
 void Login::finalTouches()
@@ -169,11 +172,33 @@ void Login::endSession()
     delete table;
 }
 
+void Login::initCmbUsers()
+{
+    userModel=new QSqlQueryModel();
+    userModel->setQuery("SELECT username, description from UI_USER");
+    if (userModel->rowCount()<1){
+        emit showError(tr("There are no users defined in the database! The app is unusable!"));
+        qApp->exit(0);//severe!
+    }
+    cmbUser->setModel(userModel);
+    cmbUser->setModelColumn(0);
+
+    QSettings settings(tr("Medstat"), tr("App"));
+    if (settings.contains("AppUser")){
+        int cur=cmbUser->findText(settings.value("AppUser").toString(),Qt::MatchExactly);
+        if (cur==-1){
+            emit showError(tr("Wrong user stored on the registry! How is this possible?"));
+            qApp->exit(0);
+        }
+        cmbUser->setCurrentIndex(cur);
+    }
+}
+
 void Login::validate()
 {
         QSqlQuery query;
-        query.prepare( "SELECT username, password, name, entry, modify, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].id) AND (username= :user AND password= :pass) )" );
-        query.bindValue(":user", lineUser->text() );
+        query.prepare( "SELECT username, password, name, new, [view], modify, remove, report, admin FROM \"UI_User\", \"UI_Role\" WHERE ( (dbo.[UI_User].role_id=dbo.[UI_Role].id) AND (username= :user AND password= :pass) )" );
+        query.bindValue(":user", cmbUser->currentText() );
         query.bindValue(":pass", linePasswd->text() );
 
         QMessageBox msgBox;
@@ -185,7 +210,7 @@ void Login::validate()
         else if (query.numRowsAffected()<1){
 
             QString strStyleSheet="background-color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));";
-            lineUser->setStyleSheet(strStyleSheet);
+            cmbUser->setStyleSheet(strStyleSheet);
             linePasswd->setStyleSheet(strStyleSheet);
 
             QMessageBox::critical( this, tr("Authentication Error"),
@@ -198,8 +223,10 @@ void Login::validate()
                 hide();
                 update();
 
-                //Store session data through a thread
+                //Store session data, username and passwd
                 QSettings settings(tr("Medstat"), tr("App"));
+                settings.setValue("AppUser", cmbUser->currentText());
+                settings.setValue("AppPass", linePasswd->text());
 
                 if (mainFrmPtr==0) mainFrmPtr=new MainFrm();
 
@@ -209,7 +236,7 @@ void Login::validate()
                 connect(this, SIGNAL(showStatus(QString)), mainFrmPtr,
                     SLOT(statusShow(QString)));
 
-                if (!startSession(lineUser->text(),settings.value("city").toString())){
+                if (!startSession(cmbUser->currentText(),settings.value("city").toString())){
                     emit showError(tr("Could not initialize session data!"));
                 }
 
@@ -237,6 +264,9 @@ void Login::showEvent ( QShowEvent * event )
             qApp->exit(0);
         }
     }
+    //if everything went ok, lets read the users from the db!
+    initCmbUsers();
+
 }
 
  bool Login::readSettings(QString& strHost, QString& strAlias, QString& strDatasource, QString& strUsername, 
@@ -247,8 +277,8 @@ void Login::showEvent ( QShowEvent * event )
     /*!
     //Settings for the App credentials
     */
-    if (settings.contains("AppUser"))
-        lineUser->setText(settings.value("AppUser").toString());
+    //n.b.: user is read later, after the combo is filled!
+
     if (settings.contains("AppPass"))
         linePasswd->setText(settings.value("AppPass").toString());
 

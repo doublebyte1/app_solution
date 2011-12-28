@@ -17,7 +17,24 @@
 
 QString                         getMacAddress();
 
-/////////////////////////////////////////////////////
+//! Role structure
+/*!
+//This structure encapsulates a role definition, based on the username.
+The default is all permissions set to false, but they should be defined in the constructor to match the 
+user on table UI_user.
+*/
+
+struct RoleDef{
+    RoleDef(): bNew(false), bView(false), bMod(false), bDel(false), bRep(false), bAdmin(false){;}
+//    bool       setMemberById(const int id, const int val);
+
+    bool        bNew;/**< boolean to indicate if the user can introduce data */
+    int         bView;/**< boolean to indicate if the user can view data */
+    int         bMod;/**< boolean to indicate if the user can modify data */
+    int         bDel;/**< boolean to indicate if the user can remove data */
+    int         bRep;/**< boolean to indicate if the user can use reports */
+    int         bAdmin;/**< boolean to indicate if the user can access administrative tools */
+};
 
 //! StoreSettingsThread Class
 /*!
@@ -205,6 +222,7 @@ class Login : public QWidget, public Ui::frmLogin
             void                            finalTouches();
 
     private:
+            void                            initCmbUsers();
             bool                            disconnectDB();
             void                            loadFile(const QString &fileName);
             bool                            readSettings(QString& strHost, QString& strAlias, QString& strDatasource, QString& strUsername, 
@@ -212,7 +230,7 @@ class Login : public QWidget, public Ui::frmLogin
             void                            showEvent ( QShowEvent * event );
             bool                            startSession(const QString strUser, const QString strLocation);
             void                            endSession();
-
+            QSqlQueryModel*                 userModel;
             MainFrm*                        mainFrmPtr;
 };
 

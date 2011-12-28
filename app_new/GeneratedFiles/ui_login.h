@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'login.ui'
 **
-** Created: Fri 23. Dec 17:57:21 2011
+** Created: Wed 28. Dec 09:48:15 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,6 +14,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -28,10 +29,10 @@ class Ui_frmLogin
 public:
     QGridLayout *gridLayout;
     QLabel *lbUser;
-    QLineEdit *lineUser;
     QLabel *lbPasswd;
     QLineEdit *linePasswd;
     QPushButton *pushLogin;
+    QComboBox *cmbUser;
 
     void setupUi(QWidget *frmLogin)
     {
@@ -55,12 +56,6 @@ public:
 
         gridLayout->addWidget(lbUser, 0, 0, 1, 1);
 
-        lineUser = new QLineEdit(frmLogin);
-        lineUser->setObjectName(QString::fromUtf8("lineUser"));
-        lineUser->setAutoFillBackground(true);
-
-        gridLayout->addWidget(lineUser, 0, 1, 1, 1);
-
         lbPasswd = new QLabel(frmLogin);
         lbPasswd->setObjectName(QString::fromUtf8("lbPasswd"));
 
@@ -71,7 +66,7 @@ public:
         linePasswd->setAutoFillBackground(true);
         linePasswd->setEchoMode(QLineEdit::Password);
 
-        gridLayout->addWidget(linePasswd, 1, 1, 1, 1);
+        gridLayout->addWidget(linePasswd, 1, 2, 1, 1);
 
         pushLogin = new QPushButton(frmLogin);
         pushLogin->setObjectName(QString::fromUtf8("pushLogin"));
@@ -87,10 +82,14 @@ public:
         pushLogin->setIconSize(QSize(16, 16));
         pushLogin->setAutoDefault(true);
 
-        gridLayout->addWidget(pushLogin, 2, 1, 1, 1);
+        gridLayout->addWidget(pushLogin, 2, 2, 1, 1);
+
+        cmbUser = new QComboBox(frmLogin);
+        cmbUser->setObjectName(QString::fromUtf8("cmbUser"));
+
+        gridLayout->addWidget(cmbUser, 0, 2, 1, 1);
 
 #ifndef QT_NO_SHORTCUT
-        lbUser->setBuddy(lineUser);
         lbPasswd->setBuddy(linePasswd);
 #endif // QT_NO_SHORTCUT
 
