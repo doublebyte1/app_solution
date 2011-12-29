@@ -10,6 +10,7 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     cityModel=0;
     countryModel=0;
     tableModel=0;
+    myProcess=0;
 
     initUI();
 }
@@ -20,6 +21,10 @@ conf_app::~conf_app()
         if (cityModel!=0) delete cityModel;
         if (countryModel!=0) delete countryModel;
         if (tableModel!=0) delete tableModel;
+    }
+    if (myProcess!=0 && myProcess->isOpen()){
+        myProcess->close();
+        delete myProcess;
     }
 }
 
@@ -49,15 +54,153 @@ void conf_app::initModels()
      countryModel = new QSqlQueryModel;
 }
 
+void conf_app::doBackup()
+{
+    if (!m_bConnected){
+
+             QMessageBox::warning(this, tr("Backup Process"),
+             tr("You must be connected to the database to perform the 'Backup'!")
+             +tr("\n Please connect and try again!"));
+             return;
+    }
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+     tr("Export backup to file"), "", tr("Backup Files (*.bak)"));
+
+    if (!fileName.isEmpty()){
+
+    qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+    statusShow(tr("Wait..."));
+
+        QSqlQuery query;
+        QString strQuery="BACKUP DATABASE albania TO DISK = '"
+            + fileName +"'";
+        query.prepare(strQuery);
+
+        if (!query.exec()){
+            QString strError;
+            if (QSqlDatabase::database().lastError().type()!=QSqlError::NoError)
+                strError=QSqlDatabase::database().lastError().text();
+            else
+                strError=tr("Could not backup database!");
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),strError,QMessageBox::Ok,0);
+            msgBox.exec();
+
+        }else{
+            statusShow(tr("Database successfully backed up to ") + fileName);
+        }
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+    }
+}
+
+void conf_app::readProcessError()
+{
+    QMessageBox::critical(this, tr("Restore Process"),
+                            myProcess->readAllStandardError().data());
+}
+
+void conf_app::readProcessOutput()
+{
+    QMessageBox::information(this, tr("Restore Process"),
+                            myProcess->readAllStandardOutput().data());
+}
+
+void conf_app::processFinished()
+{
+     if (QFile("MyScript.sql").exists()){
+         if(!QFile::remove("MyScript.sql")){
+
+             QMessageBox::warning(this, tr("Restore Process"),
+             tr("Could not remove temporary script file!"));
+
+         }
+     }
+     statusShow(tr("Temporary script file sucessfully removed!"));
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+}
+
+void conf_app::doRestore()
+{
+    if (m_bConnected){
+
+             QMessageBox::warning(this, tr("Restore Process"),
+             tr("You must be disconnected from the database to perform the 'Restore'!")
+             +tr("\n Please disconnect and try again!"));
+             return;
+    }
+
+    QSettings settings("Medstat", "App");
+    if(!settings.contains("host")){
+
+             QMessageBox::warning(this, tr("Restore Process"),
+             tr("We cannot retrieve the host value from any previous connection!!")
+             +tr("\n Please connect to the database to build the string, \n disconnect, and try again!"));
+             return;
+    }
+
+    qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+    statusShow(tr("Wait..."));
+
+    QString app("sqlcmd");
+    if (myProcess==0){
+        myProcess = new QProcess(this);
+
+         connect(myProcess, SIGNAL(readyReadStandardOutput()),this,
+            SLOT(readProcessOutput() ),Qt::UniqueConnection);
+
+         connect(myProcess, SIGNAL(readyReadStandardError()),this,
+            SLOT(readProcessError() ),Qt::UniqueConnection);
+
+         connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)),this,
+            SLOT(processFinished() ),Qt::UniqueConnection);
+    }
+
+    QString fileName = QFileDialog::getOpenFileName(this,
+     tr("Read Backup"), tr(""), tr("Backup Files (*.bak)"));
+
+    if (!fileName.isEmpty()){
+
+        QFile file("MyScript.sql");
+        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream out(&file);
+        out << "restore database albania FROM DISK = '" + fileName + "'"; 
+        file.close(); 
+
+        QStringList args;
+        args << QLatin1String("-S")
+         << QLatin1String(".\\SQLEXPRESS")
+         << QLatin1String("-i")
+         << QLatin1String("MyScript.sql");
+
+        //myProcess->setProcessChannelMode(QProcess::MergedChannels);
+         myProcess->start(app, args);
+         if (!myProcess->waitForStarted()) {
+             QMessageBox::critical(this, tr("App"),
+                 tr("Could not start Sql Server from %1.").arg(app));
+             return;
+         }
+    } else
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+}
+
 void conf_app::initUI()
 {
-    toolbar=addToolBar(tr("Main Toolbar"));
+    //toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->addAction(this->actionExit);
+    toolbar->addAction(this->actionCreate_backup);
+    toolbar->addAction(this->actionRestore_backup);
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
 
      connect(actionShow_startup_message, SIGNAL(triggered(bool)),this,
         SLOT(onShowStartupMsg(bool) ),Qt::UniqueConnection);
+
+     connect(actionCreate_backup, SIGNAL(triggered()),this,
+        SLOT(doBackup() ),Qt::UniqueConnection);
+
+     connect(actionRestore_backup, SIGNAL(triggered()),this,
+        SLOT(doRestore() ),Qt::UniqueConnection);
 
     if (QSqlDatabase::drivers().isEmpty())
     QMessageBox::information(this, tr("No database drivers found"),

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Wed 28. Dec 17:32:15 2011
+** Created: Thu 29. Dec 15:46:43 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_conf_app[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -48,6 +48,11 @@ static const uint qt_meta_data_conf_app[] = {
      265,  259,    9,    9, 0x08,
      288,    9,    9,    9, 0x08,
      300,    9,    9,    9, 0x08,
+     312,    9,    9,    9, 0x08,
+     323,    9,    9,    9, 0x08,
+     335,    9,    9,    9, 0x08,
+     354,    9,    9,    9, 0x08,
+     374,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -61,7 +66,9 @@ static const char qt_meta_stringdata_conf_app[] = {
     "strCountry\0filterModel(QString)\0apply()\0"
     "enableApply()\0bNoShow\0onShowStartupMsgI(bool)\0"
     "bShow\0onShowStartupMsg(bool)\0insertRow()\0"
-    "removeRow()\0"
+    "removeRow()\0doBackup()\0doRestore()\0"
+    "readProcessError()\0readProcessOutput()\0"
+    "processFinished()\0"
 };
 
 const QMetaObject conf_app::staticMetaObject = {
@@ -110,9 +117,14 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 12: onShowStartupMsg((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         case 13: insertRow(); break;
         case 14: removeRow(); break;
+        case 15: doBackup(); break;
+        case 16: doRestore(); break;
+        case 17: readProcessError(); break;
+        case 18: readProcessOutput(); break;
+        case 19: processFinished(); break;
         default: ;
         }
-        _id -= 15;
+        _id -= 20;
     }
     return _id;
 }

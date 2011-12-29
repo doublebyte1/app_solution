@@ -2,7 +2,7 @@
 #define CONF_APP_H
 
 #include <QtSql>
-#include <QtGui/QMainWindow>
+#include <QtGui>
 #include "ui_conf_app.h"
 
 #if defined(WIN32) && defined(_DEBUG)
@@ -51,6 +51,11 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    onShowStartupMsg(const bool bShow);
         void                    insertRow();
         void                    removeRow();
+        void                    doBackup();
+        void                    doRestore();
+        void                    readProcessError();
+        void                    readProcessOutput();
+        void                    processFinished();
 
     private:
         void                    initUI();
@@ -62,12 +67,12 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    listTables();
         void                    showEvent ( QShowEvent * event );
 
-        QToolBar*                         toolbar;
+        //QToolBar*                         toolbar;
         bool                              m_bConnected;
         QSqlQueryModel                    *cityModel;
         QSqlQueryModel                    *countryModel;
         QSqlRelationalTableModel*         tableModel;
-
+        QProcess*                          myProcess;
 };
 
 #endif // CONF_APP_H

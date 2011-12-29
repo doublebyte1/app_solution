@@ -1,12 +1,14 @@
 <RCC>
-  <qresource prefix="conf_app">
-    <file>add.png</file>
-    <file>cancel.png</file>
-    <file>password.png</file>
-    <file>decrypted.png</file>
-    <file>encrypted.png</file>
-    <file>connect_creating.png</file>
-    <file>conf_app.ico</file>
-    <file>exit.png</file>
-  </qresource>
+    <qresource prefix="/conf_app">
+        <file>add.png</file>
+        <file>cancel.png</file>
+        <file>password.png</file>
+        <file>decrypted.png</file>
+        <file>encrypted.png</file>
+        <file>connect_creating.png</file>
+        <file>conf_app.ico</file>
+        <file>exit.png</file>
+        <file>folder_inbox.png</file>
+        <file>folder_outbox.png</file>
+    </qresource>
 </RCC>

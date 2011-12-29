@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Wed 28. Dec 17:48:42 2011
+** Created: Thu 29. Dec 16:20:56 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -40,6 +40,8 @@ class Ui_conf_appClass
 public:
     QAction *actionExit;
     QAction *actionShow_startup_message;
+    QAction *actionCreate_backup;
+    QAction *actionRestore_backup;
     QWidget *centralWidget;
     QGridLayout *gridLayout_3;
     QToolBox *toolBox;
@@ -92,7 +94,8 @@ public:
     QMenu *menuFile;
     QMenu *menuTools;
     QMenu *menuOptions;
-    QToolBar *mainToolBar;
+    QMenu *menuBackups;
+    QToolBar *toolbar;
     QStatusBar *m_statusBar;
 
     void setupUi(QMainWindow *conf_appClass)
@@ -112,6 +115,16 @@ public:
         actionShow_startup_message->setObjectName(QString::fromUtf8("actionShow_startup_message"));
         actionShow_startup_message->setCheckable(true);
         actionShow_startup_message->setChecked(false);
+        actionCreate_backup = new QAction(conf_appClass);
+        actionCreate_backup->setObjectName(QString::fromUtf8("actionCreate_backup"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/conf_app/folder_outbox.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionCreate_backup->setIcon(icon2);
+        actionRestore_backup = new QAction(conf_appClass);
+        actionRestore_backup->setObjectName(QString::fromUtf8("actionRestore_backup"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/conf_app/folder_inbox.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionRestore_backup->setIcon(icon3);
         centralWidget = new QWidget(conf_appClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
@@ -197,18 +210,18 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         pushConnect = new QPushButton(page_3);
         pushConnect->setObjectName(QString::fromUtf8("pushConnect"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/conf_app/encrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushConnect->setIcon(icon2);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/conf_app/encrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushConnect->setIcon(icon4);
 
         horizontalLayout->addWidget(pushConnect);
 
         pushDisconnect = new QPushButton(page_3);
         pushDisconnect->setObjectName(QString::fromUtf8("pushDisconnect"));
         pushDisconnect->setEnabled(true);
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/conf_app/decrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushDisconnect->setIcon(icon3);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/conf_app/decrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushDisconnect->setIcon(icon5);
 
         horizontalLayout->addWidget(pushDisconnect);
 
@@ -218,7 +231,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 161, 121));
+        page_4->setGeometry(QRect(0, 0, 496, 251));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -318,17 +331,17 @@ public:
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         pushInsert = new QPushButton(groupTables);
         pushInsert->setObjectName(QString::fromUtf8("pushInsert"));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/conf_app/add.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushInsert->setIcon(icon4);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/conf_app/add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushInsert->setIcon(icon6);
 
         verticalLayout_2->addWidget(pushInsert);
 
         pushRemove = new QPushButton(groupTables);
         pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/conf_app/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushRemove->setIcon(icon5);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/conf_app/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon7);
 
         verticalLayout_2->addWidget(pushRemove);
 
@@ -378,10 +391,12 @@ public:
         menuTools->setObjectName(QString::fromUtf8("menuTools"));
         menuOptions = new QMenu(menuTools);
         menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
+        menuBackups = new QMenu(menuTools);
+        menuBackups->setObjectName(QString::fromUtf8("menuBackups"));
         conf_appClass->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(conf_appClass);
-        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
-        conf_appClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
+        toolbar = new QToolBar(conf_appClass);
+        toolbar->setObjectName(QString::fromUtf8("toolbar"));
+        conf_appClass->addToolBar(Qt::TopToolBarArea, toolbar);
         m_statusBar = new QStatusBar(conf_appClass);
         m_statusBar->setObjectName(QString::fromUtf8("m_statusBar"));
         m_statusBar->setMinimumSize(QSize(0, 18));
@@ -395,6 +410,7 @@ public:
         lbDriver->setBuddy(cmbDriver);
         label_2->setBuddy(cmbCountry);
         label->setBuddy(cmbCity);
+        label_3->setBuddy(cmbTables);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(lineHost, lineDataSource);
         QWidget::setTabOrder(lineDataSource, lineUsername);
@@ -406,12 +422,20 @@ public:
         QWidget::setTabOrder(pushDisconnect, cmbCountry);
         QWidget::setTabOrder(cmbCountry, cmbCity);
         QWidget::setTabOrder(cmbCity, pushApply);
+        QWidget::setTabOrder(pushApply, cmbTables);
+        QWidget::setTabOrder(cmbTables, tableView);
+        QWidget::setTabOrder(tableView, pushInsert);
+        QWidget::setTabOrder(pushInsert, pushRemove);
+        QWidget::setTabOrder(pushRemove, pushApply_2);
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuTools->menuAction());
         menuFile->addAction(actionExit);
         menuTools->addAction(menuOptions->menuAction());
+        menuTools->addAction(menuBackups->menuAction());
         menuOptions->addAction(actionShow_startup_message);
+        menuBackups->addAction(actionCreate_backup);
+        menuBackups->addAction(actionRestore_backup);
 
         retranslateUi(conf_appClass);
         QObject::connect(actionExit, SIGNAL(triggered()), conf_appClass, SLOT(close()));
@@ -426,7 +450,7 @@ public:
         QObject::connect(pushRemove, SIGNAL(clicked()), conf_appClass, SLOT(removeRow()));
         QObject::connect(pushApply_2, SIGNAL(clicked()), conf_appClass, SLOT(applyChanges2Table()));
 
-        toolBox->setCurrentIndex(2);
+        toolBox->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(conf_appClass);
@@ -438,6 +462,20 @@ public:
         actionExit->setText(QApplication::translate("conf_appClass", "Exit", 0, QApplication::UnicodeUTF8));
         actionExit->setShortcut(QApplication::translate("conf_appClass", "Ctrl+X", 0, QApplication::UnicodeUTF8));
         actionShow_startup_message->setText(QApplication::translate("conf_appClass", "Show startup message", 0, QApplication::UnicodeUTF8));
+        actionCreate_backup->setText(QApplication::translate("conf_appClass", "Create backup", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionCreate_backup->setStatusTip(QApplication::translate("conf_appClass", "Create backup from file", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionCreate_backup->setWhatsThis(QApplication::translate("conf_appClass", "Creates backup from file", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        actionRestore_backup->setText(QApplication::translate("conf_appClass", "Restore backup", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionRestore_backup->setStatusTip(QApplication::translate("conf_appClass", "Restore backup from file", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        actionRestore_backup->setWhatsThis(QApplication::translate("conf_appClass", "Restores backup from file", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         lbHost->setText(QApplication::translate("conf_appClass", "Host", 0, QApplication::UnicodeUTF8));
         lbDataSource->setText(QApplication::translate("conf_appClass", "Data Source", 0, QApplication::UnicodeUTF8));
         lbUsername->setText(QApplication::translate("conf_appClass", "Username", 0, QApplication::UnicodeUTF8));
@@ -452,8 +490,32 @@ public:
         label->setText(QApplication::translate("conf_appClass", "City", 0, QApplication::UnicodeUTF8));
         pushApply->setText(QApplication::translate("conf_appClass", "Apply", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page_4), QApplication::translate("conf_appClass", "Global Settings", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        groupTables->setToolTip(QApplication::translate("conf_appClass", "This control allows the edition of any database table, including inserting and removing records.\n"
+" Choose a table listed in the combo box, edit it by changing values and using the bottoms on the left to add/remove rows, and submit changes by pressing apply.\n"
+" To enable edition again, you just have to select another table.\n"
+" *Attention*: this function operates directly on the database, so there are no undos - be carefull with any changes you make! ", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        groupTables->setStatusTip(QApplication::translate("conf_appClass", "This control allows the edition of any database table, including inserting and removing records. ", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        groupTables->setWhatsThis(QApplication::translate("conf_appClass", "This control allows the edition of any database table, including inserting and removing records.\n"
+" Choose a table listed in the combo box, edit it by changing values and using the bottoms on the left to add/remove rows, and submit changes by pressing apply.\n"
+" To enable edition again, you just have to select another table.\n"
+" *Attention*: this function operates directly on the database, so there are no undos - be carefull with any changes you make! ", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         groupTables->setTitle(QString());
         label_3->setText(QApplication::translate("conf_appClass", "Choose Table:", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        cmbTables->setToolTip(QApplication::translate("conf_appClass", "Database tables", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        cmbTables->setStatusTip(QApplication::translate("conf_appClass", "Database tables", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        cmbTables->setWhatsThis(QApplication::translate("conf_appClass", "This control lists database tables.", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
 #ifndef QT_NO_TOOLTIP
         pushInsert->setToolTip(QApplication::translate("conf_appClass", "Insert row", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
@@ -474,11 +536,21 @@ public:
         pushRemove->setWhatsThis(QApplication::translate("conf_appClass", "Removes row into table", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         pushRemove->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushApply_2->setToolTip(QApplication::translate("conf_appClass", "Apply changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushApply_2->setStatusTip(QApplication::translate("conf_appClass", "Apply changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushApply_2->setWhatsThis(QApplication::translate("conf_appClass", "Applies changes", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         pushApply_2->setText(QApplication::translate("conf_appClass", "Apply", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page), QApplication::translate("conf_appClass", "Edit Tables", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("conf_appClass", "File", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("conf_appClass", "Tools", 0, QApplication::UnicodeUTF8));
         menuOptions->setTitle(QApplication::translate("conf_appClass", "Options", 0, QApplication::UnicodeUTF8));
+        menuBackups->setTitle(QApplication::translate("conf_appClass", "Backups", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
