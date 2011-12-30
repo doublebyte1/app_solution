@@ -234,7 +234,7 @@ void Login::validate()
                 //Store session data, username and passwd
                 QSettings settings(tr("Medstat"), tr("App"));
                 settings.setValue("AppUser", cmbUser->currentText());
-                settings.setValue("AppPass", linePasswd->text());
+                //settings.setValue("AppPass", linePasswd->text());
 
                 if (!setRoleDef(&query)){
                     emit showError(tr("Could not retrieve the role of this user on the database!"));

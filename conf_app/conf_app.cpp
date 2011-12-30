@@ -186,7 +186,6 @@ void conf_app::doRestore()
 
 void conf_app::initUI()
 {
-    //toolbar=addToolBar(tr("Main Toolbar"));
     toolbar->addAction(this->actionExit);
     toolbar->addAction(this->actionCreate_backup);
     toolbar->addAction(this->actionRestore_backup);
