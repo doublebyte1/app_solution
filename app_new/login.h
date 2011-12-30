@@ -20,6 +20,7 @@ QString                         getMacAddress();
 /*!
 This class implements a thread that writes the session settings in the database.
 It has low priority, so it does not bother us too much!
+n.b.: discontinued!
 */
 
 class StoreSettingsThread : public QThread
@@ -189,32 +190,101 @@ class Login : public QWidget, public Ui::frmLogin
         ~Login();
 
     signals:
-        void                                gotConnection(bool bOk);
+
+        //void                                gotConnection(bool bOk);
         void                                showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
         void                                showStatus(QString str);//!< signal for showing messages in the status bar
 
     public slots:
+        //! Validate
+        /*! This is the function that validates username and password, and if the authentication goes through
+        proceeds with the launching of the main application and starts the init rules thread.
+        */
         void                                validate();
-        bool                                connectDB(const QString& strHost,const QString& strDataSource,
-        const QString&                      strUsername,const QString& strPassword,const QString& strAlias, const QString& strDriver);
+        //! Connect DB
+        /*! This is the function that establishes a connection with the DB. All parameters here are
+        read from the registry, as we need to set them up first using the configurator.
+        \par strHost host name as string
+        \par strDataSource dns name as string
+        \par strUsername username as string
+        \par strPassword password as string
+        \par strAlias database alias as string
+        \par strDriver driver name as string
+        \returns boolean as success or failure
+        \sa disconnectDB()
+        */
+        bool                                connectDB(const QString strHost,const QString strDataSource,
+        const QString                      strUsername,const QString strPassword,const QString strAlias, const QString strDriver);
 
     private slots:
+            //! Final Touches
+            /*! This slots is connected to the signal aboutToQuit();
+            We use it to perform tasks that we want to do when leaving the app (for instace writing the end of session data)
+            */
             void                            finalTouches();
+            //! Update tooltip
+            /*! This slots updates the tooltip of the username combobox, with the user
+            description (read from the database)
+            \par user username as string
+            */
             void                            updateTooltip(QString user);
 
     private:
+            //! Set Role Definition
+            /*! This slots is called after a successfull validation through validate() and
+            ot basically fills the RoleDef structure, with the values of this query.
+            The RoleDef structure encapsulates the permission model for the current user, and it 
+            is going to be passed around forms (on their construction) to define which portion
+            of the UI is visible, in the session.
+            \par query active query, containing the role definition for the current user
+            \return boolean as success or failure
+            */
             bool                            setRoleDef(QSqlQuery* query);
+            //! Init combo users
+            /*! This function initializes the combobox with a list of usernames
+            */
             void                            initCmbUsers();
-            bool                            disconnectDB();
-            void                            loadFile(const QString &fileName);
+            //bool                            disconnectDB();
+            //void                            loadFile(const QString &fileName);
+            //! Read Settings
+            /*!
+            This function reads the connection settings from the registry, and stores the inside the argument variables.
+            It is used to retreive the values, to silently connect to the database.
+            \par strHost address of a string to store the host name
+            \par strDataSource address of a string to store the dns name
+            \par strUsername address of a string to store the username
+            \par strPassword address of a string to store the password
+            \par strAlias database address of a string to store the alias
+            \par strDriver address of a string to store the driver name
+            \return boolean as success or failure
+            \sa connectDB(const QString strHost,const QString strDataSource,const QString
+            strUsername,const QString strPassword,const QString strAlias, const QString strDriver)
+            */
             bool                            readSettings(QString& strHost, QString& strAlias, QString& strDatasource, QString& strUsername, 
                                                 QString& strPassword, QString& strDriver);
+            //! Show Event
+            /*!
+            Reimplemented from the base class.
+             */
             void                            showEvent ( QShowEvent * event );
+            //! Start Session
+            /*! This function initializes session data in the database, by creating a record on table GL_Dates.
+            This record is completed, at the end of the session (with end date).
+            \par strUser username as string
+            \par strLocation location as string
+            \return boolean as success or failure
+            \sa endSession()
+            */
             bool                            startSession(const QString strUser, const QString strLocation);
+            //! End Session
+            /*! This function completes the session data in the database, by amending a record on table GL_Dates.
+            This record was initialized with startSession(const QString strUser, const QString strLocation).
+            \sa startSession(const QString strUser, const QString strLocation)
+            */
             void                            endSession();
-            QSqlQueryModel*                 userModel;
-            MainFrm*                        mainFrmPtr;
-            RoleDef*                        m_roleDef;
+            QSqlQueryModel*                 userModel;//!< Pointer to a model containing the users and roles from the database
+            MainFrm*                        mainFrmPtr;//!< Pointer to a main form object
+            RoleDef*                        m_roleDef;//!< Pointer to a RoleDef structure
 };
 
 #endif // LOGIN_H

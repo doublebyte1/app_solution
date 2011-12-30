@@ -42,12 +42,12 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Reimplemented from the PreviewTab base class
          \par bFinished flag that indicates if we started/finished editing
          \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
-        /sa previewRow(QModelIndex index), editFinished()
+        \sa previewRow(QModelIndex index), editFinished()
         */
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
         //! Edit finished
         /*! Reimplemented from the PreviewTab base class
-        /sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
+        \sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
         */
         void                                   editFinished();
 
@@ -102,8 +102,8 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Since we need to filter an additional mapper/model for the Sampled Cell Vessels (Sampling approach),
         this is an utility function that focus on the selected abstract sampled vessel current item,
         and grabbs the related sampled cell vessel record, filtering that model
-        /par index model index for the current selected item on the table view
-        /return boolean as success or failure
+        \par index model index for the current selected item on the table view
+        \return boolean as success or failure
         */
         bool                                   filterSampledCellVessels(QModelIndex index);
         void                                   initVesselModel();
@@ -113,25 +113,25 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         or a sampled cell vessel. From here, it it points to the respective functions: comitCellVessels(int& id),
         comitStrataVessels(int& id), and in the end it give us a pair of ids (one of them corresponding to a n/a record).
         This ids are necessary to finish filling the record on abstract sampled vessels table.
-        /par bLogbook flag indicating if it is a logbook or not
+        \par bLogbook flag indicating if it is a logbook or not
         /id address of an integer to put the calculated id_Sampled_Cell_Vessels
         /id address of an integer to put the calculated id_Sampled_Strata_Vessels
-        /return boolean as success or failure
-        /sa comitCellVessels(int& id), comitStrataVessels(int& id)
+        \return boolean as success or failure
+        \sa comitCellVessels(int& id), comitStrataVessels(int& id)
         */
         bool                                   comitNonAbstractVessels(const bool bLogbook,
                                                         int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels);
         //! Comit Sampled Cell Vessels
         /*! Initializes a record on Sampled Cell Vessels and gives us the id
-        /return boolean as success or failure
-        /sa comitNonAbstractVessels(const bool bLogbook,int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels)
+        \return boolean as success or failure
+        \sa comitNonAbstractVessels(const bool bLogbook,int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels)
         , comitStrataVessels(int& id)
         */
         bool                                   comitCellVessels(int& id);
         //! Comit Sampled Strata Vessels
         /*! Initializes a record on Sampled Strata Vessels and gives us the id
-        /return boolean as success or failure
-        /sa comitNonAbstractVessels(const bool bLogbook,int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels)
+        \return boolean as success or failure
+        \sa comitNonAbstractVessels(const bool bLogbook,int& id_Sampled_Cell_Vessels, int& id_Sampled_Strata_Vessels)
         , comitCellVessels(int& id)
         */
         bool                                   comitStrataVessels(int& id);

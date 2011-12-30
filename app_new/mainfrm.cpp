@@ -1034,7 +1034,7 @@ bool SessionFileParser::characters ( const QString & ch )
         m_bReadingOperationId=false;
     }
 
-    //return m_bReadingFrameId==false || m_bReadingFrameTimeId==false;
+    return m_bReadingFrameId==false || m_bReadingFrameTimeId==false;
     return true;
 }
 

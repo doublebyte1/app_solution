@@ -188,8 +188,6 @@ void FrameView::dragEnterEvent ( QDragEnterEvent * event )
 
 void FrameView::dragMoveEvent(QDragMoveEvent * event )
 {
-    //return QTreeView::dragMoveEvent(event);
-
     QModelIndex index;
     int col = -1;
     int row = -1;

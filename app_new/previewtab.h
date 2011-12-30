@@ -145,17 +145,17 @@ class PreviewTab : public GenericTab
         void                                  initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
         //! A pure virtual member.
         /*! In this function we set the query that filters the combobox for the selected top-level id;
-         /sa setPreviewQuery(), uI4NewRecord(), genericCreateRecord()
+         \sa setPreviewQuery(), uI4NewRecord(), genericCreateRecord()
         */
         virtual void                          filterModel4Combo()=0;
         //! Generic UI for new record
         /*! This is a generic function for the UI of a new record, called by the virtual uI4NewRecord
-         /sa uI4NewRecord()
+         \sa uI4NewRecord()
         */
         void                                  genericUI4NewRecord();
         //! A pure virtual member.
         /*! In this function we initialize the UI values for a new record;
-         /sa genericUI4NewRecord()
+         \sa genericUI4NewRecord()
         */
         virtual void                          uI4NewRecord()=0;
         //! A pure virtual member.
@@ -174,7 +174,7 @@ class PreviewTab : public GenericTab
         void                                  genericCreateRecord();
         //! Reimplementation of the virtual method on QWidget class
         /*! Here we adjust the table to the new dimensions of the form;
-        /par event we don't actually use this parameter!
+        \par event we don't actually use this parameter!
         */
         void                                  resizeEvent ( QResizeEvent * event );
         //! Apply Changes to Record
@@ -193,8 +193,8 @@ class PreviewTab : public GenericTab
         and the respective model; the mapper is sent as an argument, but the model no, so be sure to use
         this function with caution *being absolutely sure* that the mapper you are sending its connected
         to the main model of the form; otherwise, unexpected results will occur!
-        /par aMapper a Mapper
-        /return boolean as success or failure
+        \par aMapper a Mapper
+        \return boolean as success or failure
         */
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
@@ -260,7 +260,7 @@ class PreviewTab : public GenericTab
     private slots:
         //! A pure virtual member.
         /*! In this function we set the query that displays the records on the preview container;
-         /sa filterModel4Combo(), uI4NewRecord(), genericCreateRecord()
+         \sa filterModel4Combo(), uI4NewRecord(), genericCreateRecord()
         */
         virtual void                          setPreviewQuery()=0;
         //! Enable/Disable edit/remove buttons
@@ -273,18 +273,18 @@ class PreviewTab : public GenericTab
         editFinished() for the "final touches" on the UI!
          \par bFinished flag that indicates if we started/finished editing
          \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
-        /sa editRecord(bool on), editFinished(), editLeave(const bool bFinished, const bool bDiscarded=false)
+        \sa editRecord(bool on), editFinished(), editLeave(const bool bFinished, const bool bDiscarded=false)
         */
         virtual void                          onEditLeave(const bool bFinished, const bool bDiscarded)=0;
         //! Pure virtual function
         /*! Final touches on the UI, after the editing process is (successfully) complete!
-        /sa editRecord(bool on), onEditLeave(const bool bFinished, const bool bDiscarded), editLeave(const bool bFinished, const bool bDiscarded=false)
+        \sa editRecord(bool on), onEditLeave(const bool bFinished, const bool bDiscarded), editLeave(const bool bFinished, const bool bDiscarded=false)
         */
         virtual void                          editFinished()=0;
         //! Set Header Label Tips
         /*! In this function we set the tooltip, status tip and WhatsThis text,
         regarding the fact that it is a logbook or sampling form;
-        /par bLogBook boolean to indicate whether it is a logbook or sampling form
+        \par bLogBook boolean to indicate whether it is a logbook or sampling form
         */
         void                                  setTips(const bool bLogbook);
         //! A pure virtual member.

@@ -42,12 +42,12 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         /*! Reimplemented from the PreviewTab base class
          \par bFinished flag that indicates if we started/finished editing
          \par bDiscarded flag that indicates, in case we finished, if we want to discard changes (default is false)
-        /sa previewRow(QModelIndex index), editFinished()
+        \sa previewRow(QModelIndex index), editFinished()
         */
         void                                   onEditLeave(const bool bFinished, const bool bDiscarded);
         //! Edit finished
         /*! Reimplemented from the PreviewTab base class
-        /sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
+        \sa previewRow(QModelIndex index), onEditLeave(const bool bFinished, const bool bDiscarded)
         */
         void                                   editFinished();
 

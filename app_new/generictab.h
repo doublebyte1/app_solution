@@ -77,7 +77,7 @@ struct Sample{
     int         catchId;/**< operation id */
 };
 
-#endif //SAMPLE_H
+#endif /\saMPLE_H
 
 //////////////////////////////////////////////////////////////////
 #ifndef NULLRELATIONALDELEGATE_H
@@ -203,7 +203,6 @@ class GenericTab : public QWidget
 
         //Signals related to the RuleBinder
         void                     addRecord();/**< tells the rulebinder that an empty record has been initialized*/
-        //void                     recordAdded();
         void                     submit();/**< tells the rulebinder that we want to submit a record to the database*/
 
     protected:

@@ -22,7 +22,7 @@ GenericTab(index,inRoleDef,inSample,inTDateTime,inStrTitle,ruleCheckerPtr,parent
     mapTablesL.insert("Sampled_Fishing_Trips",sTable("id_abstract_sampled_vessels","Sampled_Fishing_Operations",true));
     mapTablesL.insert("Sampled_Fishing_Operations",sTable("id_fishing_trip",qApp->translate("null_replacements", strNa),true));
 
-    //Sampling flow
+    //sampling flow
     mapTablesS.insert("Fr_Time",sTable(qApp->translate("null_replacements", strNa),"Ref_Minor_Strata",true));
     mapTablesS.insert("Ref_Minor_Strata",sTable("id_frame_time","Sampled_Cell",true));
     mapTablesS.insert("Sampled_Cell",sTable("id_minor_strata","Sampled_Cell_Vessel_Types",false));

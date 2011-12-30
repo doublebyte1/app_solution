@@ -332,8 +332,8 @@ void Login::showEvent ( QShowEvent * event )
     return true;
  }
 
- bool Login::connectDB(const QString& strHost,const QString& strDataSource,
-        const QString& strUsername,const QString& strPassword,const QString& strAlias, const QString& strDriver)
+ bool Login::connectDB(const QString strHost,const QString strDataSource,
+        const QString strUsername,const QString strPassword,const QString strAlias, const QString strDriver)
 {
         if (!createConnection(strHost,strDataSource, strUsername,strPassword,strAlias,strDriver)){
             QSqlDatabase db=QSqlDatabase::database();
