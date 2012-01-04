@@ -554,10 +554,9 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
 }
 void MainFrm::callAssistant()
 {
-///////////////////////// PRODUCTION CODE ///////////////////////////////////////////////
 
          QProcess *process = new QProcess(this);
-         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath)
+         QString app = QDir::currentPath()
              + QLatin1String("/assistant");
 
         QStringList args;
@@ -575,15 +574,11 @@ void MainFrm::callAssistant()
          }
 
         QByteArray ba;
-        ba.append("setSource qthelp://medfisis.app.1_1b/doc/index.htm\n");
+//        ba.append("setCurrentFilter Medfisis1.1");
+        //ba.append("expandToc -1;");
+        ba.append("setSource qthelp://medfisis.app.1_1/doc/index.htm\n;");
         process->write(ba);
 
-         /*
-         // show index page
-         QTextStream str(process);
-         str << QLatin1String("SetSource qthelp://medfisis.app.1_1b/doc/index.htm")
-             << QLatin1Char('\0') << endl;
-*/
 }
 
 void MainFrm::aboutThisProject()

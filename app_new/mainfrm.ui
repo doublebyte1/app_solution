@@ -336,7 +336,7 @@
     <string>Calls Help Browser</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Alt+F1</string>
+    <string>F1</string>
    </property>
   </action>
  </widget>

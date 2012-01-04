@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainfrm.ui'
 **
-** Created: Wed 28. Dec 15:47:40 2011
+** Created: Wed 4. Jan 11:20:02 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -297,7 +297,7 @@ public:
 #ifndef QT_NO_WHATSTHIS
         actionMedfisis_Help->setWhatsThis(QApplication::translate("MainWindow", "Calls Help Browser", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        actionMedfisis_Help->setShortcut(QApplication::translate("MainWindow", "Ctrl+Alt+F1", 0, QApplication::UnicodeUTF8));
+        actionMedfisis_Help->setShortcut(QApplication::translate("MainWindow", "F1", 0, QApplication::UnicodeUTF8));
         menuSampling_Operation->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
