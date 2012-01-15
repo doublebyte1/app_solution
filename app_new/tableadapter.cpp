@@ -669,14 +669,24 @@ bool TableAdapter::getFieldTypeXML(QXmlStreamReader& xml, QString& strType, int&
         }else if (strType==tr("decimal")){
             QString strPrecision=tr("");
             QString strScale=tr("");
+
             while (xml.name().toString()==tr("totalDigits") 
                 || xml.name().toString()==tr("fractionDigits")){
 
-                if (!xml.attributes().hasAttribute(tr("value")))
-                return false;
-                if (xml.name().toString()==tr("totalDigits"))
-                    strPrecision=xml.attributes().value(tr("value")).toString(); else
-                strScale==xml.attributes().value(tr("value")).toString();
+                //on elements without children, readnextstart tries to recurse into itself and find the end tag
+                //so we need to make sure we are reading a start element...
+                if (xml.isStartElement()){
+
+                    if (!xml.attributes().hasAttribute(tr("value")))
+                    return false;
+
+                    if (xml.name().toString()==tr("totalDigits")){
+                        strPrecision=xml.attributes().value(tr("value")).toString(); 
+                    }else{
+                        strScale==xml.attributes().value(tr("value")).toString();
+                    }
+
+                }
                 xml.readNextStartElement();
             }
 
