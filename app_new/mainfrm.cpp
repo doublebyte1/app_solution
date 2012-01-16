@@ -554,30 +554,30 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
 }
 void MainFrm::callAssistant()
 {
+     QProcess *process = new QProcess(this);
+     QString app = QDir::currentPath()
+         + QLatin1String("/assistant");
 
-         QProcess *process = new QProcess(this);
-         QString app = QDir::currentPath()
-             + QLatin1String("/assistant");
+    QStringList args;
+    args << QLatin1String("-collectionFile")
 
-        QStringList args;
-        args << QLatin1String("-collectionFile")
+        << QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
+    + QLatin1String("mycollection.qhc")
+    << QLatin1String("-enableRemoteControl");
 
-            << QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
-        + QLatin1String("mycollection.qhc")
-        << QLatin1String("-enableRemoteControl");
+     process->start(app, args);
+     if (!process->waitForStarted()) {
+         QMessageBox::critical(this, tr("Remote Control"),
+             tr("Could not start Qt Assistant from %1.").arg(app));
+         return;
+     }
 
-         process->start(app, args);
-         if (!process->waitForStarted()) {
-             QMessageBox::critical(this, tr("Remote Control"),
-                 tr("Could not start Qt Assistant from %1.").arg(app));
-             return;
-         }
-
-        QByteArray ba;
+    QByteArray ba;
 //        ba.append("setCurrentFilter Medfisis1.1");
-        //ba.append("expandToc -1;");
-        ba.append("setSource qthelp://medfisis.app.1_1/doc/index.htm\n;");
-        process->write(ba);
+    //ba.append("expandToc -1;");
+    //ba.append("ActivateIdentifier Medfisis::logbooks");
+    ba.append("setSource qthelp://medfisis.app.1_1/doc/index.html\n;");
+    process->write(ba);
 
 }
 

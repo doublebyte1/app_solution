@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'xmltable.h'
 **
-** Created: Wed 28. Dec 09:37:48 2011
+** Created: Mon 16. Jan 14:53:22 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

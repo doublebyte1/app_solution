@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QtSql>
+//#include <QHelpEngineCore>
 #include "frmframedetails.h"
 #include "datemodel.h"
 #include "globaldefs.h"
@@ -200,6 +201,7 @@ class GenericTab : public QWidget
         void                    showFrmSampling();
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
+        void                    currentHelpId(const QString strHelpId);
 
         //Signals related to the RuleBinder
         void                     addRecord();/**< tells the rulebinder that an empty record has been initialized*/
@@ -258,6 +260,16 @@ class GenericTab : public QWidget
         QLabel*                 lbHead;/**< pointer to the text label on top of the form, indicating if it is logbook or sampling */
         RuleChecker*            m_ruleCheckerPtr;/**< pointer to the rule checker (dynamic business logic layer) */
         MapperRuleBinder*       m_mapperBinderPtr;/**< pointer to the QDataWidgetMapper binder (dynamic business logic layer) */
+
+        QMap<QWidget*, QString> m_widgetInfo;
+        //QVariant                loadResource(int type, const QUrl &name);
+        //void                    showHelpForKeyword(const QString &id);
+
+    private:
+        //void                    focusOutEvent ( QFocusEvent * event );
+        //void                    connectHelpIds();
+        //void                    initHelp();
+        //QHelpEngineCore         *m_helpEngine;
 
     private slots:
         //! Go back

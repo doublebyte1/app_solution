@@ -120,7 +120,7 @@ bool PreviewTab::tableSelect(const int id)
 
 void PreviewTab::genericUI4NewRecord()
 {
-    m_groupDetails->setVisible(m_roleDef->bView && !m_groupDetails->isVisible());
+    m_groupDetails->setVisible(m_roleDef->bView);
 
     emit lockControls(false,m_lWidgets);
 

@@ -7,6 +7,7 @@ QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_roleDef(inRol
     lbHead=0;
     m_mapperBinderPtr=0;
     nullDellegate=0;
+//     m_helpEngine = 0;
 
     connect(this, SIGNAL(lockControls(bool,QList<QWidget*>&)), this,
     SLOT(onLockControls(bool,QList<QWidget*>&)));
@@ -14,13 +15,74 @@ QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_roleDef(inRol
     connect(this, SIGNAL(forward(QString)), this,
     SLOT(goForward()));
 
+    this->setFocusPolicy(Qt::StrongFocus);
+    //initHelp();
+    //connectHelpIds();
 }
 
 GenericTab::~GenericTab()
 {
     if (nullDellegate!=0) delete nullDellegate;
     if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
+    //if (m_helpEngine!=0) delete m_helpEngine;
 }
+
+/*
+void GenericTab::focusOutEvent ( QFocusEvent * event )
+{
+
+}
+
+void GenericTab::connectHelpIds()
+{
+    for (int i=0; i < this->children().size(); ++i)
+    {
+        if (qobject_cast<QWidget *>(this->children().at(i))!=0){
+
+        connect(qobject_cast<QWidget *>(this->children().at(i)), SIGNAL(addRecord()), mapperBinderPtr,
+            SIGNAL(addRecord()));
+
+            
+        }
+    }
+
+}
+
+/*
+void GenericTab::initHelp()
+{
+     QString collectionFile = QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
+    + QLatin1String("mycollection.qhc");
+
+     m_helpEngine = new QHelpEngineCore(collectionFile, this);
+     if (!m_helpEngine->setupData()) {
+         delete m_helpEngine;
+         m_helpEngine = 0;
+     }
+}
+/*
+void GenericTab::showHelpForKeyword(const QString &id)
+{
+     if (m_helpEngine) {
+         QMap<QString, QUrl> links = m_helpEngine->linksForIdentifier(id);
+         if (links.count())
+             setSource(links.constBegin().value());
+     }
+}
+*/
+/*
+QVariant GenericTab::loadResource(int type, const QUrl &name)
+ {
+     QByteArray ba;
+     if (type < 4 && m_helpEngine) {
+         QUrl url(name);
+         if (name.isRelative())
+             url = source().resolved(url);
+         ba = m_helpEngine->fileData(url);
+     }
+     return ba;
+}
+*/
 
 bool GenericTab::initBinder(MapperRuleBinder* mapperBinderPtr)
 {

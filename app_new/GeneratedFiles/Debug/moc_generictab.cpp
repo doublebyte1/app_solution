@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'generictab.h'
 **
-** Created: Fri 30. Dec 17:05:18 2011
+** Created: Mon 16. Jan 14:53:30 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -72,12 +72,12 @@ static const uint qt_meta_data_GenericTab[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      22,   14, // methods
+      23,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      14,       // signalCount
+      15,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       27,   12,   11,   11, 0x05,
@@ -92,18 +92,19 @@ static const uint qt_meta_data_GenericTab[] = {
      549,   63,   11,   11, 0x05,
      585,  569,   11,   11, 0x05,
      609,   63,   11,   11, 0x25,
-     628,   11,   11,   11, 0x05,
-     640,   11,   11,   11, 0x05,
+     638,  628,   11,   11, 0x05,
+     661,   11,   11,   11, 0x05,
+     673,   11,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     649,   63,   11,   11, 0x0a,
-     669,   11,   11,   11, 0x0a,
-     677,   11,   11,   11, 0x0a,
-     695,   11,  690,   11, 0x0a,
-     702,   11,   11,   11, 0x08,
-     711,   11,   11,   11, 0x08,
-     723,   12,   11,   11, 0x08,
-     769,  761,   11,   11, 0x08,
+     682,   63,   11,   11, 0x0a,
+     702,   11,   11,   11, 0x0a,
+     710,   11,   11,   11, 0x0a,
+     728,   11,  723,   11, 0x0a,
+     735,   11,   11,   11, 0x08,
+     744,   11,   11,   11, 0x08,
+     756,   12,   11,   11, 0x08,
+     802,  794,   11,   11, 0x08,
 
        0        // eod
 };
@@ -126,6 +127,7 @@ static const char qt_meta_stringdata_GenericTab[] = {
     "hideFrmSampling(bool)\0showFrmSampling()\0"
     "showStatus(QString)\0str,bShowMsgBox\0"
     "showError(QString,bool)\0showError(QString)\0"
+    "strHelpId\0currentHelpId(QString)\0"
     "addRecord()\0submit()\0fillHeader(QString)\0"
     "apply()\0onShowForm()\0bool\0next()\0"
     "goBack()\0goForward()\0"
@@ -174,20 +176,21 @@ int GenericTab::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 9: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 10: showError((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
         case 11: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 12: addRecord(); break;
-        case 13: submit(); break;
-        case 14: fillHeader((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 15: apply(); break;
-        case 16: onShowForm(); break;
-        case 17: { bool _r = next();
+        case 12: currentHelpId((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 13: addRecord(); break;
+        case 14: submit(); break;
+        case 15: fillHeader((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 16: apply(); break;
+        case 17: onShowForm(); break;
+        case 18: { bool _r = next();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 18: goBack(); break;
-        case 19: goForward(); break;
-        case 20: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
-        case 21: onPreSubmit((*reinterpret_cast< const bool(*)>(_a[1]))); break;
+        case 19: goBack(); break;
+        case 20: goForward(); break;
+        case 21: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QList<QWidget*>(*)>(_a[2]))); break;
+        case 22: onPreSubmit((*reinterpret_cast< const bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 22;
+        _id -= 23;
     }
     return _id;
 }
@@ -255,15 +258,22 @@ void GenericTab::showError(QString _t1, const bool _t2)
 }
 
 // SIGNAL 12
-void GenericTab::addRecord()
+void GenericTab::currentHelpId(const QString _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 12, 0);
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 12, _a);
 }
 
 // SIGNAL 13
-void GenericTab::submit()
+void GenericTab::addRecord()
 {
     QMetaObject::activate(this, &staticMetaObject, 13, 0);
+}
+
+// SIGNAL 14
+void GenericTab::submit()
+{
+    QMetaObject::activate(this, &staticMetaObject, 14, 0);
 }
 static const uint qt_meta_data_SecondaryFrm[] = {
 
