@@ -119,6 +119,9 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   setReadOnly(const bool bRO);
         void                                   initModels();
         void                                   initFrModel();
+
+        void                                   initHelpIds(); 
+
         void                                   initMappers();
         void                                   initMapper2();
         //! Init UI

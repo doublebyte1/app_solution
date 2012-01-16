@@ -103,6 +103,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         bool                                   getNextLabel(QString& strLabel);
         void                                   initOperationModel();
         void                                   initMapper1();
+        void                                   initHelpIds(){;} 
 
         QSqlTableModel*                        tOpCat;
         QSqlQueryModel*                        tRefCat;

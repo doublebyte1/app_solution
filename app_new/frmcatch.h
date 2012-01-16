@@ -101,6 +101,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
 
         void                                   initCatchModel();
         void                                   initMapper1();
+        void                                   initHelpIds(){;} 
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tCatch;

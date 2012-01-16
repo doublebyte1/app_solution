@@ -107,6 +107,7 @@ class FrmSampling : public GenericTab, public Ui::FrmSampling
         void                           initTable();
         void                           initModels();
         void                           initUI();
+        void                           initHelpIds(){;} 
         bool                           m_submitted;
         QSqlRelationalTableModel*      tRefSampTec;
         QSqlTableModel*                tRefLevels;

@@ -28,6 +28,8 @@ m_roleDef(roleDef),QMainWindow(parent, flags){
     pFrmExport=0;
     pFrmRegions=0;
     pFrmImportRegions=0;
+    process=0;
+    curHelpId="";
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
     setupUi(this);
@@ -70,6 +72,12 @@ MainFrm::~MainFrm()
     if (tDateTime!=0) delete tDateTime;
     if (sSample!=0) delete sSample;
     if (ruleCheckerPtr!=0) delete ruleCheckerPtr;
+
+    if (process!=0 && process->isOpen()){
+        // Make sure we close the process before deleting it;
+        process->close();
+        delete process; process=0;
+    }
 }
 
 void MainFrm::initRules()
@@ -554,7 +562,7 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
 }
 void MainFrm::callAssistant()
 {
-     QProcess *process = new QProcess(this);
+     process = new QProcess(this);
      QString app = QDir::currentPath()
          + QLatin1String("/assistant");
 
@@ -573,10 +581,12 @@ void MainFrm::callAssistant()
      }
 
     QByteArray ba;
-//        ba.append("setCurrentFilter Medfisis1.1");
-    //ba.append("expandToc -1;");
-    //ba.append("ActivateIdentifier Medfisis::logbooks");
-    ba.append("setSource qthelp://medfisis.app.1_1/doc/index.html\n;");
+    //ba.append("setSource qthelp://medfisis.app.1_1/doc/index.html");
+    if (!curHelpId.isEmpty() && !curHelpId.isNull()){
+        ba.append("ActivateIdentifier " + curHelpId);
+        curHelpId="";
+    }else
+        ba.append("setSource qthelp://medfisis.app.1_1/doc/index.html\n;");
     process->write(ba);
 
 }
@@ -723,6 +733,9 @@ void MainFrm::initTabs()
 
     // Connect all the signals
      for (int i = 0; i < vTabs.size(); ++i) {
+
+         connect(vTabs.at(i), SIGNAL(currentHelpId(const QString)), this,
+        SLOT(setCurHelpId(const QString)),Qt::UniqueConnection);
 
          connect(vTabs.at(i), SIGNAL(navigate(const bool, const int)), this,
         SLOT(navigateThroughTabs(const bool, const int)),Qt::UniqueConnection);

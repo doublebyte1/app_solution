@@ -112,6 +112,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         bool                                   getNextLabel(QString& strLabel);
         void                                   initCellModel();
         void                                   initMapper1();
+        void                                   initHelpIds(){;} 
 
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;

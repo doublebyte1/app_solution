@@ -8,6 +8,8 @@ PreviewTab(0,inRoleDef,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,
 
     setupUi(this);
 
+    installEventFilters();
+
     lbHeader->setVisible(false);//Always hidden!
     lbHeader->clear();
     tFrameTime=0;
@@ -65,6 +67,16 @@ FrmFrame::~FrmFrame()
     if (mapper!=0) delete mapper;
     if (mapperStartDt!=0) delete mapperStartDt;
     if (mapperEndDt!=0) delete mapperEndDt;
+}
+
+void FrmFrame::initHelpIds()
+{
+    m_widgetInfo.insert(radioCreate,"Medfisis::new_frame_scratch");
+    m_widgetInfo.insert(radioCopy,"Medfisis::frame_existing");
+    m_widgetInfo.insert(cmbCopy,"Medfisis::frame_existing");
+    m_widgetInfo.insert(cmbPrexistent,"Medfisis::pre-existent_frame");
+
+    //m_widgetInfo.insert(pushNew,"Medfisis::create_new_record");
 }
 
 void FrmFrame::setPreviewQuery()

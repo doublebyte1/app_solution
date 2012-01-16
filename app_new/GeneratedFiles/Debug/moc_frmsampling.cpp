@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmsampling.h'
 **
-** Created: Mon 16. Jan 14:53:34 2012
+** Created: Mon 16. Jan 17:30:19 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

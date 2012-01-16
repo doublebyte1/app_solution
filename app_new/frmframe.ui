@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
+    <width>832</width>
     <height>536</height>
    </rect>
   </property>
@@ -206,6 +206,9 @@
          </item>
          <item row="0" column="1">
           <widget class="QComboBox" name="cmbPrexistent">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="toolTip">
             <string/>
            </property>
@@ -213,6 +216,9 @@
          </item>
          <item row="0" column="2">
           <widget class="QToolButton" name="toolView">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="toolTip">
             <string>View Frame</string>
            </property>
@@ -280,13 +286,20 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QComboBox" name="cmbCopy"/>
+             <widget class="QComboBox" name="cmbCopy">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
          </item>
          <item row="2" column="2">
           <widget class="QToolButton" name="toolEdit">
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="toolTip">
             <string>Edit Frame</string>
            </property>
@@ -344,6 +357,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
            <property name="toolTip">
             <string>Input start date for current frame;</string>
            </property>
@@ -362,6 +378,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
            </property>
            <property name="toolTip">
             <string>Input end date for current frame;</string>
@@ -399,6 +418,9 @@
              </item>
              <item>
               <widget class="QToolButton" name="toolProcess">
+               <property name="focusPolicy">
+                <enum>Qt::StrongFocus</enum>
+               </property>
                <property name="toolTip">
                 <string>Characterise the sampling methodology(ies);</string>
                </property>
@@ -445,6 +467,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
           </property>
           <property name="standardButtons">
            <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>

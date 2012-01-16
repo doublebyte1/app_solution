@@ -106,6 +106,7 @@ class FrmMinorStrata : public PreviewTab, public Ui::frmminorstrata
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
+        void                                   initHelpIds(){;} 
         QSqlRelationalTableModel*              tRefMinorStrata;
         QSqlQueryModel*                        viewMinorStrata;
         QDataWidgetMapper*                     mapper1;

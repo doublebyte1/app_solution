@@ -103,6 +103,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         bool                                   getNextLabel(QString& strLabel);
         void                                   initTripModel();
         void                                   initMapper1();
+        void                                   initHelpIds(){;} 
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tTrips;

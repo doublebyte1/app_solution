@@ -7,7 +7,6 @@ QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_roleDef(inRol
     lbHead=0;
     m_mapperBinderPtr=0;
     nullDellegate=0;
-//     m_helpEngine = 0;
 
     connect(this, SIGNAL(lockControls(bool,QList<QWidget*>&)), this,
     SLOT(onLockControls(bool,QList<QWidget*>&)));
@@ -16,73 +15,53 @@ QWidget(parent, flags),m_index(index), m_tDateTime(inTDateTime), m_roleDef(inRol
     SLOT(goForward()));
 
     this->setFocusPolicy(Qt::StrongFocus);
-    //initHelp();
-    //connectHelpIds();
 }
 
 GenericTab::~GenericTab()
 {
     if (nullDellegate!=0) delete nullDellegate;
     if (m_mapperBinderPtr!=0) delete m_mapperBinderPtr;
-    //if (m_helpEngine!=0) delete m_helpEngine;
 }
 
-/*
-void GenericTab::focusOutEvent ( QFocusEvent * event )
+
+bool GenericTab::eventFilter(QObject* object, QEvent* event)
 {
+    if (event->type() == QEvent::FocusIn)
+    {
+        if (qobject_cast<QWidget*>(object)!=0){
+            QMap<QWidget*, QString>::const_iterator it=
+                m_widgetInfo.find(qobject_cast<QWidget*>(object));
 
+            if (it!=m_widgetInfo.end()){
+                emit currentHelpId(it.value());
+            }
+        }
+    }
+    return false;
 }
 
-void GenericTab::connectHelpIds()
+void GenericTab::installFilter(QWidget* widget)
+{
+    for (int i=0; i < widget->children().size(); ++i)
+    {
+        if (qobject_cast<QWidget *>(widget->children().at(i))!=0){
+            qobject_cast<QWidget *>(widget->children().at(i))->installEventFilter(this);
+            installFilter(qobject_cast<QWidget *>(widget->children().at(i)));
+        }
+    }
+}
+
+void GenericTab::installEventFilters()
 {
     for (int i=0; i < this->children().size(); ++i)
     {
         if (qobject_cast<QWidget *>(this->children().at(i))!=0){
-
-        connect(qobject_cast<QWidget *>(this->children().at(i)), SIGNAL(addRecord()), mapperBinderPtr,
-            SIGNAL(addRecord()));
-
-            
+            qobject_cast<QWidget *>(this->children().at(i))->installEventFilter(this);
+            installFilter(qobject_cast<QWidget *>(this->children().at(i)));
         }
     }
-
+    initHelpIds();
 }
-
-/*
-void GenericTab::initHelp()
-{
-     QString collectionFile = QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
-    + QLatin1String("mycollection.qhc");
-
-     m_helpEngine = new QHelpEngineCore(collectionFile, this);
-     if (!m_helpEngine->setupData()) {
-         delete m_helpEngine;
-         m_helpEngine = 0;
-     }
-}
-/*
-void GenericTab::showHelpForKeyword(const QString &id)
-{
-     if (m_helpEngine) {
-         QMap<QString, QUrl> links = m_helpEngine->linksForIdentifier(id);
-         if (links.count())
-             setSource(links.constBegin().value());
-     }
-}
-*/
-/*
-QVariant GenericTab::loadResource(int type, const QUrl &name)
- {
-     QByteArray ba;
-     if (type < 4 && m_helpEngine) {
-         QUrl url(name);
-         if (name.isRelative())
-             url = source().resolved(url);
-         ba = m_helpEngine->fileData(url);
-     }
-     return ba;
-}
-*/
 
 bool GenericTab::initBinder(MapperRuleBinder* mapperBinderPtr)
 {

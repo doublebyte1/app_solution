@@ -1,6 +1,5 @@
 #include <QtGui>
 #include <QtSql>
-//#include <QHelpEngineCore>
 #include "frmframedetails.h"
 #include "datemodel.h"
 #include "globaldefs.h"
@@ -191,7 +190,6 @@ class GenericTab : public QWidget
     signals:
         void                    lockControls(bool bLock,QList<QWidget*>& lWidgets);/**< signal to lock/unlock a list of controls */
         void                    forward(const QString str);/**< signal to go forward in the tab navigation */
-        //void                    gotPar();
         void                    navigate(const bool bNext, const int idx);/**< signal to navigate in tab */
         void                    hideFrameDetails(bool bNotSubmitted);/**< signal to hide the frame details form */
         void                    showFrameDetails(const FrmFrameDetails::Mode mode,
@@ -262,14 +260,12 @@ class GenericTab : public QWidget
         MapperRuleBinder*       m_mapperBinderPtr;/**< pointer to the QDataWidgetMapper binder (dynamic business logic layer) */
 
         QMap<QWidget*, QString> m_widgetInfo;
-        //QVariant                loadResource(int type, const QUrl &name);
-        //void                    showHelpForKeyword(const QString &id);
+        bool                    eventFilter(QObject* object, QEvent* event);
+        void                    installEventFilters();
+        void                    installFilter(QWidget* widget);
+        virtual void            initHelpIds()=0; 
 
     private:
-        //void                    focusOutEvent ( QFocusEvent * event );
-        //void                    connectHelpIds();
-        //void                    initHelp();
-        //QHelpEngineCore         *m_helpEngine;
 
     private slots:
         //! Go back

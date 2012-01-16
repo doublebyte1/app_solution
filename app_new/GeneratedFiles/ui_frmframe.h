@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Mon 16. Jan 14:53:27 2012
+** Created: Mon 16. Jan 17:18:16 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -85,7 +85,7 @@ public:
     {
         if (frmframe->objectName().isEmpty())
             frmframe->setObjectName(QString::fromUtf8("frmframe"));
-        frmframe->resize(830, 536);
+        frmframe->resize(832, 536);
         verticalLayout_4 = new QVBoxLayout(frmframe);
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         horizontalLayout = new QHBoxLayout();
@@ -176,11 +176,13 @@ public:
 
         cmbPrexistent = new QComboBox(groupPhysical);
         cmbPrexistent->setObjectName(QString::fromUtf8("cmbPrexistent"));
+        cmbPrexistent->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout_2->addWidget(cmbPrexistent, 0, 1, 1, 1);
 
         toolView = new QToolButton(groupPhysical);
         toolView->setObjectName(QString::fromUtf8("toolView"));
+        toolView->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout_2->addWidget(toolView, 0, 2, 1, 1);
 
@@ -210,6 +212,7 @@ public:
 
         cmbCopy = new QComboBox(groupNew);
         cmbCopy->setObjectName(QString::fromUtf8("cmbCopy"));
+        cmbCopy->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout->addWidget(cmbCopy, 1, 1, 1, 1);
 
@@ -218,6 +221,7 @@ public:
 
         toolEdit = new QToolButton(groupPhysical);
         toolEdit->setObjectName(QString::fromUtf8("toolEdit"));
+        toolEdit->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout_2->addWidget(toolEdit, 2, 2, 1, 1);
 
@@ -249,6 +253,7 @@ public:
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
         sizePolicy1.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
         customDtStart->setSizePolicy(sizePolicy1);
+        customDtStart->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout_3->addWidget(customDtStart, 1, 0, 1, 1);
 
@@ -256,6 +261,7 @@ public:
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
         sizePolicy1.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
         customDtEnd->setSizePolicy(sizePolicy1);
+        customDtEnd->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout_3->addWidget(customDtEnd, 1, 1, 1, 1);
 
@@ -278,6 +284,7 @@ public:
 
         toolProcess = new QToolButton(groupProcess);
         toolProcess->setObjectName(QString::fromUtf8("toolProcess"));
+        toolProcess->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_3->addWidget(toolProcess);
 
@@ -300,6 +307,7 @@ public:
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         sizePolicy.setHeightForWidth(buttonBox->sizePolicy().hasHeightForWidth());
         buttonBox->setSizePolicy(sizePolicy);
+        buttonBox->setFocusPolicy(Qt::StrongFocus);
         buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
 
         verticalLayout->addWidget(buttonBox);

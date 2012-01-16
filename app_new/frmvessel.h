@@ -135,6 +135,7 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         , comitCellVessels(int& id)
         */
         bool                                   comitStrataVessels(int& id);
+        void                                   initHelpIds(){;} 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tAVessel;
         QSqlTableModel                         *tCellVessels;

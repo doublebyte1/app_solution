@@ -190,11 +190,13 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void updateRecentFileActions();
         QString strippedName(const QString &fullFileName);
 
-        QString curFile;
-        QAction* separatorAct;
+        QString                 curFile;
+        QAction*                separatorAct;
+        QString                 curHelpId;
+        QProcess                *process;
 
     private slots:
-        //void                    addTab(const int idx, const int newIndex, bool bOk);
+        void                    setCurHelpId(const QString strHelpId){curHelpId=strHelpId;}
         void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);
         void                    showFrameDetails(const FrmFrameDetails::Mode mode, 
@@ -207,7 +209,6 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         void                    statusClean(QString str);
         void                    displayError(QString strError, const bool bShowMsgBox);
         void                    cleanupMsgBoxes();
-        //void                    rearrangeTabs(bool bLogBook);
         void                    aboutThisProject();
         void                    callAssistant();
         void                    rulesInitialized(bool bReady);

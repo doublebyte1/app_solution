@@ -214,6 +214,8 @@ class PreviewTab : public GenericTab
 
         QList<QWidget*>                       m_lWidgets;/**< list of widgets on the preview tab, that we want to enable/disable as we create/submit a record*/
 
+        virtual void                          initHelpIds()=0; 
+
     signals:
         void                                  recordRemoved();/**< signal to indicate that a record has been removed from the model (and table view)*/
         void                                  isLogBook(const bool bIsLogbook);/**< signal to indicate if this is a logbook or sampling form*/
