@@ -8,6 +8,8 @@ PreviewTab(6, inRoleDef, inSample,inTDateTime,tr("Fishing Operation"), ruleCheck
 
     blockCustomDateCtrls();
 
+    installEventFilters();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 

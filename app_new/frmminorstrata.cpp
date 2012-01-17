@@ -9,6 +9,8 @@ PreviewTab(1, inRoleDef, inSample,inTDateTime,tr("Minor Strata"), ruleCheckerPtr
 
     blockCustomDateCtrls();
 
+    installEventFilters();
+
     viewMinorStrata=0;
     tRefMinorStrata=0;
     buttonGroup=0;

@@ -103,6 +103,10 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         bool                                   getNextLabel(QString& strLabel);
         void                                   initOperationModel();
         void                                   initMapper1();
+        //! Init Help IDs
+        /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
+        a string containing an help identifier.
+        */
         void                                   initHelpIds(){;} 
 
         QSqlTableModel*                        tOpCat;

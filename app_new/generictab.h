@@ -199,7 +199,7 @@ class GenericTab : public QWidget
         void                    showFrmSampling();
         void                    showStatus(QString str);//!< signal for showing messages in the status bar
         void                    showError(QString str, const bool bShowMsgBox=true);//!< signal for error messages
-        void                    currentHelpId(const QString strHelpId);
+        void                    currentHelpId(const QString strHelpId);/**< signal for announcing the current help id, set during the focusin event of some UI control*/
 
         //Signals related to the RuleBinder
         void                     addRecord();/**< tells the rulebinder that an empty record has been initialized*/
@@ -233,6 +233,11 @@ class GenericTab : public QWidget
           \sa initModels(), initMappers()
       */
         virtual void            initUI()=0;
+        //! Init Help Ids
+        /*! Abstract function that initializes the m_widgetInfo container, by associating
+        widgets and help references.
+        */
+        virtual void            initHelpIds()=0; 
         //! Get Date Id
         /*! This is an utility function to ge the id of a record on the dateTime Model, provided a QModelIndex;
         It is provided for convenience, to use with the DateTimeCustomCtrl;
@@ -259,13 +264,26 @@ class GenericTab : public QWidget
         RuleChecker*            m_ruleCheckerPtr;/**< pointer to the rule checker (dynamic business logic layer) */
         MapperRuleBinder*       m_mapperBinderPtr;/**< pointer to the QDataWidgetMapper binder (dynamic business logic layer) */
 
-        QMap<QWidget*, QString> m_widgetInfo;
+        QMap<QWidget*, QString> m_widgetInfo;/**< map container to store the widgets and their help ids */
+        //! Event Filter
+        /*! Reimplemented from QWidget base class.
+         \par object sender object
+         \par event triggered event
+          \sa installEventFilters(), installFilter(QWidget* widget)
+        */
         bool                    eventFilter(QObject* object, QEvent* event);
+        //! Install Event Filters
+        /*! Function that loops through all the UI children and installs the event filters,
+        so that we can emit signals during the focusIn event (call in the constructor through initHelpIds()).
+          \sa eventFilter(QObject* object, QEvent* event), installFilter(QWidget* widget)
+        */
         void                    installEventFilters();
+        //! Install Filter
+        /*! Recursive part of installEventFilters().
+         \par widget widget where we want to install the event filter
+          \sa eventFilter(QObject* object, QEvent* event), installEventFilters
+        */
         void                    installFilter(QWidget* widget);
-        virtual void            initHelpIds()=0; 
-
-    private:
 
     private slots:
         //! Go back

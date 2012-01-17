@@ -1,6 +1,7 @@
 #include "conf_app.h"
 #include "connection.h"
 #include <QMessageBox>
+#include <QDir>
 
 conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     : QMainWindow(parent, flags)
@@ -108,8 +109,8 @@ void conf_app::readProcessOutput()
 
 void conf_app::processFinished()
 {
-     if (QFile("MyScript.sql").exists()){
-         if(!QFile::remove("MyScript.sql")){
+     if (QFile(QDir::tempPath() + "/MyScript.sql").exists()){
+         if(!QFile::remove(QDir::tempPath() + "/MyScript.sql")){
 
              QMessageBox::warning(this, tr("Restore Process"),
              tr("Could not remove temporary script file!"));
@@ -161,7 +162,7 @@ void conf_app::doRestore()
 
     if (!fileName.isEmpty()){
 
-        QFile file("MyScript.sql");
+        QFile file(QDir::tempPath() + "/MyScript.sql");
         file.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream out(&file);
         out << "restore database albania FROM DISK = '" + fileName + "'"; 
@@ -171,7 +172,7 @@ void conf_app::doRestore()
         args << QLatin1String("-S")
          << QLatin1String(".\\SQLEXPRESS")
          << QLatin1String("-i")
-         << QLatin1String("MyScript.sql");
+         << QDir::tempPath() + "/MyScript.sql";
 
         //myProcess->setProcessChannelMode(QProcess::MergedChannels);
          myProcess->start(app, args);

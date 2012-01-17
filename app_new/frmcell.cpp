@@ -9,6 +9,8 @@ PreviewTab(2, inRoleDef,inSample,inTDateTime,tr("Cell"), ruleCheckerPtr, parent,
 
     blockCustomDateCtrls();
 
+    installEventFilters();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 

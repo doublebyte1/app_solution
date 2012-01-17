@@ -5,6 +5,8 @@ PreviewTab(7, inRoleDef,inSample,inTDateTime,tr("Catch"), ruleCheckerPtr,parent,
 
     setupUi(this);
 
+    installEventFilters();
+
     connect(pushPrevious, SIGNAL(clicked()), this,
     SLOT(goBack()));
 

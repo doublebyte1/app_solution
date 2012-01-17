@@ -120,6 +120,10 @@ class FrmFrame : public PreviewTab, public Ui::frmframe
         void                                   initModels();
         void                                   initFrModel();
 
+        //! Init Help IDs
+        /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
+        a string containing an help identifier.
+        */
         void                                   initHelpIds(); 
 
         void                                   initMappers();

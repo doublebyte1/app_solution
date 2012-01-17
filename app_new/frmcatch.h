@@ -101,6 +101,10 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
 
         void                                   initCatchModel();
         void                                   initMapper1();
+        //! Init Help IDs
+        /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
+        a string containing an help identifier.
+        */
         void                                   initHelpIds(){;} 
 
         NullRelationalDelegate*                nullDelegate;

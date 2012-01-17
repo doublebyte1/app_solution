@@ -9,6 +9,8 @@ PreviewTab(5,inRoleDef,inSample,inTDateTime,tr("Fishing Trip"), ruleCheckerPtr, 
 
     blockCustomDateCtrls();
 
+    installEventFilters();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 

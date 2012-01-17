@@ -19,7 +19,8 @@ static bool createConnection(const QString strHost, const QString strData, const
         //db.setConnectOptions(QT_TR_NOOP("SQL_ATTR_ODBC_VERSION=SQL_OV_ODBC3"));
         db.setConnectOptions(QT_TR_NOOP("SQL_ATTR_LOGIN_TIMEOUT=1000,SQL_COPT_SS_MARS_ENABLED,SQL_MARS_ENABLED_YES,Mars_Connection=yes"));
         db.setHostName(strHost);
-        db.setDatabaseName(strData);
+        QString strData2="DRIVER={SQL SERVER};SERVER="+ strHost + ";DATABASE=albania;UID=" + strUser + ";PWD=" + strPass;
+        db.setDatabaseName(strData2);
         db.setUserName(strUser);
         db.setPassword(strPass);
         //Open the Database
