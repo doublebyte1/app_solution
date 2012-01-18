@@ -393,14 +393,13 @@ void conf_app::loadSettings(const int section)
     if (section==0){
 
         //Settings for the DB credentials
-        //lineAlias->setText(settings.value("alias").toString());
-        lineHost->setText(settings.value("host").toString());
-        lineDatabase->setText(settings.value("database").toString());
-        lineUsername->setText(settings.value("username").toString());
-        linePassword->setText(settings.value("password").toString());
+        lineHost->setText(settings.contains("host")?settings.value("host").toString():".\\FAOCAS");
+        lineDatabase->setText(settings.contains("database")?settings.value("database").toString():"albania");
+        lineUsername->setText(settings.contains("username")?settings.value("username").toString():"dev");
+        linePassword->setText(settings.contains("password")?settings.value("password").toString():"test123");
         cmbDriver->setCurrentIndex(
-                cmbDriver->findText(
-                    settings.value("driver").toString()));
+                cmbDriver->findText(settings.contains("driver")?
+                settings.value("driver").toString():"QODBC3"));
 
     } else if (section==1){
 
