@@ -56,18 +56,18 @@
         <item row="1" column="0">
          <widget class="QLabel" name="lbDataSource">
           <property name="text">
-           <string>Data Source</string>
+           <string>Database</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
           <property name="buddy">
-           <cstring>lineDataSource</cstring>
+           <cstring>lineDatabase</cstring>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="lineDataSource"/>
+         <widget class="QLineEdit" name="lineDatabase"/>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="lbUsername">
@@ -103,22 +103,6 @@
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="lbAlias">
-          <property name="text">
-           <string>Alias</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-          <property name="buddy">
-           <cstring>lineAlias</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLineEdit" name="lineAlias"/>
-        </item>
-        <item row="5" column="0">
          <widget class="QLabel" name="lbDriver">
           <property name="text">
            <string>Driver</string>
@@ -128,10 +112,10 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="4" column="1">
          <widget class="QComboBox" name="cmbDriver"/>
         </item>
-        <item row="6" column="1">
+        <item row="5" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QPushButton" name="pushConnect">
@@ -167,8 +151,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>496</width>
-         <height>251</height>
+         <width>161</width>
+         <height>121</height>
         </rect>
        </property>
        <attribute name="label">
@@ -249,8 +233,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>496</width>
-         <height>251</height>
+         <width>190</width>
+         <height>162</height>
         </rect>
        </property>
        <attribute name="label">
@@ -522,10 +506,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>lineHost</tabstop>
-  <tabstop>lineDataSource</tabstop>
+  <tabstop>lineDatabase</tabstop>
   <tabstop>lineUsername</tabstop>
   <tabstop>linePassword</tabstop>
-  <tabstop>lineAlias</tabstop>
   <tabstop>cmbDriver</tabstop>
   <tabstop>pushConnect</tabstop>
   <tabstop>pushDisconnect</tabstop>

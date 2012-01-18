@@ -205,16 +205,15 @@ class Login : public QWidget, public Ui::frmLogin
         /*! This is the function that establishes a connection with the DB. All parameters here are
         read from the registry, as we need to set them up first using the configurator.
         \par strHost host name as string
-        \par strDataSource dns name as string
+        \par strDatabase database name as string
         \par strUsername username as string
         \par strPassword password as string
-        \par strAlias database alias as string
         \par strDriver driver name as string
         \returns boolean as success or failure
         \sa disconnectDB()
         */
-        bool                                connectDB(const QString strHost,const QString strDataSource,
-        const QString                      strUsername,const QString strPassword,const QString strAlias, const QString strDriver);
+        bool                               connectDB(const QString strHost,const QString strDatabase,
+        const QString                      strUsername,const QString strPassword, const QString strDriver);
 
     private slots:
             //! Final Touches
@@ -244,23 +243,21 @@ class Login : public QWidget, public Ui::frmLogin
             /*! This function initializes the combobox with a list of usernames
             */
             void                            initCmbUsers();
-            //bool                            disconnectDB();
-            //void                            loadFile(const QString &fileName);
             //! Read Settings
             /*!
             This function reads the connection settings from the registry, and stores the inside the argument variables.
             It is used to retreive the values, to silently connect to the database.
             \par strHost address of a string to store the host name
-            \par strDataSource address of a string to store the dns name
+            \par strDatabase address of a string to store the database name
             \par strUsername address of a string to store the username
             \par strPassword address of a string to store the password
             \par strAlias database address of a string to store the alias
             \par strDriver address of a string to store the driver name
             \return boolean as success or failure
-            \sa connectDB(const QString strHost,const QString strDataSource,const QString
+            \sa connectDB(const QString strHost,const QString strDatabase,const QString
             strUsername,const QString strPassword,const QString strAlias, const QString strDriver)
             */
-            bool                            readSettings(QString& strHost, QString& strAlias, QString& strDatasource, QString& strUsername, 
+            bool                            readSettings(QString& strHost, QString& strDatabase, QString& strUsername, 
                                                 QString& strPassword, QString& strDriver);
             //! Show Event
             /*!

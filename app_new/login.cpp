@@ -185,7 +185,7 @@ void Login::initCmbUsers()
     userModel->setQuery("SELECT username, description from UI_USER");
     if (userModel->rowCount()<1){
         emit showError(tr("There are no users defined in the database! The app is unusable!"));
-        qApp->exit(0);//severe!
+        exit(0);//severe!
     }
     cmbUser->setModel(userModel);
     cmbUser->setModelColumn(0);
@@ -195,7 +195,7 @@ void Login::initCmbUsers()
         int cur=cmbUser->findText(settings.value("AppUser").toString(),Qt::MatchExactly);
         if (cur==-1){
             emit showError(tr("Wrong user stored on the registry! How is this possible?"));
-            qApp->exit(0);
+            exit(0);
         }
         cmbUser->setCurrentIndex(cur);
     }
@@ -213,7 +213,7 @@ void Login::validate()
         if (!query.exec()){
             QMessageBox::critical( this, tr("DB Error"),
             query.lastError().text());
-               qApp->exit(0);
+               exit(0);
         }
         else if (query.numRowsAffected()<1){
 
@@ -234,11 +234,10 @@ void Login::validate()
                 //Store session data, username and passwd
                 QSettings settings(tr("Medstat"), tr("App"));
                 settings.setValue("AppUser", cmbUser->currentText());
-                //settings.setValue("AppPass", linePasswd->text());
 
                 if (!setRoleDef(&query)){
                     emit showError(tr("Could not retrieve the role of this user on the database!"));
-                    qApp->exit(0);
+                    exit(0);
                 }
 
                 if (mainFrmPtr==0) mainFrmPtr=new MainFrm(m_roleDef);
@@ -281,19 +280,19 @@ bool Login::setRoleDef(QSqlQuery* query)
 
 void Login::showEvent ( QShowEvent * event )
 {
-    QString strHost, strAlias, strDataSource, strUsername, strPassword, strDriver;
-    if (!readSettings(strHost,strAlias,strDataSource,strUsername,strPassword,strDriver))
+    QString strHost, strDatabase, strUsername, strPassword, strDriver;
+    if (!readSettings(strHost,strDatabase,strUsername,strPassword,strDriver))
     {
             QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
                 tr("You must run the configurator prior to run this application!"),QMessageBox::Ok,0);
             msgBox.exec();
-            qApp->exit(0);
+            exit(0);
     }else{
-        if (!connectDB(strHost,strDataSource,strUsername,strPassword,strAlias,strDriver)){
+        if (!connectDB(strHost,strDatabase,strUsername,strPassword/*,strAlias*/,strDriver)){
             QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
                 tr("Please run the configurator again and fix the connection values!"),QMessageBox::Ok,0);
             msgBox.exec();
-            qApp->exit(0);
+            exit(0);
         }
     }
     //if everything went ok, lets read the users from the db!
@@ -301,7 +300,7 @@ void Login::showEvent ( QShowEvent * event )
 
 }
 
- bool Login::readSettings(QString& strHost, QString& strAlias, QString& strDatasource, QString& strUsername, 
+ bool Login::readSettings(QString& strHost, QString& strDatabase, QString& strUsername, 
      QString& strPassword, QString& strDriver)
  {
     QSettings settings(tr("Medstat"), tr("App"));
@@ -314,16 +313,15 @@ void Login::showEvent ( QShowEvent * event )
     if (settings.contains("AppPass"))
         linePasswd->setText(settings.value("AppPass").toString());
 
-    if ( !settings.contains("host") || !settings.contains("datasource") ||
+    if ( !settings.contains("host") || !settings.contains("database") ||
         !settings.contains("username") || !settings.contains("password") ||
         !settings.contains("driver") || !settings.contains("city")){
             return false;
 
     } else{
         //Settings for the DB credentials
-        strAlias=settings.value("alias").toString();
         strHost=settings.value("host").toString();
-        strDatasource=settings.value("datasource").toString();
+        strDatabase=settings.value("database").toString();
         strUsername=settings.value("username").toString();
         strPassword=settings.value("password").toString();
         strDriver=settings.value("driver").toString();
@@ -332,10 +330,10 @@ void Login::showEvent ( QShowEvent * event )
     return true;
  }
 
- bool Login::connectDB(const QString strHost,const QString strDataSource,
-        const QString strUsername,const QString strPassword,const QString strAlias, const QString strDriver)
+ bool Login::connectDB(const QString strHost,const QString strDatabase,
+        const QString strUsername,const QString strPassword, const QString strDriver)
 {
-        if (!createConnection(strHost,strDataSource, strUsername,strPassword,strAlias,strDriver)){
+        if (!createConnection(strHost,strDatabase, strUsername,strPassword,strDriver)){
             QSqlDatabase db=QSqlDatabase::database();
             QMessageBox::critical( this, tr("User Error"),
                 db.lastError().text());

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'login.h'
 **
-** Created: Mon 16. Jan 14:53:29 2012
+** Created: Wed 18. Jan 10:20:18 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -116,9 +116,9 @@ static const uint qt_meta_data_Login[] = {
 
  // slots: signature, parameters, type, tag, flags
       90,    6,    6,    6, 0x0a,
-     171,  106,  101,    6, 0x0a,
-     230,    6,    6,    6, 0x08,
-     250,  245,    6,    6, 0x08,
+     160,  106,  101,    6, 0x0a,
+     211,    6,    6,    6, 0x08,
+     231,  226,    6,    6, 0x08,
 
        0        // eod
 };
@@ -127,8 +127,8 @@ static const char qt_meta_stringdata_Login[] = {
     "Login\0\0str,bShowMsgBox\0showError(QString,bool)\0"
     "str\0showError(QString)\0showStatus(QString)\0"
     "validate()\0bool\0"
-    "strHost,strDataSource,strUsername,strPassword,strAlias,strDriver\0"
-    "connectDB(QString,QString,QString,QString,QString,QString)\0"
+    "strHost,strDatabase,strUsername,strPassword,strDriver\0"
+    "connectDB(QString,QString,QString,QString,QString)\0"
     "finalTouches()\0user\0updateTooltip(QString)\0"
 };
 
@@ -167,7 +167,7 @@ int Login::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 1: showError((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 2: showStatus((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 3: validate(); break;
-        case 4: { bool _r = connectDB((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6])));
+        case 4: { bool _r = connectDB((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 5: finalTouches(); break;
         case 6: updateTooltip((*reinterpret_cast< QString(*)>(_a[1]))); break;

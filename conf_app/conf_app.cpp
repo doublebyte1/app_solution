@@ -109,8 +109,8 @@ void conf_app::readProcessOutput()
 
 void conf_app::processFinished()
 {
-     if (QFile(QDir::tempPath() + "/MyScript.sql").exists()){
-         if(!QFile::remove(QDir::tempPath() + "/MyScript.sql")){
+     if (QFile(QDir::tempPath() + QDir::separator() + "MyScript.sql").exists()){
+         if(!QFile::remove(QDir::tempPath() + QDir::separator() + "MyScript.sql")){
 
              QMessageBox::warning(this, tr("Restore Process"),
              tr("Could not remove temporary script file!"));
@@ -162,17 +162,39 @@ void conf_app::doRestore()
 
     if (!fileName.isEmpty()){
 
-        QFile file(QDir::tempPath() + "/MyScript.sql");
-        file.open(QIODevice::WriteOnly | QIODevice::Text);
+        QFile file(QDir::tempPath() + QDir::separator() + "MyScript.sql");
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+
+             QMessageBox::critical(this, tr("App"),
+                 tr("Could not create file: ") + QDir::tempPath() + QDir::separator() + "MyScript.sql");
+             return;
+
+        }
         QTextStream out(&file);
-        out << "restore database albania FROM DISK = '" + fileName + "'"; 
+        //out << "restore database albania FROM DISK = '" + fileName + "'"; 
+
+        out << "RESTORE DATABASE [albania] FROM DISK = '"
+        + fileName + "' WITH FILE = 1," +
+        //"MOVE 'albania_dat' TO 'C:\\Program Files (x86)\\Microsoft SQL Server\\MSSQL.1\\MSSQL\\Data\\albania.mdf'," +
+        //"MOVE 'albania_log' TO 'C:\\Program Files (x86)\\Microsoft SQL Server\\MSSQL.1\\MSSQL\\Data\\albania.ldf'," +
+        "MOVE 'albania_dat' TO 'C:\\medfisis_dat\\albania.mdf'," +
+        "MOVE 'albania_log' TO 'C:\\medfisis_dat\\albania.ldf'," +
+        "NOUNLOAD, STATS = 10"; 
+
         file.close(); 
 
+        QSettings settings("Medstat", "App");
+
+        //replace the slashes for windows
+        QString strTemp=QDir::tempPath() + QDir::separator() + "MyScript.sql";
+#if defined(WIN32)
+        strTemp.replace("/", "\\");
+#endif
         QStringList args;
         args << QLatin1String("-S")
-         << QLatin1String(".\\SQLEXPRESS")
+         << settings.value("host").toString()
          << QLatin1String("-i")
-         << QDir::tempPath() + "/MyScript.sql";
+         << strTemp;
 
         //myProcess->setProcessChannelMode(QProcess::MergedChannels);
          myProcess->start(app, args);
@@ -259,10 +281,10 @@ void conf_app::onShowStartupMsg(const bool bShow)
 void conf_app::enableConnectionCtrls(const bool bEnable)
 {
     lineHost->setEnabled(bEnable);
-    lineDataSource->setEnabled(bEnable);
+    lineDatabase->setEnabled(bEnable);
     lineUsername->setEnabled(bEnable);
     linePassword->setEnabled(bEnable);
-    lineAlias->setEnabled(bEnable);
+    //lineAlias->setEnabled(bEnable);
     cmbDriver->setEnabled(bEnable);
 }
 
@@ -303,9 +325,9 @@ void conf_app::connectDB()
 
     enableConnectionCtrls(false);
 
-    m_bConnected=createConnection(lineHost->text(),lineDataSource->text(),
+    m_bConnected=createConnection(lineHost->text(),lineDatabase->text(),
         lineUsername->text(),linePassword->text(),
-        lineAlias->text(),cmbDriver->currentText());
+        /*lineAlias->text(),*/cmbDriver->currentText());
 
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 
@@ -349,10 +371,10 @@ void conf_app::saveSettings(const int section)
     if (section==0){
 
         settings.setValue("host", lineHost->text());
-        settings.setValue("datasource", lineDataSource->text());
+        settings.setValue("database", lineDatabase->text());
         settings.setValue("username", lineUsername->text());
         settings.setValue("password", linePassword->text());
-        settings.setValue("alias", lineAlias->text());
+        //settings.setValue("alias", lineAlias->text());
         settings.setValue("driver", cmbDriver->currentText());
 
     } else if (section==1){
@@ -371,9 +393,9 @@ void conf_app::loadSettings(const int section)
     if (section==0){
 
         //Settings for the DB credentials
-        lineAlias->setText(settings.value("alias").toString());
+        //lineAlias->setText(settings.value("alias").toString());
         lineHost->setText(settings.value("host").toString());
-        lineDataSource->setText(settings.value("datasource").toString());
+        lineDatabase->setText(settings.value("database").toString());
         lineUsername->setText(settings.value("username").toString());
         linePassword->setText(settings.value("password").toString());
         cmbDriver->setCurrentIndex(

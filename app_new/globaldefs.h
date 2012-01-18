@@ -1,3 +1,5 @@
+#include <QDir>
+
 #ifndef GLOBALDEFS_H
 #define GLOBALDEFS_H
 
@@ -38,10 +40,13 @@ static const char *strSampling =
      QT_TRANSLATE_NOOP("frame", "Artisanal Fisheries");
      //QT_TRANSLATE_NOOP("frame", "Sampling");
 
-static const char *strReportsDir = 
-     QT_TRANSLATE_NOOP("dir", "C:\\projects\\VS\\app_solution\\reports");
+static const QString strReportsDir = 
+    QDir::currentPath() + QDir::separator() + "reports";
 
 static const char *strEmpty = 
      QT_TRANSLATE_NOOP("empty", "empty");
+
+static const QString strDatabaseDriver = 
+     "SQL SERVER";
 
 #endif// GLOBALDEFS_H

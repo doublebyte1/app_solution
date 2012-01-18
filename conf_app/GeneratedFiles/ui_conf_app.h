@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Thu 29. Dec 16:20:56 2011
+** Created: Wed 18. Jan 09:10:50 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -50,13 +50,11 @@ public:
     QLabel *lbHost;
     QLineEdit *lineHost;
     QLabel *lbDataSource;
-    QLineEdit *lineDataSource;
+    QLineEdit *lineDatabase;
     QLabel *lbUsername;
     QLineEdit *lineUsername;
     QLabel *lbPassword;
     QLineEdit *linePassword;
-    QLabel *lbAlias;
-    QLineEdit *lineAlias;
     QLabel *lbDriver;
     QComboBox *cmbDriver;
     QHBoxLayout *horizontalLayout;
@@ -157,10 +155,10 @@ public:
 
         gridLayout->addWidget(lbDataSource, 1, 0, 1, 1);
 
-        lineDataSource = new QLineEdit(page_3);
-        lineDataSource->setObjectName(QString::fromUtf8("lineDataSource"));
+        lineDatabase = new QLineEdit(page_3);
+        lineDatabase->setObjectName(QString::fromUtf8("lineDatabase"));
 
-        gridLayout->addWidget(lineDataSource, 1, 1, 1, 1);
+        gridLayout->addWidget(lineDatabase, 1, 1, 1, 1);
 
         lbUsername = new QLabel(page_3);
         lbUsername->setObjectName(QString::fromUtf8("lbUsername"));
@@ -184,26 +182,15 @@ public:
 
         gridLayout->addWidget(linePassword, 3, 1, 1, 1);
 
-        lbAlias = new QLabel(page_3);
-        lbAlias->setObjectName(QString::fromUtf8("lbAlias"));
-        lbAlias->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-
-        gridLayout->addWidget(lbAlias, 4, 0, 1, 1);
-
-        lineAlias = new QLineEdit(page_3);
-        lineAlias->setObjectName(QString::fromUtf8("lineAlias"));
-
-        gridLayout->addWidget(lineAlias, 4, 1, 1, 1);
-
         lbDriver = new QLabel(page_3);
         lbDriver->setObjectName(QString::fromUtf8("lbDriver"));
 
-        gridLayout->addWidget(lbDriver, 5, 0, 1, 1);
+        gridLayout->addWidget(lbDriver, 4, 0, 1, 1);
 
         cmbDriver = new QComboBox(page_3);
         cmbDriver->setObjectName(QString::fromUtf8("cmbDriver"));
 
-        gridLayout->addWidget(cmbDriver, 5, 1, 1, 1);
+        gridLayout->addWidget(cmbDriver, 4, 1, 1, 1);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
@@ -226,12 +213,12 @@ public:
         horizontalLayout->addWidget(pushDisconnect);
 
 
-        gridLayout->addLayout(horizontalLayout, 6, 1, 1, 1);
+        gridLayout->addLayout(horizontalLayout, 5, 1, 1, 1);
 
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 496, 251));
+        page_4->setGeometry(QRect(0, 0, 161, 121));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -295,7 +282,7 @@ public:
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 496, 251));
+        page->setGeometry(QRect(0, 0, 190, 162));
         gridLayout_4 = new QGridLayout(page);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -403,20 +390,18 @@ public:
         conf_appClass->setStatusBar(m_statusBar);
 #ifndef QT_NO_SHORTCUT
         lbHost->setBuddy(lineHost);
-        lbDataSource->setBuddy(lineDataSource);
+        lbDataSource->setBuddy(lineDatabase);
         lbUsername->setBuddy(lineUsername);
         lbPassword->setBuddy(linePassword);
-        lbAlias->setBuddy(lineAlias);
         lbDriver->setBuddy(cmbDriver);
         label_2->setBuddy(cmbCountry);
         label->setBuddy(cmbCity);
         label_3->setBuddy(cmbTables);
 #endif // QT_NO_SHORTCUT
-        QWidget::setTabOrder(lineHost, lineDataSource);
-        QWidget::setTabOrder(lineDataSource, lineUsername);
+        QWidget::setTabOrder(lineHost, lineDatabase);
+        QWidget::setTabOrder(lineDatabase, lineUsername);
         QWidget::setTabOrder(lineUsername, linePassword);
-        QWidget::setTabOrder(linePassword, lineAlias);
-        QWidget::setTabOrder(lineAlias, cmbDriver);
+        QWidget::setTabOrder(linePassword, cmbDriver);
         QWidget::setTabOrder(cmbDriver, pushConnect);
         QWidget::setTabOrder(pushConnect, pushDisconnect);
         QWidget::setTabOrder(pushDisconnect, cmbCountry);
@@ -477,10 +462,9 @@ public:
         actionRestore_backup->setWhatsThis(QApplication::translate("conf_appClass", "Restores backup from file", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         lbHost->setText(QApplication::translate("conf_appClass", "Host", 0, QApplication::UnicodeUTF8));
-        lbDataSource->setText(QApplication::translate("conf_appClass", "Data Source", 0, QApplication::UnicodeUTF8));
+        lbDataSource->setText(QApplication::translate("conf_appClass", "Database", 0, QApplication::UnicodeUTF8));
         lbUsername->setText(QApplication::translate("conf_appClass", "Username", 0, QApplication::UnicodeUTF8));
         lbPassword->setText(QApplication::translate("conf_appClass", "Password", 0, QApplication::UnicodeUTF8));
-        lbAlias->setText(QApplication::translate("conf_appClass", "Alias", 0, QApplication::UnicodeUTF8));
         lbDriver->setText(QApplication::translate("conf_appClass", "Driver", 0, QApplication::UnicodeUTF8));
         pushConnect->setText(QString());
         pushDisconnect->setText(QString());

@@ -44,8 +44,8 @@ bool FrmReports::readReportNames ()
      filters << tr("*.bdrt");
      reportsDir.setNameFilters(filters);
 
-    if (reportsDir.exists(qApp->translate("dir", strReportsDir)))
-        reportsDir=QDir(qApp->translate("dir", strReportsDir));
+    if (reportsDir.exists(strReportsDir))
+        reportsDir=QDir(strReportsDir);
     else return false;
 
     if (!reportsDir.isReadable()) return false;
@@ -99,7 +99,7 @@ void FrmReports::previewItem(QListWidgetItem* item)
 
 bool FrmReports::parseXMLFile(const QString itemName, QString& strName, QString& strAuthor, QString& strPixmap, QString& strDescription)
 {
-    QString strFileName(qApp->translate("dir", strReportsDir) + tr("\\") + itemName + tr(".bdrt"));
+    QString strFileName(strReportsDir + QDir::separator() + itemName + ".bdrt");
 
     QFile file(strFileName);
     if (!file.exists()) return false;
@@ -151,7 +151,7 @@ bool FrmReports::readProperties(QXmlStreamReader& xml, QString& strName, QString
 
 void FrmReports::loadItem(QListWidgetItem* item)
 {
-    loadItem(qApp->translate("dir", strReportsDir) + tr("\\") + item->text() + tr(".bdrt"));
+    loadItem(strReportsDir + QDir::separator() + item->text() + tr(".bdrt"));
 }
 
 void FrmReports::loadItem(const QString strFilename)
