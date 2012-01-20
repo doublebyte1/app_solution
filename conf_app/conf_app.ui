@@ -419,6 +419,7 @@
       <string>Options</string>
      </property>
      <addaction name="actionShow_startup_message"/>
+     <addaction name="actionShow_SQL_message"/>
     </widget>
     <widget class="QMenu" name="menuBackups">
      <property name="title">
@@ -500,6 +501,17 @@
    </property>
    <property name="whatsThis">
     <string>Restores backup from file</string>
+   </property>
+  </action>
+  <action name="actionShow_SQL_message">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show SQL messages</string>
    </property>
   </action>
  </widget>
@@ -702,6 +714,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionShow_SQL_message</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>showSqlMessages(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>connectDB()</slot>
@@ -713,5 +741,6 @@
   <slot>insertRow()</slot>
   <slot>removeRow()</slot>
   <slot>applyChanges2Table()</slot>
+  <slot>showSqlMessages(bool)</slot>
  </slots>
 </ui>

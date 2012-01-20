@@ -16,6 +16,7 @@ find out if we need to display the startup msg dialog
 \return boolean to indicate if we need to display the startup msg
 */
 bool                      queryShowStartupMsg();
+bool                      queryShowSqlMsg();
 
 //! Configure Application Class
 /*!
@@ -36,6 +37,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
     signals:
         void                    connectionChanged();//!< Signal to indicate that the connection state changed (connected or disconnected)
         void                    statusShow(const QString str);//!< Signal indicating we want to display a message on the toolbar
+        //void                    doneWithProcess();//!< Signal to indicate that the process executed
 
     private slots:
         //! Show Table
@@ -164,6 +166,12 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
          \sa readProcessError(), readProcessOutput()
         */
         void                    processFinished();
+        void                    finishedReadingNames();
+        void                    parseParams();
+        void                    finishedCheckingBackupFile();
+        void                    parseBackupFileInfo();
+        void                    showSqlMessages(bool bShow);
+        void                    finishedRestore();
 
     private:
         //! Init UI
@@ -220,13 +228,21 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         /*!
         Reimplemented from the base class.
          */
-        void                    showEvent ( QShowEvent * event );
+        void                              showEvent ( QShowEvent * event );
+        bool                              runScript(const QString strScript, QStringList& args);
+        void                              createProcess();
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
         QSqlQueryModel                    *countryModel;//!< Pointer to the country database model (table "Ref_Countries")
         QSqlRelationalTableModel*         tableModel;//!< Pointer to a generic table model (any database table)
         QProcess*                          myProcess;//!< Pointer to a process (sqlcmd)
+        QString                            m_databaseLogicalName;
+        QString                            m_databasePath;
+        QString                            m_logLogicalName;
+        QString                            m_logPath;
+        QString                            m_strBackupName;
+        bool                               m_bShowSqlMessages;
 };
 
 #endif // CONF_APP_H

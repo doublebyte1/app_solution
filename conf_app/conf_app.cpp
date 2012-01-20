@@ -3,6 +3,12 @@
 #include <QMessageBox>
 #include <QDir>
 
+//We need to mantain these names in order to mantain compatibility with the historical backups
+//static const QString strLogicalFile="albania_dat";
+//static const QString strLogFile="albania_log";
+//static const QString strDatabasePath="C:\\medfisis_dat\\";
+static const QString strSqlClient="sqlcmd";
+
 conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     : QMainWindow(parent, flags)
 {
@@ -103,8 +109,218 @@ void conf_app::readProcessError()
 
 void conf_app::readProcessOutput()
 {
-    QMessageBox::information(this, tr("Restore Process"),
-                            myProcess->readAllStandardOutput().data());
+    if (m_bShowSqlMessages){
+        QMessageBox::information(this, tr("Restore Process"),
+                                myProcess->readAllStandardOutput().data());
+    }else{
+        emit statusShow(myProcess->readAllStandardOutput().data());
+    }
+}
+
+void conf_app::parseParams()
+{
+    QString str=QString(myProcess->readAllStandardOutput().data());
+    if (str.contains(".mdf")){
+
+        //removing the first bit...
+        int idx=str.lastIndexOf("-");
+        str=str.right(str.length()-(idx+1));
+        str=str.simplified();
+
+        QStringList strSplit=str.split(" ");
+
+        if (strSplit.size() < 4){
+
+            QMessageBox::critical(this, tr("Restore Process"),
+             tr("Could not parse database parameters!"));
+            qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+            return;
+        }
+        m_databaseLogicalName=strSplit[0];
+        m_databasePath=strSplit[2];
+        m_logLogicalName=strSplit[11];
+        m_logPath=strSplit[13];
+
+        if (m_bShowSqlMessages){
+
+            QMessageBox::information(this, tr("Restore Process"),
+                tr("Logical database name: ") + m_databaseLogicalName + "\n" +
+                tr("Logical log name: ") + m_logLogicalName + "\n" +
+                tr("Database physical path: ") + m_databasePath + "\n" +
+                tr("Log physical path: ") + m_logPath + "\n"
+                );
+
+        }else{
+            emit statusShow(
+            tr("Logical database name: ") + m_databaseLogicalName + "\n" +
+            tr("Logical log name: ") + m_logLogicalName + "\n" +
+            tr("Database physical path: ") + m_databasePath + "\n" +
+            tr("Log physical path: ") + m_logPath + "\n");
+        }
+
+    }
+}
+
+void conf_app::showSqlMessages(const bool bShow){
+
+    m_bShowSqlMessages=bShow;
+    QSettings settings("Medstat", "App");
+    settings.setValue("showSqlMsg", QVariant(bShow).toString());
+}
+
+void conf_app::finishedCheckingBackupFile()
+{
+    processFinished();
+
+    QStringList args;
+
+    QSettings settings("Medstat", "App");
+    if(!settings.contains("database")){
+
+        QMessageBox::critical(this, tr("Restore Process"),
+        tr("Could not find database name on the registry!\n")+
+        tr("Please establish the complete connection string prior running setup!"));
+        return;
+
+    }
+
+    QString strScript=
+    "RESTORE DATABASE [" + settings.value("database").toString() +"] FROM DISK = '"
+    + m_strBackupName + "' WITH FILE = 1," +
+    " MOVE '" + m_databaseLogicalName +"' TO '" + m_databasePath + "'," +
+    " MOVE '" + m_logLogicalName +"' TO '" + m_logPath + "'," +
+    " NOUNLOAD, STATS = 10"; 
+
+    if (!runScript(strScript,args)){
+         QMessageBox::critical(this, tr("App"),
+             tr("Could not create file: ") + QDir::tempPath() + QDir::separator() + "MyScript.sql");
+    }
+
+    //dont forget to reset the process!
+    createProcess();
+
+     connect(myProcess, SIGNAL(readyReadStandardOutput()),this,
+        SLOT(readProcessOutput() ),Qt::UniqueConnection);
+
+     connect(myProcess, SIGNAL(readyReadStandardError()),this,
+        SLOT(readProcessError() ),Qt::UniqueConnection);
+
+     connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)),this,
+        SLOT(finishedRestore() ),Qt::UniqueConnection);
+
+    QString app(strSqlClient);
+     myProcess->start(app, args);
+     if (!myProcess->waitForStarted()) {
+         QMessageBox::critical(this, tr("App"),
+             tr("Could not start Sql Server from %1.").arg(app));
+         return;
+     }
+}
+
+void conf_app::parseBackupFileInfo()
+{
+    QString str=QString(myProcess->readAllStandardOutput().data());
+
+    //removing the first bit...
+    int idx=str.lastIndexOf("---");
+    str=str.right(str.length()-(idx+1));
+    str=str.simplified();
+
+    QStringList strSplit=str.split(" ");
+
+    //first exist point
+    if (strSplit.size() < 25){
+
+        QMessageBox::critical(this, tr("Restore Process"),
+         tr("Could not parse database parameters!\n Restore cancelled!"));
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        return;
+    }
+
+    //second exit point
+    if (m_databaseLogicalName!=strSplit[1] || m_logLogicalName !=strSplit[25]){
+
+        QMessageBox::warning(this, tr("Restore Process"),
+        tr("Logical database name on this backup: ") + strSplit[1] + "\n" +
+        tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
+        tr("Attention: The logical name on this backup differs from the database name!\n"));
+
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        return;
+
+    }
+
+    if (m_bShowSqlMessages){
+
+        QMessageBox::information(this, tr("Restore Process"),
+            tr("Logical database name on this backup: ") + strSplit[1] + "\n" +
+            tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
+            tr("Match with database logical Names: ok \n")
+            );
+
+    }else{
+            emit statusShow(
+                tr("Logical database name on this backup: ") + strSplit[1] + "\n" +
+                tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
+                tr("Match with database logical Names: ok \n")
+            );
+
+    }
+}
+
+void conf_app::createProcess()
+{
+    if (myProcess!=0){
+        myProcess->close();
+        delete myProcess; myProcess=0;
+    }
+    myProcess=new QProcess();
+}
+
+void conf_app::finishedRestore()
+{
+    processFinished();
+    emit statusShow(tr("Restore finished!"));
+     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+
+}
+
+void conf_app::finishedReadingNames()
+{
+    processFinished();
+
+    QStringList args;
+
+    QString strScript=
+    "RESTORE FILELISTONLY"
+    " FROM DISK = '" + m_strBackupName + "'"
+    " WITH FILE=1"; 
+
+    if (!runScript(strScript,args)){
+         QMessageBox::critical(this, tr("App"),
+             tr("Could not create file: ") + QDir::tempPath() + QDir::separator() + "MyScript.sql");
+         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+         return;
+    }
+
+    //dont forget to reset the process!
+    createProcess();
+
+     connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)),this,
+        SLOT(finishedCheckingBackupFile() ),Qt::UniqueConnection);
+
+     connect(myProcess, SIGNAL(readyReadStandardOutput()),this,
+        SLOT(parseBackupFileInfo() ),Qt::UniqueConnection);
+
+    QString app(strSqlClient);
+     myProcess->start(app, args);
+     if (!myProcess->waitForStarted()) {
+         QMessageBox::critical(this, tr("App"),
+             tr("Could not start Sql Server from %1.").arg(app));
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+         return;
+     }
+
 }
 
 void conf_app::processFinished()
@@ -114,11 +330,10 @@ void conf_app::processFinished()
 
              QMessageBox::warning(this, tr("Restore Process"),
              tr("Could not remove temporary script file!"));
-
+            return;
          }
      }
      statusShow(tr("Temporary script file sucessfully removed!"));
-    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
 void conf_app::doRestore()
@@ -143,60 +358,33 @@ void conf_app::doRestore()
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     statusShow(tr("Wait..."));
 
-    QString app("sqlcmd");
-    if (myProcess==0){
-        myProcess = new QProcess(this);
+    QString app(strSqlClient);
+    createProcess();
 
-         connect(myProcess, SIGNAL(readyReadStandardOutput()),this,
-            SLOT(readProcessOutput() ),Qt::UniqueConnection);
-
-         connect(myProcess, SIGNAL(readyReadStandardError()),this,
-            SLOT(readProcessError() ),Qt::UniqueConnection);
-
-         connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)),this,
-            SLOT(processFinished() ),Qt::UniqueConnection);
-    }
-
-    QString fileName = QFileDialog::getOpenFileName(this,
+    m_strBackupName = QFileDialog::getOpenFileName(this,
      tr("Read Backup"), tr(""), tr("Backup Files (*.bak)"));
 
-    if (!fileName.isEmpty()){
+    if (!m_strBackupName.isEmpty()){
 
-        QFile file(QDir::tempPath() + QDir::separator() + "MyScript.sql");
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+         connect(myProcess, SIGNAL(finished(int,QProcess::ExitStatus)),this,
+            SLOT(finishedReadingNames() ),Qt::UniqueConnection);
 
+         connect(myProcess, SIGNAL(readyReadStandardOutput()),this,
+            SLOT(parseParams() ),Qt::UniqueConnection);
+
+        QStringList args;
+        QString strScript=
+        "USE FAOCASDATA \n"
+        "GO \n"
+        "EXEC sp_helpfile \n"
+        "GO \n";
+
+        if (!runScript(strScript,args)){
              QMessageBox::critical(this, tr("App"),
                  tr("Could not create file: ") + QDir::tempPath() + QDir::separator() + "MyScript.sql");
-             return;
-
+             qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+            return;
         }
-        QTextStream out(&file);
-        //out << "restore database albania FROM DISK = '" + fileName + "'"; 
-
-        out << "RESTORE DATABASE [albania] FROM DISK = '"
-        + fileName + "' WITH FILE = 1," +
-        //"MOVE 'albania_dat' TO 'C:\\Program Files (x86)\\Microsoft SQL Server\\MSSQL.1\\MSSQL\\Data\\albania.mdf'," +
-        //"MOVE 'albania_log' TO 'C:\\Program Files (x86)\\Microsoft SQL Server\\MSSQL.1\\MSSQL\\Data\\albania.ldf'," +
-        "MOVE 'albania_dat' TO 'C:\\medfisis_dat\\albania.mdf'," +
-        "MOVE 'albania_log' TO 'C:\\medfisis_dat\\albania.ldf'," +
-        "NOUNLOAD, STATS = 10"; 
-
-        file.close(); 
-
-        QSettings settings("Medstat", "App");
-
-        //replace the slashes for windows
-        QString strTemp=QDir::tempPath() + QDir::separator() + "MyScript.sql";
-#if defined(WIN32)
-        strTemp.replace("/", "\\");
-#endif
-        QStringList args;
-        args << QLatin1String("-S")
-         << settings.value("host").toString()
-         << QLatin1String("-i")
-         << strTemp;
-
-        //myProcess->setProcessChannelMode(QProcess::MergedChannels);
          myProcess->start(app, args);
          if (!myProcess->waitForStarted()) {
              QMessageBox::critical(this, tr("App"),
@@ -205,6 +393,32 @@ void conf_app::doRestore()
          }
     } else
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+}
+
+bool conf_app::runScript(const QString strScript, QStringList& args)
+{
+        QFile file(QDir::tempPath() + QDir::separator() + "MyScript.sql");
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+             return false;
+        }
+        QSettings settings("Medstat", "App");
+
+        QTextStream out(&file);
+        out << strScript;
+
+        file.close(); 
+
+        //replace the slashes for windows
+        QString strTemp=QDir::tempPath() + QDir::separator() + "MyScript.sql";
+#if defined(WIN32)
+        strTemp.replace("/", "\\");
+#endif
+        args << QLatin1String("-S")
+         << settings.value("host").toString()
+         << QLatin1String("-i")
+         << strTemp;
+
+        return true;
 }
 
 void conf_app::initUI()
@@ -264,6 +478,9 @@ void conf_app::filterModel(QString strCountry)
 void conf_app::showEvent ( QShowEvent * event )
 {
     actionShow_startup_message->setChecked(queryShowStartupMsg());
+    actionShow_SQL_message->setChecked(queryShowSqlMsg());
+
+    m_bShowSqlMessages=actionShow_SQL_message->isChecked();
 }
 
 void conf_app::onShowStartupMsgI(bool bNoShow)
@@ -374,7 +591,6 @@ void conf_app::saveSettings(const int section)
         settings.setValue("database", lineDatabase->text());
         settings.setValue("username", lineUsername->text());
         settings.setValue("password", linePassword->text());
-        //settings.setValue("alias", lineAlias->text());
         settings.setValue("driver", cmbDriver->currentText());
 
     } else if (section==1){
@@ -589,4 +805,13 @@ bool queryShowStartupMsg()
         return true;
 
     return settings.value("showStartupMsg").toBool();
+}
+
+bool queryShowSqlMsg()
+{
+    QSettings settings("Medstat", "App");
+    if (!settings.contains("showSqlMsg"))
+        return true;
+
+    return settings.value("showSqlMsg").toBool();
 }

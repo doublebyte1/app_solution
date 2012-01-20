@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Wed 18. Jan 09:10:50 2012
+** Created: Thu 19. Jan 17:30:03 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -42,6 +42,7 @@ public:
     QAction *actionShow_startup_message;
     QAction *actionCreate_backup;
     QAction *actionRestore_backup;
+    QAction *actionShow_SQL_message;
     QWidget *centralWidget;
     QGridLayout *gridLayout_3;
     QToolBox *toolBox;
@@ -123,6 +124,10 @@ public:
         QIcon icon3;
         icon3.addFile(QString::fromUtf8(":/conf_app/folder_inbox.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionRestore_backup->setIcon(icon3);
+        actionShow_SQL_message = new QAction(conf_appClass);
+        actionShow_SQL_message->setObjectName(QString::fromUtf8("actionShow_SQL_message"));
+        actionShow_SQL_message->setCheckable(true);
+        actionShow_SQL_message->setChecked(true);
         centralWidget = new QWidget(conf_appClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         gridLayout_3 = new QGridLayout(centralWidget);
@@ -419,6 +424,7 @@ public:
         menuTools->addAction(menuOptions->menuAction());
         menuTools->addAction(menuBackups->menuAction());
         menuOptions->addAction(actionShow_startup_message);
+        menuOptions->addAction(actionShow_SQL_message);
         menuBackups->addAction(actionCreate_backup);
         menuBackups->addAction(actionRestore_backup);
 
@@ -434,6 +440,7 @@ public:
         QObject::connect(pushInsert, SIGNAL(clicked()), conf_appClass, SLOT(insertRow()));
         QObject::connect(pushRemove, SIGNAL(clicked()), conf_appClass, SLOT(removeRow()));
         QObject::connect(pushApply_2, SIGNAL(clicked()), conf_appClass, SLOT(applyChanges2Table()));
+        QObject::connect(actionShow_SQL_message, SIGNAL(triggered(bool)), conf_appClass, SLOT(showSqlMessages(bool)));
 
         toolBox->setCurrentIndex(0);
 
@@ -461,6 +468,7 @@ public:
 #ifndef QT_NO_WHATSTHIS
         actionRestore_backup->setWhatsThis(QApplication::translate("conf_appClass", "Restores backup from file", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
+        actionShow_SQL_message->setText(QApplication::translate("conf_appClass", "Show SQL messages", 0, QApplication::UnicodeUTF8));
         lbHost->setText(QApplication::translate("conf_appClass", "Host", 0, QApplication::UnicodeUTF8));
         lbDataSource->setText(QApplication::translate("conf_appClass", "Database", 0, QApplication::UnicodeUTF8));
         lbUsername->setText(QApplication::translate("conf_appClass", "Username", 0, QApplication::UnicodeUTF8));

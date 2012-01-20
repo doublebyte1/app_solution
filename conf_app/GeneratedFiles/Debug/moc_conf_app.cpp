@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Fri 30. Dec 10:51:33 2011
+** Created: Thu 19. Jan 17:59:36 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_conf_app[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      26,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -53,6 +53,12 @@ static const uint qt_meta_data_conf_app[] = {
      335,    9,    9,    9, 0x08,
      354,    9,    9,    9, 0x08,
      374,    9,    9,    9, 0x08,
+     392,    9,    9,    9, 0x08,
+     415,    9,    9,    9, 0x08,
+     429,    9,    9,    9, 0x08,
+     458,    9,    9,    9, 0x08,
+     480,  259,    9,    9, 0x08,
+     502,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -68,7 +74,10 @@ static const char qt_meta_stringdata_conf_app[] = {
     "bShow\0onShowStartupMsg(bool)\0insertRow()\0"
     "removeRow()\0doBackup()\0doRestore()\0"
     "readProcessError()\0readProcessOutput()\0"
-    "processFinished()\0"
+    "processFinished()\0finishedReadingNames()\0"
+    "parseParams()\0finishedCheckingBackupFile()\0"
+    "parseBackupFileInfo()\0showSqlMessages(bool)\0"
+    "finishedRestore()\0"
 };
 
 const QMetaObject conf_app::staticMetaObject = {
@@ -122,9 +131,15 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 17: readProcessError(); break;
         case 18: readProcessOutput(); break;
         case 19: processFinished(); break;
+        case 20: finishedReadingNames(); break;
+        case 21: parseParams(); break;
+        case 22: finishedCheckingBackupFile(); break;
+        case 23: parseBackupFileInfo(); break;
+        case 24: showSqlMessages((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 25: finishedRestore(); break;
         default: ;
         }
-        _id -= 20;
+        _id -= 26;
     }
     return _id;
 }
