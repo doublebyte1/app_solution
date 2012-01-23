@@ -139,7 +139,7 @@ class FrmVessel : public PreviewTab, public Ui::frmVessel
         /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
         a string containing an help identifier.
         */
-        void                                   initHelpIds(){;} 
+        void                                   initHelpIds();
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tAVessel;
         QSqlTableModel                         *tCellVessels;

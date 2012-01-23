@@ -7,6 +7,8 @@ PreviewTab(4,inRoleDef,inSample,inTDateTime,tr("Vessel"),ruleCheckerPtr,parent,f
 
     setupUi(this);
 
+    installEventFilters();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 
@@ -36,6 +38,14 @@ FrmVessel::~FrmVessel()
     if (mapper2!=0) delete mapper2;
     if (tCellVessels!=0) delete tCellVessels;
     if (tStrataVessels!=0) delete tStrataVessels;
+}
+
+void FrmVessel::initHelpIds()
+{
+    m_widgetInfo.insert(cmbVessel,"Medfisis::Identify_the_Vessel");
+    m_widgetInfo.insert(groupDetails,"Medfisis::Sub-form_VesselDetails");
+    m_widgetInfo.insert(cmbOrigin,"Medfisis::sample_origin");
+    m_widgetInfo.insert(cmbStatus,"Medfisis::sample_status");
 }
 
 void FrmVessel::onItemSelection()

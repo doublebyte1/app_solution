@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmoperation.ui'
 **
-** Created: Mon 16. Jan 14:53:26 2012
+** Created: Mon 23. Jan 16:54:13 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -142,6 +142,7 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
         tableView->setSizePolicy(sizePolicy2);
+        tableView->setFocusPolicy(Qt::StrongFocus);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -191,6 +192,7 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
         groupDetails->setSizePolicy(sizePolicy3);
+        groupDetails->setFocusPolicy(Qt::StrongFocus);
         horizontalLayout_6 = new QHBoxLayout(groupDetails);
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
         verticalLayout_4 = new QVBoxLayout();
@@ -363,6 +365,7 @@ public:
         listCategories->setObjectName(QString::fromUtf8("listCategories"));
         sizePolicy4.setHeightForWidth(listCategories->sizePolicy().hasHeightForWidth());
         listCategories->setSizePolicy(sizePolicy4);
+        listCategories->setFocusPolicy(Qt::StrongFocus);
         listCategories->setEditTriggers(QAbstractItemView::NoEditTriggers);
         listCategories->setSelectionMode(QAbstractItemView::MultiSelection);
         listCategories->setSelectionBehavior(QAbstractItemView::SelectRows);

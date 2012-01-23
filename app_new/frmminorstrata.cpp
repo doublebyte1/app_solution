@@ -48,6 +48,19 @@ FrmMinorStrata::~FrmMinorStrata()
     if (viewMinorStrata!=0) delete viewMinorStrata;
 }
 
+void FrmMinorStrata::initHelpIds()
+{
+    m_widgetInfo.insert(tableView,"Medfisis::Define_minor_strata");
+    m_widgetInfo.insert(groupDetails,"Medfisis::Sub-form_Minor_StrataDetails");
+    m_widgetInfo.insert(groupActivity,"Medfisis::activity_status");
+    m_widgetInfo.insert(radioActive,"Medfisis::activity_status");
+    m_widgetInfo.insert(radioInactive,"Medfisis::activity_status");
+    m_widgetInfo.insert(cmbReasons,"Medfisis::activity_status");
+    m_widgetInfo.insert(cmbGLS,"Medfisis::group_of_landing_sites");
+    m_widgetInfo.insert(customDtStart,"Medfisis::time_validity");
+    m_widgetInfo.insert(customDtEnd,"Medfisis::time_validity");
+}
+
 void FrmMinorStrata::onHideFrameDetails()
 {
     if (!pushEdit->isChecked()){

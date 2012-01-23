@@ -80,6 +80,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
        <property name="toolTip">
         <string>Choose sampled fishing operation (or create a new one)</string>
        </property>
@@ -188,6 +191,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
      </property>
      <property name="title">
       <string>Details</string>
@@ -464,6 +470,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::StrongFocus</enum>
                </property>
                <property name="toolTip">
                 <string>Commercial categories of the catch corresponding to this fishing operation</string>

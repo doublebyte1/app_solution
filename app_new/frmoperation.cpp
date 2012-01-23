@@ -48,6 +48,12 @@ FrmOperation::~FrmOperation()
     if (mapperEndDt!=0) delete mapperEndDt;
 }
 
+void FrmOperation::initHelpIds()
+{
+    m_widgetInfo.insert(tableView,"Medfisis::characterise_fishing_operation");
+    m_widgetInfo.insert(groupDetails,"Medfisis::Sub-form_Fishing_OperationDetails");
+    m_widgetInfo.insert(listCategories,"Medfisis::commercial_category");
+}
 
 void FrmOperation::onItemSelection()
 {

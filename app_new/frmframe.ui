@@ -184,6 +184,9 @@
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0" colspan="2">
        <widget class="QGroupBox" name="groupPhysical">
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
+        </property>
         <property name="toolTip">
          <string>Describe physical characteristics of the frame;</string>
         </property>
@@ -319,6 +322,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QGroupBox" name="groupTime">
+        <property name="focusPolicy">
+         <enum>Qt::StrongFocus</enum>
+        </property>
         <property name="title">
          <string>Time Frame</string>
         </property>
@@ -400,6 +406,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGroupBox" name="groupProcess">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
           <property name="title">
            <string/>
           </property>

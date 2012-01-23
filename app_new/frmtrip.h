@@ -107,7 +107,7 @@ class FrmTrip : public PreviewTab, public Ui::FrmTrip
         /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
         a string containing an help identifier.
         */
-        void                                   initHelpIds(){;} 
+        void                                   initHelpIds();
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tTrips;

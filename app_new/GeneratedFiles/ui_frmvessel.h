@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvessel.ui'
 **
-** Created: Mon 16. Jan 14:53:26 2012
+** Created: Mon 23. Jan 11:56:49 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -123,6 +123,7 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         tableView = new QTableView(frmVessel);
         tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setFocusPolicy(Qt::StrongFocus);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -170,6 +171,7 @@ public:
 
         groupDetails = new QGroupBox(frmVessel);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
+        groupDetails->setFocusPolicy(Qt::StrongFocus);
         horizontalLayout_6 = new QHBoxLayout(groupDetails);
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
         verticalLayout_4 = new QVBoxLayout();
@@ -185,6 +187,7 @@ public:
 
         cmbVessel = new QComboBox(groupDetails);
         cmbVessel->setObjectName(QString::fromUtf8("cmbVessel"));
+        cmbVessel->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_5->addWidget(cmbVessel);
 
@@ -200,6 +203,7 @@ public:
 
         cmbOrigin = new QComboBox(groupDetails);
         cmbOrigin->setObjectName(QString::fromUtf8("cmbOrigin"));
+        cmbOrigin->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_4->addWidget(cmbOrigin);
 
@@ -215,6 +219,7 @@ public:
 
         cmbStatus = new QComboBox(groupDetails);
         cmbStatus->setObjectName(QString::fromUtf8("cmbStatus"));
+        cmbStatus->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_3->addWidget(cmbStatus);
 

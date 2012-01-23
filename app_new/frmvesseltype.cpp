@@ -6,6 +6,8 @@ PreviewTab(3,inRoleDef,inSample,inTDateTime,tr("Vessel Type"), ruleCheckerPtr, p
 
     setupUi(this);
 
+    installEventFilters();
+
     connect(pushNext, SIGNAL(clicked()), this,
     SLOT(next()));
 
@@ -28,6 +30,13 @@ FrmVesselType::~FrmVesselType()
     if (nullDellegate!=0) delete nullDellegate;
     if (mapper1!=0) delete mapper1;
     if (viewVesselTypes!=0) delete viewVesselTypes;
+}
+
+void FrmVesselType::initHelpIds()
+{
+    m_widgetInfo.insert(tableView,"Medfisis::Identify_the_Vessel_Type");
+    m_widgetInfo.insert(groupDetails,"Medfisis::Sub-form_Vessel_TypeDetails");
+    m_widgetInfo.insert(cmbTypes,"Medfisis::vessel_type");
 }
 
 void FrmVesselType::onItemSelection()

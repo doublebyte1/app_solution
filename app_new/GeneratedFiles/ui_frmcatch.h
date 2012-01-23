@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcatch.ui'
 **
-** Created: Mon 16. Jan 14:53:26 2012
+** Created: Mon 23. Jan 17:06:46 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -130,6 +130,7 @@ public:
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
         tableView->setSizePolicy(sizePolicy2);
+        tableView->setFocusPolicy(Qt::StrongFocus);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -179,6 +180,7 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
         groupDetails->setSizePolicy(sizePolicy3);
+        groupDetails->setFocusPolicy(Qt::StrongFocus);
         horizontalLayout_3 = new QHBoxLayout(groupDetails);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         verticalLayout_3 = new QVBoxLayout();
@@ -202,6 +204,7 @@ public:
 
         groupCatch = new QGroupBox(groupDetails);
         groupCatch->setObjectName(QString::fromUtf8("groupCatch"));
+        groupCatch->setFocusPolicy(Qt::StrongFocus);
         verticalLayout = new QVBoxLayout(groupCatch);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         label_9 = new QLabel(groupCatch);
@@ -216,6 +219,7 @@ public:
         sizePolicy4.setVerticalStretch(0);
         sizePolicy4.setHeightForWidth(catchInputCtrl->sizePolicy().hasHeightForWidth());
         catchInputCtrl->setSizePolicy(sizePolicy4);
+        catchInputCtrl->setFocusPolicy(Qt::StrongFocus);
 
         verticalLayout->addWidget(catchInputCtrl);
 
@@ -229,6 +233,7 @@ public:
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         groupGear = new QGroupBox(groupDetails);
         groupGear->setObjectName(QString::fromUtf8("groupGear"));
+        groupGear->setFocusPolicy(Qt::StrongFocus);
         gridLayout = new QGridLayout(groupGear);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label_6 = new QLabel(groupGear);

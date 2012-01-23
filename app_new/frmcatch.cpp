@@ -31,6 +31,14 @@ FrmCatch::~FrmCatch()
     if (mapper1!=0) delete mapper1;
 }
 
+void FrmCatch::initHelpIds()
+{
+    m_widgetInfo.insert(tableView,"Medfisis::Enter_the_Catch_Data");
+    m_widgetInfo.insert(groupDetails,"Medfisis::Sub-form_CatchDetails");
+    m_widgetInfo.insert(groupCatch,"Medfisis::Sub-form_CatchTotals");
+    m_widgetInfo.insert(catchInputCtrl,"Medfisis::Sub-form_CatchTotals");
+    m_widgetInfo.insert(groupGear,"Medfisis::Sub-form_CatchSample ");
+}
 
 void FrmCatch::onItemSelection()
 {

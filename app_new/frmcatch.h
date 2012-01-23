@@ -105,7 +105,7 @@ class FrmCatch : public PreviewTab, public Ui::FrmCatch
         /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
         a string containing an help identifier.
         */
-        void                                   initHelpIds(){;} 
+        void                                   initHelpIds();
 
         NullRelationalDelegate*                nullDelegate;
         QSqlRelationalTableModel*              tCatch;

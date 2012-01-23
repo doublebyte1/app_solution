@@ -24,11 +24,11 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
 
 conf_app::~conf_app()
 {
-    if (QSqlDatabase::database().isOpen()){
+    //if (QSqlDatabase::database().isOpen()){
         if (cityModel!=0) delete cityModel;
         if (countryModel!=0) delete countryModel;
         if (tableModel!=0) delete tableModel;
-    }
+    //}
     if (myProcess!=0 && myProcess->isOpen()){
         myProcess->close();
         delete myProcess;
@@ -245,8 +245,8 @@ void conf_app::parseBackupFileInfo()
         tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
         tr("Attention: The logical name on this backup differs from the database name!\n"));
 
-        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-        return;
+        //qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        //return;
 
     }
 
@@ -533,6 +533,8 @@ void conf_app::disconnectDB()
     m_bConnected=false;
 
     emit connectionChanged();
+    groupSettings->setEnabled(m_bConnected);
+    groupTables->setEnabled(m_bConnected);
 }
 
 void conf_app::connectDB()

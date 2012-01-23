@@ -74,6 +74,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTableView" name="tableView">
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>
@@ -168,6 +171,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
    </item>
    <item>
     <widget class="QGroupBox" name="groupDetails">
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
      <property name="title">
       <string>Details</string>
      </property>
@@ -189,7 +195,11 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="cmbVessel"/>
+             <widget class="QComboBox" name="cmbVessel">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -206,7 +216,11 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="cmbOrigin"/>
+             <widget class="QComboBox" name="cmbOrigin">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -223,7 +237,11 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="cmbStatus"/>
+             <widget class="QComboBox" name="cmbStatus">
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>

@@ -107,7 +107,7 @@ class FrmOperation : public PreviewTab, public Ui::FrmOperation
         /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
         a string containing an help identifier.
         */
-        void                                   initHelpIds(){;} 
+        void                                   initHelpIds();
 
         QSqlTableModel*                        tOpCat;
         QSqlQueryModel*                        tRefCat;

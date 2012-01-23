@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Mon 16. Jan 14:53:27 2012
+** Created: Mon 23. Jan 10:47:04 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -134,6 +134,7 @@ public:
         horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
         tableView = new QTableView(frmminorstrata);
         tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setFocusPolicy(Qt::StrongFocus);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
         tableView->setShowGrid(false);
@@ -207,6 +208,7 @@ public:
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
         sizePolicy.setHeightForWidth(groupDetails->sizePolicy().hasHeightForWidth());
         groupDetails->setSizePolicy(sizePolicy);
+        groupDetails->setFocusPolicy(Qt::StrongFocus);
         verticalLayout_2 = new QVBoxLayout(groupDetails);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         horizontalLayout_11 = new QHBoxLayout();
@@ -220,6 +222,7 @@ public:
 
         cmbGLS = new QComboBox(groupDetails);
         cmbGLS->setObjectName(QString::fromUtf8("cmbGLS"));
+        cmbGLS->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_2->addWidget(cmbGLS);
 
@@ -244,6 +247,7 @@ public:
         sizePolicy3.setHeightForWidth(groupActivity->sizePolicy().hasHeightForWidth());
         groupActivity->setSizePolicy(sizePolicy3);
         groupActivity->setMaximumSize(QSize(16777215, 15777215));
+        groupActivity->setFocusPolicy(Qt::StrongFocus);
         gridLayout_3 = new QGridLayout(groupActivity);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         radioActive = new QRadioButton(groupActivity);
@@ -264,6 +268,7 @@ public:
 
         cmbReasons = new QComboBox(groupActivity);
         cmbReasons->setObjectName(QString::fromUtf8("cmbReasons"));
+        cmbReasons->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout->addWidget(cmbReasons);
 
@@ -308,6 +313,7 @@ public:
         customDtStart->setObjectName(QString::fromUtf8("customDtStart"));
         sizePolicy3.setHeightForWidth(customDtStart->sizePolicy().hasHeightForWidth());
         customDtStart->setSizePolicy(sizePolicy3);
+        customDtStart->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_8->addWidget(customDtStart);
 
@@ -315,6 +321,7 @@ public:
         customDtEnd->setObjectName(QString::fromUtf8("customDtEnd"));
         sizePolicy3.setHeightForWidth(customDtEnd->sizePolicy().hasHeightForWidth());
         customDtEnd->setSizePolicy(sizePolicy3);
+        customDtEnd->setFocusPolicy(Qt::StrongFocus);
 
         horizontalLayout_8->addWidget(customDtEnd);
 
@@ -395,8 +402,10 @@ public:
         QWidget::setTabOrder(pushEdit, pushRemove);
         QWidget::setTabOrder(pushRemove, toolButton);
         QWidget::setTabOrder(toolButton, lineNew);
-        QWidget::setTabOrder(lineNew, cmbGLS);
-        QWidget::setTabOrder(cmbGLS, radioActive);
+        QWidget::setTabOrder(lineNew, groupDetails);
+        QWidget::setTabOrder(groupDetails, cmbGLS);
+        QWidget::setTabOrder(cmbGLS, groupActivity);
+        QWidget::setTabOrder(groupActivity, radioActive);
         QWidget::setTabOrder(radioActive, radioInactive);
         QWidget::setTabOrder(radioInactive, cmbReasons);
         QWidget::setTabOrder(cmbReasons, textComments);

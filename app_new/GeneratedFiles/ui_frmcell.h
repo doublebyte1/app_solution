@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmcell.ui'
 **
-** Created: Mon 16. Jan 14:53:26 2012
+** Created: Mon 23. Jan 10:59:55 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -135,6 +135,7 @@ public:
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         tableView = new QTableView(frmCell);
         tableView->setObjectName(QString::fromUtf8("tableView"));
+        tableView->setFocusPolicy(Qt::StrongFocus);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -189,6 +190,7 @@ public:
 
         groupDetails = new QGroupBox(frmCell);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
+        groupDetails->setFocusPolicy(Qt::StrongFocus);
         gridLayout = new QGridLayout(groupDetails);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         horizontalLayout_3 = new QHBoxLayout();

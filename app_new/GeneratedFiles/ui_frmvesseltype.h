@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmvesseltype.ui'
 **
-** Created: Mon 16. Jan 14:53:26 2012
+** Created: Mon 23. Jan 16:47:12 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -167,6 +167,7 @@ public:
 
         groupDetails = new QGroupBox(FrmVesselType);
         groupDetails->setObjectName(QString::fromUtf8("groupDetails"));
+        groupDetails->setFocusPolicy(Qt::StrongFocus);
         gridLayout = new QGridLayout(groupDetails);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label_3 = new QLabel(groupDetails);
@@ -176,6 +177,7 @@ public:
 
         cmbTypes = new QComboBox(groupDetails);
         cmbTypes->setObjectName(QString::fromUtf8("cmbTypes"));
+        cmbTypes->setFocusPolicy(Qt::StrongFocus);
 
         gridLayout->addWidget(cmbTypes, 0, 5, 1, 1);
 

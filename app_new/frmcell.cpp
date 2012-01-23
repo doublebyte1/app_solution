@@ -44,6 +44,11 @@ FrmCell::~FrmCell()
     if (viewCell!=0) delete viewCell;
 }
 
+void FrmCell::initHelpIds()
+{
+    m_widgetInfo.insert(tableView,"Medfisis::define_cell_level");
+    //m_widgetInfo.insert(groupDetails,"Medfisis::Sub-form_CellDetails");
+}
 
 void FrmCell::onItemSelection()
 {

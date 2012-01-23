@@ -75,6 +75,12 @@ void FrmFrame::initHelpIds()
     m_widgetInfo.insert(radioCopy,"Medfisis::frame_existing");
     m_widgetInfo.insert(cmbCopy,"Medfisis::frame_existing");
     m_widgetInfo.insert(cmbPrexistent,"Medfisis::pre-existent_frame");
+    m_widgetInfo.insert(groupPhysical,"Medfisis::geographical_frame");
+    m_widgetInfo.insert(groupTime,"Medfisis::time_validity");
+    m_widgetInfo.insert(customDtStart,"Medfisis::time_validity");
+    m_widgetInfo.insert(customDtEnd,"Medfisis::time_validity");
+    m_widgetInfo.insert(groupProcess,"Medfisis::Define_the_sampling_process");
+    m_widgetInfo.insert(toolProcess,"Medfisis::Define_the_sampling_process");
 
     //m_widgetInfo.insert(pushNew,"Medfisis::create_new_record");
 }

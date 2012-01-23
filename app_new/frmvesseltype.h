@@ -102,7 +102,7 @@ class FrmVesselType : public PreviewTab, public Ui::FrmVesselType
         /*! Reimplemented from the PreviewTab base class
         */
         bool                                   getNextLabel(QString& strLabel);
-        void                                   initHelpIds(){;} 
+        void                                   initHelpIds();
 
         QSqlQueryModel*                        viewVesselTypes;
         QSqlRelationalTableModel*              tSVesselTypes;

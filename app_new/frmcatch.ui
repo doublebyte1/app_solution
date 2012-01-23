@@ -80,6 +80,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
        <property name="toolTip">
         <string>Choose sampled catch (or create a new one)</string>
        </property>
@@ -189,6 +192,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
      <property name="title">
       <string>Details</string>
      </property>
@@ -230,6 +236,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
         </item>
         <item>
          <widget class="QGroupBox" name="groupCatch">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
           <property name="title">
            <string>Totals</string>
           </property>
@@ -252,6 +261,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
             </widget>
            </item>
           </layout>
@@ -263,6 +275,9 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QGroupBox" name="groupGear">
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
           <property name="title">
            <string>Sample</string>
           </property>

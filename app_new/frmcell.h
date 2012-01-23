@@ -116,7 +116,7 @@ class FrmCell : public PreviewTab, public Ui::frmCell
         /*! Reimplemented from the GenericTab base class; this is where we associate the widgets with
         a string containing an help identifier.
         */
-        void                                   initHelpIds(){;} 
+        void                                   initHelpIds();
 
         QSqlRelationalTableModel*              tSampCell;
         QSqlQueryModel*                        viewCell;

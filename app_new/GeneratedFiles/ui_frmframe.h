@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Mon 16. Jan 17:18:16 2012
+** Created: Mon 23. Jan 09:57:41 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -167,6 +167,7 @@ public:
         gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
         groupPhysical = new QGroupBox(groupDetails);
         groupPhysical->setObjectName(QString::fromUtf8("groupPhysical"));
+        groupPhysical->setFocusPolicy(Qt::StrongFocus);
         gridLayout_2 = new QGridLayout(groupPhysical);
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         label_4 = new QLabel(groupPhysical);
@@ -230,6 +231,7 @@ public:
 
         groupTime = new QGroupBox(groupDetails);
         groupTime->setObjectName(QString::fromUtf8("groupTime"));
+        groupTime->setFocusPolicy(Qt::StrongFocus);
         gridLayout_3 = new QGridLayout(groupTime);
         gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
         label = new QLabel(groupTime);
@@ -272,6 +274,7 @@ public:
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupProcess = new QGroupBox(groupDetails);
         groupProcess->setObjectName(QString::fromUtf8("groupProcess"));
+        groupProcess->setFocusPolicy(Qt::StrongFocus);
         groupProcess->setFlat(true);
         horizontalLayout_4 = new QHBoxLayout(groupProcess);
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));

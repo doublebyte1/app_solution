@@ -116,8 +116,6 @@ void MainFrm::rulesInitialized(bool bReady)
         displayError(tr("Could not initialize rules!"),true);
     else
         statusShow(tr("Rules correctly initialized!"));
-    //frmSamplingFramePtr->init();
-    //m_bGotRules=bReady;
 }
 
 void MainFrm::initUi()
@@ -562,6 +560,10 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
 }
 void MainFrm::callAssistant()
 {
+    if (process!=0){
+        process->close();
+        delete process; process=0;
+    }
      process = new QProcess(this);
      QString app = QDir::currentPath()
          + QLatin1String("/assistant");
@@ -569,7 +571,7 @@ void MainFrm::callAssistant()
     QStringList args;
     args << QLatin1String("-collectionFile")
 
-        << QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator()
+        << QDir::toNativeSeparators(QDir::currentPath()) + QDir::separator() + tr("Help") + QDir::separator()
     + QLatin1String("mycollection.qhc")
     << QLatin1String("-enableRemoteControl");
 
