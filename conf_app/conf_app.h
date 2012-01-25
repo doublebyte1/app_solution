@@ -231,6 +231,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                              showEvent ( QShowEvent * event );
         bool                              runScript(const QString strScript, QStringList& args);
         void                              createProcess();
+        QString                           getBackupName();
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

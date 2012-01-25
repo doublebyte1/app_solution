@@ -230,6 +230,12 @@ bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QW
     query.first();
     QVariant val=query.value(0);
 
+    //freeing up resources...
+    if (query.isActive()){
+        query.finish();
+        query.clear();
+    }
+
     switch ( eType ) {
 
       case RuleChecker::DEFAULT:
@@ -277,6 +283,13 @@ bool MapperRuleBinder::applyRule(QHash<size_t,QString>::const_iterator& rule, QW
                 eQuery.first();
                 //QString strError=tr("This value is not allowed: ").append(eQuery.value(0).toString());
                 QString strError=eQuery.value(0).toString();
+
+                //freeing up resources...
+                if (eQuery.isActive()){
+                    eQuery.finish();
+                    eQuery.clear();
+                }
+
                 emit showError(strError);
 
                 if (aWidget!=0){

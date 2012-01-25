@@ -72,7 +72,7 @@ void conf_app::doBackup()
     }
 
     QString fileName = QFileDialog::getSaveFileName(this,
-     tr("Export backup to file"), "", tr("Backup Files (*.bak)"));
+     tr("Export backup to file"), getBackupName(), tr("Backup Files (*.bak)"));
 
     if (!fileName.isEmpty()){
 
@@ -99,6 +99,26 @@ void conf_app::doBackup()
         }
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     }
+}
+
+QString conf_app::getBackupName()
+{
+    QString str;
+    //TODO: Change this to read data directory
+    //str=QDir::currentPath() + QDir::separator();
+    QSettings settings("Medstat", "App");
+    if (!settings.contains("database")){
+
+        QMessageBox::critical(this, tr("Backup database"),
+                                tr("Can not read database name! Are we connected?"));
+        return str;
+
+    }
+    str+=settings.value("database").toString();
+    str+="_";
+    str+=QDateTime::currentDateTime().toString("yyyymmddhhmmss");
+    str+=".bak";
+    return str;
 }
 
 void conf_app::readProcessError()

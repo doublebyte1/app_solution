@@ -18,7 +18,7 @@ static bool createConnection(const QString strHost, const QString strDatabase, c
        QSqlDatabase db = QSqlDatabase::addDatabase( strDriver );
         db.setConnectOptions(QT_TR_NOOP("SQL_ATTR_LOGIN_TIMEOUT=1000,SQL_COPT_SS_MARS_ENABLED,SQL_MARS_ENABLED_YES,Mars_Connection=yes"));
         db.setHostName(strHost);
-        QString strData="DRIVER={" + strDatabaseDriver + "};SERVER="+ strHost + ";DATABASE=" + strDatabase + ";UID=" + strUser + ";PWD=" + strPass;
+        QString strData="DRIVER={" + strDatabaseDriver + "};SERVER="+ strHost + ";DATABASE=" + strDatabase + ";UID=" + strUser + ";PWD=" + strPass +"; MARS_Connection=yes;";
         db.setDatabaseName(strData);
         db.setUserName(strUser);
         db.setPassword(strPass);

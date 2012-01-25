@@ -48,5 +48,6 @@ static const char *strEmpty =
 
 static const QString strDatabaseDriver = 
      "SQL SERVER";
+     //"SQL Server Native Client 10.0";
 
 #endif// GLOBALDEFS_H
