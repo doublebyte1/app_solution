@@ -284,11 +284,12 @@ void Login::showEvent ( QShowEvent * event )
     if (!readSettings(strHost,strDatabase,strUsername,strPassword,strDriver))
     {
             QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
-                tr("You must run the configurator prior to run this application!"),QMessageBox::Ok,0);
+                tr("You must run the configurator prior to run this application!") +
+                tr("\n Make sure you filled the connection settings *and* the global settings!"),QMessageBox::Ok,0);
             msgBox.exec();
             exit(0);
     }else{
-        if (!connectDB(strHost,strDatabase,strUsername,strPassword/*,strAlias*/,strDriver)){
+        if (!connectDB(strHost,strDatabase,strUsername,strPassword,strDriver)){
             QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
                 tr("Please run the configurator again and fix the connection values!"),QMessageBox::Ok,0);
             msgBox.exec();
