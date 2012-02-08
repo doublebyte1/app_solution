@@ -79,8 +79,18 @@ void conf_app::doBackup()
     qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     statusShow(tr("Wait..."));
 
+        QSettings settings("Medstat", "App");
+        if (!settings.contains("database")){
+
+            QMessageBox::critical(this, tr("Backup database"),
+                                    tr("Can not read database name! Are we connected?"));
+            return;
+
+        }
+        QString strDatabase=settings.value("database").toString();
+
         QSqlQuery query;
-        QString strQuery="BACKUP DATABASE albania TO DISK = '"
+        QString strQuery="BACKUP DATABASE " + strDatabase + " TO DISK = '"
             + fileName +"'";
         query.prepare(strQuery);
 
@@ -258,11 +268,11 @@ void conf_app::parseBackupFileInfo()
     }
 
     //second exit point
-    if (m_databaseLogicalName!=strSplit[1] || m_logLogicalName !=strSplit[25]){
+    if (m_databaseLogicalName!=strSplit[1] || m_logLogicalName !=strSplit[21]){
 
         QMessageBox::warning(this, tr("Restore Process"),
         tr("Logical database name on this backup: ") + strSplit[1] + "\n" +
-        tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
+        tr("Logical log name on this backup: ") + strSplit[21] + "\n" +
         tr("Attention: The logical name on this backup differs from the database name!\n"));
 
         //qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
@@ -274,14 +284,14 @@ void conf_app::parseBackupFileInfo()
 
         QMessageBox::information(this, tr("Restore Process"),
             tr("Logical database name on this backup: ") + strSplit[1] + "\n" +
-            tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
+            tr("Logical log name on this backup: ") + strSplit[21] + "\n" +
             tr("Match with database logical Names: ok \n")
             );
 
     }else{
             emit statusShow(
                 tr("Logical database name on this backup: ") + strSplit[1] + "\n" +
-                tr("Logical log name on this backup: ") + strSplit[25] + "\n" +
+                tr("Logical log name on this backup: ") + strSplit[21] + "\n" +
                 tr("Match with database logical Names: ok \n")
             );
 
@@ -632,9 +642,9 @@ void conf_app::loadSettings(const int section)
 
         //Settings for the DB credentials
         lineHost->setText(settings.contains("host")?settings.value("host").toString():".\\FAOCAS");
-        lineDatabase->setText(settings.contains("database")?settings.value("database").toString():"albania");
+        lineDatabase->setText(settings.contains("database")?settings.value("database").toString():"FAOCASDATA");
         lineUsername->setText(settings.contains("username")?settings.value("username").toString():"dev");
-        linePassword->setText(settings.contains("password")?settings.value("password").toString():"test123");
+        linePassword->setText(settings.contains("password")?settings.value("password").toString():"Test123");
         cmbDriver->setCurrentIndex(
                 cmbDriver->findText(settings.contains("driver")?
                 settings.value("driver").toString():"QODBC3"));
