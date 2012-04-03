@@ -67,7 +67,6 @@ class AbstractTableFormat : public QSqlTableModel, public AbstractFormat
          \return boolean as success or failure
         */
         virtual bool            readTableNames(QStringList& tableList)=0;
-        virtual bool            initializeSet(const QStringList tableList, QXmlStreamReader& xml, MapKeys& mapKeys)=0;
 
     signals:
         void                    showStatus(QString str);

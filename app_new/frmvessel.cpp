@@ -506,6 +506,29 @@ void FrmVessel::filterModel4Combo()
 
     }else{
         strQuery =
+        "SELECT     vesselID, id_sub_frame"
+        " FROM         dbo.FR_ALS2Vessel"
+        " WHERE     (id_sub_frame ="
+        "                          (SELECT     ID"
+        "                             FROM          dbo.FR_Sub_Frame"
+        "                             WHERE      (Type ="
+        "                                                       (SELECT     ID"
+        "                                                         FROM          dbo.Ref_Frame"
+        "                                                         WHERE      (Name = 'root'))) AND (id_frame = " + QVariant(m_sample->frameId).toString() + "))"
+        " )"
+        " and id_abstract_landingsite IN"
+        " (SELECT FR_GLS2ALS.id_abstract_landingsite from FR_GLS2ALS where FR_GLS2ALS.id_sub_frame="
+        "                          (SELECT     ID"
+        "                             FROM          dbo.FR_Sub_Frame"
+        "                             WHERE      (Type ="
+        "                                                       (SELECT     ID"
+        "                                                         FROM          dbo.Ref_Frame"
+        "                                                         WHERE      (Name = 'root'))) AND (id_frame = " + QVariant(m_sample->frameId).toString() + "))"
+        " and FR_GLS2ALS.id_gls IN"
+        " (SELECT     id_gls"
+        " FROM         dbo.Ref_Minor_Strata"
+        " WHERE     (ID =" + QVariant(m_sample->minorStrataId).toString() + ")) )"
+        /*
         "SELECT     FR_ALS2Vessel_1.vesselID, dbo.FR_GLS2ALS.id_gls"
         " FROM         dbo.FR_ALS2Vessel INNER JOIN"
         "                      dbo.FR_GLS2ALS ON dbo.FR_ALS2Vessel.ID = dbo.FR_GLS2ALS.ID INNER JOIN"
@@ -521,9 +544,11 @@ void FrmVessel::filterModel4Combo()
         " (dbo.FR_GLS2ALS.id_gls="
         " (SELECT     id_gls"
         " FROM         dbo.Ref_Minor_Strata"
-        " WHERE     (ID = " + QVariant(m_sample->minorStrataId).toString() + ")))"
+        " WHERE     (ID = " + QVariant(m_sample->minorStrataId).toString() + ")))"*/
          ;
     }
+
+    //qDebug() << strQuery << endl;
 
     query.prepare(strQuery);
     if (!query.exec()){
