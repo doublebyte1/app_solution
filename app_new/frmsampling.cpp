@@ -87,7 +87,7 @@ void FrmSampling::onShowForm()
 
     }if (m_mode==EDIT){
 
-        bool bError=false;
+        //bool bError=false;
 
         tRefSampTec->setFilter("id_fr_time=" + QVariant(m_sample->frameTimeId).toString());
 

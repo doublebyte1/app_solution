@@ -506,9 +506,10 @@ void FrmVessel::filterModel4Combo()
 
     }else{
         strQuery =
-        "SELECT     vesselID, id_sub_frame"
+        "SELECT     vesselID, dbo.FR_GLS2ALS.id_gls"
         " FROM         dbo.FR_ALS2Vessel"
-        " WHERE     (id_sub_frame ="
+        " INNER JOIN dbo.FR_GLS2ALS ON dbo.FR_ALS2Vessel.id_abstract_landingsite=dbo.FR_GLS2ALS.id_abstract_landingsite"
+        " WHERE     (FR_GLS2ALS.id_sub_frame ="
         "                          (SELECT     ID"
         "                             FROM          dbo.FR_Sub_Frame"
         "                             WHERE      (Type ="
@@ -516,7 +517,15 @@ void FrmVessel::filterModel4Combo()
         "                                                         FROM          dbo.Ref_Frame"
         "                                                         WHERE      (Name = 'root'))) AND (id_frame = " + QVariant(m_sample->frameId).toString() + "))"
         " )"
-        " and id_abstract_landingsite IN"
+        " AND     (FR_ALS2Vessel.id_sub_frame ="
+        "                          (SELECT     ID"
+        "                             FROM          dbo.FR_Sub_Frame"
+        "                             WHERE      (Type ="
+        "                                                       (SELECT     ID"
+        "                                                         FROM          dbo.Ref_Frame"
+        "                                                         WHERE      (Name = 'root'))) AND (id_frame = " + QVariant(m_sample->frameId).toString() + "))"
+        " )"
+        " and FR_ALS2Vessel.id_abstract_landingsite IN"
         " (SELECT FR_GLS2ALS.id_abstract_landingsite from FR_GLS2ALS where FR_GLS2ALS.id_sub_frame="
         "                          (SELECT     ID"
         "                             FROM          dbo.FR_Sub_Frame"
@@ -547,8 +556,6 @@ void FrmVessel::filterModel4Combo()
         " WHERE     (ID = " + QVariant(m_sample->minorStrataId).toString() + ")))"*/
          ;
     }
-
-    //qDebug() << strQuery << endl;
 
     query.prepare(strQuery);
     if (!query.exec()){

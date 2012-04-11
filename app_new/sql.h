@@ -835,9 +835,6 @@ static bool getNullForType(const QString strType, const QString strInternalName,
     else if (strType.compare(QObject::tr("nchar(3)"))==0 || strType.compare(QObject::tr("char(3)"))==0){
         strPar=QObject::tr("char3");
     }
-    else if (strType.compare(QObject::tr("nchar(3)"))==0 || strType.compare(QObject::tr("char(3)"))==0){
-        strPar=QObject::tr("char3");
-    }
     else if (/*strType.compare(QObject::tr("smallint"))==0 || */strType.compare(QObject::tr("bigint"))==0
         || strType.compare(QObject::tr("int"))==0){
         strPar=QObject::tr("int");
@@ -1076,7 +1073,7 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
                 while (query.next()){
                     if (ct>0){
                         HashNodeRef::const_iterator ii = i;
-                        ii--;
+                        --ii;
                         strQuery=QObject::tr("INSERT INTO Fr_Tree (parent) SELECT id FROM ##List_Conversion WHERE CODE=")+
                             query.record().value(i.value()->m_strField).toString() + QObject::tr(" AND table_name like '") +
                             ii.value()->m_strTable + QObject::tr("'");

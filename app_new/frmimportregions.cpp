@@ -41,7 +41,7 @@ void FrmImportRegions::Apply()
     }
 
     HashNodeRef::const_iterator it=m_mapTablesFields.constEnd();
-    it--;
+    --it;
     bottomLevelTable=it.value()->m_strTable;
 
     //First convert into a proper list model

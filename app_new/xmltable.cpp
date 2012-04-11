@@ -363,7 +363,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
             return false;
         }
 
-         bool bMakeNullable=false;
+         //bool bMakeNullable=false;
          QVariant var;
          bool bGotName=false;
 
@@ -392,7 +392,7 @@ bool XmlTable::updateFKReferences(const QString strName, const MapFK& mapKeys, c
                     //qDebug() << strQuery << endl;
                      return false;
                  }
-                bMakeNullable=true;
+                //bMakeNullable=true;
              }
         }//bGotName
 
@@ -674,7 +674,6 @@ bool XmlTable::applySchema(const QString strInstance, const QString strSchema)
     //Check if files exist, just in case...
     if ( !QFile::exists(strSchema) || !QFile::exists(strInstance)) return false;
 
-    bool errorOccurred;
     QXmlSchema schema;
     schema.load( QUrl(strSchema) );
 
@@ -683,6 +682,8 @@ bool XmlTable::applySchema(const QString strInstance, const QString strSchema)
         MessageHandler messageHandler;
         QXmlSchemaValidator validator( schema );
         validator.setMessageHandler(&messageHandler);
+		
+		bool errorOccurred;
 
         if ( validator.validate( QUrl(strInstance) ) )
             errorOccurred=false;

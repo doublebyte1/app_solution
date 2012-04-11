@@ -1045,7 +1045,7 @@ bool SessionFileParser::characters ( const QString & ch )
     }
 
     return m_bReadingFrameId==false || m_bReadingFrameTimeId==false;
-    return true;
+    //return true;
 }
 
  bool SessionFileParser::fatalError (const QXmlParseException & exception)
