@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Thu 19. Jan 17:30:03 2012
+** Created: Sun 12. Aug 16:36:12 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -15,6 +15,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QComboBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
@@ -24,6 +25,7 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#include <QtGui/QPlainTextEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QStatusBar>
@@ -43,8 +45,10 @@ public:
     QAction *actionCreate_backup;
     QAction *actionRestore_backup;
     QAction *actionShow_SQL_message;
+    QAction *actionDump_patch;
+    QAction *actionApply_patch;
     QWidget *centralWidget;
-    QGridLayout *gridLayout_3;
+    QVBoxLayout *verticalLayout_7;
     QToolBox *toolBox;
     QWidget *page_3;
     QGridLayout *gridLayout;
@@ -89,11 +93,40 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QSpacerItem *horizontalSpacer_2;
     QPushButton *pushApply_2;
+    QWidget *page_2;
+    QVBoxLayout *verticalLayout_6;
+    QGroupBox *groupUsers;
+    QVBoxLayout *verticalLayout_9;
+    QHBoxLayout *horizontalLayout_10;
+    QTableView *tableUsers;
+    QVBoxLayout *verticalLayout_4;
+    QPushButton *pushNewUser;
+    QPushButton *pushEdit;
+    QPushButton *pushRemove_2;
+    QGroupBox *groupUsersDetail;
+    QGridLayout *gridLayout_6;
+    QGridLayout *gridLayout_5;
+    QLabel *label_4;
+    QLabel *label_5;
+    QVBoxLayout *verticalLayout_8;
+    QLineEdit *lineUser;
+    QComboBox *comboRole;
+    QGridLayout *gridLayout_3;
+    QLabel *label_6;
+    QVBoxLayout *verticalLayout_5;
+    QLineEdit *lineUserPassword;
+    QLineEdit *lineUserPassword_2;
+    QLabel *label_8;
+    QLabel *label_7;
+    QSpacerItem *horizontalSpacer_3;
+    QDialogButtonBox *buttonBox;
+    QPlainTextEdit *textUserDesc;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuTools;
     QMenu *menuOptions;
     QMenu *menuBackups;
+    QMenu *menuPatches;
     QToolBar *toolbar;
     QStatusBar *m_statusBar;
 
@@ -101,7 +134,7 @@ public:
     {
         if (conf_appClass->objectName().isEmpty())
             conf_appClass->setObjectName(QString::fromUtf8("conf_appClass"));
-        conf_appClass->resize(514, 400);
+        conf_appClass->resize(555, 397);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/conf_app/conf_app.ico"), QSize(), QIcon::Normal, QIcon::Off);
         conf_appClass->setWindowIcon(icon);
@@ -128,17 +161,21 @@ public:
         actionShow_SQL_message->setObjectName(QString::fromUtf8("actionShow_SQL_message"));
         actionShow_SQL_message->setCheckable(true);
         actionShow_SQL_message->setChecked(true);
+        actionDump_patch = new QAction(conf_appClass);
+        actionDump_patch->setObjectName(QString::fromUtf8("actionDump_patch"));
+        actionApply_patch = new QAction(conf_appClass);
+        actionApply_patch->setObjectName(QString::fromUtf8("actionApply_patch"));
         centralWidget = new QWidget(conf_appClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
-        gridLayout_3 = new QGridLayout(centralWidget);
-        gridLayout_3->setSpacing(6);
-        gridLayout_3->setContentsMargins(11, 11, 11, 11);
-        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        verticalLayout_7 = new QVBoxLayout(centralWidget);
+        verticalLayout_7->setSpacing(6);
+        verticalLayout_7->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_7->setObjectName(QString::fromUtf8("verticalLayout_7"));
         toolBox = new QToolBox(centralWidget);
         toolBox->setObjectName(QString::fromUtf8("toolBox"));
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 496, 251));
+        page_3->setGeometry(QRect(0, 0, 537, 221));
         gridLayout = new QGridLayout(page_3);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -223,7 +260,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 161, 121));
+        page_4->setGeometry(QRect(0, 0, 537, 221));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -287,7 +324,7 @@ public:
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 190, 162));
+        page->setGeometry(QRect(0, 0, 537, 221));
         gridLayout_4 = new QGridLayout(page);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -370,13 +407,177 @@ public:
         gridLayout_4->addWidget(groupTables, 0, 0, 1, 1);
 
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
+        page_2 = new QWidget();
+        page_2->setObjectName(QString::fromUtf8("page_2"));
+        page_2->setGeometry(QRect(0, 0, 521, 308));
+        verticalLayout_6 = new QVBoxLayout(page_2);
+        verticalLayout_6->setSpacing(6);
+        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_6->setObjectName(QString::fromUtf8("verticalLayout_6"));
+        groupUsers = new QGroupBox(page_2);
+        groupUsers->setObjectName(QString::fromUtf8("groupUsers"));
+        verticalLayout_9 = new QVBoxLayout(groupUsers);
+        verticalLayout_9->setSpacing(6);
+        verticalLayout_9->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
+        horizontalLayout_10 = new QHBoxLayout();
+        horizontalLayout_10->setSpacing(6);
+        horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
+        tableUsers = new QTableView(groupUsers);
+        tableUsers->setObjectName(QString::fromUtf8("tableUsers"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(tableUsers->sizePolicy().hasHeightForWidth());
+        tableUsers->setSizePolicy(sizePolicy);
 
-        gridLayout_3->addWidget(toolBox, 0, 0, 1, 1);
+        horizontalLayout_10->addWidget(tableUsers);
+
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        pushNewUser = new QPushButton(groupUsers);
+        pushNewUser->setObjectName(QString::fromUtf8("pushNewUser"));
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/conf_app/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNewUser->setIcon(icon8);
+
+        verticalLayout_4->addWidget(pushNewUser);
+
+        pushEdit = new QPushButton(groupUsers);
+        pushEdit->setObjectName(QString::fromUtf8("pushEdit"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(pushEdit->sizePolicy().hasHeightForWidth());
+        pushEdit->setSizePolicy(sizePolicy1);
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/conf_app/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEdit->setIcon(icon9);
+        pushEdit->setCheckable(true);
+
+        verticalLayout_4->addWidget(pushEdit);
+
+        pushRemove_2 = new QPushButton(groupUsers);
+        pushRemove_2->setObjectName(QString::fromUtf8("pushRemove_2"));
+        sizePolicy1.setHeightForWidth(pushRemove_2->sizePolicy().hasHeightForWidth());
+        pushRemove_2->setSizePolicy(sizePolicy1);
+        pushRemove_2->setIcon(icon7);
+
+        verticalLayout_4->addWidget(pushRemove_2);
+
+
+        horizontalLayout_10->addLayout(verticalLayout_4);
+
+
+        verticalLayout_9->addLayout(horizontalLayout_10);
+
+        groupUsersDetail = new QGroupBox(groupUsers);
+        groupUsersDetail->setObjectName(QString::fromUtf8("groupUsersDetail"));
+        gridLayout_6 = new QGridLayout(groupUsersDetail);
+        gridLayout_6->setSpacing(6);
+        gridLayout_6->setContentsMargins(11, 11, 11, 11);
+        gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
+        gridLayout_5 = new QGridLayout();
+        gridLayout_5->setSpacing(6);
+        gridLayout_5->setObjectName(QString::fromUtf8("gridLayout_5"));
+        label_4 = new QLabel(groupUsersDetail);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        gridLayout_5->addWidget(label_4, 0, 0, 1, 1);
+
+        label_5 = new QLabel(groupUsersDetail);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+
+        gridLayout_5->addWidget(label_5, 1, 0, 1, 1);
+
+
+        gridLayout_6->addLayout(gridLayout_5, 0, 0, 1, 1);
+
+        verticalLayout_8 = new QVBoxLayout();
+        verticalLayout_8->setSpacing(6);
+        verticalLayout_8->setObjectName(QString::fromUtf8("verticalLayout_8"));
+        lineUser = new QLineEdit(groupUsersDetail);
+        lineUser->setObjectName(QString::fromUtf8("lineUser"));
+
+        verticalLayout_8->addWidget(lineUser);
+
+        comboRole = new QComboBox(groupUsersDetail);
+        comboRole->setObjectName(QString::fromUtf8("comboRole"));
+
+        verticalLayout_8->addWidget(comboRole);
+
+
+        gridLayout_6->addLayout(verticalLayout_8, 0, 2, 1, 1);
+
+        gridLayout_3 = new QGridLayout();
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+        label_6 = new QLabel(groupUsersDetail);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+
+        gridLayout_3->addWidget(label_6, 0, 0, 1, 1);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setSpacing(6);
+        verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
+        lineUserPassword = new QLineEdit(groupUsersDetail);
+        lineUserPassword->setObjectName(QString::fromUtf8("lineUserPassword"));
+        lineUserPassword->setEchoMode(QLineEdit::Password);
+
+        verticalLayout_5->addWidget(lineUserPassword);
+
+        lineUserPassword_2 = new QLineEdit(groupUsersDetail);
+        lineUserPassword_2->setObjectName(QString::fromUtf8("lineUserPassword_2"));
+        lineUserPassword_2->setEchoMode(QLineEdit::Password);
+
+        verticalLayout_5->addWidget(lineUserPassword_2);
+
+
+        gridLayout_3->addLayout(verticalLayout_5, 0, 1, 2, 1);
+
+        label_8 = new QLabel(groupUsersDetail);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        gridLayout_3->addWidget(label_8, 1, 0, 1, 1);
+
+
+        gridLayout_6->addLayout(gridLayout_3, 0, 3, 1, 2);
+
+        label_7 = new QLabel(groupUsersDetail);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        gridLayout_6->addWidget(label_7, 1, 0, 1, 1);
+
+        horizontalSpacer_3 = new QSpacerItem(197, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_6->addItem(horizontalSpacer_3, 2, 2, 1, 2);
+
+        buttonBox = new QDialogButtonBox(groupUsersDetail);
+        buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
+        buttonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
+
+        gridLayout_6->addWidget(buttonBox, 2, 4, 1, 1);
+
+        textUserDesc = new QPlainTextEdit(groupUsersDetail);
+        textUserDesc->setObjectName(QString::fromUtf8("textUserDesc"));
+
+        gridLayout_6->addWidget(textUserDesc, 1, 1, 1, 4);
+
+
+        verticalLayout_9->addWidget(groupUsersDetail);
+
+
+        verticalLayout_6->addWidget(groupUsers);
+
+        toolBox->addItem(page_2, QString::fromUtf8("User Management"));
+
+        verticalLayout_7->addWidget(toolBox);
 
         conf_appClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(conf_appClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 514, 18));
+        menuBar->setGeometry(QRect(0, 0, 555, 18));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuTools = new QMenu(menuBar);
@@ -385,6 +586,8 @@ public:
         menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
         menuBackups = new QMenu(menuTools);
         menuBackups->setObjectName(QString::fromUtf8("menuBackups"));
+        menuPatches = new QMenu(menuTools);
+        menuPatches->setObjectName(QString::fromUtf8("menuPatches"));
         conf_appClass->setMenuBar(menuBar);
         toolbar = new QToolBar(conf_appClass);
         toolbar->setObjectName(QString::fromUtf8("toolbar"));
@@ -402,6 +605,10 @@ public:
         label_2->setBuddy(cmbCountry);
         label->setBuddy(cmbCity);
         label_3->setBuddy(cmbTables);
+        label_4->setBuddy(lineUser);
+        label_5->setBuddy(comboRole);
+        label_6->setBuddy(lineUserPassword);
+        label_8->setBuddy(lineUserPassword);
 #endif // QT_NO_SHORTCUT
         QWidget::setTabOrder(lineHost, lineDatabase);
         QWidget::setTabOrder(lineDatabase, lineUsername);
@@ -423,13 +630,17 @@ public:
         menuFile->addAction(actionExit);
         menuTools->addAction(menuOptions->menuAction());
         menuTools->addAction(menuBackups->menuAction());
+        menuTools->addAction(menuPatches->menuAction());
         menuOptions->addAction(actionShow_startup_message);
         menuOptions->addAction(actionShow_SQL_message);
         menuBackups->addAction(actionCreate_backup);
         menuBackups->addAction(actionRestore_backup);
+        menuPatches->addAction(actionDump_patch);
+        menuPatches->addAction(actionApply_patch);
 
         retranslateUi(conf_appClass);
         QObject::connect(actionExit, SIGNAL(triggered()), conf_appClass, SLOT(close()));
+        QObject::connect(actionShow_SQL_message, SIGNAL(triggered(bool)), conf_appClass, SLOT(showSqlMessages(bool)));
         QObject::connect(pushConnect, SIGNAL(clicked()), conf_appClass, SLOT(connectDB()));
         QObject::connect(pushDisconnect, SIGNAL(clicked()), conf_appClass, SLOT(disconnectDB()));
         QObject::connect(cmbCountry, SIGNAL(currentIndexChanged(QString)), conf_appClass, SLOT(filterModel(QString)));
@@ -440,7 +651,8 @@ public:
         QObject::connect(pushInsert, SIGNAL(clicked()), conf_appClass, SLOT(insertRow()));
         QObject::connect(pushRemove, SIGNAL(clicked()), conf_appClass, SLOT(removeRow()));
         QObject::connect(pushApply_2, SIGNAL(clicked()), conf_appClass, SLOT(applyChanges2Table()));
-        QObject::connect(actionShow_SQL_message, SIGNAL(triggered(bool)), conf_appClass, SLOT(showSqlMessages(bool)));
+        QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onButtonClick(QAbstractButton*)));
+        QObject::connect(pushNewUser, SIGNAL(clicked()), conf_appClass, SLOT(createRecord()));
 
         toolBox->setCurrentIndex(0);
 
@@ -469,6 +681,8 @@ public:
         actionRestore_backup->setWhatsThis(QApplication::translate("conf_appClass", "Restores backup from file", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionShow_SQL_message->setText(QApplication::translate("conf_appClass", "Show SQL messages", 0, QApplication::UnicodeUTF8));
+        actionDump_patch->setText(QApplication::translate("conf_appClass", "Dump patch", 0, QApplication::UnicodeUTF8));
+        actionApply_patch->setText(QApplication::translate("conf_appClass", "Apply patch", 0, QApplication::UnicodeUTF8));
         lbHost->setText(QApplication::translate("conf_appClass", "Host", 0, QApplication::UnicodeUTF8));
         lbDataSource->setText(QApplication::translate("conf_appClass", "Database", 0, QApplication::UnicodeUTF8));
         lbUsername->setText(QApplication::translate("conf_appClass", "Username", 0, QApplication::UnicodeUTF8));
@@ -539,10 +753,50 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushApply_2->setText(QApplication::translate("conf_appClass", "Apply", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page), QApplication::translate("conf_appClass", "Edit Tables", 0, QApplication::UnicodeUTF8));
+        groupUsers->setTitle(QString());
+#ifndef QT_NO_TOOLTIP
+        pushNewUser->setToolTip(QApplication::translate("conf_appClass", "Create new user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushNewUser->setStatusTip(QApplication::translate("conf_appClass", "Create new user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushNewUser->setWhatsThis(QApplication::translate("conf_appClass", "Creates new user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushNewUser->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushEdit->setToolTip(QApplication::translate("conf_appClass", "Edit user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushEdit->setStatusTip(QApplication::translate("conf_appClass", "Edit user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushEdit->setWhatsThis(QApplication::translate("conf_appClass", "Edits user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushEdit->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemove_2->setToolTip(QApplication::translate("conf_appClass", "Remove user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemove_2->setStatusTip(QApplication::translate("conf_appClass", "Remove user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemove_2->setWhatsThis(QApplication::translate("conf_appClass", "Removes user", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemove_2->setText(QString());
+        pushRemove_2->setShortcut(QApplication::translate("conf_appClass", "Del", 0, QApplication::UnicodeUTF8));
+        groupUsersDetail->setTitle(QString());
+        label_4->setText(QApplication::translate("conf_appClass", "Name", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("conf_appClass", "Role", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("conf_appClass", "Password", 0, QApplication::UnicodeUTF8));
+        label_8->setText(QApplication::translate("conf_appClass", "Repeat Password", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("conf_appClass", "Description", 0, QApplication::UnicodeUTF8));
+        toolBox->setItemText(toolBox->indexOf(page_2), QApplication::translate("conf_appClass", "User Management", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("conf_appClass", "File", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("conf_appClass", "Tools", 0, QApplication::UnicodeUTF8));
         menuOptions->setTitle(QApplication::translate("conf_appClass", "Options", 0, QApplication::UnicodeUTF8));
         menuBackups->setTitle(QApplication::translate("conf_appClass", "Backups", 0, QApplication::UnicodeUTF8));
+        menuPatches->setTitle(QApplication::translate("conf_appClass", "Patches", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

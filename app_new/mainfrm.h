@@ -196,6 +196,8 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QProcess                *process;
 
     private slots:
+        void                    disableTabs(bool bDisable=true);
+
         void                    setCurHelpId(const QString strHelpId){curHelpId=strHelpId;}
         void                    newTabs();
         void                    navigateThroughTabs(const bool bNext, const int idx);

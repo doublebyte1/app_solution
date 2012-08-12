@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
     //a.setLayoutDirection(Qt::RightToLeft);
 
     //app details
-    a.setApplicationName(QObject::tr("Medfisis"));
+    a.setApplicationName(QObject::tr("FAOFish CAS"));
     a.setOrganizationName(QObject::tr("FAO-FIRF"));
     a.setOrganizationDomain(QObject::tr("http://www.fao.org/"));
-    a.setApplicationVersion(QObject::tr("1.1"));
+    a.setApplicationVersion(QObject::tr("1.2"));
     //a.setApplicationVersion(QObject::tr("-DevBuild_") + QDateTime::currentDateTime().toString());
 
     Login l;

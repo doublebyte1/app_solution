@@ -3,7 +3,7 @@
 #include "frmminorstrata.h"
 
 FrmMinorStrata::FrmMinorStrata(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
-PreviewTab(1, inRoleDef, inSample,inTDateTime,tr("Minor Strata"), ruleCheckerPtr, parent, flags){
+PreviewTab(1, inRoleDef, inSample,inTDateTime,tr("Stratum"), ruleCheckerPtr, parent, flags){
 
     setupUi(this);
 
@@ -73,7 +73,7 @@ void FrmMinorStrata::onHideFrameDetails()
 void FrmMinorStrata::onShowFrameDetails()
 {
     if (!tableView->selectionModel()->hasSelection()){
-        emit showError(tr("You must select one minor strata!"));
+        emit showError(tr("You must select one stratum!"));
         return;
     }
 
@@ -193,7 +193,7 @@ void FrmMinorStrata::previewRow(QModelIndex index)
 
         QModelIndex idx=viewMinorStrata->index(index.row(),0);
         if (!idx.isValid()){
-            emit showError (tr("Could not preview this minor strata!"));
+            emit showError (tr("Could not preview this stratum!"));
             return;
         }
 
@@ -202,13 +202,13 @@ void FrmMinorStrata::previewRow(QModelIndex index)
         //Now fix the dates
         idx=tRefMinorStrata->index(0,1);
         if (!idx.isValid()){
-            emit showError (tr("Could not preview this minor strata!"));
+            emit showError (tr("Could not preview this stratum!"));
             return;
         }
         QString strStartDt=idx.data().toString();
         idx=tRefMinorStrata->index(0,2);
         if (!idx.isValid()){
-            emit showError (tr("Could not preview this minor strata!"));
+            emit showError (tr("Could not preview this stratum!"));
             return;
         }
         QString strEndDt=idx.data().toString();
@@ -375,7 +375,7 @@ bool FrmMinorStrata::reallyApply()
                         if (tRefMinorStrata->lastError().type()!=QSqlError::NoError)
                             emit showError(tRefMinorStrata->lastError().text());
                         else
-                            emit showError(tr("Could not write Minor Strata in the database!"));
+                            emit showError(tr("Could not write stratum in the database!"));
                     }//mapper1->toLast();
                 }else bError=true;
             }
@@ -396,7 +396,7 @@ bool FrmMinorStrata::reallyApply()
                 updateSample();
 
                 QToolTip::showText(toolButton->mapToGlobal(toolButton->pos()), 
-                    tr("You have just initialized a minor strata!\n Now before starting to introduce information, ")
+                    tr("You have just initialized a stratum!\n Now before starting to introduce information, ")
                     + tr("take a moment to have a look at the frame.\n ")
                     + tr("If you wish to do any temporary changes, *please do it NOW*! ")
                     , toolButton);

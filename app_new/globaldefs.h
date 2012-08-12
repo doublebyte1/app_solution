@@ -37,8 +37,7 @@ static const char *strLogbook =
      QT_TRANSLATE_NOOP("frame", "logbook");
 
 static const char *strSampling = 
-     QT_TRANSLATE_NOOP("frame", "Artisanal Fisheries");
-     //QT_TRANSLATE_NOOP("frame", "Sampling");
+     QT_TRANSLATE_NOOP("frame", "Sampling");
 
 static const QString strReportsDir = 
     QDir::currentPath() + QDir::separator() + "reports";

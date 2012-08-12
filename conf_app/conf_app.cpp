@@ -1,5 +1,6 @@
 #include "conf_app.h"
 #include "connection.h"
+#include "sql.h"
 #include <QMessageBox>
 #include <QDir>
 
@@ -9,15 +10,26 @@
 //static const QString strDatabasePath="C:\\medfisis_dat\\";
 static const QString strSqlClient="sqlcmd";
 
+static const QString strViewUsers=
+    "SELECT     dbo.UI_User.ID, dbo.UI_User.username AS Name, dbo.UI_Role.name AS Role"
+    " FROM         dbo.UI_User INNER JOIN"
+    "                      dbo.UI_Role ON dbo.UI_User.role_id = dbo.UI_Role.id WHERE NAME <> 'n/a'"
+;
+
 conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     : QMainWindow(parent, flags)
 {
     setupUi(this);
     m_bConnected=false;
+
     cityModel=0;
     countryModel=0;
     tableModel=0;
+    userModel=0;
+    viewUsers=0;
     myProcess=0;
+    mapperUsers=0;
+    nullDelegate=0;
 
     initUI();
 }
@@ -27,7 +39,11 @@ conf_app::~conf_app()
     //if (QSqlDatabase::database().isOpen()){
         if (cityModel!=0) delete cityModel;
         if (countryModel!=0) delete countryModel;
+        if (userModel!=0) delete userModel;
         if (tableModel!=0) delete tableModel;
+        if (viewUsers!=0) delete viewUsers;
+        if (mapperUsers!=0) delete mapperUsers;
+        if (nullDelegate!=0) delete nullDelegate;
     //}
     if (myProcess!=0 && myProcess->isOpen()){
         myProcess->close();
@@ -55,10 +71,25 @@ void conf_app::initModels()
     }if (countryModel!=0){
         delete countryModel;
         countryModel=0;
+    }if (viewUsers!=0){
+        delete viewUsers;
+        viewUsers=0;
+    }if (userModel!=0){
+        delete userModel;
+        userModel=0;
     }
 
      cityModel = new QSqlQueryModel;
      countryModel = new QSqlQueryModel;
+     userModel = new QSqlRelationalTableModel;
+
+    userModel->setTable(QSqlDatabase().driver()->escapeIdentifier("UI_User",
+    QSqlDriver::TableName));
+    userModel->setRelation(2, QSqlRelation("UI_Role", "id", "name"));
+    userModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    userModel->sort(0,Qt::AscendingOrder);
+    filterTable(userModel->relationModel(2));//removing the n/a*/
+    userModel->select();
 }
 
 void conf_app::doBackup()
@@ -72,7 +103,7 @@ void conf_app::doBackup()
     }
 
     QString fileName = QFileDialog::getSaveFileName(this,
-     tr("Export backup to file"), getBackupName(), tr("Backup Files (*.bak)"));
+     tr("Export backup to file"), getOutputName("bak"), tr("Backup Files (*.bak)"));
 
     if (!fileName.isEmpty()){
 
@@ -111,7 +142,7 @@ void conf_app::doBackup()
     }
 }
 
-QString conf_app::getBackupName()
+QString conf_app::getOutputName(const QString strExt)
 {
     QString str;
     //TODO: Change this to read data directory
@@ -119,7 +150,7 @@ QString conf_app::getBackupName()
     QSettings settings("Medstat", "App");
     if (!settings.contains("database")){
 
-        QMessageBox::critical(this, tr("Backup database"),
+        QMessageBox::critical(this, tr("Output database"),
                                 tr("Can not read database name! Are we connected?"));
         return str;
 
@@ -127,7 +158,7 @@ QString conf_app::getBackupName()
     str+=settings.value("database").toString();
     str+="_";
     str+=QDateTime::currentDateTime().toString("yyyymmddhhmmss");
-    str+=".bak";
+    str+="."+strExt;
     return str;
 }
 
@@ -451,6 +482,75 @@ bool conf_app::runScript(const QString strScript, QStringList& args)
         return true;
 }
 
+void conf_app::doDump()
+{
+    if (!m_bConnected){
+
+             QMessageBox::warning(this, tr("Patch Process"),
+             tr("You must be connected to the database to perform the 'Dump'!")
+             +tr("\n Please connect and try again!"));
+             return;
+    }
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+     tr("Dump patch to file"), getOutputName("diff"), tr("Patch Files (*.diff)"));
+
+    if (!fileName.isEmpty()){
+        qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+        statusShow(tr("Wait..."));
+        if (!writeDiff(fileName)){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
+                tr("Could not write patch file!"),QMessageBox::Ok,0);
+            msgBox.exec();
+            statusShow(tr(""));
+        }else
+                statusShow(tr("Patch saved on ") + fileName);
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+    }
+}
+
+bool conf_app::writeDiff(const QString strFileName)
+{
+
+    int lastUpdate;
+    if (!getLastUpdate(lastUpdate)) return false;
+    QString strJSON;
+    if (!getLastChanges(lastUpdate,strJSON)) return false;
+
+    QFile file(strFileName);
+
+    /*open a file */
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        /* show error message if not able to open file */
+        QMessageBox::warning(0, tr("Read only"), tr("The file is in read only mode"));
+        return false;
+    }
+    else{
+         QTextStream out(&file);
+         out << strJSON;
+         file.close();
+    }
+
+    return true;
+}
+
+void conf_app::doPatch()
+{
+    if (!m_bConnected){
+
+             QMessageBox::warning(this, tr("Patch Process"),
+             tr("You must be connected to the database to apply the 'Patch'!")
+             +tr("\n Please connect and try again!"));
+             return;
+    }
+    //1 - read patch file
+    //2 - parse JSON
+    //3 - backup db (establish rollback mechanism)
+    //4 - apply patches sequentially (establish rollback mechanism)
+    //5 - store the stamp of the last update
+}
+
 void conf_app::initUI()
 {
     toolbar->addAction(this->actionExit);
@@ -468,6 +568,12 @@ void conf_app::initUI()
      connect(actionRestore_backup, SIGNAL(triggered()),this,
         SLOT(doRestore() ),Qt::UniqueConnection);
 
+     connect(actionDump_patch, SIGNAL(triggered()),this,
+        SLOT(doDump() ),Qt::UniqueConnection);
+
+     connect(actionApply_patch, SIGNAL(triggered()),this,
+        SLOT(doPatch() ),Qt::UniqueConnection);
+
     if (QSqlDatabase::drivers().isEmpty())
     QMessageBox::information(this, tr("No database drivers found"),
                              tr("This app requires at least one Qt database driver. "
@@ -479,6 +585,10 @@ void conf_app::initUI()
     pushDisconnect->setEnabled(false);
     groupSettings->setEnabled(false);
     groupTables->setEnabled(false);
+    groupUsers->setEnabled(false);
+
+    groupUsersDetail->setVisible(false);
+    groupUsers->layout()->update();
 
     pushInsert->setEnabled(false);
     pushRemove->setEnabled(true);
@@ -489,8 +599,23 @@ void conf_app::initUI()
     connect(this, SIGNAL(statusShow(const QString)), this,
         SLOT(onStatusShow(const QString)));
 
-    loadSettings(0);
+     connect(toolBox, SIGNAL(currentChanged(int)),this,
+        SLOT(resizeUsersTable(int) ),Qt::UniqueConnection);
 
+     connect(this, SIGNAL(submit(QDataWidgetMapper*, QDialogButtonBox*, QGroupBox*, QSqlQueryModel*,const QString)),this,
+        SLOT(ApplyModel(QDataWidgetMapper*, QDialogButtonBox*, QGroupBox*,QSqlQueryModel*,const QString)),Qt::UniqueConnection);
+
+    connect(this, SIGNAL(lockControls(bool,QGroupBox*)), this,
+    SLOT(onLockControls(bool,QGroupBox*)));
+
+    loadSettings(0);
+}
+
+void conf_app::resizeUsersTable(int index)
+{
+    if (index!=3) return;
+
+    resizeToVisibleColumns(tableUsers);
 }
 
 void conf_app::filterModel(QString strCountry)
@@ -547,16 +672,32 @@ void conf_app::onConnectionChange()
 
 void conf_app::disconnectDB()
 {
-    if (cityModel!=0){
-        delete cityModel;
-        cityModel=0;
-    }if (countryModel!=0){
-        delete countryModel;
-        countryModel=0;
-    }
+qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
-    QSqlDatabase::database().close();
-    QSqlDatabase::removeDatabase("qt_sql_default_connection");
+        if (cityModel!=0){
+            delete cityModel;
+            cityModel=0;
+        }if (countryModel!=0){
+            delete countryModel;
+            countryModel=0;
+        }if (tableModel!=0){
+            delete tableModel;
+            tableModel=0;
+        }if (viewUsers!=0){
+            delete viewUsers;
+            viewUsers=0;
+        }if (userModel!=0){
+            delete userModel;
+            userModel=0;
+        }
+
+    QString strConn;
+        QSqlDatabase db=QSqlDatabase::database();
+        strConn=db.connectionName();
+        db.close();
+        db = QSqlDatabase();
+
+    db.removeDatabase(strConn);
 
     emit statusShow(tr("Connection removed!"));
 
@@ -565,6 +706,9 @@ void conf_app::disconnectDB()
     emit connectionChanged();
     groupSettings->setEnabled(m_bConnected);
     groupTables->setEnabled(m_bConnected);
+    groupUsers->setEnabled(m_bConnected);
+
+qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
 void conf_app::connectDB()
@@ -592,6 +736,11 @@ void conf_app::connectDB()
                 tr("Could not read table list from the database!"),QMessageBox::Ok,0);
             msgBox.exec();
         }
+        if (!initUsers()){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
+                tr("Could not read users from the database!"),QMessageBox::Ok,0);
+            msgBox.exec();
+        }
         loadSettings(1);
         emit statusShow(tr("Connection sucessfully created!"));
     }else{
@@ -611,6 +760,7 @@ void conf_app::connectDB()
     emit connectionChanged();
     groupSettings->setEnabled(m_bConnected);
     groupTables->setEnabled(m_bConnected);
+    groupUsers->setEnabled(m_bConnected);
 }
 
 void conf_app::saveSettings(const int section)
@@ -777,7 +927,6 @@ void conf_app::showTable(const QString strTable)
     pushRemove->setEnabled(true);
     pushApply_2->setEnabled(true);
     tableView->setEnabled(true);
-
 }
 
 void conf_app::insertRow()
@@ -825,9 +974,174 @@ bool conf_app::fillLocations()
     cmbCountry->setModel(countryModel);
     cmbCountry->setModelColumn(1);
 
+
     return (countryModel->rowCount()>0);
 }
 
+bool conf_app::initUsers()
+{
+    viewUsers = new QSqlQueryModel;
+    viewUsers->setHeaderData(1, Qt::Horizontal, tr("Name"));
+    viewUsers->setHeaderData(2, Qt::Horizontal, tr("Role"));
+
+    setPreviewQuery(viewUsers,QString(strViewUsers));
+
+    initPreviewTable(tableUsers,viewUsers);
+
+    if (mapperUsers!=0) {delete mapperUsers; mapperUsers=0;}
+
+    mapperUsers= new QDataWidgetMapper(this);
+    mapperUsers->setModel(userModel);
+    mapperUsers->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+
+    comboRole->setModel(userModel->relationModel(2));
+    comboRole->setModelColumn(userModel->relationModel(2)->fieldIndex("Name"));
+
+    mapperUsers->addMapping(lineUser, userModel->fieldIndex("username"));
+    mapperUsers->addMapping(lineUserPassword, 1);//the other line password is dummy!
+    mapperUsers->addMapping(comboRole, 2);
+    mapperUsers->addMapping(textUserDesc, 4);
+
+    if (nullDelegate!=0) delete nullDelegate;
+    QList<int> lCmb;
+    lCmb << 0 << 1 << 2;
+    QList<int> lText;
+    lText << 4;
+    nullDelegate=new NullRelationalDelegate(lCmb,lText);
+    mapperUsers->setItemDelegate(nullDelegate);
+
+    return true;
+}
+
+void conf_app::genericCreateRecord(QSqlTableModel* aModel)
+{
+    //removing filters
+    if (aModel==0) return ;
+    if (!aModel->filter().isEmpty()) aModel->setFilter(tr(""));
+
+    //if (!discardNewRecord()) return;
+
+    insertRecordIntoModel(aModel);
+}
+
+void conf_app::createRecord()
+{
+    genericCreateRecord(userModel);
+    mapperUsers->toLast();
+    UI4NewUserRecord();//init UI
+}
+
+void conf_app::UI4NewUserRecord()
+{
+    groupUsersDetail->setVisible(true);
+    groupUsersDetail->setEnabled(true);
+
+    buttonBox->button(QDialogButtonBox::Close)->setVisible(false);
+    buttonBox->button(QDialogButtonBox::Apply)->setVisible(true);
+    buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
+
+    lineUser->clear();
+    lineUserPassword->clear();
+    lineUserPassword_2->clear();
+    textUserDesc->clear();
+}
+
+bool conf_app::onButtonClick(QAbstractButton* button)
+{
+    if (buttonBox==0 || groupUsersDetail==0) return false;
+
+    if ( buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
+    {
+        groupUsersDetail->hide();
+        userModel->revertAll();
+        return true;
+
+    } else if (buttonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
+        emit submit(mapperUsers,buttonBox,groupUsersDetail,viewUsers,QString(strViewUsers));
+        return true;
+    }
+    else return false;
+}
+
+bool conf_app::ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+                                                          QSqlQueryModel* viewModel, const QString strQuery)
+{
+    //TODO: Validate here
+    return reallyApplyModel(aMapper,aButtonBox,aGroupBox,viewModel,strQuery);
+}
+
+bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+                                QSqlQueryModel* viewModel, const QString strQuery)
+{
+    bool bError=false;
+
+    if (aMapper->submit()){
+
+        if (qobject_cast<QSqlTableModel*>(aMapper->model())!=0){
+                QSqlTableModel* aModel= qobject_cast<QSqlTableModel*>(aMapper->model());
+                    bError=!
+                        aModel->submitAll();
+                    if (bError){
+                        if (aModel->lastError().type()!=QSqlError::NoError)
+                            qDebug() <<aModel->lastError().text() << endl;
+                        else
+                            qDebug() << tr("Could not write user in the database!") << endl;
+                    }
+                    setPreviewQuery(viewModel,strQuery);
+        }else bError=true;
+    }else bError=true;
+
+    aButtonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
+
+    emit lockControls(!bError,aGroupBox);
+    aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
+
+    return true;
+}
+
+void conf_app::onLockControls(bool bLock,QGroupBox* box)
+{
+    box->setEnabled(!bLock);
+}
+
+void conf_app::setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery)
+{
+    viewModel->setQuery(strQuery)
+}
+
+void conf_app::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
+{
+    aTable->setModel(view);
+/*
+    connect(aTable->selectionModel(), SIGNAL(selectionChanged 
+        (const QItemSelection &, const QItemSelection &)), this,
+            SLOT(onItemSelection()));
+
+    connect(aTable->model(), SIGNAL(rowsInserted ( const QModelIndex, int, int)), this,
+        SLOT(adjustEnables()));
+
+    connect(aTable->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
+        SLOT(adjustEnables()));
+*/
+    aTable->setAlternatingRowColors(true);
+    aTable->verticalHeader()->hide();
+    aTable->setSelectionMode(
+        QAbstractItemView::SingleSelection);
+    aTable->setSelectionBehavior( QAbstractItemView::SelectRows);
+    aTable->horizontalHeader()->setClickable(false);
+    aTable->horizontalHeader()->setFrameStyle(QFrame::NoFrame);
+    aTable->hideColumn(0);
+}
+
+void conf_app::resizeEvent ( QResizeEvent * event )
+{
+    (void) event;
+    if (tableUsers==0) return;
+    resizeToVisibleColumns(tableUsers);
+
+    if (toolBox->currentIndex()==3)
+        groupUsers->layout()->update();
+}
 //////////////////////////////////////////////////////////////////////
 
 bool queryShowStartupMsg()
@@ -846,4 +1160,34 @@ bool queryShowSqlMsg()
         return true;
 
     return settings.value("showSqlMsg").toBool();
+}
+
+void resizeToVisibleColumns ( QTableView* table )
+{
+    int ct=0;
+    if (table->model()!=0){
+        for (int i=0; i < table->model()->columnCount(); ++i)
+            if (!table->isColumnHidden(i)) ++ ct;
+
+        for (int i=0; i < table->model()->columnCount(); ++i)
+            if (!table->isColumnHidden(i))
+                table->setColumnWidth(i,table->width()/ct);
+    }
+}
+
+void filterTable(QSqlTableModel* table)
+{
+    table->setFilter("Name<>'" + qApp->translate("null_replacements", strNa)
+            + "' AND Name<>'" + qApp->translate("bin", strOutside)
+            + "' AND Name<>'" + qApp->translate("null_replacements", strMissing)
+            + "' AND Name<>'" + qApp->translate("null_replacements", strOther)
+            + "' AND Name<>'" + qApp->translate("null_replacements", strUnknown)
+            + "'");
+}
+bool insertRecordIntoModel(QSqlTableModel* m)
+{
+    while(m->canFetchMore())
+        m->fetchMore();
+
+    return m->insertRow(m->rowCount());
 }

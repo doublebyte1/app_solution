@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QtSql>
+#include "nullrelationaldelegate.h"
 #include "ui_frmframedetails.h"
 #include "dragdropmodel.h"
 #include "frameview.h"
@@ -14,7 +15,7 @@
 #define FRMFRAMEDETAILS_H
 
 class QTreeView;
-class NullRelationalDelegate;
+//class NullRelationalDelegate;
 struct Sample;
 class ModelInterface;
 

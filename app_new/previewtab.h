@@ -220,6 +220,7 @@ class PreviewTab : public GenericTab
         virtual void                          initHelpIds()=0; 
 
     signals:
+        void                                  disableTabs(bool bDisable=true);
         void                                  recordRemoved();/**< signal to indicate that a record has been removed from the model (and table view)*/
         void                                  isLogBook(const bool bIsLogbook);/**< signal to indicate if this is a logbook or sampling form*/
         void                                  blockCatchUISignals(const bool bBlock);/**< signal to block/unblock the CatchInputCtrl signals*/

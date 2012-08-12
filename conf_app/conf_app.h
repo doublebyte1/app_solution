@@ -4,6 +4,7 @@
 #include <QtSql>
 #include <QtGui>
 #include "ui_conf_app.h"
+#include "nullrelationaldelegate.h"
 
 #if defined(WIN32) && defined(_DEBUG)
  #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -17,6 +18,10 @@ find out if we need to display the startup msg dialog
 */
 bool                      queryShowStartupMsg();
 bool                      queryShowSqlMsg();
+
+void                      resizeToVisibleColumns ( QTableView* table );
+void                      filterTable(QSqlTableModel* table);
+bool                      insertRecordIntoModel(QSqlTableModel* m);
 
 //! Configure Application Class
 /*!
@@ -37,6 +42,9 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
     signals:
         void                    connectionChanged();//!< Signal to indicate that the connection state changed (connected or disconnected)
         void                    statusShow(const QString str);//!< Signal indicating we want to display a message on the toolbar
+        void                    submit(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+                                            QSqlQueryModel* viewModel, const QString strQuery);
+        void                    lockControls(bool bLock,QGroupBox* box);/**< signal to lock/unlock a list of controls */
         //void                    doneWithProcess();//!< Signal to indicate that the process executed
 
     private slots:
@@ -145,6 +153,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
          \sa doBackup()
         */
         void                    doRestore();
+
+        void                    doDump();
+        void                    doPatch();
+
         //! Read Process Error
         /*!
         This slot connects to the readyReadStandardError() signal of the process launched with sqlcmd;
@@ -172,6 +184,12 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    parseBackupFileInfo();
         void                    showSqlMessages(bool bShow);
         void                    finishedRestore();
+        void                    resizeUsersTable(int index);
+        bool                    onButtonClick(QAbstractButton * button);
+        void                    createRecord();
+        bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+                                            QSqlQueryModel* viewModel, const QString strQuery);
+        void                    onLockControls(bool bLock,QGroupBox* box);
 
     private:
         //! Init UI
@@ -224,18 +242,31 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         to fill the tables combobox, on the UI. It is called right after a connection to the db is established.
          */
         bool                    listTables();
+
+        bool                    initUsers();
+        void                    setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery);
+        void                    UI4NewUserRecord();
+        void                    initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
+        bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+                                            QSqlQueryModel* viewModel, const QString strQuery);
+
         //! Show Event
         /*!
         Reimplemented from the base class.
          */
         void                              showEvent ( QShowEvent * event );
+
+        void                              resizeEvent ( QResizeEvent * event );
         bool                              runScript(const QString strScript, QStringList& args);
         void                              createProcess();
-        QString                           getBackupName();
+        QString                           getOutputName(const QString strExt);
+        bool                              writeDiff(const QString strFileName);
+        void                              genericCreateRecord(QSqlTableModel* aModel);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
         QSqlQueryModel                    *countryModel;//!< Pointer to the country database model (table "Ref_Countries")
+        QSqlRelationalTableModel          *userModel;//!< Pointer to the user database model (table "UI_User")
         QSqlRelationalTableModel*         tableModel;//!< Pointer to a generic table model (any database table)
         QProcess*                          myProcess;//!< Pointer to a process (sqlcmd)
         QString                            m_databaseLogicalName;
@@ -244,6 +275,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         QString                            m_logPath;
         QString                            m_strBackupName;
         bool                               m_bShowSqlMessages;
+
+        QSqlQueryModel*                    viewUsers;
+        QDataWidgetMapper*                 mapperUsers;
+        NullRelationalDelegate*            nullDelegate;
 };
 
 #endif // CONF_APP_H

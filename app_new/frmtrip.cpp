@@ -596,7 +596,7 @@ void FrmTrip::filterModel4Combo()
     if (m_sample->bLogBook){
 
         if (m_sample->minorStrataId==-1){
-            emit showError(tr("Could not identify the minor strata of this frame!"));
+            emit showError(tr("Could not identify the stratum of this frame!"));
             return;
         }
 

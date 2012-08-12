@@ -5,6 +5,7 @@
 #include "globaldefs.h"
 #include "rulechecker.h"
 #include "mapperrulebinder.h"
+#include "nullrelationaldelegate.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -79,44 +80,6 @@ struct Sample{
 
 #endif /\saMPLE_H
 
-//////////////////////////////////////////////////////////////////
-#ifndef NULLRELATIONALDELEGATE_H
-#define NULLRELATIONALDELEGATE_H
-
-//! Null Delegate Class
-/*!
-This class implements a delegate between model and mapper, preventing the controls from going empty;
-because of the comboboxes, it has to derived from QSqlRelationalDelegate
-*/
-
-class NullRelationalDelegate : public QSqlRelationalDelegate
-    {
-        Q_OBJECT
-
-        public:
-            //! A constructor
-            /*!
-               In this constructor, we take two lists, one with the indexes that point
-               to the base class behaviour, and another one (for text fields) for which we actually
-               override the function; in this way, we are able to reuse the Relational SQL
-               Delegate for all situations.
-              \param colsOthers a STL list with columns that use the base class delegate
-              \param colsText a STL list with columns that use special null-handling text delegate
-            */
-            NullRelationalDelegate (QList<int> colsOthers, QList<int> colsText,
-                QObject *parent = 0);
-
-        public:
-            void setEditorData(QWidget *editor, const QModelIndex &index) const;
-            void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-
-        private:
-            QList<int>         m_colsText;
-            QList<int>         m_colsOthers;
-};
-
-#endif //NULLRELATIONALDELEGATE_H
-
 //////////////////////////////////////////////////////////////////////
 #ifndef GENERICTAB_H
 #define GENERICTAB_H
@@ -168,7 +131,7 @@ class GenericTab : public QWidget
     public slots:
         //! Fill header
         /*! This function, uses the pointer to the header label, to fill it with a string;
-          \par str text that we want to display in the label (normally: "logbook" or "Artisanal Fisheries")
+          \par str text that we want to display in the label (normally: "logbook" or "Sampling")
         */
         void                    fillHeader(const QString str){lbHead->setText(str);}
         //! Apply

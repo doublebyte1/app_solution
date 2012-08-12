@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'generictab.h'
 **
-** Created: Fri 6. Apr 10:36:16 2012
+** Created: Sun 12. Aug 17:30:19 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -17,55 +17,6 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_NullRelationalDelegate[] = {
-
- // content:
-       5,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       0,    0, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
-
-       0        // eod
-};
-
-static const char qt_meta_stringdata_NullRelationalDelegate[] = {
-    "NullRelationalDelegate\0"
-};
-
-const QMetaObject NullRelationalDelegate::staticMetaObject = {
-    { &QSqlRelationalDelegate::staticMetaObject, qt_meta_stringdata_NullRelationalDelegate,
-      qt_meta_data_NullRelationalDelegate, 0 }
-};
-
-#ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &NullRelationalDelegate::getStaticMetaObject() { return staticMetaObject; }
-#endif //Q_NO_DATA_RELOCATION
-
-const QMetaObject *NullRelationalDelegate::metaObject() const
-{
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
-}
-
-void *NullRelationalDelegate::qt_metacast(const char *_clname)
-{
-    if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_NullRelationalDelegate))
-        return static_cast<void*>(const_cast< NullRelationalDelegate*>(this));
-    return QSqlRelationalDelegate::qt_metacast(_clname);
-}
-
-int NullRelationalDelegate::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
-{
-    _id = QSqlRelationalDelegate::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-    return _id;
-}
 static const uint qt_meta_data_GenericTab[] = {
 
  // content:

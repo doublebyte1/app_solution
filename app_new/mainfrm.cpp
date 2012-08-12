@@ -671,6 +671,10 @@ void MainFrm::initTabs()
 {
     pFrmFrame=new FrmFrame(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmFrame);
+
+     connect(pFrmFrame, SIGNAL(disableTabs(bool)), this,
+    SLOT(disableTabs(bool)));
+
     pFrmMinorStrata=new FrmMinorStrata(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
     initPreviewTab(pFrmMinorStrata);
     pFrmCell=new FrmCell(m_roleDef,sSample,tDateTime,ruleCheckerPtr);
@@ -777,6 +781,14 @@ void MainFrm::initTabs()
      tabWidget->setCurrentIndex(0);
 
 }
+
+void MainFrm::disableTabs(bool bDisable){
+
+    for (int i=1; i < tabWidget->count(); ++i)
+    tabWidget->setTabEnabled(i,!bDisable);
+
+}
+
 /*
 void MainFrm::rearrangeTabs(bool bLogBook)
 {

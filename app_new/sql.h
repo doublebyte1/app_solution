@@ -1872,5 +1872,74 @@ static bool getNADate(QVariant& outID,QString& strError)
      return true;
 }
 
+static bool getLastUpdate(int& outID)
+{
+    QString strError;
+    QSqlQuery query;
+    query.prepare("SELECT     TOP (1) log_ID FROM         dbo.Info_Patch ORDER BY ID DESC");
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not retrieve ID from last update!");
+         return false;
+        }
+     query.first();
+     outID=query.value(0).toInt();
+     return true;
+}
+
+static bool getLastChanges(const int ID, QString& strJSON)
+{
+    QString strError;
+    QSqlQuery query;
+
+    QString strQuery=
+    "select '\n"
+    "    Change: {\n"
+    "                       \n"
+    "      ID: \"'+CAST([ID] AS VARCHAR(50))+'\",\n"
+    "                       \n"
+    "      Table: \"'+[Table]+'\",\n"
+    "                       \n"
+    "      Column: \"'+[Column]+'\",\n"
+    "                       \n"
+    "      values: {\n"
+    "                       \n"
+    "        from: \"'+[from]+'\",\n"
+    "                       \n"
+    "        to: \"'+[to]+'\"\n"
+    "      }"
+    "                       \n"
+    "      },'\n"
+    "                       \n"
+    "FROM INFO_CHANGES WHERE ID > :id";
+
+    query.prepare(strQuery);
+    query.bindValue(QObject::tr(":id"),ID);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not retrieve ID from last update!");
+         return false;
+        }
+     query.first();
+     int i =0;
+     while (query.next()) {
+        strJSON+=query.value(0).toString();
+        ++i;
+     }
+
+     strJSON=
+     "  Changes: {\n "
+     + strJSON + "\n"
+     "}";
+     return true;
+
+}
+
 #endif
 

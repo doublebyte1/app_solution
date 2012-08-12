@@ -4,7 +4,7 @@
 #include "globaldefs.h"
 
 FrmFrame::FrmFrame(RoleDef* inRoleDef, Sample* inSample, DateModel* inTDateTime, RuleChecker* ruleCheckerPtr, QWidget *parent, Qt::WFlags flags):
-PreviewTab(0,inRoleDef,inSample,inTDateTime,tr("frame"), ruleCheckerPtr, parent,flags){
+PreviewTab(0,inRoleDef,inSample,inTDateTime,tr("Frame"), ruleCheckerPtr, parent,flags){
 
     setupUi(this);
 
@@ -304,6 +304,7 @@ void FrmFrame::onItemSelection()
 {
     //no pusPrevious in this form!
     pushNext->setEnabled(tableView->selectionModel()->hasSelection() && !m_bSampling);
+    emit disableTabs();
 }
 
 void FrmFrame::blockCustomDateCtrls()

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmminorstrata.ui'
 **
-** Created: Mon 23. Jan 10:47:04 2012
+** Created: Sun 12. Aug 17:30:15 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -433,7 +433,7 @@ public:
         frmminorstrata->setWindowTitle(QApplication::translate("frmminorstrata", "Form", 0, QApplication::UnicodeUTF8));
         lbHeader->setText(QApplication::translate("frmminorstrata", "WRITE SOMETHING HERE LATER <---", 0, QApplication::UnicodeUTF8));
         lbSource->setText(QApplication::translate("frmminorstrata", "[SOURCE]", 0, QApplication::UnicodeUTF8));
-        label_6->setText(QApplication::translate("frmminorstrata", "Choose Minor Strata", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("frmminorstrata", "Choose Stratum", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         tableView->setToolTip(QApplication::translate("frmminorstrata", "Choose minor strata (or create new one)", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

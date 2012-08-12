@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>514</width>
-    <height>400</height>
+    <width>555</width>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <normaloff>:/conf_app/conf_app.ico</normaloff>:/conf_app/conf_app.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_3">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
      <widget class="QToolBox" name="toolBox">
       <property name="currentIndex">
        <number>0</number>
@@ -29,8 +29,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>496</width>
-         <height>251</height>
+         <width>537</width>
+         <height>221</height>
         </rect>
        </property>
        <attribute name="label">
@@ -151,8 +151,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>161</width>
-         <height>121</height>
+         <width>537</width>
+         <height>221</height>
         </rect>
        </property>
        <attribute name="label">
@@ -233,8 +233,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>190</width>
-         <height>162</height>
+         <width>537</width>
+         <height>221</height>
         </rect>
        </property>
        <attribute name="label">
@@ -391,6 +391,241 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="page_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>521</width>
+         <height>308</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>User Management</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QGroupBox" name="groupUsers">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QTableView" name="tableUsers">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <widget class="QPushButton" name="pushNewUser">
+                 <property name="toolTip">
+                  <string>Create new user</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Create new user</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Creates new user</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="conf_app.qrc">
+                   <normaloff>:/conf_app/filenew.png</normaloff>:/conf_app/filenew.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushEdit">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Edit user</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Edit user</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Edits user</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="conf_app.qrc">
+                   <normaloff>:/conf_app/pencil.png</normaloff>:/conf_app/pencil.png</iconset>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushRemove_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Remove user</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Remove user</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Removes user</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="conf_app.qrc">
+                   <normaloff>:/conf_app/cancel.png</normaloff>:/conf_app/cancel.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupUsersDetail">
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="0" column="0">
+               <layout class="QGridLayout" name="gridLayout_5">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_4">
+                  <property name="text">
+                   <string>Name</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>lineUser</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>Role</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>comboRole</cstring>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="2">
+               <layout class="QVBoxLayout" name="verticalLayout_8">
+                <item>
+                 <widget class="QLineEdit" name="lineUser"/>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboRole"/>
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="3" colspan="2">
+               <layout class="QGridLayout" name="gridLayout_3">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_6">
+                  <property name="text">
+                   <string>Password</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>lineUserPassword</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1" rowspan="2">
+                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                  <item>
+                   <widget class="QLineEdit" name="lineUserPassword">
+                    <property name="echoMode">
+                     <enum>QLineEdit::Password</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineUserPassword_2">
+                    <property name="echoMode">
+                     <enum>QLineEdit::Password</enum>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_8">
+                  <property name="text">
+                   <string>Repeat Password</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>lineUserPassword</cstring>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Description</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2" colspan="2">
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>197</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="2" column="4">
+               <widget class="QDialogButtonBox" name="buttonBox">
+                <property name="standardButtons">
+                 <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" colspan="4">
+               <widget class="QPlainTextEdit" name="textUserDesc"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -400,7 +635,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>514</width>
+     <width>555</width>
      <height>18</height>
     </rect>
    </property>
@@ -428,8 +663,16 @@
      <addaction name="actionCreate_backup"/>
      <addaction name="actionRestore_backup"/>
     </widget>
+    <widget class="QMenu" name="menuPatches">
+     <property name="title">
+      <string>Patches</string>
+     </property>
+     <addaction name="actionDump_patch"/>
+     <addaction name="actionApply_patch"/>
+    </widget>
     <addaction name="menuOptions"/>
     <addaction name="menuBackups"/>
+    <addaction name="menuPatches"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -514,6 +757,16 @@
     <string>Show SQL messages</string>
    </property>
   </action>
+  <action name="actionDump_patch">
+   <property name="text">
+    <string>Dump patch</string>
+   </property>
+  </action>
+  <action name="actionApply_patch">
+   <property name="text">
+    <string>Apply patch</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
@@ -543,6 +796,22 @@
    <signal>triggered()</signal>
    <receiver>conf_appClass</receiver>
    <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_SQL_message</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>showSqlMessages(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -715,18 +984,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionShow_SQL_message</sender>
-   <signal>triggered(bool)</signal>
+   <sender>buttonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
    <receiver>conf_appClass</receiver>
-   <slot>showSqlMessages(bool)</slot>
+   <slot>onButtonClick(QAbstractButton*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
+     <x>67</x>
+     <y>64</y>
     </hint>
     <hint type="destinationlabel">
-     <x>256</x>
-     <y>199</y>
+     <x>277</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushNewUser</sender>
+   <signal>clicked()</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>createRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>198</y>
     </hint>
    </hints>
   </connection>
@@ -742,5 +1027,7 @@
   <slot>removeRow()</slot>
   <slot>applyChanges2Table()</slot>
   <slot>showSqlMessages(bool)</slot>
+  <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>createRecord()</slot>
  </slots>
 </ui>

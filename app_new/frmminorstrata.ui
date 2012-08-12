@@ -69,7 +69,7 @@ font: 75 10pt &quot;Fixedsys&quot;;</string>
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Choose Minor Strata</string>
+      <string>Choose Stratum</string>
      </property>
      <property name="buddy">
       <cstring>tableView</cstring>
