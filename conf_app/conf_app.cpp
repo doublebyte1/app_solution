@@ -608,7 +608,21 @@ void conf_app::initUI()
     connect(this, SIGNAL(lockControls(bool,QGroupBox*)), this,
     SLOT(onLockControls(bool,QGroupBox*)));
 
+    connect(this, SIGNAL(editLeave(const bool,const bool)), this,
+        SLOT(onEditLeave(const bool,const bool)));
+
     loadSettings(0);
+}
+
+void conf_app::onEditLeave(const bool bFinished, const bool bDiscarded)
+{
+   if (bFinished){
+       //setPreviewQuery(tableModel,strViewUsers);
+       pushEditUser->setChecked(false);
+       pushNewUser->setEnabled(!pushEditUser->isChecked());
+       pushRemoveUser->setEnabled(!pushEditUser->isChecked());
+       emit lockControls(true,groupUsersDetail);
+    }
 }
 
 void conf_app::resizeUsersTable(int index)
@@ -1019,7 +1033,9 @@ void conf_app::genericCreateRecord(QSqlTableModel* aModel)
     if (aModel==0) return ;
     if (!aModel->filter().isEmpty()) aModel->setFilter(tr(""));
 
-    //if (!discardNewRecord()) return;
+    if (!discardNewRecord(aModel)) return;
+
+    if (pushEditUser->isChecked()) pushEditUser->setChecked(false);
 
     insertRecordIntoModel(aModel);
 }
@@ -1094,7 +1110,11 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
     aButtonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
 
     emit lockControls(!bError,aGroupBox);
-    aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
+
+    if (!pushEditUser->isChecked())
+        aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
+
+    if (!bError) emit editLeave(true,false);
 
     return true;
 }
@@ -1106,23 +1126,171 @@ void conf_app::onLockControls(bool bLock,QGroupBox* box)
 
 void conf_app::setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery)
 {
-    viewModel->setQuery(strQuery)
+    viewModel->setQuery(strQuery);
+}
+
+void conf_app::adjustUserEnables()
+{
+    if (!userModel || !pushEditUser || !pushRemoveUser) return;
+
+    pushEditUser->setEnabled(userModel->rowCount()>0);
+    pushRemoveUser->setEnabled(userModel->rowCount()>0);
+}
+
+void conf_app::previewUser(QModelIndex index)
+{
+    QModelIndex idx=index.model()->index(index.row(),0);
+    if (!idx.isValid()){
+        qDebug() << tr("Could not preview this cell!") << endl;
+        return;
+    }
+
+    if (!abstractPreviewRow(index,pushNewUser,pushEditUser,pushRemoveUser,groupUsersDetail,buttonBox,userModel)){
+        qDebug() << tr("Could not preview this record!") << endl;
+    }else{
+        mapperUsers->toLast();
+    }
+}
+
+bool conf_app::discardNewRecord(QSqlTableModel* aModel)
+{
+    QModelIndex dirtyIdx=aModel->index(aModel->rowCount()-1,0);
+
+    if (aModel->isDirty(dirtyIdx)){
+
+        QMessageBox msgBox;
+        msgBox.setText(tr("You are creating a new record."));
+        msgBox.setInformativeText(tr("Are you sure you want to leave and loose all changes?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+
+         switch (ret) {
+           case QMessageBox::Yes:
+                aModel->revertAll();
+                return true;
+               break;
+           case QMessageBox::No:
+                return false;
+               break;
+           default:
+               // should never be reached
+               break;
+         }
+    }
+
+    return true;
+}
+
+bool conf_app::abstractPreviewRow(QModelIndex index,QPushButton* pNew,QPushButton* pEdit,QPushButton* pRem,
+                                  QGroupBox* box,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel)
+{
+    //its on a new record
+    if (!discardNewRecord(aModel)) return false;
+
+    //its on a edit
+    if (pEdit->isChecked()){
+        pEdit->setChecked(false);
+        if (!editUser(false)) return false;
+    }
+
+    box->setVisible(true);
+
+    emit lockControls(true,box);
+    aButtonBox->button(QDialogButtonBox::Apply)->setVisible(false);
+    aButtonBox->button(QDialogButtonBox::Close)->setVisible(true);
+
+    pNew->setEnabled(true);
+    pEdit->setEnabled(true);
+    pRem->setEnabled(true);
+
+    //setting the filter
+    QModelIndex idx=index.model()->index(index.row(),0);
+    if (!idx.isValid()){
+        return false;
+    }
+
+    QString id=idx.data().toString();
+
+    if (qobject_cast<QSqlTableModel*>(aModel)!=0)
+        aModel->setFilter(aModel->tableName()+".ID="+id);
+
+    if (aModel->rowCount()!=1)
+        return false;
+
+    return true;
+}
+
+bool conf_app::editUser(bool on)
+{
+    //removing filters
+    if (userModel==0) return false;
+    if (pushEditUser==0) return false;
+    if (pushNewUser==0) return false;
+    if (pushRemoveUser==0) return false;
+
+    if (!on){
+
+      //lets do this first, and then we decide if we want to turn it off!
+        pushEditUser->setChecked(true);
+
+        QMessageBox msgBox;
+        msgBox.setText(tr("You are modifying a record."));
+        msgBox.setInformativeText(tr("Do you want to save your changes?"));
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+         switch (ret) {
+           case QMessageBox::Save:
+               //ApplyChanges(mapperUsers,buttonBox,groupUsersDetail,userModel,strViewUsers);
+               reallyApplyModel(mapperUsers,buttonBox,groupUsersDetail,viewUsers,strViewUsers);
+               return false;
+           case QMessageBox::Discard:
+               userModel->revertAll();
+               emit editLeave(true,true);
+               break;
+           case QMessageBox::Cancel:
+               pushEditUser->setChecked(true);
+                emit editLeave(false);
+                return true;
+                break;
+           default:
+               // should never be reached
+               break;
+         }
+
+    }else{//Let's force the user to click on the table!
+        if (!tableUsers->selectionModel()->hasSelection() || !groupUsersDetail->isVisible()){
+
+            QMessageBox::critical(this, tr("Edit User"),
+                                    tr("You must select an item to edit!"));
+            return false;
+
+            pushEditUser->setChecked(false);
+            return false;
+        }
+
+        emit editLeave(false);
+    }
+    buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
+    emit lockControls(!on,groupUsersDetail);
+
+    return true;
 }
 
 void conf_app::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
 {
     aTable->setModel(view);
-/*
-    connect(aTable->selectionModel(), SIGNAL(selectionChanged 
-        (const QItemSelection &, const QItemSelection &)), this,
-            SLOT(onItemSelection()));
 
-    connect(aTable->model(), SIGNAL(rowsInserted ( const QModelIndex, int, int)), this,
-        SLOT(adjustEnables()));
+    if (aTable->objectName()=="tableUsers"){
+        connect(aTable->model(), SIGNAL(rowsInserted ( const QModelIndex, int, int)), this,
+            SLOT(adjustUserEnables()));
 
-    connect(aTable->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
-        SLOT(adjustEnables()));
-*/
+        connect(aTable->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
+            SLOT(adjustUserEnables()));
+    }
+
     aTable->setAlternatingRowColors(true);
     aTable->verticalHeader()->hide();
     aTable->setSelectionMode(

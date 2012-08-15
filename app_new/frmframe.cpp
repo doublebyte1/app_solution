@@ -258,7 +258,7 @@ void FrmFrame::previewRow(QModelIndex index)
     }
 
     if (!abstractPreviewRow(index)){
-        emit showError (tr("Could not preview this record!"));
+        qDebug() << tr("Record discarded!") << endl;
     }else{
 
         groupProcess->setEnabled(false);
@@ -303,7 +303,7 @@ void FrmFrame::previewRow(QModelIndex index)
 void FrmFrame::onItemSelection()
 {
     //no pusPrevious in this form!
-    pushNext->setEnabled(tableView->selectionModel()->hasSelection() && !m_bSampling);
+    pushNext->setEnabled(tableView->selectionModel()->hasSelection()/* && !m_bSampling*/);
     emit disableTabs();
 }
 

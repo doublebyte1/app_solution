@@ -46,6 +46,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QSqlQueryModel* viewModel, const QString strQuery);
         void                    lockControls(bool bLock,QGroupBox* box);/**< signal to lock/unlock a list of controls */
         //void                    doneWithProcess();//!< Signal to indicate that the process executed
+        void                     editLeave(const bool bFinished, const bool bDiscarded=false);
 
     private slots:
         //! Show Table
@@ -190,6 +191,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
                                             QSqlQueryModel* viewModel, const QString strQuery);
         void                    onLockControls(bool bLock,QGroupBox* box);
+        void                    adjustUserEnables();
+        void                    previewUser(QModelIndex index);
+        bool                    editUser(bool on);
+        void                    onEditLeave(const bool bFinished, const bool bDiscarded);
 
     private:
         //! Init UI
@@ -249,6 +254,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
         bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
                                             QSqlQueryModel* viewModel, const QString strQuery);
+        bool                    abstractPreviewRow(QModelIndex index,QPushButton* pNew,QPushButton* pEdit,QPushButton* pRem,
+            QGroupBox* box,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel);
 
         //! Show Event
         /*!
@@ -262,6 +269,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         QString                           getOutputName(const QString strExt);
         bool                              writeDiff(const QString strFileName);
         void                              genericCreateRecord(QSqlTableModel* aModel);
+        bool                              discardNewRecord(QSqlTableModel* aModel);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

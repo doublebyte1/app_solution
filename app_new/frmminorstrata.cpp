@@ -120,7 +120,7 @@ bool FrmMinorStrata::applyChanges()
             curStart=mapperStartDt->currentIndex();
             curEnd=mapperEndDt->currentIndex();
 
-            bError=submitDates(mapperStartDt, mapperEndDt);
+            bError=!submitDates(mapperStartDt, mapperEndDt);
 
             if (!bError){
                 mapperStartDt->setCurrentIndex(curStart);

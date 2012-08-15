@@ -151,8 +151,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>537</width>
-         <height>221</height>
+         <width>161</width>
+         <height>121</height>
         </rect>
        </property>
        <attribute name="label">
@@ -233,8 +233,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>537</width>
-         <height>221</height>
+         <width>190</width>
+         <height>162</height>
         </rect>
        </property>
        <attribute name="label">
@@ -395,7 +395,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>0</y>
+         <y>-87</y>
          <width>521</width>
          <height>308</height>
         </rect>
@@ -445,7 +445,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushEdit">
+                <widget class="QPushButton" name="pushEditUser">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -474,7 +474,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushRemove_2">
+                <widget class="QPushButton" name="pushRemoveUser">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -1015,6 +1015,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableUsers</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>previewUser(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>250</x>
+     <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushEditUser</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>editUser(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>connectDB()</slot>
@@ -1029,5 +1061,7 @@
   <slot>showSqlMessages(bool)</slot>
   <slot>onButtonClick(QAbstractButton*)</slot>
   <slot>createRecord()</slot>
+  <slot>previewUser(QModelIndex)</slot>
+  <slot>editUser(bool)</slot>
  </slots>
 </ui>

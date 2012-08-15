@@ -586,7 +586,7 @@ bool FrmCell::applyChanges()
             }
             m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
 
-            bError=submitDates(mapperStartDt, mapperEndDt);
+            bError=!submitDates(mapperStartDt, mapperEndDt);
 
             if (!bError){
                 mapperStartDt->setCurrentIndex(curStart);

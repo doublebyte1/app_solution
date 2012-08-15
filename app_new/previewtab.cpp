@@ -319,10 +319,14 @@ bool PreviewTab::editRecord(bool on)
 
     }else{//Let's force the user to click on the table!
         if (!m_table->selectionModel()->hasSelection() || !m_groupDetails->isVisible()){
+        //if (!m_table->selectionModel()->hasSelection()){
             emit showError(tr("You must select an item to edit!"));
             m_pushEdit->setChecked(false);
             return false;
         }
+
+        //Let's make sure this is visible!
+        //m_groupDetails->setVisible(true);
        //lets disable navigation for now
         if (m_pushNext!=0) m_pushNext->setEnabled(false);
         if (m_pushPrevious!=0) m_pushPrevious->setEnabled(false);
@@ -484,7 +488,8 @@ bool PreviewTab::abstractPreviewRow(QModelIndex index)
         if (!editRecord(false)) return false;
     }
 
-    this->m_groupDetails->setVisible(m_roleDef->bView && !m_groupDetails->isVisible());
+    //this->m_groupDetails->setVisible(m_roleDef->bView && !m_groupDetails->isVisible());
+    this->m_groupDetails->setVisible(m_roleDef->bView);
 
     emit lockControls(true,m_lWidgets);
     m_buttonBox->button(QDialogButtonBox::Apply)->setVisible(false);

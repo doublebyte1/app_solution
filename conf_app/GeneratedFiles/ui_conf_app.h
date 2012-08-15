@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Sun 12. Aug 16:36:12 2012
+** Created: Tue 14. Aug 09:58:45 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -101,8 +101,8 @@ public:
     QTableView *tableUsers;
     QVBoxLayout *verticalLayout_4;
     QPushButton *pushNewUser;
-    QPushButton *pushEdit;
-    QPushButton *pushRemove_2;
+    QPushButton *pushEditUser;
+    QPushButton *pushRemoveUser;
     QGroupBox *groupUsersDetail;
     QGridLayout *gridLayout_6;
     QGridLayout *gridLayout_5;
@@ -260,7 +260,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 537, 221));
+        page_4->setGeometry(QRect(0, 0, 161, 121));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -324,7 +324,7 @@ public:
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 537, 221));
+        page->setGeometry(QRect(0, 0, 190, 162));
         gridLayout_4 = new QGridLayout(page);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -409,7 +409,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 521, 308));
+        page_2->setGeometry(QRect(0, -87, 521, 308));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -444,27 +444,27 @@ public:
 
         verticalLayout_4->addWidget(pushNewUser);
 
-        pushEdit = new QPushButton(groupUsers);
-        pushEdit->setObjectName(QString::fromUtf8("pushEdit"));
+        pushEditUser = new QPushButton(groupUsers);
+        pushEditUser->setObjectName(QString::fromUtf8("pushEditUser"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(pushEdit->sizePolicy().hasHeightForWidth());
-        pushEdit->setSizePolicy(sizePolicy1);
+        sizePolicy1.setHeightForWidth(pushEditUser->sizePolicy().hasHeightForWidth());
+        pushEditUser->setSizePolicy(sizePolicy1);
         QIcon icon9;
         icon9.addFile(QString::fromUtf8(":/conf_app/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushEdit->setIcon(icon9);
-        pushEdit->setCheckable(true);
+        pushEditUser->setIcon(icon9);
+        pushEditUser->setCheckable(true);
 
-        verticalLayout_4->addWidget(pushEdit);
+        verticalLayout_4->addWidget(pushEditUser);
 
-        pushRemove_2 = new QPushButton(groupUsers);
-        pushRemove_2->setObjectName(QString::fromUtf8("pushRemove_2"));
-        sizePolicy1.setHeightForWidth(pushRemove_2->sizePolicy().hasHeightForWidth());
-        pushRemove_2->setSizePolicy(sizePolicy1);
-        pushRemove_2->setIcon(icon7);
+        pushRemoveUser = new QPushButton(groupUsers);
+        pushRemoveUser->setObjectName(QString::fromUtf8("pushRemoveUser"));
+        sizePolicy1.setHeightForWidth(pushRemoveUser->sizePolicy().hasHeightForWidth());
+        pushRemoveUser->setSizePolicy(sizePolicy1);
+        pushRemoveUser->setIcon(icon7);
 
-        verticalLayout_4->addWidget(pushRemove_2);
+        verticalLayout_4->addWidget(pushRemoveUser);
 
 
         horizontalLayout_10->addLayout(verticalLayout_4);
@@ -653,6 +653,8 @@ public:
         QObject::connect(pushApply_2, SIGNAL(clicked()), conf_appClass, SLOT(applyChanges2Table()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onButtonClick(QAbstractButton*)));
         QObject::connect(pushNewUser, SIGNAL(clicked()), conf_appClass, SLOT(createRecord()));
+        QObject::connect(tableUsers, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewUser(QModelIndex)));
+        QObject::connect(pushEditUser, SIGNAL(clicked(bool)), conf_appClass, SLOT(editUser(bool)));
 
         toolBox->setCurrentIndex(0);
 
@@ -765,26 +767,26 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushNewUser->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        pushEdit->setToolTip(QApplication::translate("conf_appClass", "Edit user", 0, QApplication::UnicodeUTF8));
+        pushEditUser->setToolTip(QApplication::translate("conf_appClass", "Edit user", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        pushEdit->setStatusTip(QApplication::translate("conf_appClass", "Edit user", 0, QApplication::UnicodeUTF8));
+        pushEditUser->setStatusTip(QApplication::translate("conf_appClass", "Edit user", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        pushEdit->setWhatsThis(QApplication::translate("conf_appClass", "Edits user", 0, QApplication::UnicodeUTF8));
+        pushEditUser->setWhatsThis(QApplication::translate("conf_appClass", "Edits user", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        pushEdit->setText(QString());
+        pushEditUser->setText(QString());
 #ifndef QT_NO_TOOLTIP
-        pushRemove_2->setToolTip(QApplication::translate("conf_appClass", "Remove user", 0, QApplication::UnicodeUTF8));
+        pushRemoveUser->setToolTip(QApplication::translate("conf_appClass", "Remove user", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        pushRemove_2->setStatusTip(QApplication::translate("conf_appClass", "Remove user", 0, QApplication::UnicodeUTF8));
+        pushRemoveUser->setStatusTip(QApplication::translate("conf_appClass", "Remove user", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        pushRemove_2->setWhatsThis(QApplication::translate("conf_appClass", "Removes user", 0, QApplication::UnicodeUTF8));
+        pushRemoveUser->setWhatsThis(QApplication::translate("conf_appClass", "Removes user", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        pushRemove_2->setText(QString());
-        pushRemove_2->setShortcut(QApplication::translate("conf_appClass", "Del", 0, QApplication::UnicodeUTF8));
+        pushRemoveUser->setText(QString());
+        pushRemoveUser->setShortcut(QApplication::translate("conf_appClass", "Del", 0, QApplication::UnicodeUTF8));
         groupUsersDetail->setTitle(QString());
         label_4->setText(QApplication::translate("conf_appClass", "Name", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("conf_appClass", "Role", 0, QApplication::UnicodeUTF8));
