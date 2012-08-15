@@ -181,6 +181,7 @@ class MainFrm : public QMainWindow, public Ui::MainWindow
         QToolBar*               toolbar;
         RuleChecker*            ruleCheckerPtr;//!< Pointer to a Rule Checker
         InitRulesThread*        workerThread;//!< Thread that initializes the rule containers
+        SessionFileParser       *handler;
 
         enum { MaxRecentFiles = 5 };
         QAction *recentFileActs[MaxRecentFiles];

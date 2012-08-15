@@ -30,6 +30,7 @@ m_roleDef(roleDef),QMainWindow(parent, flags){
     pFrmImportRegions=0;
     process=0;
     curHelpId="";
+    handler=0;
 
     setAttribute( Qt::WA_AlwaysShowToolTips);
     setupUi(this);
@@ -72,6 +73,7 @@ MainFrm::~MainFrm()
     if (tDateTime!=0) delete tDateTime;
     if (sSample!=0) delete sSample;
     if (ruleCheckerPtr!=0) delete ruleCheckerPtr;
+    if (handler!=0) delete handler;
 
     if (process!=0 && process->isOpen()){
         // Make sure we close the process before deleting it;
@@ -261,7 +263,9 @@ bool MainFrm::readXMLFile(const QString strFileName)
 {
     //TODO: add some XML semantic  validation?
 
-    SessionFileParser *handler=new SessionFileParser(sSample);
+    //SessionFileParser *handler=new SessionFileParser(sSample);
+    if (handler!=0) delete handler;
+    handler=new SessionFileParser(sSample);
 
     QFile file( strFileName );
     QXmlInputSource source( &file );
@@ -271,11 +275,11 @@ bool MainFrm::readXMLFile(const QString strFileName)
     reader.setErrorHandler(handler);
 
     if (!reader.parse( source )){
-        delete handler; handler=0;
+        //delete handler; handler=0;
         return false;
     }
 
-    delete handler; handler=0;
+    //delete handler; handler=0;
     return true;
 }
 
@@ -327,7 +331,15 @@ void MainFrm::loadTabs()
                                 break;
                             }
 
-                        if (ct<vTabs.size()-1){
+                            QVector<int>::const_iterator it2;
+                            if (sSample->bLogBook && pTab->title()==tr("Stratum"))
+                                it2=it+3;
+                            else
+                                it2=it+1;
+
+                            //qDebug() << pTab->objectName() << endl;
+                            if (*it2!=-1 && ct<vTabs.size()-1){
+                                //|| (sSample->bLogBook && ( pTab->objectName()){
                              vTabs.at(ct)->setLoading(true);
                              if (!vTabs.at(ct)->next()){
                                 bOk=false;
@@ -553,6 +565,7 @@ bool MainFrm::CreateXMLFile(const QString strFileName)
             stream.writeEndElement();//top
         stream.writeEndDocument();
 
+        file.close();
         return true;
     }
 
