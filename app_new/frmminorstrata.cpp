@@ -188,7 +188,8 @@ void FrmMinorStrata::previewRow(QModelIndex index)
     updateSample(idx);
 
     if (!abstractPreviewRow(index)){
-        emit showError (tr("Could not preview this record!"));
+        qDebug() << tr("Record discarded!") << endl;
+        //emit showError (tr("Could not preview this record!"));
     }else{
 
         QModelIndex idx=viewMinorStrata->index(index.row(),0);

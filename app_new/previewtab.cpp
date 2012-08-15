@@ -330,6 +330,9 @@ bool PreviewTab::editRecord(bool on)
        //lets disable navigation for now
         if (m_pushNext!=0) m_pushNext->setEnabled(false);
         if (m_pushPrevious!=0) m_pushPrevious->setEnabled(false);
+        //and also the other buttons...
+        if (m_pushNew!=0) m_pushNew->setEnabled(false);
+        if (m_pushRemove!=0) m_pushRemove->setEnabled(false);
 
         emit editLeave(false);
     }

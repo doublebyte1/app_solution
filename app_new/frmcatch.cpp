@@ -59,7 +59,8 @@ void FrmCatch::previewRow(QModelIndex index)
     updateSample(idx);
 
     if (!abstractPreviewRow(index)){
-        emit showError (tr("Could not preview this record!"));
+        //emit showError (tr("Could not preview this record!"));
+        qDebug() << tr("Record discarded!") << endl;
     }else{
         mapper1->toLast();
     }

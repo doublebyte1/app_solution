@@ -122,6 +122,8 @@ void FrmFrame::editFinished()
     groupProcess->setEnabled(false);
     //everything went ok, so we can check it off!
     pushEdit->setChecked(false);
+    pushNew->setEnabled(!pushEdit->isChecked());
+    pushRemove->setEnabled(!pushEdit->isChecked());
 }
 
 void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
@@ -134,6 +136,8 @@ void FrmFrame::onEditLeave(const bool bFinished, const bool bDiscarded)
             return;
         }else{
             pushEdit->setChecked(false);
+            pushNew->setEnabled(!pushEdit->isChecked());
+            pushRemove->setEnabled(!pushEdit->isChecked());
         }
     }
     groupProcess->setEnabled(!bFinished);

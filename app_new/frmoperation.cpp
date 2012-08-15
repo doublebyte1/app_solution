@@ -74,7 +74,8 @@ void FrmOperation::previewRow(QModelIndex index)
     updateSample(idx);
 
     if (!abstractPreviewRow(index)){
-        emit showError (tr("Could not preview this record!"));
+        //emit showError (tr("Could not preview this record!"));
+        qDebug() << tr("Record discarded!") << endl;
     }else{
 
         int intId=idx.data().toInt();//for the MultiModelI
