@@ -264,7 +264,7 @@ bool MainFrm::readXMLFile(const QString strFileName)
     //TODO: add some XML semantic  validation?
 
     //SessionFileParser *handler=new SessionFileParser(sSample);
-    if (handler!=0) delete handler;
+    if (handler!=0) {delete handler; handler=0;}
     handler=new SessionFileParser(sSample);
 
     QFile file( strFileName );
@@ -638,6 +638,9 @@ void MainFrm::resetTabs()
         if (pFrmCatch!=0) {delete pFrmCatch; pFrmCatch=0;}
         if (tDateTime!=0) {delete tDateTime; tDateTime=0;}
 
+        //if (sSample!=0) {delete sSample; sSample=0;}
+        //if (ruleCheckerPtr!=0) {delete ruleCheckerPtr; ruleCheckerPtr=0;}
+        if (handler!=0) {delete handler; handler=0;}
 }
 
 void MainFrm::initPreviewTab(PreviewTab* tab)
