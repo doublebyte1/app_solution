@@ -1105,9 +1105,11 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
                         aModel->submitAll();
                     if (bError){
                         if (aModel->lastError().type()!=QSqlError::NoError)
-                            qDebug() <<aModel->lastError().text() << endl;
+                            QMessageBox::critical(this, tr("Database Error"),
+                                                    aModel->lastError().text());
                         else
-                            qDebug() << tr("Could not write user in the database!") << endl;
+                            QMessageBox::critical(this, tr("Database Error"),
+                                                    tr("Could not write user in the database!"));
                     }
                     setPreviewQuery(viewModel,strQuery);
         }else bError=true;
@@ -1149,12 +1151,14 @@ void conf_app::previewUser(QModelIndex index)
 
     QModelIndex idx=index.model()->index(index.row(),0);
     if (!idx.isValid()){
-        qDebug() << tr("Could not preview this cell!") << endl;
+        QMessageBox::critical(this, tr("Preview Error"),
+                                tr("Could not preview this record!"));
         return;
     }
 
     if (!abstractPreviewRow(index,pushNewUser,pushEditUser,pushRemoveUser,groupUsersDetail,buttonBox,userModel)){
-        qDebug() << tr("Could not preview this record!") << endl;
+        QMessageBox::critical(this, tr("Preview Error"),
+                                tr("Could not preview this record!"));
     }else{
         mapperUsers->toLast();
     }
@@ -1295,18 +1299,21 @@ void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBo
                             QSqlQueryModel* viewModel, const QString strQuery)
 {
     if (!aTable->selectionModel()->hasSelection()){
-        qDebug() << tr("You have not selected any record to remove!") << endl;
+        QMessageBox::critical(this, tr("Remove Error"),
+                                tr("You have not selected any record to remove!"));
         return;
     }
 
     if (!aTable->selectionModel()->currentIndex().isValid()){
-        qDebug() << tr("You have not selected a valid record!") << endl;
+        QMessageBox::critical(this, tr("Remove Error"),
+                                tr("You have not selected a valid record!"));
         return;
     }
 
     QModelIndex idx;
     if (!translateIndex(aTable->selectionModel()->currentIndex(),aTable,aModel,idx)){
-        qDebug() << tr("Could not remove this record!") << endl;
+        QMessageBox::critical(this, tr("Remove Error"),
+                                tr("Could not remove this record!"));
         return;
     }
 
@@ -1326,24 +1333,27 @@ void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBo
             if ( !aModel->removeRow(idx.row()) ){
 
                 if (aModel->lastError().type()!=QSqlError::NoError)
-                    qDebug() << aModel->lastError().text() << endl;
+                    QMessageBox::critical(this, tr("Remove Error"),
+                                            aModel->lastError().text());
                 else
-                    qDebug() << tr("Could not remove this record!") << endl;
+                    QMessageBox::critical(this, tr("Remove Error"),
+                                            tr("Could not remove this record!"));
 
             }else{
                 if (!aModel->submitAll()){
 
                     if (aModel->lastError().type()!=QSqlError::NoError)
-                        qDebug() << aModel->lastError().text() << endl;
+                        QMessageBox::critical(this, tr("Remove Error"),
+                                                aModel->lastError().text());
                     else
-                        qDebug() << tr("Could not remove this record!") << endl;
+                        QMessageBox::critical(this, tr("Remove Error"),
+                                                tr("Could not remove this record!"));
 
                 }
                 else{
                     statusShow(tr("Record successfully removed from the database!"));
                     setPreviewQuery(viewModel,strQuery);
-                    /*if (aTable->model()->rowCount()>0) aTable->selectRow(0);//to avoid a selection on a non existent row!
-                    else*/ group->hide();
+                    group->hide();
                 }
             }
 
@@ -1361,19 +1371,17 @@ bool conf_app::translateIndex(const QModelIndex inIdx, QTableView* aTable, QSqlT
 {
     QModelIndex idx=aTable->model()->index(inIdx.row(),0);
     if (!idx.isValid()){
-        qDebug() << tr("Could not preview this row!") << endl;
+
+        QMessageBox::critical(this, tr("Remove Error"),
+                                tr("Could not preview this row!"));
+
         return false;
     }
 
     QModelIndex start=aModel->index(0,3);
     QModelIndexList list=aModel->match(start,0,idx.data(),1,0);
-/*
-    for (int i=0; i < aModel->rowCount(); ++i){
-        qDebug() << aModel->index(i,0).data().toString() << endl;
-        qDebug() << aModel->index(i,1).data().toString() << endl;
-    }
-*/
-    //if (list.count()!=1) return false;
+
+    if (list.count()!=1) return false;
     outIdx=list.at(0);
 
     return true;
