@@ -195,6 +195,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    previewUser(QModelIndex index);
         bool                    editUser(bool on);
         void                    onEditLeave(const bool bFinished, const bool bDiscarded);
+        void                    removeUser();
 
     private:
         //! Init UI
@@ -270,6 +271,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              writeDiff(const QString strFileName);
         void                              genericCreateRecord(QSqlTableModel* aModel);
         bool                              discardNewRecord(QSqlTableModel* aModel);
+        void                              removeRecord(QTableView* aTable,QSqlTableModel* aModel,QGroupBox* group,
+                                                    QSqlQueryModel* viewModel, const QString strQuery);
+        bool                              translateIndex(const QModelIndex inIdx, QTableView* aTable, 
+                                                QSqlTableModel* aModel, QModelIndex& outIdx);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
@@ -287,6 +292,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         QSqlQueryModel*                    viewUsers;
         QDataWidgetMapper*                 mapperUsers;
         NullRelationalDelegate*            nullDelegate;
+        QModelIndex                        m_lastIndex;
 };
 
 #endif // CONF_APP_H

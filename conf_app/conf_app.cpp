@@ -30,6 +30,7 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     myProcess=0;
     mapperUsers=0;
     nullDelegate=0;
+    m_lastIndex=QModelIndex();
 
     initUI();
 }
@@ -617,12 +618,15 @@ void conf_app::initUI()
 void conf_app::onEditLeave(const bool bFinished, const bool bDiscarded)
 {
    if (bFinished){
-       //setPreviewQuery(tableModel,strViewUsers);
        pushEditUser->setChecked(false);
        pushNewUser->setEnabled(!pushEditUser->isChecked());
        pushRemoveUser->setEnabled(!pushEditUser->isChecked());
+        previewUser(m_lastIndex);
        emit lockControls(true,groupUsersDetail);
-    }
+   }else{
+        pushNewUser->setEnabled(false);
+        pushRemoveUser->setEnabled(false);
+   }
 }
 
 void conf_app::resizeUsersTable(int index)
@@ -1036,6 +1040,8 @@ void conf_app::genericCreateRecord(QSqlTableModel* aModel)
     if (!discardNewRecord(aModel)) return;
 
     if (pushEditUser->isChecked()) pushEditUser->setChecked(false);
+    pushEditUser->setEnabled(false);
+    pushRemoveUser->setEnabled(false);
 
     insertRecordIntoModel(aModel);
 }
@@ -1139,6 +1145,8 @@ void conf_app::adjustUserEnables()
 
 void conf_app::previewUser(QModelIndex index)
 {
+    m_lastIndex=index;
+
     QModelIndex idx=index.model()->index(index.row(),0);
     if (!idx.isValid()){
         qDebug() << tr("Could not preview this cell!") << endl;
@@ -1265,7 +1273,6 @@ bool conf_app::editUser(bool on)
 
             QMessageBox::critical(this, tr("Edit User"),
                                     tr("You must select an item to edit!"));
-            return false;
 
             pushEditUser->setChecked(false);
             return false;
@@ -1275,6 +1282,99 @@ bool conf_app::editUser(bool on)
     }
     buttonBox->button(QDialogButtonBox::Close)->setVisible(!on);
     emit lockControls(!on,groupUsersDetail);
+
+    return true;
+}
+
+void conf_app::removeUser()
+{
+    removeRecord(tableUsers,userModel,groupUsersDetail,viewUsers,QString(strViewUsers));
+}
+
+void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBox* group,
+                            QSqlQueryModel* viewModel, const QString strQuery)
+{
+    if (!aTable->selectionModel()->hasSelection()){
+        qDebug() << tr("You have not selected any record to remove!") << endl;
+        return;
+    }
+
+    if (!aTable->selectionModel()->currentIndex().isValid()){
+        qDebug() << tr("You have not selected a valid record!") << endl;
+        return;
+    }
+
+    QModelIndex idx;
+    if (!translateIndex(aTable->selectionModel()->currentIndex(),aTable,aModel,idx)){
+        qDebug() << tr("Could not remove this record!") << endl;
+        return;
+    }
+
+    QModelIndex idName=aTable->model()->index(aTable->selectionModel()->currentIndex().row(),1);
+
+    QMessageBox msgBox;
+    msgBox.setText(tr("You have selected record '") + idName.data().toString() +
+        tr("' for deletion."));
+    msgBox.setInformativeText(tr("Are you sure you want to remove this record and all its dependants?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int ret = msgBox.exec();
+
+     switch (ret) {
+       case QMessageBox::Yes:
+
+            if ( !aModel->removeRow(idx.row()) ){
+
+                if (aModel->lastError().type()!=QSqlError::NoError)
+                    qDebug() << aModel->lastError().text() << endl;
+                else
+                    qDebug() << tr("Could not remove this record!") << endl;
+
+            }else{
+                if (!aModel->submitAll()){
+
+                    if (aModel->lastError().type()!=QSqlError::NoError)
+                        qDebug() << aModel->lastError().text() << endl;
+                    else
+                        qDebug() << tr("Could not remove this record!") << endl;
+
+                }
+                else{
+                    statusShow(tr("Record successfully removed from the database!"));
+                    setPreviewQuery(viewModel,strQuery);
+                    /*if (aTable->model()->rowCount()>0) aTable->selectRow(0);//to avoid a selection on a non existent row!
+                    else*/ group->hide();
+                }
+            }
+
+           break;
+       case QMessageBox::No:
+           return;
+           break;
+       default:
+           // should never be reached
+           break;
+     }
+}
+
+bool conf_app::translateIndex(const QModelIndex inIdx, QTableView* aTable, QSqlTableModel* aModel, QModelIndex& outIdx)
+{
+    QModelIndex idx=aTable->model()->index(inIdx.row(),0);
+    if (!idx.isValid()){
+        qDebug() << tr("Could not preview this row!") << endl;
+        return false;
+    }
+
+    QModelIndex start=aModel->index(0,3);
+    QModelIndexList list=aModel->match(start,0,idx.data(),1,0);
+/*
+    for (int i=0; i < aModel->rowCount(); ++i){
+        qDebug() << aModel->index(i,0).data().toString() << endl;
+        qDebug() << aModel->index(i,1).data().toString() << endl;
+    }
+*/
+    //if (list.count()!=1) return false;
+    outIdx=list.at(0);
 
     return true;
 }

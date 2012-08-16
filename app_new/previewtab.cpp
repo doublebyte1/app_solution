@@ -352,7 +352,7 @@ bool PreviewTab::translateIndex(const QModelIndex inIdx, QModelIndex& outIdx)
     }
 
     QModelIndex start=m_model->index(0,0);
-    QModelIndexList list=m_model->match(start,0,idx.data());
+    QModelIndexList list=m_model->match(start,0,idx.data(),1,0);
 
     if (list.count()!=1) return false;
     outIdx=list.at(0);
@@ -408,15 +408,6 @@ void PreviewTab::removeRecord()
 
                 }
                 else{
-                    /*
-                    QSqlQuery query;
-                    query.prepare("exec reset_all_tables");
-                    if (!query.exec())
-                    {
-                        emit showError(tr("Could not reset tables after removal of ") + m_model->tableName() + tr("!"));
-                        return;
-                    }*/
-
                     showStatus(tr("Record successfully removed from the database!"));
                     setPreviewQuery();
                     emit recordRemoved();

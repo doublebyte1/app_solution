@@ -395,7 +395,7 @@
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>-87</y>
+         <y>0</y>
          <width>521</width>
          <height>308</height>
         </rect>
@@ -1047,6 +1047,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushRemoveUser</sender>
+   <signal>clicked()</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>removeUser()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>198</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>connectDB()</slot>
@@ -1063,5 +1079,6 @@
   <slot>createRecord()</slot>
   <slot>previewUser(QModelIndex)</slot>
   <slot>editUser(bool)</slot>
+  <slot>removeUser()</slot>
  </slots>
 </ui>

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Tue 14. Aug 11:39:18 2012
+** Created: Thu 16. Aug 11:55:35 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_conf_app[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      41,   14, // methods
+      42,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,6 +74,7 @@ static const uint qt_meta_data_conf_app[] = {
      998,  775,    9,    9, 0x08,
     1026, 1023,  803,    9, 0x08,
     1041,  222,    9,    9, 0x08,
+    1064,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -107,6 +108,7 @@ static const char qt_meta_stringdata_conf_app[] = {
     "onLockControls(bool,QGroupBox*)\0"
     "adjustUserEnables()\0previewUser(QModelIndex)\0"
     "on\0editUser(bool)\0onEditLeave(bool,bool)\0"
+    "removeUser()\0"
 };
 
 const QMetaObject conf_app::staticMetaObject = {
@@ -184,9 +186,10 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 39: { bool _r = editUser((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 40: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const bool(*)>(_a[2]))); break;
+        case 41: removeUser(); break;
         default: ;
         }
-        _id -= 41;
+        _id -= 42;
     }
     return _id;
 }
