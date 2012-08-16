@@ -185,16 +185,20 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    parseBackupFileInfo();
         void                    showSqlMessages(bool bShow);
         void                    finishedRestore();
-        void                    resizeUsersTable(int index);
+
         bool                    onButtonClick(QAbstractButton * button);
         void                    createRecord();
         bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
                                             QSqlQueryModel* viewModel, const QString strQuery);
         void                    onLockControls(bool bLock,QGroupBox* box);
+        void                    previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
+                                    QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* group,QDialogButtonBox* buttons,QSqlTableModel* aModel);
+        void                    onEditLeave(const bool bFinished, const bool bDiscarded);
+
+        void                    resizeUsersTable(int index);
         void                    adjustUserEnables();
         void                    previewUser(QModelIndex index);
         bool                    editUser(bool on);
-        void                    onEditLeave(const bool bFinished, const bool bDiscarded);
         void                    removeUser();
 
     private:
@@ -254,7 +258,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    UI4NewUserRecord();
         void                    initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
         bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
-                                            QSqlQueryModel* viewModel, const QString strQuery);
+                                            QSqlQueryModel* viewModel, const QString strQuery,QPushButton* aPushEdit);
         bool                    abstractPreviewRow(QModelIndex index,QPushButton* pNew,QPushButton* pEdit,QPushButton* pRem,
             QGroupBox* box,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel);
 

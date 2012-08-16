@@ -1089,11 +1089,11 @@ bool conf_app::ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonB
                                                           QSqlQueryModel* viewModel, const QString strQuery)
 {
     //TODO: Validate here
-    return reallyApplyModel(aMapper,aButtonBox,aGroupBox,viewModel,strQuery);
+    return reallyApplyModel(aMapper,aButtonBox,aGroupBox,viewModel,strQuery,pushEditUser);
 }
 
 bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
-                                QSqlQueryModel* viewModel, const QString strQuery)
+                                QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit)
 {
     bool bError=false;
 
@@ -1119,7 +1119,7 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
 
     emit lockControls(!bError,aGroupBox);
 
-    if (!pushEditUser->isChecked())
+    if (!aPushEdit->isChecked())
         aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
 
     if (!bError) emit editLeave(true,false);
@@ -1147,6 +1147,12 @@ void conf_app::adjustUserEnables()
 
 void conf_app::previewUser(QModelIndex index)
 {
+    previewRecord(index,mapperUsers,pushNewUser,pushEditUser,pushRemoveUser,groupUsersDetail,buttonBox,userModel);
+}
+
+void conf_app::previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
+                             QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* group,QDialogButtonBox* buttons,QSqlTableModel* aModel)
+{
     m_lastIndex=index;
 
     QModelIndex idx=index.model()->index(index.row(),0);
@@ -1156,7 +1162,7 @@ void conf_app::previewUser(QModelIndex index)
         return;
     }
 
-    if (!abstractPreviewRow(index,pushNewUser,pushEditUser,pushRemoveUser,groupUsersDetail,buttonBox,userModel)){
+    if (!abstractPreviewRow(index,aPushNew,aPushEdit,aPushRemove,group,buttons,aModel)){
         QMessageBox::critical(this, tr("Preview Error"),
                                 tr("Could not preview this record!"));
     }else{
