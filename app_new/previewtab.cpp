@@ -108,7 +108,7 @@ bool PreviewTab::tableSelect(const int id)
     if (m_table==0 || m_table->model()==0) return false;
 
     QModelIndex start=m_table->model()->index(0,0);
-    QModelIndexList list=m_table->model()->match(start,0,id);
+    QModelIndexList list=m_table->model()->match(start,0,id,1,0);
 
     if (list.size()!=1 || !list.at(0).isValid()) return false;
 
