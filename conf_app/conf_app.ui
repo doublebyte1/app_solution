@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>397</height>
+    <width>613</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,8 +29,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>537</width>
-         <height>221</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -391,12 +391,204 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="RolePage">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>595</width>
+         <height>331</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>Role Management</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <item>
+         <widget class="QGroupBox" name="groupRole">
+          <property name="title">
+           <string/>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <item>
+              <widget class="QTableView" name="tableRoles"/>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_10">
+               <item>
+                <widget class="QPushButton" name="pushNewRole">
+                 <property name="toolTip">
+                  <string>Create new role</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Create new role</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Creates new role</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="conf_app.qrc">
+                   <normaloff>:/conf_app/filenew.png</normaloff>:/conf_app/filenew.png</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushEditRole">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Edit role</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Edit role</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Edits role</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="conf_app.qrc">
+                   <normaloff>:/conf_app/pencil.png</normaloff>:/conf_app/pencil.png</iconset>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushRemoveRole">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Remove role</string>
+                 </property>
+                 <property name="statusTip">
+                  <string>Remove role</string>
+                 </property>
+                 <property name="whatsThis">
+                  <string>Removes role</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="conf_app.qrc">
+                   <normaloff>:/conf_app/cancel.png</normaloff>:/conf_app/cancel.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupRoleDetails">
+             <property name="title">
+              <string/>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_7">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>Name</string>
+                </property>
+                <property name="buddy">
+                 <cstring>lineRoleName</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" colspan="2">
+               <widget class="QLineEdit" name="lineRoleName"/>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string>Permissions</string>
+                </property>
+                <property name="buddy">
+                 <cstring>tableView_2</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>Description</string>
+                </property>
+                <property name="buddy">
+                 <cstring>textRoleDesc</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QTableView" name="tableView_2"/>
+              </item>
+              <item row="2" column="2">
+               <widget class="QPlainTextEdit" name="textRoleDesc">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="3">
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <item>
+                 <spacer name="horizontalSpacer_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QDialogButtonBox" name="roleButtonBox">
+                  <property name="standardButtons">
+                   <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="page_2">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>521</width>
+         <width>371</width>
          <height>308</height>
         </rect>
        </property>
@@ -635,7 +827,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>555</width>
+     <width>613</width>
      <height>18</height>
     </rect>
    </property>

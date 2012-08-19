@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Sun 19. Aug 15:53:20 2012
+** Created: Sun 19. Aug 17:53:02 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -93,6 +93,27 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QSpacerItem *horizontalSpacer_2;
     QPushButton *pushApply_2;
+    QWidget *RolePage;
+    QVBoxLayout *verticalLayout_12;
+    QGroupBox *groupRole;
+    QVBoxLayout *verticalLayout_11;
+    QHBoxLayout *horizontalLayout_9;
+    QTableView *tableRoles;
+    QVBoxLayout *verticalLayout_10;
+    QPushButton *pushNewRole;
+    QPushButton *pushEditRole;
+    QPushButton *pushRemoveRole;
+    QGroupBox *groupRoleDetails;
+    QGridLayout *gridLayout_7;
+    QLabel *label_9;
+    QLineEdit *lineRoleName;
+    QLabel *label_11;
+    QLabel *label_10;
+    QTableView *tableView_2;
+    QPlainTextEdit *textRoleDesc;
+    QHBoxLayout *horizontalLayout_8;
+    QSpacerItem *horizontalSpacer_4;
+    QDialogButtonBox *roleButtonBox;
     QWidget *page_2;
     QVBoxLayout *verticalLayout_6;
     QGroupBox *groupUsers;
@@ -134,7 +155,7 @@ public:
     {
         if (conf_appClass->objectName().isEmpty())
             conf_appClass->setObjectName(QString::fromUtf8("conf_appClass"));
-        conf_appClass->resize(555, 397);
+        conf_appClass->resize(613, 534);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/conf_app/conf_app.ico"), QSize(), QIcon::Normal, QIcon::Off);
         conf_appClass->setWindowIcon(icon);
@@ -175,7 +196,7 @@ public:
         toolBox->setObjectName(QString::fromUtf8("toolBox"));
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 537, 221));
+        page_3->setGeometry(QRect(0, 0, 146, 176));
         gridLayout = new QGridLayout(page_3);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -407,9 +428,133 @@ public:
         gridLayout_4->addWidget(groupTables, 0, 0, 1, 1);
 
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
+        RolePage = new QWidget();
+        RolePage->setObjectName(QString::fromUtf8("RolePage"));
+        RolePage->setGeometry(QRect(0, 0, 595, 331));
+        verticalLayout_12 = new QVBoxLayout(RolePage);
+        verticalLayout_12->setSpacing(6);
+        verticalLayout_12->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_12->setObjectName(QString::fromUtf8("verticalLayout_12"));
+        groupRole = new QGroupBox(RolePage);
+        groupRole->setObjectName(QString::fromUtf8("groupRole"));
+        verticalLayout_11 = new QVBoxLayout(groupRole);
+        verticalLayout_11->setSpacing(6);
+        verticalLayout_11->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_11->setObjectName(QString::fromUtf8("verticalLayout_11"));
+        horizontalLayout_9 = new QHBoxLayout();
+        horizontalLayout_9->setSpacing(6);
+        horizontalLayout_9->setObjectName(QString::fromUtf8("horizontalLayout_9"));
+        tableRoles = new QTableView(groupRole);
+        tableRoles->setObjectName(QString::fromUtf8("tableRoles"));
+
+        horizontalLayout_9->addWidget(tableRoles);
+
+        verticalLayout_10 = new QVBoxLayout();
+        verticalLayout_10->setSpacing(6);
+        verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
+        pushNewRole = new QPushButton(groupRole);
+        pushNewRole->setObjectName(QString::fromUtf8("pushNewRole"));
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/conf_app/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNewRole->setIcon(icon8);
+
+        verticalLayout_10->addWidget(pushNewRole);
+
+        pushEditRole = new QPushButton(groupRole);
+        pushEditRole->setObjectName(QString::fromUtf8("pushEditRole"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(pushEditRole->sizePolicy().hasHeightForWidth());
+        pushEditRole->setSizePolicy(sizePolicy);
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/conf_app/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEditRole->setIcon(icon9);
+        pushEditRole->setCheckable(true);
+
+        verticalLayout_10->addWidget(pushEditRole);
+
+        pushRemoveRole = new QPushButton(groupRole);
+        pushRemoveRole->setObjectName(QString::fromUtf8("pushRemoveRole"));
+        sizePolicy.setHeightForWidth(pushRemoveRole->sizePolicy().hasHeightForWidth());
+        pushRemoveRole->setSizePolicy(sizePolicy);
+        pushRemoveRole->setIcon(icon7);
+
+        verticalLayout_10->addWidget(pushRemoveRole);
+
+
+        horizontalLayout_9->addLayout(verticalLayout_10);
+
+
+        verticalLayout_11->addLayout(horizontalLayout_9);
+
+        groupRoleDetails = new QGroupBox(groupRole);
+        groupRoleDetails->setObjectName(QString::fromUtf8("groupRoleDetails"));
+        gridLayout_7 = new QGridLayout(groupRoleDetails);
+        gridLayout_7->setSpacing(6);
+        gridLayout_7->setContentsMargins(11, 11, 11, 11);
+        gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
+        label_9 = new QLabel(groupRoleDetails);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+
+        gridLayout_7->addWidget(label_9, 0, 0, 1, 1);
+
+        lineRoleName = new QLineEdit(groupRoleDetails);
+        lineRoleName->setObjectName(QString::fromUtf8("lineRoleName"));
+
+        gridLayout_7->addWidget(lineRoleName, 0, 1, 1, 2);
+
+        label_11 = new QLabel(groupRoleDetails);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        gridLayout_7->addWidget(label_11, 1, 0, 1, 2);
+
+        label_10 = new QLabel(groupRoleDetails);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        gridLayout_7->addWidget(label_10, 1, 2, 1, 1);
+
+        tableView_2 = new QTableView(groupRoleDetails);
+        tableView_2->setObjectName(QString::fromUtf8("tableView_2"));
+
+        gridLayout_7->addWidget(tableView_2, 2, 0, 1, 2);
+
+        textRoleDesc = new QPlainTextEdit(groupRoleDetails);
+        textRoleDesc->setObjectName(QString::fromUtf8("textRoleDesc"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(textRoleDesc->sizePolicy().hasHeightForWidth());
+        textRoleDesc->setSizePolicy(sizePolicy1);
+
+        gridLayout_7->addWidget(textRoleDesc, 2, 2, 1, 1);
+
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setObjectName(QString::fromUtf8("horizontalLayout_8"));
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_4);
+
+        roleButtonBox = new QDialogButtonBox(groupRoleDetails);
+        roleButtonBox->setObjectName(QString::fromUtf8("roleButtonBox"));
+        roleButtonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
+
+        horizontalLayout_8->addWidget(roleButtonBox);
+
+
+        gridLayout_7->addLayout(horizontalLayout_8, 3, 0, 1, 3);
+
+
+        verticalLayout_11->addWidget(groupRoleDetails);
+
+
+        verticalLayout_12->addWidget(groupRole);
+
+        toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 521, 308));
+        page_2->setGeometry(QRect(0, 0, 371, 308));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -425,11 +570,11 @@ public:
         horizontalLayout_10->setObjectName(QString::fromUtf8("horizontalLayout_10"));
         tableUsers = new QTableView(groupUsers);
         tableUsers->setObjectName(QString::fromUtf8("tableUsers"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(tableUsers->sizePolicy().hasHeightForWidth());
-        tableUsers->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(tableUsers->sizePolicy().hasHeightForWidth());
+        tableUsers->setSizePolicy(sizePolicy2);
 
         horizontalLayout_10->addWidget(tableUsers);
 
@@ -438,21 +583,14 @@ public:
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         pushNewUser = new QPushButton(groupUsers);
         pushNewUser->setObjectName(QString::fromUtf8("pushNewUser"));
-        QIcon icon8;
-        icon8.addFile(QString::fromUtf8(":/conf_app/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushNewUser->setIcon(icon8);
 
         verticalLayout_4->addWidget(pushNewUser);
 
         pushEditUser = new QPushButton(groupUsers);
         pushEditUser->setObjectName(QString::fromUtf8("pushEditUser"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(pushEditUser->sizePolicy().hasHeightForWidth());
-        pushEditUser->setSizePolicy(sizePolicy1);
-        QIcon icon9;
-        icon9.addFile(QString::fromUtf8(":/conf_app/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        sizePolicy.setHeightForWidth(pushEditUser->sizePolicy().hasHeightForWidth());
+        pushEditUser->setSizePolicy(sizePolicy);
         pushEditUser->setIcon(icon9);
         pushEditUser->setCheckable(true);
 
@@ -460,8 +598,8 @@ public:
 
         pushRemoveUser = new QPushButton(groupUsers);
         pushRemoveUser->setObjectName(QString::fromUtf8("pushRemoveUser"));
-        sizePolicy1.setHeightForWidth(pushRemoveUser->sizePolicy().hasHeightForWidth());
-        pushRemoveUser->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(pushRemoveUser->sizePolicy().hasHeightForWidth());
+        pushRemoveUser->setSizePolicy(sizePolicy);
         pushRemoveUser->setIcon(icon7);
 
         verticalLayout_4->addWidget(pushRemoveUser);
@@ -577,7 +715,7 @@ public:
         conf_appClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(conf_appClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 555, 18));
+        menuBar->setGeometry(QRect(0, 0, 613, 18));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuTools = new QMenu(menuBar);
@@ -605,6 +743,9 @@ public:
         label_2->setBuddy(cmbCountry);
         label->setBuddy(cmbCity);
         label_3->setBuddy(cmbTables);
+        label_9->setBuddy(lineRoleName);
+        label_11->setBuddy(tableView_2);
+        label_10->setBuddy(textRoleDesc);
         label_4->setBuddy(lineUser);
         label_5->setBuddy(comboRole);
         label_6->setBuddy(lineUserPassword);
@@ -657,7 +798,7 @@ public:
         QObject::connect(pushEditUser, SIGNAL(clicked(bool)), conf_appClass, SLOT(editUser(bool)));
         QObject::connect(pushRemoveUser, SIGNAL(clicked()), conf_appClass, SLOT(removeUser()));
 
-        toolBox->setCurrentIndex(0);
+        toolBox->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(conf_appClass);
@@ -756,6 +897,43 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushApply_2->setText(QApplication::translate("conf_appClass", "Apply", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page), QApplication::translate("conf_appClass", "Edit Tables", 0, QApplication::UnicodeUTF8));
+        groupRole->setTitle(QString());
+#ifndef QT_NO_TOOLTIP
+        pushNewRole->setToolTip(QApplication::translate("conf_appClass", "Create new role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushNewRole->setStatusTip(QApplication::translate("conf_appClass", "Create new role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushNewRole->setWhatsThis(QApplication::translate("conf_appClass", "Creates new role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushNewRole->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushEditRole->setToolTip(QApplication::translate("conf_appClass", "Edit role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushEditRole->setStatusTip(QApplication::translate("conf_appClass", "Edit role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushEditRole->setWhatsThis(QApplication::translate("conf_appClass", "Edits role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushEditRole->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        pushRemoveRole->setToolTip(QApplication::translate("conf_appClass", "Remove role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        pushRemoveRole->setStatusTip(QApplication::translate("conf_appClass", "Remove role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        pushRemoveRole->setWhatsThis(QApplication::translate("conf_appClass", "Removes role", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        pushRemoveRole->setText(QString());
+        pushRemoveRole->setShortcut(QApplication::translate("conf_appClass", "Del", 0, QApplication::UnicodeUTF8));
+        groupRoleDetails->setTitle(QString());
+        label_9->setText(QApplication::translate("conf_appClass", "Name", 0, QApplication::UnicodeUTF8));
+        label_11->setText(QApplication::translate("conf_appClass", "Permissions", 0, QApplication::UnicodeUTF8));
+        label_10->setText(QApplication::translate("conf_appClass", "Description", 0, QApplication::UnicodeUTF8));
+        toolBox->setItemText(toolBox->indexOf(RolePage), QApplication::translate("conf_appClass", "Role Management", 0, QApplication::UnicodeUTF8));
         groupUsers->setTitle(QString());
 #ifndef QT_NO_TOOLTIP
         pushNewUser->setToolTip(QApplication::translate("conf_appClass", "Create new user", 0, QApplication::UnicodeUTF8));
