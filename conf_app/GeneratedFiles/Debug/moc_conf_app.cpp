@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Sun 19. Aug 16:07:13 2012
+** Created: Sun 19. Aug 16:20:57 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -33,58 +33,58 @@ static const uint qt_meta_data_conf_app[] = {
  // signals: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x05,
       34,   30,    9,    9, 0x05,
-     140,   54,    9,    9, 0x05,
-     285,  275,    9,    9, 0x05,
-     399,  315,    9,    9, 0x05,
-     596,  523,    9,    9, 0x25,
-     777,  715,    9,    9, 0x25,
-     933,  878,    9,    9, 0x25,
-    1065, 1018,    9,    9, 0x25,
-    1172, 1131,    9,    9, 0x25,
-    1256, 1227,    9,    9, 0x25,
-    1318, 1298,    9,    9, 0x25,
-    1357, 1347,    9,    9, 0x25,
+     144,   54,    9,    9, 0x05,
+     299,  279,    9,    9, 0x05,
+     421,  329,    9,    9, 0x05,
+     626,  545,    9,    9, 0x25,
+     815,  745,    9,    9, 0x25,
+     979,  916,    9,    9, 0x25,
+    1119, 1064,    9,    9, 0x25,
+    1226, 1185,    9,    9, 0x25,
+    1310, 1281,    9,    9, 0x25,
+    1372, 1352,    9,    9, 0x25,
+    1411, 1401,    9,    9, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-    1382, 1373,    9,    9, 0x08,
-    1401,    9,    9,    9, 0x08,
-    1422,    9,    9,    9, 0x08,
-    1434,    9,    9,    9, 0x08,
-    1449,    9,    9,    9, 0x08,
-    1470,   30,    9,    9, 0x08,
-    1503, 1492,    9,    9, 0x08,
-    1524,    9,    9,    9, 0x08,
-    1532,    9,    9,    9, 0x08,
-    1554, 1546,    9,    9, 0x08,
-    1584, 1578,    9,    9, 0x08,
-    1607,    9,    9,    9, 0x08,
-    1619,    9,    9,    9, 0x08,
-    1631,    9,    9,    9, 0x08,
-    1642,    9,    9,    9, 0x08,
-    1654,    9,    9,    9, 0x08,
-    1663,    9,    9,    9, 0x08,
+    1436, 1427,    9,    9, 0x08,
+    1455,    9,    9,    9, 0x08,
+    1476,    9,    9,    9, 0x08,
+    1488,    9,    9,    9, 0x08,
+    1503,    9,    9,    9, 0x08,
+    1524,   30,    9,    9, 0x08,
+    1557, 1546,    9,    9, 0x08,
+    1578,    9,    9,    9, 0x08,
+    1586,    9,    9,    9, 0x08,
+    1608, 1600,    9,    9, 0x08,
+    1638, 1632,    9,    9, 0x08,
+    1661,    9,    9,    9, 0x08,
     1673,    9,    9,    9, 0x08,
-    1692,    9,    9,    9, 0x08,
-    1712,    9,    9,    9, 0x08,
-    1730,    9,    9,    9, 0x08,
-    1753,    9,    9,    9, 0x08,
-    1767,    9,    9,    9, 0x08,
-    1796,    9,    9,    9, 0x08,
-    1818, 1578,    9,    9, 0x08,
-    1840,    9,    9,    9, 0x08,
-    1870, 1863, 1858,    9, 0x08,
-    1999, 1906, 1858,    9, 0x08,
-    2158,    9,    9,    9, 0x08,
-    2177,   54, 1858,    9, 0x08,
-    2316,  275,    9,    9, 0x08,
-    2417, 2348,    9,    9, 0x08,
-    2547,  315,    9,    9, 0x08,
-    2679, 2673,    9,    9, 0x08,
-    2701,    9,    9,    9, 0x08,
-    2721, 2673,    9,    9, 0x08,
-    2838, 2746, 1858,    9, 0x08,
-    2997, 2994, 1858,    9, 0x08,
-    3012,    9,    9,    9, 0x08,
+    1685,    9,    9,    9, 0x08,
+    1696,    9,    9,    9, 0x08,
+    1708,    9,    9,    9, 0x08,
+    1717,    9,    9,    9, 0x08,
+    1727,    9,    9,    9, 0x08,
+    1746,    9,    9,    9, 0x08,
+    1766,    9,    9,    9, 0x08,
+    1784,    9,    9,    9, 0x08,
+    1807,    9,    9,    9, 0x08,
+    1821,    9,    9,    9, 0x08,
+    1850,    9,    9,    9, 0x08,
+    1872, 1632,    9,    9, 0x08,
+    1894,    9,    9,    9, 0x08,
+    1924, 1917, 1912,    9, 0x08,
+    2057, 1960, 1912,    9, 0x08,
+    2216,    9,    9,    9, 0x08,
+    2235,   54, 1912,    9, 0x08,
+    2374,  279,    9,    9, 0x08,
+    2483, 2406,    9,    9, 0x08,
+    2613,  329,    9,    9, 0x08,
+    2745, 2739,    9,    9, 0x08,
+    2767,    9,    9,    9, 0x08,
+    2787, 2739,    9,    9, 0x08,
+    2912, 2812, 1912,    9, 0x08,
+    3071, 3068, 1912,    9, 0x08,
+    3086,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -92,26 +92,26 @@ static const uint qt_meta_data_conf_app[] = {
 static const char qt_meta_stringdata_conf_app[] = {
     "conf_app\0\0connectionChanged()\0str\0"
     "statusShow(QString)\0"
-    "aMapper,aButtonBox,aGroupBox,viewModel,strQuery,aPushEdit,aPushNew,aPu"
-    "shRemove,aModel\0"
+    "aMapper,aButtonBox,aGroupDetails,viewModel,strQuery,aPushEdit,aPushNew"
+    ",aPushRemove,aModel\0"
     "submit(QDataWidgetMapper*,QDialogButtonBox*,QGroupBox*,QSqlQueryModel*"
     ",QString,QPushButton*,QPushButton*,QPushButton*,QSqlTableModel*)\0"
-    "bLock,box\0lockControls(bool,QGroupBox*)\0"
-    "bFinished,aPushEdit,aPushNew,aPushRemove,group,aMapper,aModel,aButtonB"
-    "ox,bDiscarded\0"
+    "bLock,aGroupDetails\0lockControls(bool,QGroupBox*)\0"
+    "bFinished,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,"
+    "aButtonBox,bDiscarded\0"
     "editLeave(bool,QPushButton*,QPushButton*,QPushButton*,QGroupBox*,QData"
     "WidgetMapper*,QSqlTableModel*,QDialogButtonBox*,bool)\0"
-    "bFinished,aPushEdit,aPushNew,aPushRemove,group,aMapper,aModel,aButtonB"
-    "ox\0"
+    "bFinished,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,"
+    "aButtonBox\0"
     "editLeave(bool,QPushButton*,QPushButton*,QPushButton*,QGroupBox*,QData"
     "WidgetMapper*,QSqlTableModel*,QDialogButtonBox*)\0"
-    "bFinished,aPushEdit,aPushNew,aPushRemove,group,aMapper,aModel\0"
+    "bFinished,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel\0"
     "editLeave(bool,QPushButton*,QPushButton*,QPushButton*,QGroupBox*,QData"
     "WidgetMapper*,QSqlTableModel*)\0"
-    "bFinished,aPushEdit,aPushNew,aPushRemove,group,aMapper\0"
+    "bFinished,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper\0"
     "editLeave(bool,QPushButton*,QPushButton*,QPushButton*,QGroupBox*,QData"
     "WidgetMapper*)\0"
-    "bFinished,aPushEdit,aPushNew,aPushRemove,group\0"
+    "bFinished,aPushEdit,aPushNew,aPushRemove,aGroupDetails\0"
     "editLeave(bool,QPushButton*,QPushButton*,QPushButton*,QGroupBox*)\0"
     "bFinished,aPushEdit,aPushNew,aPushRemove\0"
     "editLeave(bool,QPushButton*,QPushButton*,QPushButton*)\0"
@@ -133,8 +133,8 @@ static const char qt_meta_stringdata_conf_app[] = {
     "parseBackupFileInfo()\0showSqlMessages(bool)\0"
     "finishedRestore()\0bool\0button\0"
     "onUserButtonClick(QAbstractButton*)\0"
-    "button,aButtonBox,aMapper,aGroupBox,viewModel,strQuery,aPushEdit,aPush"
-    "New,aPushRemove,aModel\0"
+    "button,aButtonBox,aMapper,aGroupDetails,viewModel,strQuery,aPushEdit,a"
+    "PushNew,aPushRemove,aModel\0"
     "onButtonClick(QAbstractButton*,QDialogButtonBox*,QDataWidgetMapper*,QG"
     "roupBox*,QSqlQueryModel*,QString,QPushButton*,QPushButton*,QPushButton"
     "*,QSqlTableModel*)\0"
@@ -142,15 +142,16 @@ static const char qt_meta_stringdata_conf_app[] = {
     "ApplyModel(QDataWidgetMapper*,QDialogButtonBox*,QGroupBox*,QSqlQueryMo"
     "del*,QString,QPushButton*,QPushButton*,QPushButton*,QSqlTableModel*)\0"
     "onLockControls(bool,QGroupBox*)\0"
-    "index,aMapper,aPushNew,aPushEdit,aPushRemove,group,aButtonBox,aModel\0"
+    "index,aMapper,aPushNew,aPushEdit,aPushRemove,aGroupDetails,aButtonBox,"
+    "aModel\0"
     "previewRecord(QModelIndex,QDataWidgetMapper*,QPushButton*,QPushButton*"
     ",QPushButton*,QGroupBox*,QDialogButtonBox*,QSqlTableModel*)\0"
     "onEditLeave(bool,QPushButton*,QPushButton*,QPushButton*,QGroupBox*,QDa"
     "taWidgetMapper*,QSqlTableModel*,QDialogButtonBox*,bool)\0"
     "index\0resizeUsersTable(int)\0"
     "adjustUserEnables()\0previewUser(QModelIndex)\0"
-    "on,aModel,aPushEdit,aPushNew,aPushRemove,group,aButtonBox,aMapper,view"
-    "Model,strQuery,aTable\0"
+    "on,aModel,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aButtonBox,aMap"
+    "per,viewModel,strQuery,aTable\0"
     "editRecord(bool,QSqlTableModel*,QPushButton*,QPushButton*,QPushButton*"
     ",QGroupBox*,QDialogButtonBox*,QDataWidgetMapper*,QSqlQueryModel*,QStri"
     "ng,QTableView*)\0"

@@ -618,18 +618,18 @@ void conf_app::initUI()
 }
 
 void conf_app::onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushButton* aPushNew,
-                           QPushButton* aPushRemove,QGroupBox* group,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,QDialogButtonBox* aButtonBox, const bool bDiscarded)
+                           QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,QDialogButtonBox* aButtonBox, const bool bDiscarded)
 {
 
-    if (aPushEdit==0 || aPushNew==0 || aPushRemove==0 || group==0 || aMapper==0 || aModel==0 || aButtonBox==0)
+    if (aPushEdit==0 || aPushNew==0 || aPushRemove==0 || aGroupDetails==0 || aMapper==0 || aModel==0 || aButtonBox==0)
         return;
 
    if (bFinished){
        aPushEdit->setChecked(false);
        aPushNew->setEnabled(!pushEditUser->isChecked());
        aPushRemove->setEnabled(!aPushEdit->isChecked());
-        previewRecord(m_lastIndex,aMapper,aPushNew,aPushEdit,aPushRemove,group,aButtonBox,aModel);
-       emit lockControls(true,group);
+        previewRecord(m_lastIndex,aMapper,aPushNew,aPushEdit,aPushRemove,aGroupDetails,aButtonBox,aModel);
+       emit lockControls(true,aGroupDetails);
    }else{
         aPushNew->setEnabled(false);
         aPushRemove->setEnabled(false);
@@ -1069,7 +1069,7 @@ void conf_app::createUserRecord()
     textUserDesc->clear();
 }
 
-void conf_app::createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, QGroupBox* aGroup,QDialogButtonBox* aButtonBox)
+void conf_app::createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox)
 {
     if (!genericCreateRecord(aModel)){
         QMessageBox::critical(this, tr("Record Error"),
@@ -1078,13 +1078,13 @@ void conf_app::createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, Q
     }
 
     aMapper->toLast();
-    UI4NewRecord(aGroup,aButtonBox);//init UI
+    UI4NewRecord(aGroupDetails,aButtonBox);//init UI
 }
 
-void conf_app::UI4NewRecord(QGroupBox* group,QDialogButtonBox* aButtonBox)
+void conf_app::UI4NewRecord(QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox)
 {
-    group->setVisible(true);
-    group->setEnabled(true);
+    aGroupDetails->setVisible(true);
+    aGroupDetails->setEnabled(true);
 
     aButtonBox->button(QDialogButtonBox::Close)->setVisible(false);
     aButtonBox->button(QDialogButtonBox::Apply)->setVisible(true);
@@ -1097,30 +1097,30 @@ bool conf_app::onUserButtonClick(QAbstractButton* button)
         strViewUsers,pushEditUser,pushNewUser,pushRemoveUser,userModel);
 }
 
-bool conf_app::onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupBox,
+bool conf_app::onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
                               QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                               QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel)
 {
     if ( aButtonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
-        aGroupBox->hide();
+        aGroupDetails->hide();
         userModel->revertAll();
         return true;
 
     } else if (aButtonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
-        emit submit(aMapper,aButtonBox,aGroupBox,viewModel,strQuery,aPushEdit,aPushNew,
+        emit submit(aMapper,aButtonBox,aGroupDetails,viewModel,strQuery,aPushEdit,aPushNew,
             aPushRemove,aModel);
         return true;
     }
     else return false;
 }
 
-bool conf_app::ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+bool conf_app::ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                               QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                               QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel)
 {
     if (validate(aModel))
-        return reallyApplyModel(aMapper,aButtonBox,aGroupBox,viewModel,strQuery,aPushEdit,aPushNew,aPushRemove,aModel);
+        return reallyApplyModel(aMapper,aButtonBox,aGroupDetails,viewModel,strQuery,aPushEdit,aPushNew,aPushRemove,aModel);
     else{
         return false;
     }
@@ -1167,7 +1167,7 @@ bool conf_app::validate(const QSqlTableModel* aModel)
     return bOk;
 }
 
-bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                 QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,QPushButton* aPushNew,
                                 QPushButton* aPushRemove, QSqlTableModel* aModel)
 {
@@ -1193,19 +1193,19 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
 
     aButtonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
 
-    emit lockControls(!bError,aGroupBox);
+    emit lockControls(!bError,aGroupDetails);
 
     if (!aPushEdit->isChecked())
         aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
 
-    if (!bError) emit editLeave(true,aPushEdit,aPushNew,aPushRemove,aGroupBox,aMapper,aModel,aButtonBox,false);
+    if (!bError) emit editLeave(true,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,aButtonBox,false);
 
     return true;
 }
 
-void conf_app::onLockControls(bool bLock,QGroupBox* box)
+void conf_app::onLockControls(bool bLock,QGroupBox* aGroupDetails)
 {
-    box->setEnabled(!bLock);
+    aGroupDetails->setEnabled(!bLock);
 }
 
 void conf_app::setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery)
@@ -1227,7 +1227,7 @@ void conf_app::previewUser(QModelIndex index)
 }
 
 void conf_app::previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
-                             QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* group,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel)
+                             QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel)
 {
     if (!index.isValid()) return;
 
@@ -1240,7 +1240,7 @@ void conf_app::previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,
         return;
     }
 
-    if (abstractPreviewRow(index,aPushNew,aPushEdit,aPushRemove,group,aButtonBox,aModel)){
+    if (abstractPreviewRow(index,aPushNew,aPushEdit,aPushRemove,aGroupDetails,aButtonBox,aModel)){
         aMapper->toLast();
     }
 }
@@ -1276,7 +1276,7 @@ bool conf_app::discardNewRecord(QSqlTableModel* aModel)
 }
 
 bool conf_app::abstractPreviewRow(QModelIndex index,QPushButton* pNew,QPushButton* pEdit,QPushButton* pRem,
-                                  QGroupBox* box,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel)
+                                  QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel)
 {
     bool bOk=true;
 
@@ -1289,9 +1289,9 @@ bool conf_app::abstractPreviewRow(QModelIndex index,QPushButton* pNew,QPushButto
         if (!editUser(false)) bOk=false;
     }
 
-    box->setVisible(true);
+    aGroupDetails->setVisible(true);
 
-    emit lockControls(true,box);
+    emit lockControls(true,aGroupDetails);
     aButtonBox->button(QDialogButtonBox::Apply)->setVisible(false);
     aButtonBox->button(QDialogButtonBox::Close)->setVisible(true);
 
@@ -1327,7 +1327,7 @@ bool conf_app::editUser(bool on)
 }
 
 bool conf_app::editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
-                          QPushButton* aPushRemove,QGroupBox* group,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
+                          QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
                           QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable)
 {
     if (!on){
@@ -1344,15 +1344,15 @@ bool conf_app::editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPus
 
          switch (ret) {
            case QMessageBox::Save:
-               ApplyModel(aMapper,aButtonBox,group,viewUsers,strViewUsers,aPushEdit,aPushNew,aPushRemove,aModel);
+               ApplyModel(aMapper,aButtonBox,aGroupDetails,viewUsers,strViewUsers,aPushEdit,aPushNew,aPushRemove,aModel);
                return false;
            case QMessageBox::Discard:
                aModel->revertAll();
-               emit editLeave(true,aPushEdit,aPushNew,aPushRemove,group,aMapper,aModel,aButtonBox,true);
+               emit editLeave(true,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,aButtonBox,true);
                break;
            case QMessageBox::Cancel:
                aPushEdit->setChecked(true);
-                emit editLeave(false,aPushEdit,aPushNew,aPushRemove,group,aMapper,aModel,aButtonBox);
+                emit editLeave(false,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,aButtonBox);
                 return true;
                 break;
            default:
@@ -1361,7 +1361,7 @@ bool conf_app::editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPus
          }
 
     }else{//Let's force the user to click on the table!
-        if (!aTable->selectionModel()->hasSelection() || !group->isVisible()){
+        if (!aTable->selectionModel()->hasSelection() || !aGroupDetails->isVisible()){
 
             QMessageBox::critical(this, tr("Edit Record"),
                                     tr("You must select an item to edit!"));
@@ -1370,10 +1370,10 @@ bool conf_app::editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPus
             return false;
         }
 
-        emit editLeave(false,aPushEdit,aPushNew,aPushRemove,group,aMapper,aModel,aButtonBox);
+        emit editLeave(false,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,aButtonBox);
     }
     aButtonBox->button(QDialogButtonBox::Close)->setVisible(!on);
-    emit lockControls(!on,group);
+    emit lockControls(!on,aGroupDetails);
 
     return true;
 }
@@ -1383,7 +1383,7 @@ void conf_app::removeUser()
     removeRecord(tableUsers,userModel,groupUsersDetail,viewUsers,QString(strViewUsers));
 }
 
-void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBox* group,
+void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBox* aGroupDetails,
                             QSqlQueryModel* viewModel, const QString strQuery)
 {
     if (!aTable->selectionModel()->hasSelection()){
@@ -1441,7 +1441,7 @@ void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBo
                 else{
                     statusShow(tr("Record successfully removed from the database!"));
                     setPreviewQuery(viewModel,strQuery);
-                    group->hide();
+                    aGroupDetails->hide();
                 }
             }
 

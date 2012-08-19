@@ -42,12 +42,12 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
     signals:
         void                    connectionChanged();//!< Signal to indicate that the connection state changed (connected or disconnected)
         void                    statusShow(const QString str);//!< Signal indicating we want to display a message on the toolbar
-        void                    submit(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+        void                    submit(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                             QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                             QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
-        void                    lockControls(bool bLock,QGroupBox* box);/**< signal to lock/unlock a list of controls */
+        void                    lockControls(bool bLock,QGroupBox* aGroupDetails);/**< signal to lock/unlock a list of controls */
         void                     editLeave(const bool bFinished,QPushButton* aPushEdit=0,QPushButton* aPushNew=0,
-                                   QPushButton* aPushRemove=0,QGroupBox* group=0,QDataWidgetMapper* aMapper=0,QSqlTableModel* aModel=0,
+                                   QPushButton* aPushRemove=0,QGroupBox* aGroupDetails=0,QDataWidgetMapper* aMapper=0,QSqlTableModel* aModel=0,
                                    QDialogButtonBox* aButtonBox=0,const bool bDiscarded=false);
 
     private slots:
@@ -189,23 +189,23 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    finishedRestore();
 
         bool                    onUserButtonClick(QAbstractButton* button);
-        bool                    onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupBox,
+        bool                    onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                     QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
         void                    createUserRecord();
-        bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+        bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                   QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                   QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
-        void                    onLockControls(bool bLock,QGroupBox* box);
+        void                    onLockControls(bool bLock,QGroupBox* aGroupDetails);
         void                    previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
-                                    QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* group,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel);
+                                    QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel);
         void                    onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushButton* aPushNew,
-                                    QPushButton* aPushRemove,QGroupBox* group,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,QDialogButtonBox* aButtonBox,const bool bDiscarded);
+                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,QDialogButtonBox* aButtonBox,const bool bDiscarded);
         void                    resizeUsersTable(int index);
         void                    adjustUserEnables();
         void                    previewUser(QModelIndex index);
         bool                    editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
-                                    QPushButton* aPushRemove,QGroupBox* group,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
+                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
                                     QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
         bool                    editUser(bool on);
         void                    removeUser();
@@ -263,15 +263,15 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    listTables();
 
         bool                    initUsers();
-        void                    UI4NewRecord(QGroupBox* group,QDialogButtonBox* aButtonBox);
+        void                    UI4NewRecord(QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox);
 
         void                    setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery);
         void                    initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
-        bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupBox,
+        bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,QPushButton* aPushNew,
                                     QPushButton* aPushRemove, QSqlTableModel* aModel);
         bool                    abstractPreviewRow(QModelIndex index,QPushButton* pNew,QPushButton* pEdit,QPushButton* pRem,
-                                    QGroupBox* box,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel);
+                                    QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel);
 
         //! Show Event
         /*!
@@ -286,13 +286,13 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              writeDiff(const QString strFileName);
         bool                              genericCreateRecord(QSqlTableModel* aModel);
         bool                              discardNewRecord(QSqlTableModel* aModel);
-        void                              removeRecord(QTableView* aTable,QSqlTableModel* aModel,QGroupBox* group,
+        void                              removeRecord(QTableView* aTable,QSqlTableModel* aModel,QGroupBox* aGroupDetails,
                                                     QSqlQueryModel* viewModel, const QString strQuery);
         bool                              translateIndex(const QModelIndex inIdx, QTableView* aTable, 
                                                 QSqlTableModel* aModel, QModelIndex& outIdx);
         bool                              validate(const QSqlTableModel* aModel);
         void                              createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
-                                                QGroupBox* aGroup,QDialogButtonBox* aButtonBox);
+                                                QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
