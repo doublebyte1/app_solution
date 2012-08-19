@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Thu 16. Aug 11:58:38 2012
+** Created: Sun 19. Aug 13:56:19 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -409,7 +409,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 521, 308));
+        page_2->setGeometry(QRect(0, 0, 371, 308));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -652,7 +652,7 @@ public:
         QObject::connect(pushRemove, SIGNAL(clicked()), conf_appClass, SLOT(removeRow()));
         QObject::connect(pushApply_2, SIGNAL(clicked()), conf_appClass, SLOT(applyChanges2Table()));
         QObject::connect(buttonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onButtonClick(QAbstractButton*)));
-        QObject::connect(pushNewUser, SIGNAL(clicked()), conf_appClass, SLOT(createRecord()));
+        QObject::connect(pushNewUser, SIGNAL(clicked()), conf_appClass, SLOT(createUserRecord()));
         QObject::connect(tableUsers, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewUser(QModelIndex)));
         QObject::connect(pushEditUser, SIGNAL(clicked(bool)), conf_appClass, SLOT(editUser(bool)));
         QObject::connect(pushRemoveUser, SIGNAL(clicked()), conf_appClass, SLOT(removeUser()));

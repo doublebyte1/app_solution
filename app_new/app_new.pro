@@ -4,12 +4,12 @@
 
 TEMPLATE = app
 TARGET = app_new
-DESTDIR = ../Release
+DESTDIR = ../Debug
 QT += core gui sql network xml script xmlpatterns webkit
-CONFIG += qtestlib release
+CONFIG += qtestlib help debug help
 DEFINES += QT_LARGEFILE_SUPPORT QT_XML_LIB QT_SQL_LIB QT_XMLPATTERNS_LIB QT_SCRIPT_LIB
 INCLUDEPATH += ./GeneratedFiles \
-    ./GeneratedFiles/Release \
+    ./GeneratedFiles/Debug \
     . \
     $(BOOSTDIR) \
     $(PROJDIR)/customctrl_solution/CustomTimeCtrl \
@@ -19,12 +19,12 @@ INCLUDEPATH += ./GeneratedFiles \
     $(EXARO_INCLUDE_DIR)
 LIBS += -L"$(QTDIR)/plugins/designer" \
     -L"$(EXARO_LIBRARIES)" \
-    -lcustomtimectrl \
-    -lCatchInputCtrl \
-    -lReport
+    -lcustomtimectrld \
+    -lCatchInputCtrld \
+    -lReportd
 DEPENDPATH += .
-MOC_DIR += ./GeneratedFiles/release
-OBJECTS_DIR += release
+MOC_DIR += ./GeneratedFiles/debug
+OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(app_new.pri)

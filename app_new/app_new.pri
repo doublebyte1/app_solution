@@ -37,11 +37,13 @@ HEADERS += ./abstractformat.h \
     ./frmvesseltype.h \
     ./generictab.h \
     ./globaldefs.h \
+    ./json.h \
     ./login.h \
     ./mainfrm.h \
     ./mapperrulebinder.h \
     ./modelinterface.h \
     ./multimodeli.h \
+    ./nullrelationaldelegate.h \
     ./previewtab.h \
     ./reportinghook.h \
     ./rulechecker.h \
@@ -79,12 +81,14 @@ SOURCES += ./abstractformat.cpp \
     ./frmvessel.cpp \
     ./frmvesseltype.cpp \
     ./generictab.cpp \
+    ./json.cpp \
     ./login.cpp \
     ./main.cpp \
     ./mainfrm.cpp \
     ./mapperrulebinder.cpp \
     ./modelinterface.cpp \
     ./multimodeli.cpp \
+    ./nullrelationaldelegate.cpp \
     ./previewtab.cpp \
     ./reportinghook.cpp \
     ./rulechecker.cpp \

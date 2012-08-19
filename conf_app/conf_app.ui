@@ -396,7 +396,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>521</width>
+         <width>371</width>
          <height>308</height>
         </rect>
        </property>
@@ -1003,7 +1003,7 @@
    <sender>pushNewUser</sender>
    <signal>clicked()</signal>
    <receiver>conf_appClass</receiver>
-   <slot>createRecord()</slot>
+   <slot>createUserRecord()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>492</x>
@@ -1080,5 +1080,6 @@
   <slot>previewUser(QModelIndex)</slot>
   <slot>editUser(bool)</slot>
   <slot>removeUser()</slot>
+  <slot>createUserRecord()</slot>
  </slots>
 </ui>
