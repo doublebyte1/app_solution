@@ -396,7 +396,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>371</width>
+         <width>521</width>
          <height>308</height>
         </rect>
        </property>
@@ -609,7 +609,7 @@
                </spacer>
               </item>
               <item row="2" column="4">
-               <widget class="QDialogButtonBox" name="buttonBox">
+               <widget class="QDialogButtonBox" name="userButtonBox">
                 <property name="standardButtons">
                  <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
                 </property>
@@ -984,10 +984,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>userButtonBox</sender>
    <signal>clicked(QAbstractButton*)</signal>
    <receiver>conf_appClass</receiver>
-   <slot>onButtonClick(QAbstractButton*)</slot>
+   <slot>onUserButtonClick(QAbstractButton*)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>67</x>
@@ -1075,7 +1075,7 @@
   <slot>removeRow()</slot>
   <slot>applyChanges2Table()</slot>
   <slot>showSqlMessages(bool)</slot>
-  <slot>onButtonClick(QAbstractButton*)</slot>
+  <slot>onUserButtonClick(QAbstractButton*)</slot>
   <slot>createRecord()</slot>
   <slot>previewUser(QModelIndex)</slot>
   <slot>editUser(bool)</slot>
