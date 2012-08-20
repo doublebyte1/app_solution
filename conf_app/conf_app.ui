@@ -22,15 +22,15 @@
     <item>
      <widget class="QToolBox" name="toolBox">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_3">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>595</width>
-         <height>331</height>
+         <width>146</width>
+         <height>176</height>
         </rect>
        </property>
        <attribute name="label">
@@ -396,8 +396,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>595</width>
-         <height>331</height>
+         <width>226</width>
+         <height>299</height>
         </rect>
        </property>
        <attribute name="label">
@@ -500,7 +500,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupRoleDetails">
+            <widget class="QGroupBox" name="groupRoleDetail">
              <property name="title">
               <string/>
              </property>
@@ -588,8 +588,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>371</width>
-         <height>308</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1255,6 +1255,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tableRoles</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>previewRole(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>roleButtonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>onRoleButtonClick(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>connectDB()</slot>
@@ -1273,5 +1305,7 @@
   <slot>editUser(bool)</slot>
   <slot>removeUser()</slot>
   <slot>createUserRecord()</slot>
+  <slot>previewRole(QModelIndex)</slot>
+  <slot>onRoleButtonClick(QAbstractButton*)</slot>
  </slots>
 </ui>

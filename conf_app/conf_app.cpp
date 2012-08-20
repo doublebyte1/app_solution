@@ -15,6 +15,10 @@ static const QString strViewUsers=
     " FROM         dbo.UI_User INNER JOIN"
     "                      dbo.UI_Role ON dbo.UI_User.role_id = dbo.UI_Role.id WHERE NAME <> 'n/a'"
 ;
+static const QString strViewRole=
+"SELECT     id, name AS Name, description AS Description"
+" FROM         dbo.UI_Role WHERE NAME <> 'n/a'"
+;
 
 conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     : QMainWindow(parent, flags)
@@ -26,10 +30,14 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     countryModel=0;
     tableModel=0;
     userModel=0;
+    roleModel=0;
     viewUsers=0;
+    viewRoles=0;
     myProcess=0;
     mapperUsers=0;
-    nullDelegate=0;
+    mapperRoles=0;
+    nullDelegateUsers=0;
+    nullDelegateRoles=0;
     m_lastIndex=QModelIndex();
 
     initUI();
@@ -41,10 +49,14 @@ conf_app::~conf_app()
         if (cityModel!=0) delete cityModel;
         if (countryModel!=0) delete countryModel;
         if (userModel!=0) delete userModel;
+        if (roleModel!=0) delete roleModel;
         if (tableModel!=0) delete tableModel;
         if (viewUsers!=0) delete viewUsers;
+        if (viewRoles!=0) delete viewRoles;
         if (mapperUsers!=0) delete mapperUsers;
-        if (nullDelegate!=0) delete nullDelegate;
+        if (mapperRoles!=0) delete mapperRoles;
+        if (nullDelegateUsers!=0) delete nullDelegateUsers;
+        if (nullDelegateRoles!=0) delete nullDelegateRoles;
     //}
     if (myProcess!=0 && myProcess->isOpen()){
         myProcess->close();
@@ -75,15 +87,21 @@ void conf_app::initModels()
     }if (viewUsers!=0){
         delete viewUsers;
         viewUsers=0;
+    }if (viewRoles!=0){
+        delete viewRoles;
+        viewRoles=0;
     }if (userModel!=0){
         delete userModel;
         userModel=0;
+    }if (roleModel!=0){
+        delete roleModel;
+        roleModel=0;
     }
 
      cityModel = new QSqlQueryModel;
      countryModel = new QSqlQueryModel;
-     userModel = new QSqlRelationalTableModel;
 
+    userModel = new QSqlRelationalTableModel;
     userModel->setTable(QSqlDatabase().driver()->escapeIdentifier("UI_User",
     QSqlDriver::TableName));
     userModel->setRelation(2, QSqlRelation("UI_Role", "id", "name"));
@@ -91,6 +109,12 @@ void conf_app::initModels()
     userModel->sort(0,Qt::AscendingOrder);
     filterTable(userModel->relationModel(2));//removing the n/a*/
     userModel->select();
+
+    roleModel = new QSqlTableModel;
+    roleModel->setTable(QSqlDatabase().driver()->escapeIdentifier("UI_Role",
+    QSqlDriver::TableName));
+    roleModel->sort(0,Qt::AscendingOrder);
+    roleModel->select();
 }
 
 void conf_app::doBackup()
@@ -586,10 +610,14 @@ void conf_app::initUI()
     pushDisconnect->setEnabled(false);
     groupSettings->setEnabled(false);
     groupTables->setEnabled(false);
-    groupUsers->setEnabled(false);
 
+    groupUsers->setEnabled(false);
     groupUsersDetail->setVisible(false);
     groupUsers->layout()->update();
+
+    groupRole->setEnabled(false);
+    groupRoleDetail->setVisible(false);
+    groupRole->layout()->update();
 
     pushInsert->setEnabled(false);
     pushRemove->setEnabled(true);
@@ -601,7 +629,7 @@ void conf_app::initUI()
         SLOT(onStatusShow(const QString)));
 
      connect(toolBox, SIGNAL(currentChanged(int)),this,
-        SLOT(resizeUsersTable(int) ),Qt::UniqueConnection);
+        SLOT(resizeTables(int) ),Qt::UniqueConnection);
 
      connect(this, SIGNAL(submit(QDataWidgetMapper*, QDialogButtonBox*, QGroupBox*, QSqlQueryModel*,const QString,
                                             QPushButton*,QPushButton*, QPushButton*, QSqlTableModel*)),this,
@@ -640,11 +668,10 @@ void conf_app::onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushBut
    }
 }
 
-void conf_app::resizeUsersTable(int index)
+void conf_app::resizeTables(int index)
 {
-    if (index!=3) return;
-
-    resizeToVisibleColumns(tableUsers);
+    if (index==3) resizeToVisibleColumns(tableRoles);
+    if (index==4) resizeToVisibleColumns(tableUsers);
 }
 
 void conf_app::filterModel(QString strCountry)
@@ -715,9 +742,15 @@ qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
         }if (viewUsers!=0){
             delete viewUsers;
             viewUsers=0;
+        }if (viewRoles!=0){
+            delete viewRoles;
+            viewRoles=0;
         }if (userModel!=0){
             delete userModel;
             userModel=0;
+        }if (roleModel!=0){
+            delete roleModel;
+            roleModel=0;
         }
 
     QString strConn;
@@ -736,6 +769,7 @@ qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     groupSettings->setEnabled(m_bConnected);
     groupTables->setEnabled(m_bConnected);
     groupUsers->setEnabled(m_bConnected);
+    groupRole->setEnabled(m_bConnected);
 
 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
@@ -770,6 +804,12 @@ void conf_app::connectDB()
                 tr("Could not read users from the database!"),QMessageBox::Ok,0);
             msgBox.exec();
         }
+        if (!initRoles()){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
+                tr("Could not read roles from the database!"),QMessageBox::Ok,0);
+            msgBox.exec();
+        }
+
         loadSettings(1);
         emit statusShow(tr("Connection sucessfully created!"));
     }else{
@@ -790,6 +830,7 @@ void conf_app::connectDB()
     groupSettings->setEnabled(m_bConnected);
     groupTables->setEnabled(m_bConnected);
     groupUsers->setEnabled(m_bConnected);
+    groupRole->setEnabled(m_bConnected);
 }
 
 void conf_app::saveSettings(const int section)
@@ -1007,6 +1048,35 @@ bool conf_app::fillLocations()
     return (countryModel->rowCount()>0);
 }
 
+bool conf_app::initRoles()
+{
+    viewRoles = new QSqlQueryModel;
+    viewRoles->setHeaderData(1, Qt::Horizontal, tr("Name"));
+    viewRoles->setHeaderData(2, Qt::Horizontal, tr("Description"));
+
+    setPreviewQuery(viewRoles,QString(strViewRole));
+
+    initPreviewTable(tableRoles,viewRoles);
+
+    if (mapperRoles!=0) {delete mapperRoles; mapperRoles=0;}
+
+    mapperRoles= new QDataWidgetMapper(this);
+    mapperRoles->setModel(roleModel);
+    mapperRoles->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+
+    mapperRoles->addMapping(lineRoleName, roleModel->fieldIndex("name"));
+    mapperRoles->addMapping(textRoleDesc, 2);
+
+    if (nullDelegateRoles!=0) delete nullDelegateRoles;
+    QList<int> lText;
+    QList<int> lCmb;
+    lText << 2;
+    nullDelegateRoles=new NullRelationalDelegate(lCmb,lText);
+    mapperRoles->setItemDelegate(nullDelegateRoles);
+
+    return true;
+}
+
 bool conf_app::initUsers()
 {
     viewUsers = new QSqlQueryModel;
@@ -1032,13 +1102,13 @@ bool conf_app::initUsers()
     mapperUsers->addMapping(comboRole, 2);
     mapperUsers->addMapping(textUserDesc, 4);
 
-    if (nullDelegate!=0) delete nullDelegate;
+    if (nullDelegateUsers!=0) delete nullDelegateUsers;
     QList<int> lCmb;
     lCmb << 0 << 1 << 2;
     QList<int> lText;
     lText << 4;
-    nullDelegate=new NullRelationalDelegate(lCmb,lText);
-    mapperUsers->setItemDelegate(nullDelegate);
+    nullDelegateUsers=new NullRelationalDelegate(lCmb,lText);
+    mapperUsers->setItemDelegate(nullDelegateUsers);
 
     return true;
 }
@@ -1095,6 +1165,12 @@ bool conf_app::onUserButtonClick(QAbstractButton* button)
 {
     return onButtonClick(button,userButtonBox,mapperUsers,groupUsersDetail,viewUsers,
         strViewUsers,pushEditUser,pushNewUser,pushRemoveUser,userModel);
+}
+
+bool conf_app::onRoleButtonClick(QAbstractButton* button)
+{
+    return onButtonClick(button,roleButtonBox,mapperRoles,groupRoleDetail,viewRoles,
+        strViewRole,pushEditRole,pushNewRole,pushRemoveRole,roleModel);
 }
 
 bool conf_app::onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
@@ -1205,7 +1281,15 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
 
 void conf_app::onLockControls(bool bLock,QGroupBox* aGroupDetails)
 {
-    aGroupDetails->setEnabled(!bLock);
+    //Enabling everuthing *except* the buttonbox!
+    QObjectList children=aGroupDetails->children();
+    for (int i=0; i < children.count(); ++i){
+        if (qobject_cast<QDialogButtonBox*>(children.at(i))==0){
+            if (qobject_cast<QWidget*>(children.at(i))!=0){
+                qobject_cast<QWidget*>(children.at(i))->setEnabled(!bLock);
+            }
+        }
+    }
 }
 
 void conf_app::setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery)
@@ -1219,6 +1303,12 @@ void conf_app::adjustUserEnables()
 
     pushEditUser->setEnabled(userModel->rowCount()>0);
     pushRemoveUser->setEnabled(userModel->rowCount()>0);
+}
+
+void conf_app::previewRole(QModelIndex index)
+{
+    previewRecord(index,mapperRoles,pushNewRole,pushEditRole,pushRemoveRole,groupRoleDetail,
+        roleButtonBox,roleModel);
 }
 
 void conf_app::previewUser(QModelIndex index)
@@ -1500,8 +1590,8 @@ void conf_app::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
 void conf_app::resizeEvent ( QResizeEvent * event )
 {
     (void) event;
-    if (tableUsers==0) return;
-    resizeToVisibleColumns(tableUsers);
+    if (tableUsers!=0) resizeToVisibleColumns(tableUsers);
+    if (tableRoles!=0) resizeToVisibleColumns(tableRoles);
 
     if (toolBox->currentIndex()==3)
         groupUsers->layout()->update();

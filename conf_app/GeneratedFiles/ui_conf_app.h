@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Sun 19. Aug 17:53:02 2012
+** Created: Mon 20. Aug 09:40:05 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -103,7 +103,7 @@ public:
     QPushButton *pushNewRole;
     QPushButton *pushEditRole;
     QPushButton *pushRemoveRole;
-    QGroupBox *groupRoleDetails;
+    QGroupBox *groupRoleDetail;
     QGridLayout *gridLayout_7;
     QLabel *label_9;
     QLineEdit *lineRoleName;
@@ -430,7 +430,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
         RolePage = new QWidget();
         RolePage->setObjectName(QString::fromUtf8("RolePage"));
-        RolePage->setGeometry(QRect(0, 0, 595, 331));
+        RolePage->setGeometry(QRect(0, 0, 226, 299));
         verticalLayout_12 = new QVBoxLayout(RolePage);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -488,38 +488,38 @@ public:
 
         verticalLayout_11->addLayout(horizontalLayout_9);
 
-        groupRoleDetails = new QGroupBox(groupRole);
-        groupRoleDetails->setObjectName(QString::fromUtf8("groupRoleDetails"));
-        gridLayout_7 = new QGridLayout(groupRoleDetails);
+        groupRoleDetail = new QGroupBox(groupRole);
+        groupRoleDetail->setObjectName(QString::fromUtf8("groupRoleDetail"));
+        gridLayout_7 = new QGridLayout(groupRoleDetail);
         gridLayout_7->setSpacing(6);
         gridLayout_7->setContentsMargins(11, 11, 11, 11);
         gridLayout_7->setObjectName(QString::fromUtf8("gridLayout_7"));
-        label_9 = new QLabel(groupRoleDetails);
+        label_9 = new QLabel(groupRoleDetail);
         label_9->setObjectName(QString::fromUtf8("label_9"));
 
         gridLayout_7->addWidget(label_9, 0, 0, 1, 1);
 
-        lineRoleName = new QLineEdit(groupRoleDetails);
+        lineRoleName = new QLineEdit(groupRoleDetail);
         lineRoleName->setObjectName(QString::fromUtf8("lineRoleName"));
 
         gridLayout_7->addWidget(lineRoleName, 0, 1, 1, 2);
 
-        label_11 = new QLabel(groupRoleDetails);
+        label_11 = new QLabel(groupRoleDetail);
         label_11->setObjectName(QString::fromUtf8("label_11"));
 
         gridLayout_7->addWidget(label_11, 1, 0, 1, 2);
 
-        label_10 = new QLabel(groupRoleDetails);
+        label_10 = new QLabel(groupRoleDetail);
         label_10->setObjectName(QString::fromUtf8("label_10"));
 
         gridLayout_7->addWidget(label_10, 1, 2, 1, 1);
 
-        tableView_2 = new QTableView(groupRoleDetails);
+        tableView_2 = new QTableView(groupRoleDetail);
         tableView_2->setObjectName(QString::fromUtf8("tableView_2"));
 
         gridLayout_7->addWidget(tableView_2, 2, 0, 1, 2);
 
-        textRoleDesc = new QPlainTextEdit(groupRoleDetails);
+        textRoleDesc = new QPlainTextEdit(groupRoleDetail);
         textRoleDesc->setObjectName(QString::fromUtf8("textRoleDesc"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
@@ -536,7 +536,7 @@ public:
 
         horizontalLayout_8->addItem(horizontalSpacer_4);
 
-        roleButtonBox = new QDialogButtonBox(groupRoleDetails);
+        roleButtonBox = new QDialogButtonBox(groupRoleDetail);
         roleButtonBox->setObjectName(QString::fromUtf8("roleButtonBox"));
         roleButtonBox->setStandardButtons(QDialogButtonBox::Apply|QDialogButtonBox::Close);
 
@@ -546,7 +546,7 @@ public:
         gridLayout_7->addLayout(horizontalLayout_8, 3, 0, 1, 3);
 
 
-        verticalLayout_11->addWidget(groupRoleDetails);
+        verticalLayout_11->addWidget(groupRoleDetail);
 
 
         verticalLayout_12->addWidget(groupRole);
@@ -554,7 +554,7 @@ public:
         toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 371, 308));
+        page_2->setGeometry(QRect(0, 0, 595, 331));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -797,8 +797,10 @@ public:
         QObject::connect(tableUsers, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewUser(QModelIndex)));
         QObject::connect(pushEditUser, SIGNAL(clicked(bool)), conf_appClass, SLOT(editUser(bool)));
         QObject::connect(pushRemoveUser, SIGNAL(clicked()), conf_appClass, SLOT(removeUser()));
+        QObject::connect(tableRoles, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewRole(QModelIndex)));
+        QObject::connect(roleButtonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onRoleButtonClick(QAbstractButton*)));
 
-        toolBox->setCurrentIndex(3);
+        toolBox->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(conf_appClass);
@@ -929,7 +931,7 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushRemoveRole->setText(QString());
         pushRemoveRole->setShortcut(QApplication::translate("conf_appClass", "Del", 0, QApplication::UnicodeUTF8));
-        groupRoleDetails->setTitle(QString());
+        groupRoleDetail->setTitle(QString());
         label_9->setText(QApplication::translate("conf_appClass", "Name", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("conf_appClass", "Permissions", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("conf_appClass", "Description", 0, QApplication::UnicodeUTF8));

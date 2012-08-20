@@ -189,6 +189,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    finishedRestore();
 
         bool                    onUserButtonClick(QAbstractButton* button);
+        bool                    onRoleButtonClick(QAbstractButton* button);
         bool                    onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                     QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
@@ -201,9 +202,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                     QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel);
         void                    onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushButton* aPushNew,
                                     QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,QDialogButtonBox* aButtonBox,const bool bDiscarded);
-        void                    resizeUsersTable(int index);
+        void                    resizeTables(int index);
         void                    adjustUserEnables();
         void                    previewUser(QModelIndex index);
+        void                    previewRole(QModelIndex index);
         bool                    editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
                                     QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
                                     QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
@@ -263,6 +265,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    listTables();
 
         bool                    initUsers();
+        bool                    initRoles();
+
         void                    UI4NewRecord(QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox);
 
         void                    setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery);
@@ -298,6 +302,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
         QSqlQueryModel                    *countryModel;//!< Pointer to the country database model (table "Ref_Countries")
         QSqlRelationalTableModel          *userModel;//!< Pointer to the user database model (table "UI_User")
+        QSqlTableModel                    *roleModel;//!< Pointer to the role database model (table "UI_Role")
         QSqlRelationalTableModel*         tableModel;//!< Pointer to a generic table model (any database table)
         QProcess*                          myProcess;//!< Pointer to a process (sqlcmd)
         QString                            m_databaseLogicalName;
@@ -308,8 +313,11 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                               m_bShowSqlMessages;
 
         QSqlQueryModel*                    viewUsers;
+        QSqlQueryModel*                    viewRoles;
         QDataWidgetMapper*                 mapperUsers;
-        NullRelationalDelegate*            nullDelegate;
+        QDataWidgetMapper*                 mapperRoles;
+        NullRelationalDelegate*            nullDelegateUsers;
+        NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;
 };
 
