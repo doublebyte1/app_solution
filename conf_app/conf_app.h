@@ -196,6 +196,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                     QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
         void                    createUserRecord();
+        void                    createRoleRecord();
         bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                   QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                   QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
@@ -290,7 +291,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                              createProcess();
         QString                           getOutputName(const QString strExt);
         bool                              writeDiff(const QString strFileName);
-        bool                              genericCreateRecord(QSqlTableModel* aModel);
+        bool                              genericCreateRecord(QSqlTableModel* aModel,QPushButton* aPushEdit,
+                                                QPushButton* aPushRemove);
         bool                              discardNewRecord(QSqlTableModel* aModel);
         void                              removeRecord(QTableView* aTable,QSqlTableModel* aModel,QGroupBox* aGroupDetails,
                                                     QSqlQueryModel* viewModel, const QString strQuery);
@@ -298,7 +300,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                                 QSqlTableModel* aModel, QModelIndex& outIdx);
         bool                              validate(const QSqlTableModel* aModel);
         void                              createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
-                                                QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox);
+                                                QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QPushButton* aPushEdit,QPushButton* aPushRemove);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
@@ -321,8 +323,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;
-        BooleanTable*                      tablePerm;
-        GenericSortProxyModel*             proxymodel;
+        //BooleanTable*                      tablePerm;
+        //GenericSortProxyModel*             proxymodel;
 };
 
 #endif // CONF_APP_H

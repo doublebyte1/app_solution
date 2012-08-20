@@ -21,16 +21,25 @@
    <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
      <widget class="QToolBox" name="toolBox">
+      <property name="toolTip">
+       <string>Highlight checkboxes to view their meaning</string>
+      </property>
+      <property name="statusTip">
+       <string>Highlight checkboxes to view their meaning</string>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_3">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>146</width>
-         <height>176</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -151,8 +160,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>161</width>
-         <height>121</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -233,8 +242,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>190</width>
-         <height>162</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -569,6 +578,114 @@
                 </item>
                </layout>
               </item>
+              <item row="2" column="0" colspan="2">
+               <widget class="QFrame" name="frame">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_8">
+                 <item row="0" column="0">
+                  <widget class="QCheckBox" name="checkNew">
+                   <property name="toolTip">
+                    <string>Can create new records</string>
+                   </property>
+                   <property name="statusTip">
+                    <string>Can create new records</string>
+                   </property>
+                   <property name="whatsThis">
+                    <string>Permission to create new records</string>
+                   </property>
+                   <property name="text">
+                    <string>New</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="checkView">
+                   <property name="toolTip">
+                    <string>Can view records</string>
+                   </property>
+                   <property name="statusTip">
+                    <string>Can view records</string>
+                   </property>
+                   <property name="whatsThis">
+                    <string>Permission to create view records</string>
+                   </property>
+                   <property name="text">
+                    <string>View</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QCheckBox" name="checkMod">
+                   <property name="toolTip">
+                    <string>Can edit records</string>
+                   </property>
+                   <property name="statusTip">
+                    <string>Can edit records</string>
+                   </property>
+                   <property name="whatsThis">
+                    <string>Permission to modify records</string>
+                   </property>
+                   <property name="text">
+                    <string>Modify</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QCheckBox" name="checkAdmin">
+                   <property name="toolTip">
+                    <string>Superuser</string>
+                   </property>
+                   <property name="statusTip">
+                    <string>Superuser</string>
+                   </property>
+                   <property name="whatsThis">
+                    <string>Administrator permissions</string>
+                   </property>
+                   <property name="text">
+                    <string>Admin</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QCheckBox" name="checkRep">
+                   <property name="toolTip">
+                    <string>Can create/view reports</string>
+                   </property>
+                   <property name="statusTip">
+                    <string>Can create/view reports</string>
+                   </property>
+                   <property name="whatsThis">
+                    <string>Permission to access the reporter module</string>
+                   </property>
+                   <property name="text">
+                    <string>Report</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QCheckBox" name="checkRemove">
+                   <property name="toolTip">
+                    <string>Can delete records</string>
+                   </property>
+                   <property name="statusTip">
+                    <string>Can delete records</string>
+                   </property>
+                   <property name="whatsThis">
+                    <string>Permission to create delete records</string>
+                   </property>
+                   <property name="text">
+                    <string>Remove</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -582,8 +699,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>371</width>
-         <height>308</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -825,12 +942,6 @@
      <height>18</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionExit"/>
-   </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
@@ -860,7 +971,6 @@
     <addaction name="menuBackups"/>
     <addaction name="menuPatches"/>
    </widget>
-   <addaction name="menuFile"/>
    <addaction name="menuTools"/>
   </widget>
   <widget class="QToolBar" name="toolbar">
@@ -971,6 +1081,29 @@
   <tabstop>pushInsert</tabstop>
   <tabstop>pushRemove</tabstop>
   <tabstop>pushApply_2</tabstop>
+  <tabstop>tableRoles</tabstop>
+  <tabstop>pushNewRole</tabstop>
+  <tabstop>pushEditRole</tabstop>
+  <tabstop>pushRemoveRole</tabstop>
+  <tabstop>lineRoleName</tabstop>
+  <tabstop>checkNew</tabstop>
+  <tabstop>checkView</tabstop>
+  <tabstop>checkMod</tabstop>
+  <tabstop>checkRemove</tabstop>
+  <tabstop>checkRep</tabstop>
+  <tabstop>checkAdmin</tabstop>
+  <tabstop>textRoleDesc</tabstop>
+  <tabstop>roleButtonBox</tabstop>
+  <tabstop>tableUsers</tabstop>
+  <tabstop>pushNewUser</tabstop>
+  <tabstop>pushEditUser</tabstop>
+  <tabstop>pushRemoveUser</tabstop>
+  <tabstop>lineUser</tabstop>
+  <tabstop>comboRole</tabstop>
+  <tabstop>textUserDesc</tabstop>
+  <tabstop>lineUserPassword</tabstop>
+  <tabstop>lineUserPassword_2</tabstop>
+  <tabstop>userButtonBox</tabstop>
  </tabstops>
  <resources>
   <include location="conf_app.qrc"/>
@@ -1250,22 +1383,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>roleButtonBox</sender>
-   <signal>clicked(QAbstractButton*)</signal>
-   <receiver>conf_appClass</receiver>
-   <slot>onRoleButtonClick(QAbstractButton*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>64</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>306</x>
-     <y>266</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tableRoles</sender>
    <signal>clicked(QModelIndex)</signal>
    <receiver>conf_appClass</receiver>
@@ -1274,6 +1391,38 @@
     <hint type="sourcelabel">
      <x>287</x>
      <y>215</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushNewRole</sender>
+   <signal>clicked()</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>createRoleRecord()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>566</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>roleButtonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>conf_appClass</receiver>
+   <slot>onRoleButtonClick(QAbstractButton*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>64</y>
     </hint>
     <hint type="destinationlabel">
      <x>306</x>
@@ -1294,12 +1443,12 @@
   <slot>applyChanges2Table()</slot>
   <slot>showSqlMessages(bool)</slot>
   <slot>onUserButtonClick(QAbstractButton*)</slot>
-  <slot>createRecord()</slot>
   <slot>previewUser(QModelIndex)</slot>
   <slot>editUser(bool)</slot>
   <slot>removeUser()</slot>
   <slot>createUserRecord()</slot>
   <slot>previewRole(QModelIndex)</slot>
   <slot>onRoleButtonClick(QAbstractButton*)</slot>
+  <slot>createRoleRecord()</slot>
  </slots>
 </ui>

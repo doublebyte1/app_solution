@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Mon 20. Aug 11:42:45 2012
+** Created: Mon 20. Aug 16:54:18 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -14,8 +14,10 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QFrame>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
@@ -113,6 +115,14 @@ public:
     QHBoxLayout *horizontalLayout_8;
     QSpacerItem *horizontalSpacer_4;
     QDialogButtonBox *roleButtonBox;
+    QFrame *frame;
+    QGridLayout *gridLayout_8;
+    QCheckBox *checkNew;
+    QCheckBox *checkView;
+    QCheckBox *checkMod;
+    QCheckBox *checkAdmin;
+    QCheckBox *checkRep;
+    QCheckBox *checkRemove;
     QWidget *page_2;
     QVBoxLayout *verticalLayout_6;
     QGroupBox *groupUsers;
@@ -142,7 +152,6 @@ public:
     QDialogButtonBox *userButtonBox;
     QPlainTextEdit *textUserDesc;
     QMenuBar *menuBar;
-    QMenu *menuFile;
     QMenu *menuTools;
     QMenu *menuOptions;
     QMenu *menuBackups;
@@ -195,7 +204,7 @@ public:
         toolBox->setObjectName(QString::fromUtf8("toolBox"));
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 146, 176));
+        page_3->setGeometry(QRect(0, 0, 595, 331));
         gridLayout = new QGridLayout(page_3);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -280,7 +289,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 161, 121));
+        page_4->setGeometry(QRect(0, 0, 595, 331));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -344,7 +353,7 @@ public:
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 190, 162));
+        page->setGeometry(QRect(0, 0, 595, 331));
         gridLayout_4 = new QGridLayout(page);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -539,6 +548,47 @@ public:
 
         gridLayout_7->addLayout(horizontalLayout_8, 3, 0, 1, 3);
 
+        frame = new QFrame(groupRoleDetail);
+        frame->setObjectName(QString::fromUtf8("frame"));
+        frame->setFrameShape(QFrame::StyledPanel);
+        frame->setFrameShadow(QFrame::Raised);
+        gridLayout_8 = new QGridLayout(frame);
+        gridLayout_8->setSpacing(6);
+        gridLayout_8->setContentsMargins(11, 11, 11, 11);
+        gridLayout_8->setObjectName(QString::fromUtf8("gridLayout_8"));
+        checkNew = new QCheckBox(frame);
+        checkNew->setObjectName(QString::fromUtf8("checkNew"));
+
+        gridLayout_8->addWidget(checkNew, 0, 0, 1, 1);
+
+        checkView = new QCheckBox(frame);
+        checkView->setObjectName(QString::fromUtf8("checkView"));
+
+        gridLayout_8->addWidget(checkView, 0, 1, 1, 1);
+
+        checkMod = new QCheckBox(frame);
+        checkMod->setObjectName(QString::fromUtf8("checkMod"));
+
+        gridLayout_8->addWidget(checkMod, 0, 2, 1, 1);
+
+        checkAdmin = new QCheckBox(frame);
+        checkAdmin->setObjectName(QString::fromUtf8("checkAdmin"));
+
+        gridLayout_8->addWidget(checkAdmin, 1, 2, 1, 1);
+
+        checkRep = new QCheckBox(frame);
+        checkRep->setObjectName(QString::fromUtf8("checkRep"));
+
+        gridLayout_8->addWidget(checkRep, 1, 1, 1, 1);
+
+        checkRemove = new QCheckBox(frame);
+        checkRemove->setObjectName(QString::fromUtf8("checkRemove"));
+
+        gridLayout_8->addWidget(checkRemove, 1, 0, 1, 1);
+
+
+        gridLayout_7->addWidget(frame, 2, 0, 1, 2);
+
 
         verticalLayout_11->addWidget(groupRoleDetail);
 
@@ -548,7 +598,7 @@ public:
         toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 371, 308));
+        page_2->setGeometry(QRect(0, 0, 595, 331));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -710,8 +760,6 @@ public:
         menuBar = new QMenuBar(conf_appClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 613, 18));
-        menuFile = new QMenu(menuBar);
-        menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuTools = new QMenu(menuBar);
         menuTools->setObjectName(QString::fromUtf8("menuTools"));
         menuOptions = new QMenu(menuTools);
@@ -758,10 +806,31 @@ public:
         QWidget::setTabOrder(tableView, pushInsert);
         QWidget::setTabOrder(pushInsert, pushRemove);
         QWidget::setTabOrder(pushRemove, pushApply_2);
+        QWidget::setTabOrder(pushApply_2, tableRoles);
+        QWidget::setTabOrder(tableRoles, pushNewRole);
+        QWidget::setTabOrder(pushNewRole, pushEditRole);
+        QWidget::setTabOrder(pushEditRole, pushRemoveRole);
+        QWidget::setTabOrder(pushRemoveRole, lineRoleName);
+        QWidget::setTabOrder(lineRoleName, checkNew);
+        QWidget::setTabOrder(checkNew, checkView);
+        QWidget::setTabOrder(checkView, checkMod);
+        QWidget::setTabOrder(checkMod, checkRemove);
+        QWidget::setTabOrder(checkRemove, checkRep);
+        QWidget::setTabOrder(checkRep, checkAdmin);
+        QWidget::setTabOrder(checkAdmin, textRoleDesc);
+        QWidget::setTabOrder(textRoleDesc, roleButtonBox);
+        QWidget::setTabOrder(roleButtonBox, tableUsers);
+        QWidget::setTabOrder(tableUsers, pushNewUser);
+        QWidget::setTabOrder(pushNewUser, pushEditUser);
+        QWidget::setTabOrder(pushEditUser, pushRemoveUser);
+        QWidget::setTabOrder(pushRemoveUser, lineUser);
+        QWidget::setTabOrder(lineUser, comboRole);
+        QWidget::setTabOrder(comboRole, textUserDesc);
+        QWidget::setTabOrder(textUserDesc, lineUserPassword);
+        QWidget::setTabOrder(lineUserPassword, lineUserPassword_2);
+        QWidget::setTabOrder(lineUserPassword_2, userButtonBox);
 
-        menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuTools->menuAction());
-        menuFile->addAction(actionExit);
         menuTools->addAction(menuOptions->menuAction());
         menuTools->addAction(menuBackups->menuAction());
         menuTools->addAction(menuPatches->menuAction());
@@ -790,10 +859,11 @@ public:
         QObject::connect(tableUsers, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewUser(QModelIndex)));
         QObject::connect(pushEditUser, SIGNAL(clicked(bool)), conf_appClass, SLOT(editUser(bool)));
         QObject::connect(pushRemoveUser, SIGNAL(clicked()), conf_appClass, SLOT(removeUser()));
-        QObject::connect(roleButtonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onRoleButtonClick(QAbstractButton*)));
         QObject::connect(tableRoles, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewRole(QModelIndex)));
+        QObject::connect(pushNewRole, SIGNAL(clicked()), conf_appClass, SLOT(createRoleRecord()));
+        QObject::connect(roleButtonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onRoleButtonClick(QAbstractButton*)));
 
-        toolBox->setCurrentIndex(3);
+        toolBox->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(conf_appClass);
@@ -822,6 +892,15 @@ public:
         actionShow_SQL_message->setText(QApplication::translate("conf_appClass", "Show SQL messages", 0, QApplication::UnicodeUTF8));
         actionDump_patch->setText(QApplication::translate("conf_appClass", "Dump patch", 0, QApplication::UnicodeUTF8));
         actionApply_patch->setText(QApplication::translate("conf_appClass", "Apply patch", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolBox->setToolTip(QApplication::translate("conf_appClass", "Highlight checkboxes to view their meaning", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        toolBox->setStatusTip(QApplication::translate("conf_appClass", "Highlight checkboxes to view their meaning", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        toolBox->setWhatsThis(QString());
+#endif // QT_NO_WHATSTHIS
         lbHost->setText(QApplication::translate("conf_appClass", "Host", 0, QApplication::UnicodeUTF8));
         lbDataSource->setText(QApplication::translate("conf_appClass", "Database", 0, QApplication::UnicodeUTF8));
         lbUsername->setText(QApplication::translate("conf_appClass", "Username", 0, QApplication::UnicodeUTF8));
@@ -928,6 +1007,66 @@ public:
         label_9->setText(QApplication::translate("conf_appClass", "Name", 0, QApplication::UnicodeUTF8));
         label_11->setText(QApplication::translate("conf_appClass", "Permissions", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("conf_appClass", "Description", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkNew->setToolTip(QApplication::translate("conf_appClass", "Can create new records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        checkNew->setStatusTip(QApplication::translate("conf_appClass", "Can create new records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        checkNew->setWhatsThis(QApplication::translate("conf_appClass", "Permission to create new records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        checkNew->setText(QApplication::translate("conf_appClass", "New", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkView->setToolTip(QApplication::translate("conf_appClass", "Can view records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        checkView->setStatusTip(QApplication::translate("conf_appClass", "Can view records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        checkView->setWhatsThis(QApplication::translate("conf_appClass", "Permission to create view records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        checkView->setText(QApplication::translate("conf_appClass", "View", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkMod->setToolTip(QApplication::translate("conf_appClass", "Can edit records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        checkMod->setStatusTip(QApplication::translate("conf_appClass", "Can edit records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        checkMod->setWhatsThis(QApplication::translate("conf_appClass", "Permission to modify records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        checkMod->setText(QApplication::translate("conf_appClass", "Modify", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkAdmin->setToolTip(QApplication::translate("conf_appClass", "Superuser", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        checkAdmin->setStatusTip(QApplication::translate("conf_appClass", "Superuser", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        checkAdmin->setWhatsThis(QApplication::translate("conf_appClass", "Administrator permissions", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        checkAdmin->setText(QApplication::translate("conf_appClass", "Admin", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkRep->setToolTip(QApplication::translate("conf_appClass", "Can create/view reports", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        checkRep->setStatusTip(QApplication::translate("conf_appClass", "Can create/view reports", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        checkRep->setWhatsThis(QApplication::translate("conf_appClass", "Permission to access the reporter module", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        checkRep->setText(QApplication::translate("conf_appClass", "Report", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        checkRemove->setToolTip(QApplication::translate("conf_appClass", "Can delete records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        checkRemove->setStatusTip(QApplication::translate("conf_appClass", "Can delete records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_WHATSTHIS
+        checkRemove->setWhatsThis(QApplication::translate("conf_appClass", "Permission to create delete records", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
+        checkRemove->setText(QApplication::translate("conf_appClass", "Remove", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(RolePage), QApplication::translate("conf_appClass", "Role Management", 0, QApplication::UnicodeUTF8));
         groupUsers->setTitle(QString());
 #ifndef QT_NO_TOOLTIP
@@ -968,7 +1107,6 @@ public:
         label_8->setText(QApplication::translate("conf_appClass", "Repeat Password", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("conf_appClass", "Description", 0, QApplication::UnicodeUTF8));
         toolBox->setItemText(toolBox->indexOf(page_2), QApplication::translate("conf_appClass", "User Management", 0, QApplication::UnicodeUTF8));
-        menuFile->setTitle(QApplication::translate("conf_appClass", "File", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("conf_appClass", "Tools", 0, QApplication::UnicodeUTF8));
         menuOptions->setTitle(QApplication::translate("conf_appClass", "Options", 0, QApplication::UnicodeUTF8));
         menuBackups->setTitle(QApplication::translate("conf_appClass", "Backups", 0, QApplication::UnicodeUTF8));

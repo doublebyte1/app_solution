@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Mon 20. Aug 12:19:44 2012
+** Created: Mon 20. Aug 16:21:52 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_conf_app[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      54,   14, // methods
+      55,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -76,17 +76,18 @@ static const uint qt_meta_data_conf_app[] = {
     1960, 1917, 1912,    9, 0x08,
     2093, 1996, 1912,    9, 0x08,
     2252,    9,    9,    9, 0x08,
-    2271,   54, 1912,    9, 0x08,
-    2410,  279,    9,    9, 0x08,
-    2519, 2442,    9,    9, 0x08,
-    2649,  329,    9,    9, 0x08,
-    2781, 2775,    9,    9, 0x08,
-    2799,    9,    9,    9, 0x08,
-    2819, 2775,    9,    9, 0x08,
-    2844, 2775,    9,    9, 0x08,
-    2969, 2869, 1912,    9, 0x08,
-    3128, 3125, 1912,    9, 0x08,
-    3143,    9,    9,    9, 0x08,
+    2271,    9,    9,    9, 0x08,
+    2290,   54, 1912,    9, 0x08,
+    2429,  279,    9,    9, 0x08,
+    2538, 2461,    9,    9, 0x08,
+    2668,  329,    9,    9, 0x08,
+    2800, 2794,    9,    9, 0x08,
+    2818,    9,    9,    9, 0x08,
+    2838, 2794,    9,    9, 0x08,
+    2863, 2794,    9,    9, 0x08,
+    2988, 2888, 1912,    9, 0x08,
+    3147, 3144, 1912,    9, 0x08,
+    3162,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -141,7 +142,7 @@ static const char qt_meta_stringdata_conf_app[] = {
     "onButtonClick(QAbstractButton*,QDialogButtonBox*,QDataWidgetMapper*,QG"
     "roupBox*,QSqlQueryModel*,QString,QPushButton*,QPushButton*,QPushButton"
     "*,QSqlTableModel*)\0"
-    "createUserRecord()\0"
+    "createUserRecord()\0createRoleRecord()\0"
     "ApplyModel(QDataWidgetMapper*,QDialogButtonBox*,QGroupBox*,QSqlQueryMo"
     "del*,QString,QPushButton*,QPushButton*,QPushButton*,QSqlTableModel*)\0"
     "onLockControls(bool,QGroupBox*)\0"
@@ -239,23 +240,24 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 41: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[3])),(*reinterpret_cast< QGroupBox*(*)>(_a[4])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QPushButton*(*)>(_a[9])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[10])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 42: createUserRecord(); break;
-        case 43: { bool _r = ApplyModel((*reinterpret_cast< QDataWidgetMapper*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QGroupBox*(*)>(_a[3])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< QPushButton*(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[9])));
+        case 43: createRoleRecord(); break;
+        case 44: { bool _r = ApplyModel((*reinterpret_cast< QDataWidgetMapper*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QGroupBox*(*)>(_a[3])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< QPushButton*(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[9])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 44: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QGroupBox*(*)>(_a[2]))); break;
-        case 45: previewRecord((*reinterpret_cast< const QModelIndex(*)>(_a[1])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QPushButton*(*)>(_a[5])),(*reinterpret_cast< QGroupBox*(*)>(_a[6])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[7])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[8]))); break;
-        case 46: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< QPushButton*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QGroupBox*(*)>(_a[5])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[6])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[7])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[8])),(*reinterpret_cast< const bool(*)>(_a[9]))); break;
-        case 47: resizeTables((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 48: adjustUserEnables(); break;
-        case 49: previewUser((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 50: previewRole((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
-        case 51: { bool _r = editRecord((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QPushButton*(*)>(_a[5])),(*reinterpret_cast< QGroupBox*(*)>(_a[6])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[7])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[8])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[9])),(*reinterpret_cast< const QString(*)>(_a[10])),(*reinterpret_cast< QTableView*(*)>(_a[11])));
+        case 45: onLockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QGroupBox*(*)>(_a[2]))); break;
+        case 46: previewRecord((*reinterpret_cast< const QModelIndex(*)>(_a[1])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QPushButton*(*)>(_a[5])),(*reinterpret_cast< QGroupBox*(*)>(_a[6])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[7])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[8]))); break;
+        case 47: onEditLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< QPushButton*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QGroupBox*(*)>(_a[5])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[6])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[7])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[8])),(*reinterpret_cast< const bool(*)>(_a[9]))); break;
+        case 48: resizeTables((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 49: adjustUserEnables(); break;
+        case 50: previewUser((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 51: previewRole((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
+        case 52: { bool _r = editRecord((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QPushButton*(*)>(_a[5])),(*reinterpret_cast< QGroupBox*(*)>(_a[6])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[7])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[8])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[9])),(*reinterpret_cast< const QString(*)>(_a[10])),(*reinterpret_cast< QTableView*(*)>(_a[11])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 52: { bool _r = editUser((*reinterpret_cast< bool(*)>(_a[1])));
+        case 53: { bool _r = editUser((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 53: removeUser(); break;
+        case 54: removeUser(); break;
         default: ;
         }
-        _id -= 54;
+        _id -= 55;
     }
     return _id;
 }

@@ -39,8 +39,8 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     nullDelegateUsers=0;
     nullDelegateRoles=0;
     m_lastIndex=QModelIndex();
-    tablePerm=0;
-    proxymodel=0;
+    //tablePerm=0;
+    //proxymodel=0;
 
     initUI();
 }
@@ -59,8 +59,8 @@ conf_app::~conf_app()
         if (mapperRoles!=0) delete mapperRoles;
         if (nullDelegateUsers!=0) delete nullDelegateUsers;
         if (nullDelegateRoles!=0) delete nullDelegateRoles;
-        if (tablePerm!=0) delete tablePerm;
-        if (proxymodel!=0) delete proxymodel;
+        //if (tablePerm!=0) delete tablePerm;
+        //if (proxymodel!=0) delete proxymodel;
     //}
     if (myProcess!=0 && myProcess->isOpen()){
         myProcess->close();
@@ -582,11 +582,12 @@ void conf_app::doPatch()
 
 void conf_app::initUI()
 {
+    /*
     tablePerm=new BooleanTable(groupRoleDetail);
     tablePerm->setObjectName(QString::fromUtf8("tablePerm"));
     gridLayout_7->addWidget(tablePerm, 2, 0, 1, 2);
     gridLayout_7->update();
-
+*/
     toolbar->addAction(this->actionExit);
     toolbar->addAction(this->actionCreate_backup);
     toolbar->addAction(this->actionRestore_backup);
@@ -670,10 +671,6 @@ void conf_app::onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushBut
    }else{
         aPushNew->setEnabled(false);
         aPushRemove->setEnabled(false);
-/*
-        if (aModel==userModel){
-            lineUserPassword_2->setText(lineUserPassword->text());
-        }*/
    }
 }
 
@@ -1066,7 +1063,7 @@ bool conf_app::initRoles()
     setPreviewQuery(viewRoles,QString(strViewRole));
 
     initPreviewTable(tableRoles,viewRoles);
-
+/*
     QList<bool> chkCols;
     // fields that should be checkbox are 1
     chkCols<<0<<0<<0<<1<<1<<1<<1<<1<<1;
@@ -1080,15 +1077,12 @@ bool conf_app::initRoles()
     tablePerm->hideColumn(0);
     tablePerm->hideColumn(1);
     tablePerm->hideColumn(2);
-
+*/
     if (mapperRoles!=0) {delete mapperRoles; mapperRoles=0;}
 
     mapperRoles= new QDataWidgetMapper(this);
     mapperRoles->setModel(roleModel);
     mapperRoles->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-
-    mapperRoles->addMapping(lineRoleName, roleModel->fieldIndex("name"));
-    mapperRoles->addMapping(textRoleDesc, 2);
 
     if (nullDelegateRoles!=0) delete nullDelegateRoles;
     QList<int> lText;
@@ -1096,6 +1090,15 @@ bool conf_app::initRoles()
     lText << 2;
     nullDelegateRoles=new NullRelationalDelegate(lCmb,lText);
     mapperRoles->setItemDelegate(nullDelegateRoles);
+
+    mapperRoles->addMapping(lineRoleName, roleModel->fieldIndex("name"));
+    mapperRoles->addMapping(textRoleDesc, roleModel->fieldIndex("description"));
+    mapperRoles->addMapping(checkNew, 3, "checked");
+    mapperRoles->addMapping(checkView, 4, "checked");
+    mapperRoles->addMapping(checkMod, 5, "checked");
+    mapperRoles->addMapping(checkRemove, 6, "checked");
+    mapperRoles->addMapping(checkRep, 7, "checked");
+    mapperRoles->addMapping(checkAdmin, 8, "checked");
 
     return true;
 }
@@ -1136,7 +1139,8 @@ bool conf_app::initUsers()
     return true;
 }
 
-bool conf_app::genericCreateRecord(QSqlTableModel* aModel)
+bool conf_app::genericCreateRecord(QSqlTableModel* aModel,QPushButton* aPushEdit,
+                              QPushButton* aPushRemove)
 {
     //removing filters
     if (aModel==0) return false;
@@ -1145,15 +1149,31 @@ bool conf_app::genericCreateRecord(QSqlTableModel* aModel)
     if (!discardNewRecord(aModel)) return false;
 
     if (pushEditUser->isChecked()) pushEditUser->setChecked(false);
-    pushEditUser->setEnabled(false);
-    pushRemoveUser->setEnabled(false);
+    aPushEdit->setEnabled(false);
+    aPushRemove->setEnabled(false);
 
     return insertRecordIntoModel(aModel);
 }
 
+void conf_app::createRoleRecord()
+{
+    createRecord(roleModel,mapperRoles,groupRoleDetail,roleButtonBox,pushEditRole,pushRemoveRole);
+
+    //some more specific user UI settings go here!
+    lineRoleName->clear();
+    textRoleDesc->clear();
+
+    QObjectList children=frame->children();
+    for (int i=0; i < children.count(); ++i){
+        if (qobject_cast<QCheckBox*>(children.at(i))!=0){
+            qobject_cast<QCheckBox*>(children.at(i))->setChecked(false);
+        }
+    }
+}
+
 void conf_app::createUserRecord()
 {
-    createRecord(userModel,mapperUsers,groupUsersDetail,userButtonBox);
+    createRecord(userModel,mapperUsers,groupUsersDetail,userButtonBox,pushEditUser,pushRemoveUser);
 
     //some more specific user UI settings go here!
     lineUser->clear();
@@ -1162,22 +1182,24 @@ void conf_app::createUserRecord()
     textUserDesc->clear();
 }
 
-void conf_app::createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox)
+void conf_app::createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
+                            QDialogButtonBox* aButtonBox,QPushButton* aPushEdit,QPushButton* aPushRemove)
 {
-    if (!genericCreateRecord(aModel)){
+    if (!genericCreateRecord(aModel,aPushEdit,aPushRemove)){
         QMessageBox::critical(this, tr("Record Error"),
                             tr("Could not create record!"));
         return;
     }
 
     aMapper->toLast();
+
     UI4NewRecord(aGroupDetails,aButtonBox);//init UI
 }
 
 void conf_app::UI4NewRecord(QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox)
 {
     aGroupDetails->setVisible(true);
-    aGroupDetails->setEnabled(true);
+    emit lockControls(false,aGroupDetails);
 
     aButtonBox->button(QDialogButtonBox::Close)->setVisible(false);
     aButtonBox->button(QDialogButtonBox::Apply)->setVisible(true);
@@ -1203,7 +1225,7 @@ bool conf_app::onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBo
     if ( aButtonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
         aGroupDetails->hide();
-        userModel->revertAll();
+        aModel->revertAll();
         return true;
 
     } else if (aButtonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
@@ -1336,7 +1358,8 @@ void conf_app::previewRole(QModelIndex index)
 
 void conf_app::previewUser(QModelIndex index)
 {
-    previewRecord(index,mapperUsers,pushNewUser,pushEditUser,pushRemoveUser,groupUsersDetail,userButtonBox,userModel);
+    previewRecord(index,mapperUsers,pushNewUser,pushEditUser,pushRemoveUser,groupUsersDetail
+        ,userButtonBox,userModel);
 }
 
 void conf_app::previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
