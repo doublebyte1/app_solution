@@ -39,6 +39,8 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     nullDelegateUsers=0;
     nullDelegateRoles=0;
     m_lastIndex=QModelIndex();
+    tablePerm=0;
+    proxymodel=0;
 
     initUI();
 }
@@ -57,6 +59,8 @@ conf_app::~conf_app()
         if (mapperRoles!=0) delete mapperRoles;
         if (nullDelegateUsers!=0) delete nullDelegateUsers;
         if (nullDelegateRoles!=0) delete nullDelegateRoles;
+        if (tablePerm!=0) delete tablePerm;
+        if (proxymodel!=0) delete proxymodel;
     //}
     if (myProcess!=0 && myProcess->isOpen()){
         myProcess->close();
@@ -578,6 +582,11 @@ void conf_app::doPatch()
 
 void conf_app::initUI()
 {
+    tablePerm=new BooleanTable(groupRoleDetail);
+    tablePerm->setObjectName(QString::fromUtf8("tablePerm"));
+    gridLayout_7->addWidget(tablePerm, 2, 0, 1, 2);
+    gridLayout_7->update();
+
     toolbar->addAction(this->actionExit);
     toolbar->addAction(this->actionCreate_backup);
     toolbar->addAction(this->actionRestore_backup);
@@ -1057,6 +1066,20 @@ bool conf_app::initRoles()
     setPreviewQuery(viewRoles,QString(strViewRole));
 
     initPreviewTable(tableRoles,viewRoles);
+
+    QList<bool> chkCols;
+    // fields that should be checkbox are 1
+    chkCols<<0<<0<<0<<1<<1<<1<<1<<1<<1;
+
+    if(proxymodel!=0) delete proxymodel;
+    proxymodel=new GenericSortProxyModel();
+    proxymodel->setparametros(chkCols);
+    proxymodel->setSourceModel(roleModel);
+
+    tablePerm->setModel(proxymodel);
+    tablePerm->hideColumn(0);
+    tablePerm->hideColumn(1);
+    tablePerm->hideColumn(2);
 
     if (mapperRoles!=0) {delete mapperRoles; mapperRoles=0;}
 

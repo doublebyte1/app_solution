@@ -184,11 +184,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\booleantable.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\conf_app.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\frmtip.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\genericsortproxymodel.cpp"
 				>
 			</File>
 			<File
@@ -213,6 +221,32 @@
 			Filter="h"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\booleantable.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing booleantable.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SQL_LIB &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSql&quot; &quot;-I.&quot; &quot;-I.\..\app_new&quot; &quot;-I$(BOOSTDIR)\.&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing booleantable.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SQL_LIB &quot;-I.&quot; &quot;-I.\GeneratedFiles&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSql&quot; &quot;-I.&quot; &quot;-I.\..\app_new&quot; &quot;-I$(BOOSTDIR)\.&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath=".\conf_app.h"
 				>
@@ -290,6 +324,10 @@
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\genericsortproxymodel.h"
+				>
 			</File>
 			<File
 				RelativePath=".\login.h"
@@ -463,7 +501,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\add.png"
+				RelativePath="..\app_new\add.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -483,7 +521,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\add.png"
+				RelativePath=".\add.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -543,7 +581,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\cancel.png"
+				RelativePath=".\cancel.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -563,7 +601,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\cancel.png"
+				RelativePath="..\app_new\cancel.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -769,7 +807,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\exit.png"
+				RelativePath="..\app_new\exit.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -789,7 +827,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\exit.png"
+				RelativePath=".\exit.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -829,7 +867,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\filenew.png"
+				RelativePath=".\filenew.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -849,7 +887,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\filenew.png"
+				RelativePath="..\app_new\filenew.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -929,7 +967,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\folder_outbox.png"
+				RelativePath="..\app_new\folder_outbox.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -949,7 +987,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\folder_outbox.png"
+				RelativePath=".\folder_outbox.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1389,7 +1427,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\pencil.png"
+				RelativePath=".\pencil.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1409,7 +1447,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\pencil.png"
+				RelativePath="..\app_new\pencil.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1753,6 +1791,18 @@
 				SourceControlFiles="false"
 				>
 				<File
+					RelativePath=".\GeneratedFiles\Release\moc_booleantable.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Release\moc_conf_app.cpp"
 					>
 					<FileConfiguration
@@ -1806,6 +1856,18 @@
 				Filter="cpp;moc"
 				SourceControlFiles="false"
 				>
+				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_booleantable.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_conf_app.cpp"
 					>

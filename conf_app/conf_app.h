@@ -5,6 +5,8 @@
 #include <QtGui>
 #include "ui_conf_app.h"
 #include "nullrelationaldelegate.h"
+#include "booleantable.h"
+#include "genericsortproxymodel.h"
 
 #if defined(WIN32) && defined(_DEBUG)
  #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -319,6 +321,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;
+        BooleanTable*                      tablePerm;
+        GenericSortProxyModel*             proxymodel;
 };
 
 #endif // CONF_APP_H

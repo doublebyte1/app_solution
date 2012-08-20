@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Mon 20. Aug 09:40:05 2012
+** Created: Mon 20. Aug 11:42:45 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -109,7 +109,6 @@ public:
     QLineEdit *lineRoleName;
     QLabel *label_11;
     QLabel *label_10;
-    QTableView *tableView_2;
     QPlainTextEdit *textRoleDesc;
     QHBoxLayout *horizontalLayout_8;
     QSpacerItem *horizontalSpacer_4;
@@ -430,7 +429,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
         RolePage = new QWidget();
         RolePage->setObjectName(QString::fromUtf8("RolePage"));
-        RolePage->setGeometry(QRect(0, 0, 226, 299));
+        RolePage->setGeometry(QRect(0, 0, 595, 331));
         verticalLayout_12 = new QVBoxLayout(RolePage);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -514,11 +513,6 @@ public:
 
         gridLayout_7->addWidget(label_10, 1, 2, 1, 1);
 
-        tableView_2 = new QTableView(groupRoleDetail);
-        tableView_2->setObjectName(QString::fromUtf8("tableView_2"));
-
-        gridLayout_7->addWidget(tableView_2, 2, 0, 1, 2);
-
         textRoleDesc = new QPlainTextEdit(groupRoleDetail);
         textRoleDesc->setObjectName(QString::fromUtf8("textRoleDesc"));
         QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -554,7 +548,7 @@ public:
         toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 595, 331));
+        page_2->setGeometry(QRect(0, 0, 371, 308));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -744,7 +738,6 @@ public:
         label->setBuddy(cmbCity);
         label_3->setBuddy(cmbTables);
         label_9->setBuddy(lineRoleName);
-        label_11->setBuddy(tableView_2);
         label_10->setBuddy(textRoleDesc);
         label_4->setBuddy(lineUser);
         label_5->setBuddy(comboRole);
@@ -797,10 +790,10 @@ public:
         QObject::connect(tableUsers, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewUser(QModelIndex)));
         QObject::connect(pushEditUser, SIGNAL(clicked(bool)), conf_appClass, SLOT(editUser(bool)));
         QObject::connect(pushRemoveUser, SIGNAL(clicked()), conf_appClass, SLOT(removeUser()));
-        QObject::connect(tableRoles, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewRole(QModelIndex)));
         QObject::connect(roleButtonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onRoleButtonClick(QAbstractButton*)));
+        QObject::connect(tableRoles, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewRole(QModelIndex)));
 
-        toolBox->setCurrentIndex(4);
+        toolBox->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(conf_appClass);
