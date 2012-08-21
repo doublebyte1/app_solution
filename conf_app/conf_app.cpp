@@ -1287,7 +1287,36 @@ bool conf_app::validate(const QSqlTableModel* aModel)
 
         bOk=!(lineUser->text().isEmpty() || comboRole->currentIndex()==-1 || lineUserPassword->text().isEmpty()
             || lineUserPassword_2->text().isEmpty() || (lineUserPassword->text().compare(lineUserPassword_2->text())!=0));
-    }
+
+    } else if (aModel==roleModel){
+
+        //cleaning the formatting from previous validations...
+        lineRoleName->setStyleSheet("");
+        checkAdmin->setStyleSheet("");
+        checkMod->setStyleSheet("");
+        checkNew->setStyleSheet("");
+        checkRemove->setStyleSheet("");
+        checkRep->setStyleSheet("");
+        checkView->setStyleSheet("");
+
+        if (lineRoleName->text().isEmpty()){
+            strError=tr("Role name must not be empty!"); lineRoleName->setStyleSheet(strStyleSheet);
+        } else if (!checkAdmin->isChecked() && !checkMod->isChecked() &&
+            !checkNew->isChecked() && !checkRemove->isChecked() && !checkRep->isChecked()
+            && !checkView->isChecked()){
+                strError=tr("You must select at least one permission type!");
+                checkAdmin->setStyleSheet(strStyleSheet);
+                checkMod->setStyleSheet(strStyleSheet);
+                checkNew->setStyleSheet(strStyleSheet);
+                checkRemove->setStyleSheet(strStyleSheet);
+                checkRep->setStyleSheet(strStyleSheet);
+                checkView->setStyleSheet(strStyleSheet);
+        }
+
+        bOk=!lineRoleName->text().isEmpty() && (checkAdmin->isChecked() || checkMod->isChecked() ||
+            checkNew->isChecked() || checkRemove->isChecked() || checkRep->isChecked()
+            || checkView->isChecked());
+    } else bOk=false;
 
     if (!bOk)
         QMessageBox::critical(this, tr("Validation Error"),
@@ -1317,8 +1346,6 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
     }else bError=true;
 
     aButtonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
-
-    //emit lockControls(!bError,aGroupDetails);
 
     if (!aPushEdit->isChecked())
         aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);

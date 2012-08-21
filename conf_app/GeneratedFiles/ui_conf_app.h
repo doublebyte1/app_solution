@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Tue 21. Aug 10:49:28 2012
+** Created: Tue 21. Aug 14:58:36 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -598,7 +598,7 @@ public:
         toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 371, 308));
+        page_2->setGeometry(QRect(0, 0, 595, 331));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
