@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Mon 20. Aug 16:54:18 2012
+** Created: Tue 21. Aug 09:19:04 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -289,7 +289,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 595, 331));
+        page_4->setGeometry(QRect(0, 0, 161, 121));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -353,7 +353,7 @@ public:
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 595, 331));
+        page->setGeometry(QRect(0, 0, 190, 162));
         gridLayout_4 = new QGridLayout(page);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -438,7 +438,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
         RolePage = new QWidget();
         RolePage->setObjectName(QString::fromUtf8("RolePage"));
-        RolePage->setGeometry(QRect(0, 0, 595, 331));
+        RolePage->setGeometry(QRect(0, 0, 381, 302));
         verticalLayout_12 = new QVBoxLayout(RolePage);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -598,7 +598,7 @@ public:
         toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 595, 331));
+        page_2->setGeometry(QRect(0, 0, 371, 308));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -862,6 +862,7 @@ public:
         QObject::connect(tableRoles, SIGNAL(clicked(QModelIndex)), conf_appClass, SLOT(previewRole(QModelIndex)));
         QObject::connect(pushNewRole, SIGNAL(clicked()), conf_appClass, SLOT(createRoleRecord()));
         QObject::connect(roleButtonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onRoleButtonClick(QAbstractButton*)));
+        QObject::connect(pushEditRole, SIGNAL(clicked(bool)), conf_appClass, SLOT(editRole(bool)));
 
         toolBox->setCurrentIndex(0);
 
