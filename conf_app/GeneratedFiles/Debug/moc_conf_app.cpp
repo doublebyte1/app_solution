@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Tue 21. Aug 10:31:14 2012
+** Created: Tue 21. Aug 11:23:12 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_conf_app[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      49,   14, // methods
+      50,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,55 +33,56 @@ static const uint qt_meta_data_conf_app[] = {
  // signals: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x05,
       34,   30,    9,    9, 0x05,
-     144,   54,    9,    9, 0x05,
-     299,  279,    9,    9, 0x05,
-     447,  329,    9,    9, 0x05,
-     714,  607,    9,    9, 0x25,
+     151,   54,    9,    9, 0x05,
+     318,  298,    9,    9, 0x05,
+     466,  348,    9,    9, 0x05,
+     733,  626,    9,    9, 0x25,
 
  // slots: signature, parameters, type, tag, flags
-     878,  869,    9,    9, 0x08,
-     897,    9,    9,    9, 0x08,
-     918,    9,    9,    9, 0x08,
-     930,    9,    9,    9, 0x08,
-     945,    9,    9,    9, 0x08,
-     966,   30,    9,    9, 0x08,
-     999,  988,    9,    9, 0x08,
-    1020,    9,    9,    9, 0x08,
-    1028,    9,    9,    9, 0x08,
-    1050, 1042,    9,    9, 0x08,
-    1080, 1074,    9,    9, 0x08,
-    1103,    9,    9,    9, 0x08,
-    1115,    9,    9,    9, 0x08,
-    1127,    9,    9,    9, 0x08,
-    1138,    9,    9,    9, 0x08,
-    1150,    9,    9,    9, 0x08,
-    1159,    9,    9,    9, 0x08,
+     897,  888,    9,    9, 0x08,
+     916,    9,    9,    9, 0x08,
+     937,    9,    9,    9, 0x08,
+     949,    9,    9,    9, 0x08,
+     964,    9,    9,    9, 0x08,
+     985,   30,    9,    9, 0x08,
+    1018, 1007,    9,    9, 0x08,
+    1039,    9,    9,    9, 0x08,
+    1047,    9,    9,    9, 0x08,
+    1069, 1061,    9,    9, 0x08,
+    1099, 1093,    9,    9, 0x08,
+    1122,    9,    9,    9, 0x08,
+    1134,    9,    9,    9, 0x08,
+    1146,    9,    9,    9, 0x08,
+    1157,    9,    9,    9, 0x08,
     1169,    9,    9,    9, 0x08,
+    1178,    9,    9,    9, 0x08,
     1188,    9,    9,    9, 0x08,
-    1208,    9,    9,    9, 0x08,
-    1226,    9,    9,    9, 0x08,
-    1249,    9,    9,    9, 0x08,
-    1263,    9,    9,    9, 0x08,
-    1292,    9,    9,    9, 0x08,
-    1314, 1074,    9,    9, 0x08,
-    1336,    9,    9,    9, 0x08,
-    1366, 1359, 1354,    9, 0x08,
-    1402, 1359, 1354,    9, 0x08,
-    1535, 1438, 1354,    9, 0x08,
-    1694,    9,    9,    9, 0x08,
-    1713,    9,    9,    9, 0x08,
-    1829, 1732, 1354,    9, 0x08,
-    1980,  279,    9,    9, 0x08,
-    2115, 2012,    9,    9, 0x08,
-    2281,  329,    9,    9, 0x08,
-    2449, 2443,    9,    9, 0x08,
-    2467,    9,    9,    9, 0x08,
-    2487, 2443,    9,    9, 0x08,
-    2512, 2443,    9,    9, 0x08,
-    2637, 2537, 1354,    9, 0x08,
-    2796, 2793, 1354,    9, 0x08,
-    2811, 2793, 1354,    9, 0x08,
-    2826,    9,    9,    9, 0x08,
+    1207,    9,    9,    9, 0x08,
+    1227,    9,    9,    9, 0x08,
+    1245,    9,    9,    9, 0x08,
+    1268,    9,    9,    9, 0x08,
+    1282,    9,    9,    9, 0x08,
+    1311,    9,    9,    9, 0x08,
+    1333, 1093,    9,    9, 0x08,
+    1355,    9,    9,    9, 0x08,
+    1385, 1378, 1373,    9, 0x08,
+    1421, 1378, 1373,    9, 0x08,
+    1561, 1457, 1373,    9, 0x08,
+    1732,    9,    9,    9, 0x08,
+    1751,    9,    9,    9, 0x08,
+    1770,   54, 1373,    9, 0x08,
+    1921,  298,    9,    9, 0x08,
+    2056, 1953,    9,    9, 0x08,
+    2222,  348,    9,    9, 0x08,
+    2390, 2384,    9,    9, 0x08,
+    2408,    9,    9,    9, 0x08,
+    2428, 2384,    9,    9, 0x08,
+    2453, 2384,    9,    9, 0x08,
+    2578, 2478, 1373,    9, 0x08,
+    2737, 2734, 1373,    9, 0x08,
+    2752, 2734, 1373,    9, 0x08,
+    2767,    9,    9,    9, 0x08,
+    2780,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -90,9 +91,10 @@ static const char qt_meta_stringdata_conf_app[] = {
     "conf_app\0\0connectionChanged()\0str\0"
     "statusShow(QString)\0"
     "aMapper,aButtonBox,aGroupDetails,viewModel,strQuery,aPushEdit,aPushNew"
-    ",aPushRemove,aModel\0"
+    ",aPushRemove,aModel,aTable\0"
     "submit(QDataWidgetMapper*,QDialogButtonBox*,QGroupBox*,QSqlQueryModel*"
-    ",QString,QPushButton*,QPushButton*,QPushButton*,QSqlTableModel*)\0"
+    ",QString,QPushButton*,QPushButton*,QPushButton*,QSqlTableModel*,QTable"
+    "View*)\0"
     "bLock,aGroupDetails\0lockControls(bool,QGroupBox*)\0"
     "bFinished,aPushEdit,aPushNew,aPushRemove,aGroupDetails,aMapper,aModel,"
     "aButtonBox,viewModel,strQuery,aTable,bDiscarded\0"
@@ -121,13 +123,11 @@ static const char qt_meta_stringdata_conf_app[] = {
     "onUserButtonClick(QAbstractButton*)\0"
     "onRoleButtonClick(QAbstractButton*)\0"
     "button,aButtonBox,aMapper,aGroupDetails,viewModel,strQuery,aPushEdit,a"
-    "PushNew,aPushRemove,aModel\0"
+    "PushNew,aPushRemove,aModel,aTable\0"
     "onButtonClick(QAbstractButton*,QDialogButtonBox*,QDataWidgetMapper*,QG"
     "roupBox*,QSqlQueryModel*,QString,QPushButton*,QPushButton*,QPushButton"
-    "*,QSqlTableModel*)\0"
+    "*,QSqlTableModel*,QTableView*)\0"
     "createUserRecord()\0createRoleRecord()\0"
-    "aMapper,aButtonBox,aGroupDetails,viewModel,strQuery,aPushEdit,aPushNew"
-    ",aPushRemove,aModel,aTable\0"
     "ApplyModel(QDataWidgetMapper*,QDialogButtonBox*,QGroupBox*,QSqlQueryMo"
     "del*,QString,QPushButton*,QPushButton*,QPushButton*,QSqlTableModel*,QT"
     "ableView*)\0"
@@ -149,7 +149,7 @@ static const char qt_meta_stringdata_conf_app[] = {
     ",QGroupBox*,QDialogButtonBox*,QDataWidgetMapper*,QSqlQueryModel*,QStri"
     "ng,QTableView*)\0"
     "on\0editUser(bool)\0editRole(bool)\0"
-    "removeUser()\0"
+    "removeUser()\0removeRole()\0"
 };
 
 const QMetaObject conf_app::staticMetaObject = {
@@ -185,7 +185,7 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: connectionChanged(); break;
         case 1: statusShow((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 2: submit((*reinterpret_cast< QDataWidgetMapper*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QGroupBox*(*)>(_a[3])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< QPushButton*(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[9]))); break;
+        case 2: submit((*reinterpret_cast< QDataWidgetMapper*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QGroupBox*(*)>(_a[3])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< QPushButton*(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[9])),(*reinterpret_cast< QTableView*(*)>(_a[10]))); break;
         case 3: lockControls((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< QGroupBox*(*)>(_a[2]))); break;
         case 4: editLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< QPushButton*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QGroupBox*(*)>(_a[5])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[6])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[7])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[8])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[9])),(*reinterpret_cast< const QString(*)>(_a[10])),(*reinterpret_cast< QTableView*(*)>(_a[11])),(*reinterpret_cast< const bool(*)>(_a[12]))); break;
         case 5: editLeave((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< QPushButton*(*)>(_a[2])),(*reinterpret_cast< QPushButton*(*)>(_a[3])),(*reinterpret_cast< QPushButton*(*)>(_a[4])),(*reinterpret_cast< QGroupBox*(*)>(_a[5])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[6])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[7])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[8])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[9])),(*reinterpret_cast< const QString(*)>(_a[10])),(*reinterpret_cast< QTableView*(*)>(_a[11]))); break;
@@ -219,7 +219,7 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 33: { bool _r = onRoleButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 34: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[3])),(*reinterpret_cast< QGroupBox*(*)>(_a[4])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QPushButton*(*)>(_a[9])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[10])));
+        case 34: { bool _r = onButtonClick((*reinterpret_cast< QAbstractButton*(*)>(_a[1])),(*reinterpret_cast< QDialogButtonBox*(*)>(_a[2])),(*reinterpret_cast< QDataWidgetMapper*(*)>(_a[3])),(*reinterpret_cast< QGroupBox*(*)>(_a[4])),(*reinterpret_cast< QSqlQueryModel*(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6])),(*reinterpret_cast< QPushButton*(*)>(_a[7])),(*reinterpret_cast< QPushButton*(*)>(_a[8])),(*reinterpret_cast< QPushButton*(*)>(_a[9])),(*reinterpret_cast< QSqlTableModel*(*)>(_a[10])),(*reinterpret_cast< QTableView*(*)>(_a[11])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 35: createUserRecord(); break;
         case 36: createRoleRecord(); break;
@@ -239,9 +239,10 @@ int conf_app::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 47: { bool _r = editRole((*reinterpret_cast< bool(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 48: removeUser(); break;
+        case 49: removeRole(); break;
         default: ;
         }
-        _id -= 49;
+        _id -= 50;
     }
     return _id;
 }
@@ -260,9 +261,9 @@ void conf_app::statusShow(const QString _t1)
 }
 
 // SIGNAL 2
-void conf_app::submit(QDataWidgetMapper * _t1, QDialogButtonBox * _t2, QGroupBox * _t3, QSqlQueryModel * _t4, const QString _t5, QPushButton * _t6, QPushButton * _t7, QPushButton * _t8, QSqlTableModel * _t9)
+void conf_app::submit(QDataWidgetMapper * _t1, QDialogButtonBox * _t2, QGroupBox * _t3, QSqlQueryModel * _t4, const QString _t5, QPushButton * _t6, QPushButton * _t7, QPushButton * _t8, QSqlTableModel * _t9, QTableView * _t10)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)), const_cast<void*>(reinterpret_cast<const void*>(&_t7)), const_cast<void*>(reinterpret_cast<const void*>(&_t8)), const_cast<void*>(reinterpret_cast<const void*>(&_t9)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)), const_cast<void*>(reinterpret_cast<const void*>(&_t7)), const_cast<void*>(reinterpret_cast<const void*>(&_t8)), const_cast<void*>(reinterpret_cast<const void*>(&_t9)), const_cast<void*>(reinterpret_cast<const void*>(&_t10)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 

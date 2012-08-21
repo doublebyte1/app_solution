@@ -46,7 +46,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    statusShow(const QString str);//!< Signal indicating we want to display a message on the toolbar
         void                    submit(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                             QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
-                                            QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
+                                            QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
         void                    lockControls(bool bLock,QGroupBox* aGroupDetails);/**< signal to lock/unlock a list of controls */
         void                     editLeave(const bool bFinished,QPushButton* aPushEdit,QPushButton* aPushNew,
                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,
@@ -194,7 +194,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    onRoleButtonClick(QAbstractButton* button);
         bool                    onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
-                                    QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel);
+                                    QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
         void                    createUserRecord();
         void                    createRoleRecord();
         bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
@@ -217,6 +217,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    editUser(bool on);
         bool                    editRole(bool on);
         void                    removeUser();
+        void                    removeRole();
 
     private:
         //! Init UI
@@ -299,8 +300,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                                 QPushButton* aPushRemove);
         bool                              discardNewRecord(QSqlTableModel* aModel,QPushButton* aPushEdit);
         void                              removeRecord(QTableView* aTable,QSqlTableModel* aModel,QGroupBox* aGroupDetails,
-                                                    QSqlQueryModel* viewModel, const QString strQuery);
-        bool                              translateIndex(const QModelIndex inIdx, QTableView* aTable, 
+                                                    QSqlQueryModel* viewModel, const QString strQuery, const int col);
+        bool                              translateIndex(const QModelIndex inIdx, const int col, QTableView* aTable, 
                                                 QSqlTableModel* aModel, QModelIndex& outIdx);
         bool                              validate(const QSqlTableModel* aModel);
         void                              createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 

@@ -643,9 +643,9 @@ void conf_app::initUI()
         SLOT(resizeTables(int) ),Qt::UniqueConnection);
 
      connect(this, SIGNAL(submit(QDataWidgetMapper*, QDialogButtonBox*, QGroupBox*, QSqlQueryModel*,const QString,
-                                            QPushButton*,QPushButton*, QPushButton*, QSqlTableModel*)),this,
+                                            QPushButton*,QPushButton*, QPushButton*, QSqlTableModel*,QTableView*)),this,
         SLOT(ApplyModel(QDataWidgetMapper*, QDialogButtonBox*, QGroupBox*,QSqlQueryModel*,const QString,
-        QPushButton*,QPushButton*, QPushButton*, QSqlTableModel*)),Qt::UniqueConnection);
+        QPushButton*,QPushButton*, QPushButton*, QSqlTableModel*,QTableView*)),Qt::UniqueConnection);
 
     connect(this, SIGNAL(lockControls(bool,QGroupBox*)), this,
     SLOT(onLockControls(bool,QGroupBox*)));
@@ -1177,6 +1177,11 @@ void conf_app::createUserRecord()
     createRecord(userModel,mapperUsers,groupUsersDetail,userButtonBox,pushEditUser,pushRemoveUser);
 
     //some more specific user UI settings go here!
+
+    //refresh combo
+    userModel->relationModel(2)->select();
+    comboRole->setModel(userModel->relationModel(2));
+
     lineUser->clear();
     lineUserPassword->clear();
     lineUserPassword_2->clear();
@@ -1210,18 +1215,18 @@ void conf_app::UI4NewRecord(QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBo
 bool conf_app::onUserButtonClick(QAbstractButton* button)
 {
     return onButtonClick(button,userButtonBox,mapperUsers,groupUsersDetail,viewUsers,
-        strViewUsers,pushEditUser,pushNewUser,pushRemoveUser,userModel);
+        strViewUsers,pushEditUser,pushNewUser,pushRemoveUser,userModel,tableUsers);
 }
 
 bool conf_app::onRoleButtonClick(QAbstractButton* button)
 {
     return onButtonClick(button,roleButtonBox,mapperRoles,groupRoleDetail,viewRoles,
-        strViewRole,pushEditRole,pushNewRole,pushRemoveRole,roleModel);
+        strViewRole,pushEditRole,pushNewRole,pushRemoveRole,roleModel,tableRoles);
 }
 
 bool conf_app::onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
                               QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
-                              QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel)
+                              QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable)
 {
     if ( aButtonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
     {
@@ -1231,7 +1236,7 @@ bool conf_app::onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBo
 
     } else if (aButtonBox->buttonRole(button) == QDialogButtonBox::ApplyRole){
         emit submit(aMapper,aButtonBox,aGroupDetails,viewModel,strQuery,aPushEdit,aPushNew,
-            aPushRemove,aModel);
+            aPushRemove,aModel,aTable);
         return true;
     }
     else return false;
@@ -1524,11 +1529,16 @@ bool conf_app::editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPus
 
 void conf_app::removeUser()
 {
-    removeRecord(tableUsers,userModel,groupUsersDetail,viewUsers,QString(strViewUsers));
+    removeRecord(tableUsers,userModel,groupUsersDetail,viewUsers,QString(strViewUsers),3);
+}
+
+void conf_app::removeRole()
+{
+    removeRecord(tableRoles,roleModel,groupRoleDetail,viewRoles,QString(strViewRole),0);
 }
 
 void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBox* aGroupDetails,
-                            QSqlQueryModel* viewModel, const QString strQuery)
+                            QSqlQueryModel* viewModel, const QString strQuery, const int col)
 {
     if (!aTable->selectionModel()->hasSelection()){
         QMessageBox::critical(this, tr("Remove Error"),
@@ -1543,7 +1553,7 @@ void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBo
     }
 
     QModelIndex idx;
-    if (!translateIndex(aTable->selectionModel()->currentIndex(),aTable,aModel,idx)){
+    if (!translateIndex(aTable->selectionModel()->currentIndex(),col,aTable,aModel,idx)){
         QMessageBox::critical(this, tr("Remove Error"),
                                 tr("Could not remove this record!"));
         return;
@@ -1599,18 +1609,18 @@ void conf_app::removeRecord(QTableView* aTable, QSqlTableModel* aModel, QGroupBo
      }
 }
 
-bool conf_app::translateIndex(const QModelIndex inIdx, QTableView* aTable, QSqlTableModel* aModel, QModelIndex& outIdx)
+bool conf_app::translateIndex(const QModelIndex inIdx, const int col, QTableView* aTable, QSqlTableModel* aModel, QModelIndex& outIdx)
 {
     QModelIndex idx=aTable->model()->index(inIdx.row(),0);
     if (!idx.isValid()){
 
         QMessageBox::critical(this, tr("Remove Error"),
-                                tr("Could not preview this row!"));
+                                tr("Could not remove this row!"));
 
         return false;
     }
 
-    QModelIndex start=aModel->index(0,3);
+    QModelIndex start=aModel->index(0,col);
     QModelIndexList list=aModel->match(start,0,idx.data(),1,0);
 
     if (list.count()!=1) return false;

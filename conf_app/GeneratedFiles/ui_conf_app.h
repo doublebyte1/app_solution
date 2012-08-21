@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Tue 21. Aug 09:19:04 2012
+** Created: Tue 21. Aug 10:49:28 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -863,6 +863,7 @@ public:
         QObject::connect(pushNewRole, SIGNAL(clicked()), conf_appClass, SLOT(createRoleRecord()));
         QObject::connect(roleButtonBox, SIGNAL(clicked(QAbstractButton*)), conf_appClass, SLOT(onRoleButtonClick(QAbstractButton*)));
         QObject::connect(pushEditRole, SIGNAL(clicked(bool)), conf_appClass, SLOT(editRole(bool)));
+        QObject::connect(pushRemoveRole, SIGNAL(clicked()), conf_appClass, SLOT(removeRole()));
 
         toolBox->setCurrentIndex(0);
 
