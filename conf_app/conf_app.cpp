@@ -117,6 +117,7 @@ void conf_app::initModels()
     roleModel = new QSqlTableModel;
     roleModel->setTable(QSqlDatabase().driver()->escapeIdentifier("UI_Role",
     QSqlDriver::TableName));
+    roleModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     roleModel->sort(0,Qt::AscendingOrder);
     roleModel->select();
 }
@@ -1295,9 +1296,6 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
     bool bError=false;
 
     if (aMapper->submit()){
-
-        if (qobject_cast<QSqlTableModel*>(aMapper->model())!=0){
-                QSqlTableModel* aModel= qobject_cast<QSqlTableModel*>(aMapper->model());
                     bError=!
                         aModel->submitAll();
                     if (bError){
@@ -1308,8 +1306,7 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
                             QMessageBox::critical(this, tr("Database Error"),
                                                     tr("Could not write user in the database!"));
                     }
-                    setPreviewQuery(viewModel,strQuery);
-        }else bError=true;
+                    setPreviewQuery(viewModel,strQuery);        //}else bError=true;
     }else bError=true;
 
     aButtonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
