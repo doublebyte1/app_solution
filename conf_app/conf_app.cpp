@@ -668,6 +668,12 @@ void conf_app::onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushBut
        aPushRemove->setEnabled(!aPushEdit->isChecked());
         previewRecord(m_lastIndex,aMapper,aPushNew,aPushEdit,aPushRemove,aGroupDetails,aButtonBox,aModel
             ,viewModel,strQuery,aTable);
+
+        if (aModel==roleModel){
+            //refresh combo
+            userModel->relationModel(2)->select();
+            comboRole->setModel(userModel->relationModel(2));
+        }
        emit lockControls(true,aGroupDetails);
    }else{
         aPushNew->setEnabled(false);
@@ -1178,10 +1184,6 @@ void conf_app::createUserRecord()
 
     //some more specific user UI settings go here!
 
-    //refresh combo
-    userModel->relationModel(2)->select();
-    comboRole->setModel(userModel->relationModel(2));
-
     lineUser->clear();
     lineUserPassword->clear();
     lineUserPassword_2->clear();
@@ -1316,7 +1318,7 @@ bool conf_app::reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aB
 
     aButtonBox->button(QDialogButtonBox::Apply)->setEnabled(bError);
 
-    emit lockControls(!bError,aGroupDetails);
+    //emit lockControls(!bError,aGroupDetails);
 
     if (!aPushEdit->isChecked())
         aButtonBox->button(QDialogButtonBox::Apply)->setVisible(bError);
