@@ -583,15 +583,11 @@ void conf_app::doPatch()
 
 void conf_app::initUI()
 {
-    /*
-    tablePerm=new BooleanTable(groupRoleDetail);
-    tablePerm->setObjectName(QString::fromUtf8("tablePerm"));
-    gridLayout_7->addWidget(tablePerm, 2, 0, 1, 2);
-    gridLayout_7->update();
-*/
     toolbar->addAction(this->actionExit);
     toolbar->addAction(this->actionCreate_backup);
     toolbar->addAction(this->actionRestore_backup);
+    toolbar->addAction(this->actionDump_patch);
+    toolbar->addAction(this->actionApply_patch);
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
 

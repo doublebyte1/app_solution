@@ -699,8 +699,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>595</width>
-         <height>331</height>
+         <width>371</width>
+         <height>308</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1054,11 +1054,19 @@
    </property>
   </action>
   <action name="actionDump_patch">
+   <property name="icon">
+    <iconset resource="conf_app.qrc">
+     <normaloff>:/conf_app/writer.png</normaloff>:/conf_app/writer.png</iconset>
+   </property>
    <property name="text">
     <string>Dump patch</string>
    </property>
   </action>
   <action name="actionApply_patch">
+   <property name="icon">
+    <iconset resource="conf_app.qrc">
+     <normaloff>:/conf_app/kexi.png</normaloff>:/conf_app/kexi.png</iconset>
+   </property>
    <property name="text">
     <string>Apply patch</string>
    </property>
