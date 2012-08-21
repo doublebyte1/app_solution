@@ -48,9 +48,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                             QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
         void                    lockControls(bool bLock,QGroupBox* aGroupDetails);/**< signal to lock/unlock a list of controls */
-        void                     editLeave(const bool bFinished,QPushButton* aPushEdit,QPushButton* aPushNew,
+        void                    editLeave(const bool bFinished,QPushButton* aPushEdit,QPushButton* aPushNew,
                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,
-                                   QDialogButtonBox* aButtonBox,QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable,const bool bDiscarded=false);
+                                   QDialogButtonBox* aButtonBox,QSqlQueryModel* viewModel,
+                                   const QString strQuery, QTableView* aTable,const bool bDiscarded=false);/**< signal emitted after finishing the editing process*/
 
     private slots:
         //! Show Table
@@ -158,10 +159,19 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
          \sa doBackup()
         */
         void                    doRestore();
-
+        //! Do Dump
+        /*!
+        This slot writes a database patch (.diff), based on the log table "info_changes"; 
+        the patch itself is a text file, written in JSON format (http://www.json.org/)
+         \sa doPatch()
+        */
         void                    doDump();
+        //! Do Patch
+        /*!
+        TODO: write something here later!!
+         \sa doDump()
+        */
         void                    doPatch();
-
         //! Read Process Error
         /*!
         This slot connects to the readyReadStandardError() signal of the process launched with sqlcmd;
@@ -190,33 +200,172 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                    showSqlMessages(bool bShow);
         void                    finishedRestore();
 
-        bool                    onUserButtonClick(QAbstractButton* button);
-        bool                    onRoleButtonClick(QAbstractButton* button);
-        bool                    onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
+        //! On button click (Users)
+        /*!
+        This is the entry point for the generic onButtonClick, on the context of the user tab. Its only
+        argument is the clicked button, as we pass everything else (user's specific controls and 
+        data) to the subsequent function.
+        \par button clicked button (apply or close);
+         \sa onRoleButtonClick(QAbstractButton* button),onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
-                                    QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
+                                    QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable)
+        */
+        bool                    onUserButtonClick(QAbstractButton* button);
+        //! On button click (Role)
+        /*!
+        This is the entry point for the generic onButtonClick, on the context of the role tab. Its only
+        argument is the clicked button, as we pass everything else (role's specific controls and 
+        data) to the subsequent function.
+        \par button clicked button (apply or close);
+         \sa onUserButtonClick(QAbstractButton* button),onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
+                                    QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
+                                    QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable)
+        */
+        bool                    onRoleButtonClick(QAbstractButton* button);
+        //! Create Record (User)
+        /*!
+        This is the entry point for the generic createRecord, on the context of the user tab. It does not have any arguments
+        as we pass everything (user's specific controls and 
+        data) to the subsequent function.
+        \par button clicked button (apply or close);
+         \sa createRoleRecord(), createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
+                QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QPushButton* aPushEdit,QPushButton* aPushRemove)
+        */
         void                    createUserRecord();
+        //! Create Record (Role)
+        /*!
+        This is the entry point for the generic createRecord, on the context of the role tab. It does not have any arguments
+        as we pass everything (user's specific controls and 
+        data) to the subsequent function.
+        \par button clicked button (apply or close);
+         \sa createUserRecord(), createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
+                QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QPushButton* aPushEdit,QPushButton* aPushRemove)
+        */
         void                    createRoleRecord();
+        //! Apply Model
+        /*!
+        This slot is a response to the submit signal and it introduces the validation layer, 
+        redirecting (or not) the flow to reallyApplyModel, where we actually perform the comit
+        to the database.
+        \par aMapper mapper of the form;
+        \par aButtonBox close & apply buttons;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushNew pushbutton to create new record;
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aModel model behind the mapper;
+        \par tableView preview table;
+        \sa reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
+                                    QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,QPushButton* aPushNew,
+                                    QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable),submit(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
+                                            QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
+        */
         bool                    ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                   QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
                                   QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
+        //! On Lock Controls
+        /*!
+        This slot is a response to the lockControls signal it enables/disables the controls on the preview tab.
+        \par bLock boolean to indicate if we want to block (disable) or unblock (enable) the controls;
+        \par aGroupDetails target groupbox;
+        \sa lockControls(bool bLock,QGroupBox* aGroupDetails)
+*/
         void                    onLockControls(bool bLock,QGroupBox* aGroupDetails);
-        void                    previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
-                                    QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
-                                    QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
+        //! Resize Tables
+        /*!
+        This slot automatically resizes the contents of the user and role tables, with a form resize 
+        \par int index of the tab we are in;
+*/
+        void                    resizeTables(int index);
+        //! Adjust User Enables
+        /*!
+        This an entry point for the generic adjustUserEnables function. This function provides the necessary
+        context (controls, data) for the user tab.
+        \sa adjustEnables(QPushButon* aPushEdit,QPushButon* aPushRemove,QSqlTableModel* aModel),adjustRoleEnables()
+*/
+        void                    adjustUserEnables();
+        //! Adjust Role Enables
+        /*!
+        This an entry point for the generic adjustUserEnables function. This function provides the necessary
+        context (controls, data) for the role tab.
+        \sa adjustEnables(QPushButon* aPushEdit,QPushButon* aPushRemove,QSqlTableModel* aModel),adjustUserEnables()
+*/
+        void                    adjustRoleEnables();
+        //! Preview User
+        /*!
+        This an entry point for the generic previewRecord function. This function provides the necessary
+        context (controls, data) for the user tab.
+        \sa previewRole(QModelIndex index),previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
+                                            QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
+                                            QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable)
+*/
+        void                    previewUser(QModelIndex index);
+        //! Preview Role
+        /*!
+        This an entry point for the generic previewRecord function. This function provides the necessary
+        context (controls, data) for the role tab.
+        \sa previewUser(QModelIndex index),previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
+                                            QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
+                                            QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable)
+*/
+        void                    previewRole(QModelIndex index);
+        //! Edit User
+        /*!
+        This an entry point for the generic editRecord function. This function provides the necessary
+        context (controls, data) for the user tab.
+        \sa editRole(bool on), editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
+                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
+                                    QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
+
+*/
+        bool                    editUser(bool on);
+        //! Edit Role
+        /*!
+        This an entry point for the generic editRecord function. This function provides the necessary
+        context (controls, data) for the role tab.
+        \sa editUser(bool on), editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
+                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
+                                    QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
+
+*/
+        bool                    editRole(bool on);
+        //! On Edit Leave
+        /*!
+        This slot connects to the editLeave signal, and implements the changes in the UI that
+        reflect the end of an edition.
+        \par bFinished boolean to indicate if the edition process has been terminated (true) or initiated (false);
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushNew pushbutton to create new record;
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par aMapper mapper of the form;
+        \par aModel model behind the mapper;
+        \par aButtonBox close & apply buttons;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par tableView preview table;
+        \par bDiscarded boolean to indicate if the edition process has been discarded;
+        \sa editLeave(const bool bFinished,QPushButton* aPushEdit,QPushButton* aPushNew,
+               QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,
+               QDialogButtonBox* aButtonBox,QSqlQueryModel* viewModel,
+               const QString strQuery, QTableView* aTable,const bool bDiscarded=false)
+       */
         void                    onEditLeave(const bool bFinished, QPushButton* aPushEdit,QPushButton* aPushNew,
                                     QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDataWidgetMapper* aMapper,QSqlTableModel* aModel,QDialogButtonBox* aButtonBox,
                                     QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable, const bool bDiscarded);
-        void                    resizeTables(int index);
-        void                    adjustUserEnables();
-        void                    previewUser(QModelIndex index);
-        void                    previewRole(QModelIndex index);
-        bool                    editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
-                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
-                                    QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
-        bool                    editUser(bool on);
-        bool                    editRole(bool on);
+        //! Remove User
+        /*!
+        Slot that removes a user record from the db;
+        \sa removeRole()
+*/
         void                    removeUser();
+        //! Remove Role
+        /*!
+        Slot that removes a role record from the db;
+        \sa removeUser()
+*/
         void                    removeRole();
 
     private:
@@ -270,12 +419,33 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         to fill the tables combobox, on the UI. It is called right after a connection to the db is established.
          */
         bool                    listTables();
-
+        //! Init Users
+        /*!
+        This function establishes the bindings between the UI and the DB, on the users tab.
+        It basically connects the tableview with a query model, and associates a mapper with the controls.
+        \sa initRoles()
+         */
         bool                    initUsers();
+        //! Init Roles
+        /*!
+        This function establishes the bindings between the UI and the DB, on the role tab.
+        It basically connects the tableview with a query model, and associates a mapper with the controls.
+        \sa initUsers()
+         */
         bool                    initRoles();
-
+        //! UI for New Record
+        /*!
+        Function that initializes the UI associated with a new record in the managing tab (cleans lineboxes, etc).
+        \par aGroupDetails groupbox with the preview
+        \par aButtonBox close & apply buttons
+         */
         void                    UI4NewRecord(QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox);
-
+        //! Set Preview query
+        /*!
+        This functions sets a model query based on an SQL string.
+        \par viewModel query model that we want to update;
+        \par strQuery select query as SQL string
+         */
         void                    setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery);
         void                    initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
         bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
@@ -284,13 +454,34 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                    abstractPreviewRow(QModelIndex index,QPushButton* aPushNew,QPushButton* aPushEdit,QPushButton* aPushRemove,
                                       QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel,
                                       QDataWidgetMapper* aMapper, QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
-
+        bool                    editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
+                                    QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
+                                    QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
+        //! On button click
+        /*!
+        Here we perform the actions specific to the chosen button; "close" closes the preview form
+        and apply submits the changes to the underlying model.
+        \par button clicked button (apply or close);
+        \par aButtonBox close & apply buttons;
+        \par aMapper mapper of the form;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushNew pushbutton to create new record;
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aModel model behind the mapper;
+        \par tableView preview table;
+        \sa onUserButtonClick(QAbstractButton* button),onRoleButtonClick(QAbstractButton* button)
+*/
+        bool                    onButtonClick(QAbstractButton* button,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper, QGroupBox* aGroupDetails,
+                                    QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
+                                    QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
         //! Show Event
         /*!
         Reimplemented from the base class.
          */
         void                              showEvent ( QShowEvent * event );
-
         void                              resizeEvent ( QResizeEvent * event );
         bool                              runScript(const QString strScript, QStringList& args);
         void                              createProcess();
@@ -306,6 +497,36 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              validate(const QSqlTableModel* aModel);
         void                              createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
                                                 QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QPushButton* aPushEdit,QPushButton* aPushRemove);
+        //! Adjust Enables
+        /*!
+        This convenience functions, disables the pushEdit and pushRemove buttons on the managing tab. 
+        Since they should not active when there are no records, it is connected to the rowsInserted( const QModelIndex, int, int)
+        and rowsRemoved( const QModelIndex, int, int) signals, that indicate changes in the model.
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aModel model behind the mapper;
+        /sa adjustUserEnables(), adjustRoleEnables()
+*/
+        void                              adjustEnables(QPushButton* aPushEdit,QPushButton* aPushRemove,QSqlTableModel* aModel);
+        //! Preview Record
+        /*!
+        Previews the select record by displaying it in the preview tab in preview mode (disabled controls).
+        \par index model index of the record we want to preview;
+        \par aMapper mapper of the form;
+        \par aPushNew pushbutton to create new record;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par aButtonBox close & apply buttons;
+        \par aModel model behind the mapper;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par tableView preview table;
+        \sa previewUser(), previewRole()
+*/
+        void                              previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
+                                            QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
+                                            QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
@@ -328,8 +549,6 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;
-        //BooleanTable*                      tablePerm;
-        //GenericSortProxyModel*             proxymodel;
 };
 
 #endif // CONF_APP_H

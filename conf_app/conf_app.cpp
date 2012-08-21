@@ -1370,12 +1370,22 @@ void conf_app::setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery
     viewModel->setQuery(strQuery);
 }
 
+void conf_app::adjustEnables(QPushButton* aPushEdit,QPushButton* aPushRemove,QSqlTableModel* aModel)
+{
+    aPushEdit->setEnabled(aModel->rowCount()>0);
+    aPushRemove->setEnabled(aModel->rowCount()>0);
+}
+
 void conf_app::adjustUserEnables()
 {
     if (!userModel || !pushEditUser || !pushRemoveUser) return;
+    adjustEnables(pushEditUser,pushRemoveUser,userModel);
+}
 
-    pushEditUser->setEnabled(userModel->rowCount()>0);
-    pushRemoveUser->setEnabled(userModel->rowCount()>0);
+void conf_app::adjustRoleEnables()
+{
+    if (!roleModel || !pushEditRole || !pushRemoveRole) return;
+    adjustEnables(pushEditRole,pushRemoveRole,roleModel);
 }
 
 void conf_app::previewRole(QModelIndex index)
@@ -1658,12 +1668,16 @@ void conf_app::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
 {
     aTable->setModel(view);
 
-    if (aTable->objectName()=="tableUsers"){
+    if (aTable==tableUsers){
         connect(aTable->model(), SIGNAL(rowsInserted ( const QModelIndex, int, int)), this,
             SLOT(adjustUserEnables()));
-
         connect(aTable->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
             SLOT(adjustUserEnables()));
+    }else if (aTable==tableRoles){
+        connect(aTable->model(), SIGNAL(rowsInserted ( const QModelIndex, int, int)), this,
+            SLOT(adjustRoleEnables()));
+        connect(aTable->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
+            SLOT(adjustRoleEnables()));
     }
 
     aTable->setAlternatingRowColors(true);
