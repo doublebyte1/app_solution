@@ -447,13 +447,75 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         \par strQuery select query as SQL string
          */
         void                    setPreviewQuery(QSqlQueryModel* viewModel, const QString strQuery);
+        //! Init Preview Table
+        /*!
+        This functions Initializes the QTableView that previews the model.
+        \par aTable preview table;
+        \par view read-only query model;
+         */
         void                    initPreviewTable(QTableView* aTable, QSqlQueryModel* view);
+        //! ReallyApply Model
+        /*!
+        This is the function that actually comits the changes to the mapper and to the model, inputting
+        the results into the database. It normally follows ApplyModel, after successfully bypassing
+        the validation.
+        \par aMapper mapper of the form;
+        \par aButtonBox close & apply buttons;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushNew pushbutton to create new record;
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aModel model behind the mapper;
+        \par tableView preview table;
+        \sa reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
+                QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,QPushButton* aPushNew,
+                QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
+         */
         bool                    reallyApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
                                     QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,QPushButton* aPushNew,
                                     QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
+        //! Abstract Preview Row
+        /*!
+        This function is called by the generic previewRecord, and it previews a row, that was selected
+        by the user on the tableview. It makes some changes on the UI (enables/disables), checks if the
+        record was discarded, and finally sets a filter in the model for the given record.
+        \index selected model index;
+        \par aMapper mapper of the form;
+        \par aPushNew pushbutton to create new record;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par aButtonBox close & apply buttons;
+        \par aModel model behind the mapper;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par tableView preview table;
+        \sa previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
+                QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
+                QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
+*/
         bool                    abstractPreviewRow(QModelIndex index,QPushButton* aPushNew,QPushButton* aPushEdit,QPushButton* aPushRemove,
                                       QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QSqlTableModel* aModel,
                                       QDataWidgetMapper* aMapper, QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
+        //! Edit Record
+        /*!
+        This is the triggered function when we toggle the edit mode, over a record.
+        First it analyses if we are entering or leaving an edit; if we are leaving, it prompts
+        the user to save changes; finally it modifies the UI according to the state, result.
+        \par aModel model behind the mapper;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushNew pushbutton to create new record;
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par aButtonBox close & apply buttons;
+        \par aMapper mapper of the form;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par tableView preview table;
+        \sa editUser(bool on),editRole(bool on)
+*/
         bool                    editRecord(const bool on,QSqlTableModel* aModel,QPushButton* aPushEdit,QPushButton* aPushNew,
                                     QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QDataWidgetMapper* aMapper,
                                     QSqlQueryModel* viewModel, const QString strQuery,QTableView* aTable);
@@ -487,14 +549,70 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                              createProcess();
         QString                           getOutputName(const QString strExt);
         bool                              writeDiff(const QString strFileName);
+        //! Generic Create Record
+        /*!
+        Generic function to create a new record (applied to roles and users). It is called by createRecord.
+        \par aModel table model;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \sa createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
+                QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QPushButton* aPushEdit,QPushButton* aPushRemove);
+*/
         bool                              genericCreateRecord(QSqlTableModel* aModel,QPushButton* aPushEdit,
                                                 QPushButton* aPushRemove);
+        //! Discard New Record
+        /*!
+        This function allows to discard changes, on a record that was being created/edited.
+        \par aModel table model;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+*/
         bool                              discardNewRecord(QSqlTableModel* aModel,QPushButton* aPushEdit);
+        //! Remove Record
+        /*!
+        This is the generic function that deletes a record from the database. It is generally called
+        from removeUser() or removeRole().
+        \par aModel table model;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par viewModel read-only model that supports the preview on the tableview (normally only shows name and another property);
+        \par strQuery query string to build the viewModel;
+        \par col index of the field that contains the ID (to translate the index from the view to the model);
+        \sa removeUser(), removeRole()
+*/
         void                              removeRecord(QTableView* aTable,QSqlTableModel* aModel,QGroupBox* aGroupDetails,
                                                     QSqlQueryModel* viewModel, const QString strQuery, const int col);
+        //! Translate Index
+        /*!
+        This function translates a index on the preview view, on an index in the table model.
+        \par inIdx input index from the query view;
+        \par col index of the field that contains the ID;
+        \par aTable preview table;
+        \par aModel table model;
+        \par outIdx output index (index on the model)
+*/
         bool                              translateIndex(const QModelIndex inIdx, const int col, QTableView* aTable, 
                                                 QSqlTableModel* aModel, QModelIndex& outIdx);
+        //! Validate
+        /*!
+        Function that validates the UI, looking for empty controls, etc; it has a part related to the role UI
+        and another part related to the User UI. It is generally called from the applyModel.
+        \par aModel table model;
+        \sa ApplyModel(QDataWidgetMapper* aMapper, QDialogButtonBox* aButtonBox, QGroupBox* aGroupDetails,
+              QSqlQueryModel* viewModel, const QString strQuery, QPushButton* aPushEdit,
+              QPushButton* aPushNew, QPushButton* aPushRemove, QSqlTableModel* aModel,QTableView* aTable);
+*/
         bool                              validate(const QSqlTableModel* aModel);
+        //! Create Record
+        /*!
+        Interface for the function genericCreateRecord, that also applies some changes to the UI.
+        \par aModel table model;
+        \par aMapper mapper of the form;
+        \par aGroupDetails form with preview of the record, that can also be use for edit/new;
+        \par aButtonBox close & apply buttons;
+        \par aPushEdit pushbutton to trigger edit mode (toggle);
+        \par aPushRemove pushbutton to indicate the removal of a record;
+        \sa genericCreateRecord(QSqlTableModel* aModel,QPushButton* aPushEdit,
+                                                QPushButton* aPushRemove)
+*/
         void                              createRecord(QSqlTableModel* aModel,QDataWidgetMapper* aMapper, 
                                                 QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox, QPushButton* aPushEdit,QPushButton* aPushRemove);
         //! Adjust Enables
@@ -504,7 +622,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         and rowsRemoved( const QModelIndex, int, int) signals, that indicate changes in the model.
         \par aPushEdit pushbutton to trigger edit mode (toggle);
         \par aPushRemove pushbutton to indicate the removal of a record;
-        \par aModel model behind the mapper;
+        \par aModel table model;
         /sa adjustUserEnables(), adjustRoleEnables()
 */
         void                              adjustEnables(QPushButton* aPushEdit,QPushButton* aPushRemove,QSqlTableModel* aModel);
@@ -548,7 +666,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         QDataWidgetMapper*                 mapperRoles;
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
-        QModelIndex                        m_lastIndex;
+        QModelIndex                        m_lastIndex;//!< variable that stores the last clicked index
 };
 
 #endif // CONF_APP_H
