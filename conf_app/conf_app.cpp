@@ -1,8 +1,11 @@
 #include "conf_app.h"
 #include "connection.h"
 #include "sql.h"
+#include "json.h"
 #include <QMessageBox>
 #include <QDir>
+
+using namespace QtJson;
 
 //We need to mantain these names in order to mantain compatibility with the historical backups
 //static const QString strLogicalFile="albania_dat";
@@ -574,11 +577,58 @@ void conf_app::doPatch()
              +tr("\n Please connect and try again!"));
              return;
     }
-    //1 - read patch file
-    //2 - parse JSON
-    //3 - backup db (establish rollback mechanism)
-    //4 - apply patches sequentially (establish rollback mechanism)
-    //5 - store the stamp of the last update
+    //TODO: grab filename here
+    QString fileName = QFileDialog::getOpenFileName(this,
+     tr("Open patch file"), "", tr("Patch Files (*.diff)"));
+
+    if (!fileName.isEmpty()){
+        QString strContent;
+        if (!readFile(fileName,strContent)){
+                 QMessageBox::warning(this, tr("Patch Process"),
+                 tr("Could not read patch file!")
+                 +tr("\n Are you sure this is a valid file?"));
+                 return;
+        }else{
+                bool ok;
+                QVariantMap result = Json::parse(strContent, ok).toMap();
+
+                if(!ok) {
+                    QMessageBox::critical(this, tr("Patch Process"),
+                 tr("Could not parse JSON content!"));
+                 return;
+                }
+
+                qDebug() << "encoding:" << result["encoding"].toString();
+                qDebug() << "Change:" << result["Change"].toString();
+
+                qDebug() << "Change:";
+
+                foreach(QVariant change, result["Change"].toList()) {
+                    qDebug() << "\t-" << change.toString();
+                }
+
+        }
+
+        //1 - read patch file
+        //2 - parse JSON
+        //3 - backup db (establish rollback mechanism)
+        //4 - prompt the user with changes
+        //5 - apply patches sequentially (establish rollback mechanism)
+        //6 - store the stamp of the last update
+        //7 - report results
+    }
+}
+
+bool conf_app::readFile(const QString strFileName, QString& outStr)
+{
+     QFile file(strFileName);
+     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+         return false;
+
+     QByteArray ba=file.readAll();
+     outStr=QString::fromUtf8(ba);
+
+    return true;
 }
 
 void conf_app::initUI()

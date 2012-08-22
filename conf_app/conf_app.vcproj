@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\json.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\login.cpp"
 				>
 			</File>
@@ -327,6 +331,10 @@
 			</File>
 			<File
 				RelativePath=".\genericsortproxymodel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\json.h"
 				>
 			</File>
 			<File
@@ -501,7 +509,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\add.png"
+				RelativePath=".\add.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -521,7 +529,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\add.png"
+				RelativePath="..\app_new\add.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -581,7 +589,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\cancel.png"
+				RelativePath="..\app_new\cancel.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -601,7 +609,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\cancel.png"
+				RelativePath=".\cancel.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -807,7 +815,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\exit.png"
+				RelativePath=".\exit.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -827,7 +835,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\exit.png"
+				RelativePath="..\app_new\exit.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -867,7 +875,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\filenew.png"
+				RelativePath="..\app_new\filenew.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -887,7 +895,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\filenew.png"
+				RelativePath=".\filenew.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -967,7 +975,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\folder_outbox.png"
+				RelativePath=".\folder_outbox.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -987,7 +995,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\folder_outbox.png"
+				RelativePath="..\app_new\folder_outbox.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1427,7 +1435,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\pencil.png"
+				RelativePath="..\app_new\pencil.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -1447,7 +1455,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\app_new\pencil.png"
+				RelativePath=".\pencil.png"
 				>
 				<FileConfiguration
 					Name="Release|Win32"

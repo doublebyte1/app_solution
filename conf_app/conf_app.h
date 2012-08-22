@@ -645,6 +645,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         void                              previewRecord(const QModelIndex index,QDataWidgetMapper* aMapper,QPushButton* aPushNew,
                                             QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
+        bool                              readFile(const QString strFileName, QString& outStr);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

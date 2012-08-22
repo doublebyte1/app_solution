@@ -1897,24 +1897,24 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
     QString strQuery=
     "select '\n"
-    "    Change: {\n"
+    "    \"Change\": {\n"
     "                       \n"
-    "      ID: \"'+CAST([ID] AS VARCHAR(50))+'\",\n"
+    "      \"ID\": \"'+CAST([ID] AS VARCHAR(50))+'\",\n"
     "                       \n"
-    "      Table: \"'+[Table]+'\",\n"
+    "      \"Table\": \"'+[Table]+'\",\n"
     "                       \n"
-    "      Column: \"'+[Column]+'\",\n"
+    "      \"Column\": \"'+[Column]+'\",\n"
     "                       \n"
-    "      values: {\n"
+    "      \"values\": {\n"
     "                       \n"
-    "        from: \"'+[from]+'\",\n"
+    "        \"from\": \"'+[from]+'\",\n"
     "                       \n"
-    "        to: \"'+[to]+'\"\n"
+    "        \"to\": \"'+[to]+'\"\n"
     "      }"
     "                       \n"
     "      },'\n"
     "                       \n"
-    "FROM INFO_CHANGES WHERE ID > :id";
+    "FROM [FAOCASDATA].[dbo].[info_changes] WHERE ID > :id";
 
     query.prepare(strQuery);
     query.bindValue(QObject::tr(":id"),ID);
@@ -1927,16 +1927,20 @@ static bool getLastChanges(const int ID, QString& strJSON)
          return false;
         }
      query.first();
+     strJSON=query.value(0).toString();
      int i =0;
      while (query.next()) {
         strJSON+=query.value(0).toString();
         ++i;
      }
 
-     strJSON=
-     "  Changes: {\n "
+     strJSON="{ \n"
+     "\"encoding\" : \"UTF-8\","
+     "  \"Changes\": {\n "
      + strJSON + "\n"
-     "}";
+     "}\n"
+     "}"
+     ;
      return true;
 
 }
