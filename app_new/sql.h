@@ -1897,24 +1897,23 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
     QString strQuery=
     "select '\n"
-    "    \"Change\": {\n"
+    "       {\n"
+    "      \"id\": \"'+CAST([ID] AS VARCHAR(50))+'\",\n"
     "                       \n"
-    "      \"ID\": \"'+CAST([ID] AS VARCHAR(50))+'\",\n"
+    "      \"table\": \"'+[Table]+'\",\n"
     "                       \n"
-    "      \"Table\": \"'+[Table]+'\",\n"
-    "                       \n"
-    "      \"Column\": \"'+[Column]+'\",\n"
+    "      \"column\": \"'+[Column]+'\",\n"
     "                       \n"
     "      \"values\": {\n"
     "                       \n"
     "        \"from\": \"'+[from]+'\",\n"
     "                       \n"
     "        \"to\": \"'+[to]+'\"\n"
-    "      }"
+    "           }"
     "                       \n"
     "      },'\n"
     "                       \n"
-    "FROM [FAOCASDATA].[dbo].[info_changes] WHERE ID > :id";
+    "FROM [FAOCASDATA].[dbo].[info_changes] WHERE ID > :id ORDER BY ID ASC";
 
     query.prepare(strQuery);
     query.bindValue(QObject::tr(":id"),ID);
@@ -1936,9 +1935,9 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
      strJSON="{ \n"
      "\"encoding\" : \"UTF-8\","
-     "  \"Changes\": {\n "
+     "  \"change\": [\n "
      + strJSON + "\n"
-     "}\n"
+     "]\n"
      "}"
      ;
      return true;

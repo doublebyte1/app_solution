@@ -13,6 +13,8 @@ using namespace QtJson;
 //static const QString strDatabasePath="C:\\medfisis_dat\\";
 static const QString strSqlClient="sqlcmd";
 
+static const QString strNothing="274b68192b056e268f128ff63bfcd4a4";
+
 static const QString strViewUsers=
     "SELECT     dbo.UI_User.ID, dbo.UI_User.username AS Name, dbo.UI_Role.name AS Role"
     " FROM         dbo.UI_User INNER JOIN"
@@ -589,34 +591,72 @@ void conf_app::doPatch()
                  +tr("\n Are you sure this is a valid file?"));
                  return;
         }else{
-                bool ok;
-                QVariantMap result = Json::parse(strContent, ok).toMap();
-
-                if(!ok) {
-                    QMessageBox::critical(this, tr("Patch Process"),
-                 tr("Could not parse JSON content!"));
+            listInfoChanges lChanges;
+            if (!readChangesfromPatch(strContent,lChanges)){
+                 QMessageBox::warning(this, tr("Patch Process"),
+                 tr("Could not parse JSON content!")
+                 +tr("\n Are you sure the syntax is valid?"));
                  return;
-                }
-
-                qDebug() << "encoding:" << result["encoding"].toString();
-                qDebug() << "Change:" << result["Change"].toString();
-
-                qDebug() << "Change:";
-
-                foreach(QVariant change, result["Change"].toList()) {
-                    qDebug() << "\t-" << change.toString();
-                }
-
-        }
-
-        //1 - read patch file
-        //2 - parse JSON
+            }
         //3 - backup db (establish rollback mechanism)
         //4 - prompt the user with changes
+
+            if (!applyChangesfromPatch(lChanges))
+            {
+                 QMessageBox::warning(this, tr("Patch Process"),
+                 tr("Could apply this patch!"));
+                 return;
+            }
+        }
         //5 - apply patches sequentially (establish rollback mechanism)
+        //FK?
         //6 - store the stamp of the last update
         //7 - report results
     }
+}
+
+bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges)
+{
+    for (int i=0; i < lChanges.count(); ++i)
+    {
+        if (lChanges.at(i).m_varNew.toString().compare(strNothing)==0)//REM
+            qDebug() << "delete" << endl;
+        else if (lChanges.at(i).m_varNew.toString().compare(strNothing)!=0 &&
+                    lChanges.at(i).m_varOld.toString().compare(strNothing)!=0)//EDIT
+            qDebug() << "delete" << endl;
+        else if (lChanges.at(i).m_varOld.toString().compare(strNothing)==0){//INSERT
+            listInfoChanges newRecord;
+            QString curTable=lChanges.at(i).m_strTable;
+            while (lChanges.at(i).m_strTable.compare(curTable)==0){
+                newRecord.push_back(lChanges.at(i));
+                ++i;
+            }
+        }
+        else return false;//It should never come here!!!
+    }
+
+    return true;
+}
+
+bool conf_app::readChangesfromPatch(const QString strContent, listInfoChanges& lChanges)
+{
+    bool ok;
+    QVariantMap result = Json::parse(strContent, ok).toMap();
+
+    if(!ok) return false;
+
+    foreach(QVariant change, result["change"].toList()) {
+
+        QVariantMap nestedMap = change.toMap();
+        QVariantMap nestedMap2 = nestedMap["values"].toMap();
+
+        InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
+            nestedMap["column"].toString(),nestedMap2["from"].toString(),nestedMap2["to"].toString());
+
+        lChanges.push_back(ichanges);
+    }
+
+    return true;
 }
 
 bool conf_app::readFile(const QString strFileName, QString& outStr)

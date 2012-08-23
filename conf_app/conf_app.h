@@ -25,6 +25,25 @@ void                      resizeToVisibleColumns ( QTableView* table );
 void                      filterTable(QSqlTableModel* table);
 bool                      insertRecordIntoModel(QSqlTableModel* m);
 
+//! Info Changes struct
+/*! TODO: write somethin here later!!!
+*/
+struct InfoChanges {
+    InfoChanges( const int id, const QString strTable, const QString strField,
+        const QVariant varOld, const QVariant varNew):
+    m_id(id), m_strTable(strTable), m_strField(strField),m_varOld(varOld),m_varNew(varNew)
+    {}
+    InfoChanges()
+    {}
+   int                 m_id;
+   QString             m_strTable;//!< name of the table involved in these changes
+   QString             m_strField;//!< name of the field involved in these changes
+   QVariant            m_varOld;//
+   QVariant            m_varNew;//
+};
+
+typedef QList<InfoChanges>                    listInfoChanges;
+
 //! Configure Application Class
 /*!
 This class is the main dialog of the Configurator.
@@ -646,6 +665,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
         bool                              readFile(const QString strFileName, QString& outStr);
+        bool                              readChangesfromPatch(const QString strContent, listInfoChanges& lChanges);
+        bool                              applyChangesfromPatch(const listInfoChanges& lChanges);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")
