@@ -13,8 +13,6 @@ using namespace QtJson;
 //static const QString strDatabasePath="C:\\medfisis_dat\\";
 static const QString strSqlClient="sqlcmd";
 
-static const QString strNothing="274b68192b056e268f128ff63bfcd4a4";
-
 static const QString strViewUsers=
     "SELECT     dbo.UI_User.ID, dbo.UI_User.username AS Name, dbo.UI_Role.name AS Role"
     " FROM         dbo.UI_User INNER JOIN"
@@ -622,12 +620,12 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges)
 
     for (int i=0; i < lChanges.count(); ++i)
     {
-        if (lChanges.at(i).m_varNew.toString().compare(strNothing)==0)//REM
+        if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0)//REM
             qDebug() << "delete" << endl;
-        else if (lChanges.at(i).m_varNew.toString().compare(strNothing)!=0 &&
-                    lChanges.at(i).m_varOld.toString().compare(strNothing)!=0)//EDIT
+        else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
+                    lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0)//EDIT
             qDebug() << "delete" << endl;
-        else if (lChanges.at(i).m_varOld.toString().compare(strNothing)==0){//INSERT
+        else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
             listInfoChanges newRecord;
             QString curTable=lChanges.at(i).m_strTable;
             while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0){

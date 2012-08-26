@@ -36,6 +36,8 @@ static const char *TMPCHAR =
 
 static QString bottomLevelTable="Ref_Minor_Strata";//This is the default table for the bottom level, but we can change it within the regions UI
 
+static const QString strNoValue="274b68192b056e268f128ff63bfcd4a4";
+
 //! Table Sequence struct
 /*! This structure allows us to construct a one direction table flow for a sampling process. 
 Each element (table) provides us with the necessary information for navigation: the name of the parent field, the name of
@@ -1950,6 +1952,8 @@ static bool isDateTime(const QString strTable, const QString strField, bool& bIs
 
 static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
 {
+    QVariantMap nestedMap2;
+
    QSqlQuery query;
    QString strQuery=
     "SELECT  "
@@ -1969,7 +1973,13 @@ static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
          return false;
         }
 
-   return true;
+    query.first();
+    nestedMap2["date_utc"]=query.value(query.record().indexOf("Date_UTC")).toString();
+    nestedMap2["date_local"]=query.value(query.record().indexOf("Date_Local")).toString();
+    nestedMap2["date_type"]=query.value(query.record().indexOf("Date_Type")).toInt();
+
+    nestedMap["Date"]=nestedMap2;
+    return true;
 }
 
 static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
@@ -1988,8 +1998,27 @@ static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
     if (!isDateTime(query.value(query.record().indexOf("table")).toString(),
         strField,bIsDateTime)) return false;
 
-    nestedMap2["from"]=bIsDateTime? "DATE": query.value(query.record().indexOf("from")).toString();
-    nestedMap2["to"]=bIsDateTime? "DATE": query.value(query.record().indexOf("to")).toString();
+    nestedMap2["from"]=query.value(query.record().indexOf("from")).toString();
+    nestedMap2["to"]=query.value(query.record().indexOf("to")).toString();
+
+    if (bIsDateTime){
+        if (query.value(query.record().indexOf("from")).toString().compare(
+            strNoValue)!=0){
+            QVariantMap nestedMap3;
+            if (!deserializeDateTime(query.value(query.record().indexOf("from")).toInt(),
+                nestedMap3)) return false;
+            nestedMap2["from"]=nestedMap3;
+        }
+
+        if (query.value(query.record().indexOf("to")).toString().compare(
+            strNoValue)!=0){
+            QVariantMap nestedMap3;
+            if (!deserializeDateTime(query.value(query.record().indexOf("to")).toInt(),
+                nestedMap3)) return false;
+            nestedMap2["to"]=nestedMap3;
+        }
+
+    }
     nestedMap["values"]=nestedMap2;
 
     return true;
