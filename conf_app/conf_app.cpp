@@ -1,7 +1,7 @@
 #include "conf_app.h"
 #include "connection.h"
 #include "sql.h"
-#include "json.h"
+//#include "json.h"
 #include <QMessageBox>
 #include <QDir>
 
@@ -546,7 +546,6 @@ void conf_app::doDump()
 
 bool conf_app::writeDiff(const QString strFileName)
 {
-
     int lastUpdate;
     if (!getLastUpdate(lastUpdate)) return false;
     QString strJSON;
@@ -592,7 +591,9 @@ void conf_app::doPatch()
                  return;
         }else{
             listInfoChanges lChanges;
-            if (!readChangesfromPatch(strContent,lChanges)){
+            QString strDateUTC, strDateLocal, strCityName;
+            int dateType;
+            if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,strCityName,lChanges)){
                  QMessageBox::warning(this, tr("Patch Process"),
                  tr("Could not parse JSON content!")
                  +tr("\n Are you sure the syntax is valid?"));
@@ -617,6 +618,8 @@ void conf_app::doPatch()
 
 bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges)
 {
+    //TODO: write session data
+
     for (int i=0; i < lChanges.count(); ++i)
     {
         if (lChanges.at(i).m_varNew.toString().compare(strNothing)==0)//REM
@@ -627,7 +630,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges)
         else if (lChanges.at(i).m_varOld.toString().compare(strNothing)==0){//INSERT
             listInfoChanges newRecord;
             QString curTable=lChanges.at(i).m_strTable;
-            while (lChanges.at(i).m_strTable.compare(curTable)==0){
+            while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0){
                 newRecord.push_back(lChanges.at(i));
                 ++i;
             }
@@ -638,12 +641,20 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges)
     return true;
 }
 
-bool conf_app::readChangesfromPatch(const QString strContent, listInfoChanges& lChanges)
+bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
+                        int& dateType, QString& strCityName,listInfoChanges& lChanges)
 {
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
 
     if(!ok) return false;
+
+    QVariantMap nestedMap1 = result["session"].toMap();
+
+    strDateUTC=nestedMap1["date_utc"].toString();
+    strDateLocal=nestedMap1["date_local"].toString();
+    dateType=nestedMap1["date_type"].toInt();
+    strCityName=nestedMap1["city_name"].toString();
 
     foreach(QVariant change, result["change"].toList()) {
 

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmoperation.h'
 **
-** Created: Fri 17. Aug 22:15:00 2012
+** Created: Thu 23. Aug 18:06:33 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

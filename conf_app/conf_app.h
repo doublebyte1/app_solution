@@ -665,7 +665,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QPushButton* aPushEdit, QPushButton* aPushRemove,QGroupBox* aGroupDetails,QDialogButtonBox* aButtonBox,QSqlTableModel* aModel,
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
         bool                              readFile(const QString strFileName, QString& outStr);
-        bool                              readChangesfromPatch(const QString strContent, listInfoChanges& lChanges);
+        bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
+                                                    int& dateType, QString& strCityName,listInfoChanges& lChanges);
         bool                              applyChangesfromPatch(const listInfoChanges& lChanges);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status

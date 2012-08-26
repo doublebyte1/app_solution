@@ -9,8 +9,10 @@
 #include <QtSql>
 #include <boost/shared_ptr.hpp>
 #include "globaldefs.h"
+#include "json.h"
 
 using namespace boost;
+using namespace QtJson;
 
 #define MSQL_MAX 2147483647
 #define MAX_SIZE 4000
@@ -32,7 +34,7 @@ static const char *SCHEMA =
 static const char *TMPCHAR = 
      QT_TRANSLATE_NOOP("db", "_");
 
-static QString bottomLevelTable=QObject::tr("Ref_Minor_Strata");//This is the default table for the bottom level, but we can change it within the regions UI
+static QString bottomLevelTable="Ref_Minor_Strata";//This is the default table for the bottom level, but we can change it within the regions UI
 
 //! Table Sequence struct
 /*! This structure allows us to construct a one direction table flow for a sampling process. 
@@ -120,7 +122,7 @@ static bool getImportedName(const QString inName, QString& outName, bool& bExist
     QString strQuery="SELECT original_name, imported_name FROM Info_Tables_Import WHERE original_name=:table";
     if (!query.prepare(strQuery))
         return false;
-    query.bindValue(QObject::tr(":table"),inName);
+    query.bindValue(":table",inName);
     query.setForwardOnly(true);
     if (!query.exec()){
         qDebug() << query.lastError().text() << endl;
@@ -128,7 +130,7 @@ static bool getImportedName(const QString inName, QString& outName, bool& bExist
     }
     query.first();
     if (query.numRowsAffected()>0)
-        outName=query.record().value(QObject::tr("imported_name")).toString();
+        outName=query.record().value("imported_name").toString();
     else
         outName=inName;
 
@@ -148,9 +150,9 @@ static bool escapeSqlString(QString& inStr)
     \return boolean as success or failure
     */
 
-    int found=inStr.indexOf(QObject::tr("'"));
+    int found=inStr.indexOf("'");
     if (found!=-1)
-        inStr.replace(QObject::tr("'"),QObject::tr("''"));
+        inStr.replace("'","''");
     return true;
 }
 
@@ -165,12 +167,12 @@ static bool castBoolean(const QString inBool, QString& outBool)
     \return boolean as success or failure
     */
 
-    if (inBool.compare(QObject::tr("true"),Qt::CaseInsensitive)==0 ||
-        inBool.compare(QObject::tr("1"))==0)
-        outBool=QObject::tr("1");
-    else if (inBool.compare(QObject::tr("false"),Qt::CaseInsensitive)==0 ||
-        inBool.compare(QObject::tr("0"))==0)
-        outBool=QObject::tr("0");
+    if (inBool.compare("true",Qt::CaseInsensitive)==0 ||
+        inBool.compare("1")==0)
+        outBool="1";
+    else if (inBool.compare("false",Qt::CaseInsensitive)==0 ||
+        inBool.compare("0")==0)
+        outBool="0";
     else return false;
 
     return true;
@@ -187,10 +189,10 @@ static bool castDate(QString inDate, QString& outDate)
     \return boolean as success or failure
     */
 
-    int found=inDate.indexOf(QObject::tr("+"));
+    int found=inDate.indexOf("+");
     if (found!=-1) inDate.remove(found,inDate.length()-found);
 
-    QString strQuery=QObject::tr("SELECT CAST('") + inDate + QObject::tr("' AS datetime)");
+    QString strQuery="SELECT CAST('" + inDate + "' AS datetime)";
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -204,11 +206,11 @@ static bool castDate(QString inDate, QString& outDate)
 static bool getTypeInfo(const QString strTableName, const QString strFieldName, QSqlRecord& rec)
 {
     QSqlQuery query;
-    QString strQuery(QObject::tr("SELECT data_type 'datatype', numeric_precision, numeric_scale FROM information_schema.columns WHERE") +
-        QObject::tr(" (table_name =:table AND column_name=:column)"));
+    QString strQuery(QString("SELECT data_type 'datatype', numeric_precision, numeric_scale FROM information_schema.columns WHERE") +
+        QString(" (table_name =:table AND column_name=:column)"));
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":table"),strTableName);
-    query.bindValue(QObject::tr(":column"),strFieldName);
+    query.bindValue(":table",strTableName);
+    query.bindValue(":column",strFieldName);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.first();
@@ -221,8 +223,8 @@ static bool getFieldPrecision(const QString strTableName, const QString strField
 {
     QSqlRecord rec;
     if (!getTypeInfo(strTableName,strFieldName,rec)) return false;
-    strPrecision=rec.value(rec.indexOf(QObject::tr("numeric_precision"))).toString();
-    strScale=rec.value(rec.indexOf(QObject::tr("numeric_scale"))).toString();
+    strPrecision=rec.value(rec.indexOf("numeric_precision")).toString();
+    strScale=rec.value(rec.indexOf("numeric_scale")).toString();
     return true;
 }
 
@@ -239,7 +241,7 @@ static bool getFieldType(const QString strTableName, const QString strFieldName,
 
     QSqlRecord rec;
     if (!getTypeInfo(strTableName,strFieldName,rec)) return false;
-    strType=rec.value(rec.indexOf(QObject::tr("datatype"))).toString();
+    strType=rec.value(rec.indexOf("datatype")).toString();
     return true;
 }
 
@@ -255,8 +257,8 @@ static bool dropConstraint(const QString strConstraint, const QString strTable)
     */
 
     QSqlQuery query;
-    QString strQuery(QObject::tr(
-        "ALTER TABLE ") + strTable + QObject::tr(" DROP CONSTRAINT ") + strConstraint);
+    QString strQuery(QString(
+        "ALTER TABLE ") + strTable + QString(" DROP CONSTRAINT ") + strConstraint);
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
     return query.exec();
@@ -276,9 +278,9 @@ static bool nullifyField(const QString strTable, const QString strField, const Q
     */
 
     QSqlQuery query;
-    QString strQuery=QObject::tr("ALTER TABLE ") + strTable + QObject::tr(" ALTER COLUMN ") + strField +
-        QObject::tr(" ") + strType +
-        (!bNullify? QObject::tr(" NOT"): QObject::tr("")) + QObject::tr(" NULL");
+    QString strQuery=QString("ALTER TABLE ") + strTable + QString(" ALTER COLUMN ") + strField +
+        QString(" ") + strType +
+        (!bNullify? " NOT": QString("")) + QString(" NULL");
     query.prepare(strQuery);
     query.setForwardOnly(true);
     return query.exec();
@@ -304,7 +306,7 @@ static bool fixStringMaximumLength(const QString strIn, QString &strOut, const b
     {
         if (bRestrict) strOut=QVariant(MAX_SIZE).toString();
         else
-            strOut=!bRead?QVariant(MSQL_MAX).toString(): QObject::tr("MAX");
+            strOut=!bRead?QVariant(MSQL_MAX).toString(): "MAX";
     }
     else strOut=strIn;
     return true;
@@ -319,10 +321,10 @@ static bool dropTableIfExists(const QString strTableName)
     \return bool as success or failure of the two operations
     */
 
-    QString strQuery=QObject::tr(
-        "IF EXISTS(SELECT name FROM sys.tables WHERE name LIKE '")
-        + strTableName + QObject::tr("') BEGIN DROP TABLE ") + strTableName + 
-        QObject::tr(" END");
+    QString strQuery=
+        QString("IF EXISTS(SELECT name FROM sys.tables WHERE name LIKE '")
+        + strTableName + QString("') BEGIN DROP TABLE ") + strTableName + 
+        QString(" END");
 
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
@@ -333,14 +335,14 @@ static bool dropTableIfExists(const QString strTableName)
 static bool getObjectID4Table(int& outId, const QString strField, const QString strTable)
 {
     QString strQuery=
-QObject::tr("SELECT obj.[name], col.[name], col.[colstat], col.* FROM [syscolumns] col JOIN [sysobjects] obj") +
-QObject::tr(" ON obj.[id] = col.[id] WHERE obj.type = 'U' AND col.[status] = 0x80") +
-QObject::tr(" AND (obj.[name]=:table AND col.[name]=:field) ORDER BY obj.[name] ")
+QString("SELECT obj.[name], col.[name], col.[colstat], col.* FROM [syscolumns] col JOIN [sysobjects] obj") +
+QString(" ON obj.[id] = col.[id] WHERE obj.type = 'U' AND col.[status] = 0x80") +
+QString(" AND (obj.[name]=:table AND col.[name]=:field) ORDER BY obj.[name] ")
 ;
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":table"), strTable);
-    query.bindValue(QObject::tr(":field"), strField);
+    query.bindValue(":table", strTable);
+    query.bindValue(":field", strField);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
 
@@ -362,13 +364,13 @@ static bool getObjects(QSqlQuery& query, const QString strTable=QString())
 
     QString strQuery;
     if (strTable.isEmpty()){
-        strQuery=QObject::tr(
-        "SELECT OBJECT_NAME(object_id) AS TableName, object_id, name, is_identity FROM sys.columns");
+        strQuery=
+        "SELECT OBJECT_NAME(object_id) AS TableName, object_id, name, is_identity FROM sys.columns";
     }
     else
-        strQuery=QObject::tr(
+        strQuery=QString(
         "SELECT OBJECT_NAME(object_id) AS TableName, object_id, name, is_identity FROM sys.columns")
-        +QObject::tr(" WHERE     (OBJECT_NAME(object_id) = '") + strTable + QObject::tr("')");
+        +QString(" WHERE     (OBJECT_NAME(object_id) = '") + strTable + QString("')");
 
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -391,11 +393,11 @@ static bool getAutoIncrementInfo(const int objectID, QSqlQuery& query)
     \return bool as success or failure of the two operations
     */
 
-    QString strQuery(QObject::tr(
+    QString strQuery(
         "SELECT CAST(seed_value AS decimal), CAST(increment_value AS decimal) FROM sys.identity_columns WHERE (object_id =:id)"
-        ));
+        );
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":id"),objectID);
+    query.bindValue(":id",objectID);
     query.setForwardOnly(true);
     return query.exec();
 }
@@ -413,15 +415,15 @@ static bool getIsNullableAndDefault(const QString strTable, const QString strFie
     \return bool as success or failure of the two operations
     */
 
-    QString strQuery=QObject::tr(
+    QString strQuery=
     "SELECT     TABLE_NAME, COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH"
     " FROM         INFORMATION_SCHEMA.COLUMNS"
-    " WHERE     (TABLE_NAME LIKE :table) AND (COLUMN_NAME like :column)");
+    " WHERE     (TABLE_NAME LIKE :table) AND (COLUMN_NAME like :column)";
 
     if (!query.prepare(strQuery)) return false;
 
-    query.bindValue(QObject::tr(":table"), strTable);
-    query.bindValue(QObject::tr(":column"), strField);
+    query.bindValue(":table", strTable);
+    query.bindValue(":column", strField);
     query.setForwardOnly(true);
     return query.exec();
 }
@@ -437,8 +439,8 @@ static bool tableHasIdentity(const QString strTableName, bool& bIdentity)
     */
 
     QSqlQuery query;
-    QString strQuery=QObject::tr("SELECT OBJECTPROPERTY(object_id('") + 
-        strTableName + QObject::tr("'), 'TableHasIdentity')");
+    QString strQuery=QString("SELECT OBJECTPROPERTY(object_id('") + 
+        strTableName + QString("'), 'TableHasIdentity')");
     query.prepare(strQuery);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
@@ -460,14 +462,14 @@ static bool identityName(const QString strTableName, QString& strField)
     \sa tableHasIdentity(const QString strTableName, bool& bIdentity)
     */
     QSqlQuery query;
-    QString strQuery(QObject::tr(
+    QString strQuery(QString(
     "select object_name(object_id),name from sys.identity_columns where objectproperty(object_id,'isusertable')=1 AND object_name(object_id)='")
-    + strTableName + QObject::tr("'"));
+    + strTableName + QString("'"));
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.first();
-    strField=query.value(query.record().indexOf(QObject::tr("name"))).toString();
+    strField=query.value(query.record().indexOf("name")).toString();
     return true;
 }
 
@@ -475,11 +477,11 @@ static bool disableAllConstraints4Table(const QString strTableName, bool bNoChec
     QSqlQuery query;
     QString strQuery;
     if (bNoCheck){
-        strQuery=QObject::tr(
-            "ALTER TABLE ") + strTableName + QObject::tr(" NOCHECK CONSTRAINT ALL");
+        strQuery=QString(
+            "ALTER TABLE ") + strTableName + QString(" NOCHECK CONSTRAINT ALL");
     }else{
-        strQuery=QObject::tr(
-            "ALTER TABLE ") + strTableName + QObject::tr(" CHECK CONSTRAINT ALL");
+        strQuery=QString(
+            "ALTER TABLE ") + strTableName + QString(" CHECK CONSTRAINT ALL");
     }
 
     if (!query.prepare(strQuery)) return false;
@@ -493,11 +495,11 @@ static bool disableAllTriggers4Table(const QString strTableName, bool bDisable)
     QSqlQuery query;
     QString strQuery;
     if (bDisable){
-        strQuery=QObject::tr(
-            "ALTER TABLE ") + strTableName + QObject::tr(" DISABLE TRIGGER ALL");
+        strQuery=QString(
+            "ALTER TABLE ") + strTableName + QString(" DISABLE TRIGGER ALL");
     }else{
-        strQuery=QObject::tr(
-            "ALTER TABLE ") + strTableName + QObject::tr(" ENABLE TRIGGER ALL");
+        strQuery=QString(
+            "ALTER TABLE ") + strTableName + QString(" ENABLE TRIGGER ALL");
     }
 
     if (!query.prepare(strQuery)) return false;
@@ -520,7 +522,7 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
     if (!disableAllTriggers4Table(strTableName,true)) return false;
 
     QSqlQuery query;
-    QString strQuery=QObject::tr("DELETE FROM ");
+    QString strQuery="DELETE FROM ";
     strQuery.append(strTableName);
     query.prepare(strQuery);
     query.setForwardOnly(true);
@@ -535,7 +537,7 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
         //Check if we have an identity column, first!
         if (!tableHasIdentity(strTableName,bIdentity)) return false;
         if (bIdentity){
-            strQuery=QObject::tr("DBCC CHECKIDENT (");
+            strQuery="DBCC CHECKIDENT (";
             strQuery.append(strTableName);
 
             //We must check the starting seed before reseeding!
@@ -574,8 +576,8 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
              int seed=seedQuery.value(0).toInt();//Casted seed value
 
              //We must pass the current value to the reseeder (seed-1)
-             strQuery.append(QObject::tr(" , RESEED, ") + QVariant(seed-1).toString()
-                 + QObject::tr(")"));
+             strQuery.append(QString(" , RESEED, ") + QVariant(seed-1).toString()
+                 + QString(")"));
             query.prepare(strQuery);
             query.setForwardOnly(true);
             query.exec();
@@ -587,7 +589,7 @@ static bool clearDBTable(const QString strTableName, bool bReseed=true)
 
 static QString selectAllRecordsFromTable(const QString strTable)
 {
-    return QObject::tr("SELECT * FROM ") + strTable;
+    return QString("SELECT * FROM ") + strTable;
 }
 
 static QString identifyConstraint()
@@ -597,7 +599,7 @@ static QString identifyConstraint()
     This query returns the constraint name, given a certain id (binded parameter)
       \return QString SQL query text as string
     */
-    return QObject::tr(
+    return QString(
     "SELECT sys.sysobjects.name as NAME, sys.sysobjects.xtype FROM sys.sysobjects INNER JOIN sys.sysforeignkeys ON sys.sysobjects.id = sys.sysforeignkeys.constid WHERE (sys.sysobjects.id = ?)"
 );
 
@@ -612,11 +614,11 @@ static QString selectPKConstraints(const QString strTable=QString())
      \return QString SQL query text as string
     */
     if (!strTable.isEmpty() && !strTable.isNull())
-        return QObject::tr(
+        return QString(
 "SELECT Col.COLUMN_NAME, Tab.CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS Tab INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS Col ON Tab.CONSTRAINT_NAME = Col.CONSTRAINT_NAME AND Tab.TABLE_NAME = Col.TABLE_NAME WHERE (Tab.CONSTRAINT_TYPE = 'PRIMARY KEY ') AND (Col.TABLE_NAME = '")
-+ strTable + QObject::tr("')");
++ strTable + QString("')");
     else
-        return QObject::tr(
+        return QString(
     "SELECT Col.COLUMN_NAME, Tab.CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS Tab INNER JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS Col ON Tab.CONSTRAINT_NAME = Col.CONSTRAINT_NAME AND Tab.TABLE_NAME = Col.TABLE_NAME WHERE (Tab.CONSTRAINT_TYPE = 'PRIMARY KEY ')"
     );
 }
@@ -633,18 +635,18 @@ static QString selectFKConstraints(const QString strTable=QString(), bool bFK=tr
      \return QString SQL query text as string
     */
     if (!strTable.isEmpty() && !strTable.isNull())
-        return QObject::tr(
+        return QString(
 "SELECT FK.TABLE_NAME AS FK_Table, CU.COLUMN_NAME AS FK_Column, PK.TABLE_NAME AS PK_Table, PT.COLUMN_NAME AS PK_Column, C.CONSTRAINT_NAME AS Constraint_Name FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS C INNER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS FK ON C.CONSTRAINT_NAME = FK.CONSTRAINT_NAME INNER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS PK ON C.UNIQUE_CONSTRAINT_NAME = PK.CONSTRAINT_NAME INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS CU ON C.CONSTRAINT_NAME = CU.CONSTRAINT_NAME INNER JOIN (SELECT i1.TABLE_NAME, i2.COLUMN_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS i1 INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS i2 ON i1.CONSTRAINT_NAME = i2.CONSTRAINT_NAME WHERE (i1.CONSTRAINT_TYPE = 'PRIMARY KEY')) AS PT ON PT.TABLE_NAME = PK.TABLE_NAME WHERE ")
- + (bFK?QObject::tr("FK.TABLE_NAME='"):QObject::tr("PK.TABLE_NAME='")) + strTable + QObject::tr("'");
+ + (bFK?"FK.TABLE_NAME='":"PK.TABLE_NAME='") + strTable + "'";
     else
-        return QObject::tr(
+        return QString(
         "SELECT FK.TABLE_NAME AS FK_Table, CU.COLUMN_NAME AS FK_Column, PK.TABLE_NAME AS PK_Table, PT.COLUMN_NAME AS PK_Column, C.CONSTRAINT_NAME AS Constraint_Name FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS C INNER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS FK ON C.CONSTRAINT_NAME = FK.CONSTRAINT_NAME INNER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS PK ON C.UNIQUE_CONSTRAINT_NAME = PK.CONSTRAINT_NAME INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS CU ON C.CONSTRAINT_NAME = CU.CONSTRAINT_NAME INNER JOIN (SELECT i1.TABLE_NAME, i2.COLUMN_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS i1 INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS i2 ON i1.CONSTRAINT_NAME = i2.CONSTRAINT_NAME WHERE (i1.CONSTRAINT_TYPE = 'PRIMARY KEY')) AS PT ON PT.TABLE_NAME = PK.TABLE_NAME"
         );
 }
 
 static QString selectAllConstraints()
 {
-        return QObject::tr(
+        return QString(
     "SELECT OBJECT_NAME(object_id) AS NameofConstraint, SCHEMA_NAME(schema_id) AS SchemaName, OBJECT_NAME(parent_object_id) AS TableName, type_desc AS ConstraintType FROM sys.objects WHERE (type_desc LIKE '%CONSTRAINT')"
     );
 }
@@ -660,22 +662,22 @@ static bool createFKConstraint(const MapFK mapFK)
          QString strChildKeys, strParentKeys, strChild, strParent;
          strChild=(*j).m_child;
          strParent=(*j).m_parent;
-         strSql=( QObject::tr("ALTER TABLE ")+ strChild +
-             QObject::tr(" WITH CHECK ADD CONSTRAINT ") + i.key() + 
-            QObject::tr(" FOREIGN KEY(") );
+         strSql=( QString("ALTER TABLE ")+ strChild +
+             QString(" WITH CHECK ADD CONSTRAINT ") + i.key() + 
+            QString(" FOREIGN KEY(") );
 
          while (j != mapFK.end() && j.key() == i.key()) {
              strChildKeys.append(j.value().m_childkey);
-             strChildKeys.append(QObject::tr(","));
+             strChildKeys.append(",");
              strParentKeys.append(j.value().m_parentkey);
-             strParentKeys.append(QObject::tr(","));
+             strParentKeys.append(",");
              ++j;
          }
          strParentKeys.remove(strParentKeys.length()-1,1);//remove last comma
          strChildKeys.remove(strChildKeys.length()-1,1);//remove last comma
 
-        strSql.append(strChildKeys + QObject::tr(") REFERENCES ") + (strParent) + 
-        QObject::tr(" (") + strParentKeys + QObject::tr(")") );
+        strSql.append(strChildKeys + QString(") REFERENCES ") + (strParent) + 
+        QString(" (") + strParentKeys + QString(")") );
 
         query.prepare(strSql);
         query.setForwardOnly(true);
@@ -705,10 +707,10 @@ static bool storeFKConstraints(const QString strTableName, const bool bFK, MapFK
     for (size_t i=0; i < (size_t)model.rowCount();++i){
         QSqlRecord rec=model.record(i);
 
-        QString fkName=rec.value(QObject::tr("CONSTRAINT_NAME")).toString();
-        mapFK.insert(fkName,FK(rec.value(QObject::tr("PK_Table")).toString(),
-            rec.value(QObject::tr("FK_Table")).toString(),rec.value(QObject::tr("PK_Column")).toString(),
-            rec.value(QObject::tr("FK_Column")).toString()));
+        QString fkName=rec.value("CONSTRAINT_NAME").toString();
+        mapFK.insert(fkName,FK(rec.value("PK_Table").toString(),
+            rec.value("FK_Table").toString(),rec.value("PK_Column").toString(),
+            rec.value("FK_Column").toString()));
     }
 
     return true;
@@ -732,8 +734,8 @@ static bool dropFKConstraints(const QString strTableName, const bool bFK)
     for (size_t i=0; i < (size_t)model.rowCount();++i){
         QSqlRecord rec=model.record(i);
 
-        QString fkName=rec.value(QObject::tr("CONSTRAINT_NAME")).toString();
-        if (!dropConstraint(fkName, rec.value(QObject::tr("FK_Table")).toString())) return false;
+        QString fkName=rec.value("CONSTRAINT_NAME").toString();
+        if (!dropConstraint(fkName, rec.value("FK_Table").toString())) return false;
     }
 
     return true;
@@ -765,8 +767,8 @@ static bool verifyConstraintName(const QString inStr, QString& outStr)
     size_t j=0;
     while (j < (size_t)model.rowCount()){
         QSqlRecord rec=model.record(j);
-        if (rec.value(QObject::tr("NameofConstraint")).toString()==(strFkName)){
-            strFkName.append(QObject::tr("_"));
+        if (rec.value("NameofConstraint").toString()==(strFkName)){
+            strFkName.append("_");
             j=-1;//Search again from beginning
         }
         ++j;
@@ -805,9 +807,9 @@ static QString listCASImportTables(const QString strTable=QString())
     \return query string
     */
 
-    return QObject::tr("SELECT original_name, imported_name FROM Info_Tables_Import") + 
-        (strTable.isEmpty()?QObject::tr(""): QObject::tr(" WHERE original_name='")
-        +strTable + QObject::tr("'"));
+    return QString("SELECT original_name, imported_name FROM Info_Tables_Import") + 
+        (strTable.isEmpty()?QString(""): QString(" WHERE original_name='")
+        +strTable + QString("'"));
 }
 
 static bool getNullForType(const QString strType, const QString strInternalName, QString& outStrNull)
@@ -829,35 +831,35 @@ static bool getNullForType(const QString strType, const QString strInternalName,
     QSqlQuery query;
     QString strQuery, strPar;
 
-    if (strType.contains(QObject::tr("nvarchar")) || strType.contains(QObject::tr("varchar"))){
-        strPar=QObject::tr("varchar");
+    if (strType.contains("nvarchar") || strType.contains("varchar")){
+        strPar="varchar";
     }
-    else if (strType.compare(QObject::tr("nchar(3)"))==0 || strType.compare(QObject::tr("char(3)"))==0){
-        strPar=QObject::tr("char3");
+    else if (strType.compare("nchar(3)")==0 || strType.compare("char(3)")==0){
+        strPar="char3";
     }
-    else if (/*strType.compare(QObject::tr("smallint"))==0 || */strType.compare(QObject::tr("bigint"))==0
-        || strType.compare(QObject::tr("int"))==0){
-        strPar=QObject::tr("int");
+    else if (/*strType.compare(QObject::tr("smallint"))==0 || */strType.compare("bigint")==0
+        || strType.compare("int")==0){
+        strPar="int";
     }
-    else if (strType.compare(QObject::tr("smallint"))==0){
-            strPar=QObject::tr("smallint");
+    else if (strType.compare("smallint")==0){
+            strPar="smallint";
     }
-    else if (strType.compare(QObject::tr("datetime"))==0){
-        strPar=QObject::tr("datetime");
+    else if (strType.compare("datetime")==0){
+        strPar="datetime";
     }
-    else if (strType.compare(QObject::tr("bit"))==0 || strType.compare(QObject::tr("tinyint"))==0){
-        strPar=QObject::tr("bit");
+    else if (strType.compare("bit")==0 || strType.compare("tinyint")==0){
+        strPar="bit";
     }
-    else if (strType.compare(QObject::tr("decimal"))==0/* || strType.compare(QObject::tr("float"))==0*/){
-        strPar=QObject::tr("float");
+    else if (strType.compare("decimal")==0/* || strType.compare(QObject::tr("float"))==0*/){
+        strPar="float";
     }
-    else if ( strType.compare(QObject::tr("float"))==0 ){//we currently *DO NOT* support floats: only decimals!!!!
+    else if ( strType.compare("float")==0 ){//we currently *DO NOT* support floats: only decimals!!!!
         return false;
     }
     else return false;
 
-    strQuery=QObject::tr("SELECT ") + strPar + QObject::tr(" FROM GL_Null_Replacements WHERE internal_name='")
-    + strInternalName + QObject::tr("'");
+    strQuery=QString("SELECT ") + strPar + QString(" FROM GL_Null_Replacements WHERE internal_name='")
+    + strInternalName + QString("'");
     query.prepare(strQuery);
 
     query.setForwardOnly(true);
@@ -885,9 +887,9 @@ static bool replaceNulls(const QString strTable, const QString strField, const Q
 
     QString val;
     if (!getNullForType(strType,strInternalName,val)) return false;
-    QString strQuery=QObject::tr("UPDATE ") + strTable + QObject::tr(" SET ") +
-        strField + QObject::tr("='") + val + QObject::tr("' WHERE ") + strField + 
-        QObject::tr(" IS NULL");
+    QString strQuery=QString("UPDATE ") + strTable + QString(" SET ") +
+        strField + QString("='") + val + QString("' WHERE ") + strField + 
+        QString(" IS NULL");
 
     QSqlQuery query;
     query.prepare(strQuery);
@@ -903,9 +905,9 @@ static bool getFields(const QString strTable, QMap<QString,QString>& mapTypes, Q
     //TODO: Describe this!
 
     QSqlQuery query;
-    QString strQuery=QObject::tr("select column_name,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from information_schema.columns where table_name = :table");
+    QString strQuery="select column_name,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH from information_schema.columns where table_name = :table";
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":table"),strTable);
+    query.bindValue(":table",strTable);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
 
@@ -920,9 +922,9 @@ static bool getImportedFieldsDescription(const QString strTable, QMap<QString,QS
 {
     //TODO: Describe this!
     QSqlQuery query;
-    QString strQuery=QObject::tr("select field_name,original_type,original_size FROM Info_Fields where table_name = :table");
+    QString strQuery="select field_name,original_type,original_size FROM Info_Fields where table_name = :table";
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":table"),strTable);
+    query.bindValue(":table",strTable);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
 
@@ -936,9 +938,9 @@ static bool getImportedFieldsDescription(const QString strTable, QMap<QString,QS
 static QString alterNull(const QString strTable, const QString strField,
                          const QString strType, bool bNull=true){
 
-    return QObject::tr("ALTER TABLE ") + strTable + QObject::tr(" ALTER COLUMN ") + strField +
-        QObject::tr(" ")+
-        strType + (!bNull? QObject::tr(" NOT "):QObject::tr(" ")) + QObject::tr("NULL");
+    return QString("ALTER TABLE ") + strTable + QString(" ALTER COLUMN ") + strField +
+        QString(" ")+
+        strType + (!bNull? " NOT ":QString(" ")) + QString("NULL");
 }
 
 static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
@@ -946,46 +948,46 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     //Supported table structure to import: ID (nvarchar) field, Name, NameENG, Description
 
     //n.b.: respect this order!
-    if (!dropTableIfExists(QObject::tr("##List_Conversion"))) return false;
+    if (!dropTableIfExists("##List_Conversion")) return false;
 
     MapFK mapFK;
-    if (!storeFKConstraints(QObject::tr("Fr_Tree"),false,mapFK)) return false;//We must store existing FK referencing this table, since we are going to remove them!
-    if (!dropFKConstraints(QObject::tr("Fr_Tree"),false)) return false;
+    if (!storeFKConstraints("Fr_Tree",false,mapFK)) return false;//We must store existing FK referencing this table, since we are going to remove them!
+    if (!dropFKConstraints("Fr_Tree",false)) return false;
 
-    if (!clearDBTable(QObject::tr("Fr_Tree"))) return false;
-    if (!clearDBTable(QObject::tr("Fr_Node_Description"))) return false;
+    if (!clearDBTable("Fr_Tree")) return false;
+    if (!clearDBTable("Fr_Node_Description")) return false;
 
     QSqlQuery query, query2;
     QString strQuery;
     //Initialize Root on Node_description
-    if (!query.prepare(QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng) VALUES('Root','Root')"))) return false;
+    if (!query.prepare("INSERT INTO Fr_Node_Description (name,name_eng) VALUES('Root','Root')")) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.finish();
 
     //Create TMP table and fill with the mapping between old codes and new codes
-    if (!query.prepare(QObject::tr("CREATE TABLE ##List_Conversion( [id] [int] IDENTITY(1,1) NOT NULL, [table_name] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, [code] [int] NULL, CONSTRAINT [PK_List_Conversion] PRIMARY KEY CLUSTERED ( [id] ASC )WITH (PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY] ) ON [PRIMARY]"))) return false;
+    if (!query.prepare("CREATE TABLE ##List_Conversion( [id] [int] IDENTITY(1,1) NOT NULL, [table_name] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, [code] [int] NULL, CONSTRAINT [PK_List_Conversion] PRIMARY KEY CLUSTERED ( [id] ASC )WITH (PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY] ) ON [PRIMARY]")) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.finish();
 
-    if (!query.prepare(QObject::tr("INSERT INTO ##List_Conversion (table_name,code) VALUES('Root',0)"))) return false;
+    if (!query.prepare("INSERT INTO ##List_Conversion (table_name,code) VALUES('Root',0)")) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.finish();
 
      HashNodeRef::const_iterator i = mapTablesFields.constBegin();
      while (i != mapTablesFields.constEnd()) {
-         strQuery=QObject::tr("SELECT * FROM ") + i.value()->m_strTable;
+         strQuery=QString("SELECT * FROM ") + i.value()->m_strTable;
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
         QVector<QString> vQueries;
 
         while (query.next()){
-            strQuery=QObject::tr("INSERT INTO ##List_Conversion (table_name,code) VALUES('") + 
-             i.value()->m_strTable + QObject::tr("',CAST(") + query.record().value(QObject::tr("id")).toString()+
-             QObject::tr(" AS INT))");
+            strQuery=QString("INSERT INTO ##List_Conversion (table_name,code) VALUES('") + 
+             i.value()->m_strTable + QString("',CAST(") + query.record().value("id").toString()+
+             QString(" AS INT))");
             //if (!query2.prepare(strQuery)) return false;
             //if (!query2.exec()) return false;
             //query2.finish();
@@ -1006,7 +1008,7 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
         ++i;
      }
 
-    query.prepare(QObject::tr("SELECT int FROM GL_Null_Replacements WHERE internal_name='Missing'"));
+    query.prepare("SELECT int FROM GL_Null_Replacements WHERE internal_name='Missing'");
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.first();
@@ -1014,8 +1016,8 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
 
     query.finish();
     //Initialize Root on Fr_Tree
-    if (!query.prepare(QObject::tr("INSERT INTO Fr_Tree (parent,lft,rgt,depth) VALUES(-1,") + strNull +
-        QObject::tr(",") + strNull + QObject::tr(",") + strNull + QObject::tr(")"))) return false;
+    if (!query.prepare(QString("INSERT INTO Fr_Tree (parent,lft,rgt,depth) VALUES(-1,") + strNull +
+        QString(",") + strNull + QString(",") + strNull + QString(")"))) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     query.finish();
@@ -1024,28 +1026,28 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     QString strType;
     //Turn off null clause
     QStringList treeFields;
-    treeFields << QObject::tr("lft") << QObject::tr("rgt") << QObject::tr("depth");
+    treeFields << "lft" << "rgt" << "depth";
 
     QStringList::const_iterator constIterator;
     for (constIterator = treeFields.constBegin(); constIterator != treeFields.constEnd();
         ++constIterator){
-        if (!getFieldType(QObject::tr("Fr_Tree"),*constIterator,strType)) return false;
-        strQuery=alterNull(QObject::tr("Fr_Tree"),*constIterator,strType,true);
+        if (!getFieldType("Fr_Tree",*constIterator,strType)) return false;
+        strQuery=alterNull("Fr_Tree",*constIterator,strType,true);
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
         query.finish();
     }
 
-     if (!disableAllTriggers4Table(QObject::tr("Fr_Node_Description"),true)) return false;
-     if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),true)) return false;
+     if (!disableAllTriggers4Table("Fr_Node_Description",true)) return false;
+     if (!disableAllTriggers4Table("Fr_Tree",true)) return false;
 
     //Fill Fr_Node_Description
     i = mapTablesFields.constBegin();
     while (i != mapTablesFields.constEnd()) {
              strQuery=
-             QObject::tr("INSERT INTO Fr_Node_Description (name,name_eng,description,OLD_CODE) ")+ //n.b.: removing nulls from description and name_eng
-             QObject::tr(
+             QString("INSERT INTO Fr_Node_Description (name,name_eng,description,OLD_CODE) ")+ //n.b.: removing nulls from description and name_eng
+             QString(
              //"SELECT Name,NameENG,Description,ID FROM ") +
              "SELECT Name,CASE WHEN NameENG IS NULL THEN 'missing' ELSE NameENG END as NameENG, CASE WHEN Description IS NULL THEN 'missing' ELSE Description END as Description, ID FROM ") +
             i.value()->m_strTable;
@@ -1062,7 +1064,7 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     size_t ct=0;
     i = mapTablesFields.constBegin();
     while (i != mapTablesFields.constEnd()) {
-                strQuery=QObject::tr("SELECT ") + i.value()->m_strField + QObject::tr(
+                strQuery=QString("SELECT ") + i.value()->m_strField + QString(
                     " FROM ") + i.value()->m_strTable;
                 if (!query.prepare(strQuery)) return false;
                 query.setForwardOnly(true);
@@ -1074,11 +1076,11 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
                     if (ct>0){
                         HashNodeRef::const_iterator ii = i;
                         --ii;
-                        strQuery=QObject::tr("INSERT INTO Fr_Tree (parent) SELECT id FROM ##List_Conversion WHERE CODE=")+
-                            query.record().value(i.value()->m_strField).toString() + QObject::tr(" AND table_name like '") +
-                            ii.value()->m_strTable + QObject::tr("'");
+                        strQuery=QString("INSERT INTO Fr_Tree (parent) SELECT id FROM ##List_Conversion WHERE CODE=")+
+                            query.record().value(i.value()->m_strField).toString() + QString(" AND table_name like '") +
+                            ii.value()->m_strTable + QString("'");
                     }else{
-                        strQuery=QObject::tr("INSERT INTO Fr_Tree (parent) VALUES(1)");
+                        strQuery="INSERT INTO Fr_Tree (parent) VALUES(1)";
                     }
                     vQueries.append(strQuery);
                 }
@@ -1102,15 +1104,15 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     for (constIterator = treeFields.constBegin(); constIterator != treeFields.constEnd();
         ++constIterator){
 
-            strQuery=QObject::tr("UPDATE Fr_Tree set ") + *constIterator + QObject::tr("='") + strNull + QObject::tr("' WHERE ") + *constIterator 
-            + QObject::tr(" IS NULL");
+            strQuery=QString("UPDATE Fr_Tree set ") + *constIterator + QString("='") + strNull + QString("' WHERE ") + *constIterator 
+            + QString(" IS NULL");
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
         if (!query.exec()) return false;
         query.finish();
 
-        if (!getFieldType(QObject::tr("Fr_Tree"),*constIterator,strType)) return false;
-        strQuery=alterNull(QObject::tr("Fr_Tree"),*constIterator,strType,false);
+        if (!getFieldType("Fr_Tree",*constIterator,strType)) return false;
+        strQuery=alterNull("Fr_Tree",*constIterator,strType,false);
 
         if (!query.prepare(strQuery)) return false;
         query.setForwardOnly(true);
@@ -1119,7 +1121,7 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     }
 
     //Don't forget to remove the Temp Table!
-    strQuery=QObject::tr("DROP TABLE ##List_Conversion");
+    strQuery="DROP TABLE ##List_Conversion";
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
@@ -1127,8 +1129,8 @@ static bool prepareAdjacencyTable(HashNodeRef& mapTablesFields)
     //Don't forget to put the constraints back
     if (!createFKConstraint(mapFK)) return false;
 
-    if (!disableAllTriggers4Table(QObject::tr("Fr_Node_Description"),false)) return false;
-    if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),false)) return false;
+    if (!disableAllTriggers4Table("Fr_Node_Description",false)) return false;
+    if (!disableAllTriggers4Table("Fr_Tree",false)) return false;
 
     return true;
 }
@@ -1152,7 +1154,7 @@ static bool updateDepth(const int id)
 
     QSqlQuery query;
     //Query for Depth
-    QString strQuery=QObject::tr("SELECT COUNT(t2.id)-1 as depth, T1.id from Fr_Tree as T1, Fr_Tree as T2 WHERE ( (T1.lft BETWEEN t2.lft AND T2.rgt) AND T1.id=? ) GROUP BY T1.lft, T1.id");
+    QString strQuery="SELECT COUNT(t2.id)-1 as depth, T1.id from Fr_Tree as T1, Fr_Tree as T2 WHERE ( (T1.lft BETWEEN t2.lft AND T2.rgt) AND T1.id=? ) GROUP BY T1.lft, T1.id";
     query.prepare(strQuery);
     query.addBindValue(id);
     query.setForwardOnly(true);
@@ -1160,10 +1162,10 @@ static bool updateDepth(const int id)
 
     if (query.numRowsAffected()<1) return false;
     query.first();
-    int result=query.value(query.record().indexOf(QObject::tr("depth"))).toInt();
+    int result=query.value(query.record().indexOf("depth")).toInt();
 
     //Update
-    strQuery=QObject::tr("UPDATE Fr_Tree Set depth=? WHERE id=?");
+    strQuery="UPDATE Fr_Tree Set depth=? WHERE id=?";
     query.prepare(strQuery);
     query.addBindValue(result);
     query.addBindValue(id);
@@ -1175,22 +1177,22 @@ static bool updateDepth(const int id)
 
 static bool list2Nested()
 {
-    if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),true)) return false;
+    if (!disableAllTriggers4Table("Fr_Tree",true)) return false;
 
     QSqlQuery query;
     if (!query.prepare("list2Nested")) return false;
     if (!query.exec()) return false;
 
     //update depth
-    if (!query.prepare(QObject::tr("SELECT id from Fr_Tree"))) return false;
+    if (!query.prepare("SELECT id from Fr_Tree")) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     if (query.numRowsAffected()<1) return false;
     while (query.next())
     {
-        if (!updateDepth(query.record().value(QObject::tr("id")).toInt())) return false;
+        if (!updateDepth(query.record().value("id").toInt())) return false;
     }
-     if (!disableAllTriggers4Table(QObject::tr("Fr_Tree"),false)) return false;
+     if (!disableAllTriggers4Table("Fr_Tree",false)) return false;
     return true;
 }
 
@@ -1207,10 +1209,10 @@ static bool getFieldDescriptionFromDB(const QString strTable, const QString strF
     \return booleans as success or failure
     */
 
-    QString strQuery=QObject::tr("SELECT * FROM Info_Fields WHERE table_name LIKE :table and field_name LIKE :field");
+    QString strQuery="SELECT * FROM Info_Fields WHERE table_name LIKE :table and field_name LIKE :field";
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":table"),strTable);
-    query.bindValue(QObject::tr(":field"),strField);
+    query.bindValue(":table",strTable);
+    query.bindValue(":field",strField);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     return query.numRowsAffected()==1;
@@ -1221,9 +1223,9 @@ static bool findNullReplacementFields(const QString strTable,
 {
     //TODO: add description
     QSqlQuery query;
-    QString strSql=QObject::tr("SELECT field_name,NullValue from Info_Fields WHERE table_name=:table AND replaceNulls=1");
+    QString strSql="SELECT field_name,NullValue from Info_Fields WHERE table_name=:table AND replaceNulls=1";
     if (!query.prepare(strSql)) return false;
-    query.bindValue(QObject::tr(":table"),strTable);
+    query.bindValue(":table",strTable);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     if (query.numRowsAffected()>0)
@@ -1255,15 +1257,15 @@ static bool selectValue(const QString strFieldOut, const QString strTable, const
     QHash<QString, QString>::const_iterator i = mapFieldValue.constBegin();
     size_t ct=0;
     while (i != mapFieldValue.constEnd()) {
-        if (ct) strWHERE.append(QObject::tr(" AND "));
-        strWHERE.append(i.key() + QObject::tr("=") + (bAppendQuotes?QObject::tr("'"):QObject::tr("")) + i.value() +
-            (bAppendQuotes?QObject::tr("'"):QObject::tr("")));
+        if (ct) strWHERE.append(QString(" AND "));
+        strWHERE.append(i.key() + QString("=") + (bAppendQuotes?QString("'"):QString("")) + i.value() +
+            (bAppendQuotes?QString("'"):QString("")));
      ++i;
      ++ct;
     }
 
-    QString strQuery=QObject::tr("SELECT ") + strFieldOut + QObject::tr(" FROM ") + strTable +
-        QObject::tr(" WHERE ") + strWHERE;
+    QString strQuery=QString("SELECT ") + strFieldOut + QString(" FROM ") + strTable +
+        QString(" WHERE ") + strWHERE;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
     if (!query.exec()) return false;
@@ -1288,10 +1290,10 @@ static bool convert2PK(const QString strTable)
     \return booleans boolean indicating whether this table contains or not a "converted" ID field.
     */
 
-    QString strQuery=QObject::tr("SELECT convertPK2Int FROM Info_Tables_Import WHERE imported_name=:table");
+    QString strQuery="SELECT convertPK2Int FROM Info_Tables_Import WHERE imported_name=:table";
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
-    query.bindValue(QObject::tr(":table"),strTable);
+    query.bindValue(":table",strTable);
     query.setForwardOnly(true);
     if (!query.exec()) return false;
     if (query.numRowsAffected()>0)
@@ -1304,8 +1306,8 @@ static bool convert2PK(const QString strTable)
 
 static bool renameColumn(const QString strTable, const QString strField, const QString strNewName)
 {
-    QString strQuery=QObject::tr("EXEC sp_rename '") + strTable + QObject::tr(".") + strField +
-        QObject::tr("', '") + strNewName + QObject::tr("', 'COLUMN'");
+    QString strQuery=QString("EXEC sp_rename '") + strTable + QString(".") + strField +
+        QString("', '") + strNewName + QString("', 'COLUMN'");
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -1319,13 +1321,13 @@ static bool renameColumn(const QString strTable, const QString strField, const Q
 static QString getDefaultCstrt(const QString strTable, const QString strField)
 {
     return 
-        QObject::tr("select t.name, c.name, d.name as constraint_name, d.definition from sys.tables t join sys.default_constraints d on d.parent_object_id = t.object_id join sys.columns c on c.object_id = t.object_id and c.column_id = d.parent_column_id where t.name = '") 
-        + strTable + QObject::tr("' and c.name = '") + strField + QObject::tr("'");
+        QString("select t.name, c.name, d.name as constraint_name, d.definition from sys.tables t join sys.default_constraints d on d.parent_object_id = t.object_id join sys.columns c on c.object_id = t.object_id and c.column_id = d.parent_column_id where t.name = '") 
+        + strTable + QString("' and c.name = '") + strField + QString("'");
 }
 
 static bool dropColumn(const QString strTable, const QString strField)
 {
-    QString strQuery=QObject::tr("ALTER TABLE ") + strTable + QObject::tr(" DROP COLUMN ") + strField;
+    QString strQuery=QString("ALTER TABLE ") + strTable + QString(" DROP COLUMN ") + strField;
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -1338,8 +1340,8 @@ static bool dropColumn(const QString strTable, const QString strField)
 
 static bool renameTable(const QString oldTableName, const QString newTableName)
 {
-    QString strQuery=QObject::tr("EXEC sp_rename '") + oldTableName + QObject::tr("', '") + newTableName
-        + QObject::tr("'");
+    QString strQuery=QString("EXEC sp_rename '") + oldTableName + QString("', '") + newTableName
+        + QString("'");
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -1354,7 +1356,7 @@ static bool copyTable(const QString strTableFrom, const QString strTableTo, bool
 {
     QString strQuery;
     if (!bExists){
-        strQuery=QObject::tr("SELECT * INTO ") + strTableTo +  QObject::tr(" FROM ") + strTableFrom;
+        strQuery=QString("SELECT * INTO ") + strTableTo +  QString(" FROM ") + strTableFrom;
     }
     else{
         QMap<QString,QString> mapTypes;
@@ -1374,14 +1376,14 @@ static bool copyTable(const QString strTableFrom, const QString strTableTo, bool
         while (i != mapTypes.constEnd()) {
             if (i.key().compare(strIdentity)!=0){
                 strFields.append(i.key());
-                strFields.append(QObject::tr(","));
+                strFields.append(",");
             }
              ++i;
         }
-        strFields.remove(strFields.lastIndexOf(QObject::tr(",")),1);
+        strFields.remove(strFields.lastIndexOf(","),1);
 
-        strQuery=QObject::tr("INSERT INTO ") + strTableTo + QObject::tr(" (") + strFields +
-            QObject::tr(") SELECT ") + strFields + QObject::tr(" FROM ") + strTableFrom;
+        strQuery=QString("INSERT INTO ") + strTableTo + QString(" (") + strFields +
+            QString(") SELECT ") + strFields + QString(" FROM ") + strTableFrom;
     }
 
     QSqlQuery query;
@@ -1413,22 +1415,22 @@ static bool generateTMPTableName(const QString instrTableName, QString& outStrTa
 
 static bool fixQueryValue(const QString strType, QString& strVal)
 {
-    if ( strType==QObject::tr("nvarchar") || strType==QObject::tr("varchar") || strType==QObject::tr("char")
-        || strType==QObject::tr("nchar")){
+    if ( strType=="nvarchar" || strType=="varchar" || strType=="char"
+        || strType=="nchar"){
             if (!escapeSqlString(strVal)) return false;
 
-                strVal.prepend(QObject::tr("'"));
-                strVal.append(QObject::tr("'"));
+                strVal.prepend("'");
+                strVal.append("'");
         }
-    else if (strType==QObject::tr("datetime")){
+    else if (strType=="datetime"){
             QString strOut;
             if (!castDate(strVal,strOut))
                 return false;
             strVal=strOut;
-            strVal.prepend(QObject::tr("'"));
-            strVal.append(QObject::tr("'"));
+            strVal.prepend("'");
+            strVal.append("'");
         }
-    else if (strType==QObject::tr("bit")){
+    else if (strType=="bit"){
             QString strOut;
             if (!castBoolean(strVal,strOut))
                 return false;
@@ -1449,7 +1451,7 @@ static bool getMappedTMPName(const QString inStrName, const QMap<QString,QString
 
 static bool getNullReplacements(QStringList& list){
 
-    QString strQuery=QObject::tr("Select internal_name from GL_Null_Replacements WHERE internal_name <> 'misc'");
+    QString strQuery="Select internal_name from GL_Null_Replacements WHERE internal_name <> 'misc'";
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -1467,7 +1469,7 @@ static bool getNullReplacements(QStringList& list){
 static bool GetCurentLocation(int& locationID)
 {
     QString strQuery=
-        QObject::tr("Select ID FROM Location WHERE IsCurrent=1");
+        "Select ID FROM Location WHERE IsCurrent=1";
     QSqlQuery query;
     if (!query.prepare(strQuery)) return false;
     query.setForwardOnly(true);
@@ -1479,7 +1481,7 @@ static bool GetCurentLocation(int& locationID)
     //We only allow one current location at a time
     if (query.numRowsAffected()!= 1) return false;
     query.first();
-    locationID=query.record().value(QObject::tr("ID")).toInt();
+    locationID=query.record().value("ID").toInt();
 
     return true;
 }
@@ -1490,8 +1492,8 @@ static bool getIdForValue(const QString strTable, const QString strIdField,
 
     QSqlQuery query;
     if (!query.prepare(
-        QObject::tr("SELECT ") + strIdField + QObject::tr(" FROM ") + strTable + QObject::tr(" WHERE (Name LIKE :par)"))) return false;
-    query.bindValue(QObject::tr(":par"),strPar);
+        QString("SELECT ") + strIdField + QString(" FROM ") + strTable + QString(" WHERE (Name LIKE :par)"))) return false;
+    query.bindValue(":par",strPar);
 
     query.setForwardOnly(true);
     if (!query.exec()|| query.numRowsAffected()!=1){
@@ -1506,14 +1508,14 @@ static bool getIdForValue(const QString strTable, const QString strIdField,
 
 static QString countOcurrenciesForThisPort()
 {
-    return QObject::tr(
+    return QString(
     "SELECT count(Ref_PSU.Name) FROM CAS_Activity INNER JOIN Ref_PSU ON id_psu=ID WHERE Ref_PSU.Name=:par"
     );
 }
 
 static QString checkActiveFromLastRecord()
 {
-    return QObject::tr(
+    return QString(
 "SELECT Top(1) ActiveVessels,TempRemoved FROM CAS_Activity INNER JOIN Ref_PSU ON id_psu=ID WHERE Ref_PSU.Name=:par ORDER by id_activity DESC"
     );
 }
@@ -1532,7 +1534,7 @@ static QString checkIfPortHasVessels1(const QString strPsu)//OBSOLETE
     \return QString as query string;
     */
 
-    QString str= QObject::tr(
+    QString str= 
 
 "declare @cnt int, @act int, @tempRem int, @sum int "
 "set @cnt=(SELECT count(Ref_PSU.Name) FROM CAS_Activity INNER JOIN Ref_PSU ON id_psu=ID WHERE Ref_PSU.Name=:par) "
@@ -1547,9 +1549,9 @@ static QString checkIfPortHasVessels1(const QString strPsu)//OBSOLETE
 
 //"IF :par IN (SELECT distinct Ref_PSU.Name FROM Reg_Vessels INNER JOIN Ref_PSU ON HomePort=ID) BEGIN select (1) END ELSE BEGIN select (0) END"
 //"IF :par IN (SELECT Name FROM CAS_Activity INNER JOIN Ref_PSU ON id_psu=ID) BEGIN select (1) END ELSE BEGIN select (0) END"
-);
+;
 
-    str.replace(QObject::tr(":par"),QObject::tr("'") + strPsu + QObject::tr("'"));
+    str.replace(":par","'" + strPsu + "'");
     return str;
 }
 
@@ -1561,7 +1563,7 @@ static QString checkIfPortHasVessels2()
     \return QString as query string;
     */
 
-    return QObject::tr(
+    return QString(
         "IF :par IN (SELECT distinct Ref_PSU.Name FROM Reg_Vessels INNER JOIN Ref_PSU ON HomePort=ID) select(1) else select(0) "
 );
 }
@@ -1571,7 +1573,7 @@ static bool getYearLimits(int& start, int&end)
     //We retrieve the last inserted limits that are active (in case there are more than 1)!
     QSqlQuery query;
     if (!query.prepare(
-        QObject::tr("select Top(1) start_year,end_year from Ref_Year_Limits WHERE active=1 ORDER BY ID DESC"))) return false;
+        "select Top(1) start_year,end_year from Ref_Year_Limits WHERE active=1 ORDER BY ID DESC")) return false;
 
     query.setForwardOnly(true);
     if (!query.exec()|| query.numRowsAffected()!=1){
@@ -1595,7 +1597,7 @@ static bool getLastIdActivity(QString& strId)
 
     QSqlQuery query;
     if (!query.prepare(
-        QObject::tr("select Top(1) id_activity from CAS_Activity ORDER BY id_activity DESC"))) return false;
+        "select Top(1) id_activity from CAS_Activity ORDER BY id_activity DESC")) return false;
 
     query.setForwardOnly(true);
     if (!query.exec()|| query.numRowsAffected()!=1){
@@ -1620,8 +1622,8 @@ static bool getLastRecordFromTable(const QString strId, const QString strTable, 
 
     QSqlQuery query;
     if (!query.prepare(
-        QObject::tr("select Top(1) * from ") + strTable + QObject::tr(" ORDER BY ") + 
-        strId + QObject::tr(" DESC")
+        QString("select Top(1) * from ") + strTable + QString(" ORDER BY ") + 
+        strId + QString(" DESC")
         )) return false;
 
     query.setForwardOnly(true);
@@ -1647,7 +1649,7 @@ static bool getNaRuleID(size_t& id)
 
     QSqlQuery query;
     if (!query.prepare(
-        QObject::tr("select id from UI_Rules WHERE [rule] like 'n/a'"))) return false;
+        "select id from UI_Rules WHERE [rule] like 'n/a'")) return false;
 
     query.setForwardOnly(true);
     if (!query.exec()|| query.numRowsAffected()!=1){
@@ -1671,16 +1673,16 @@ static QString selectPortsFromDifferentPsu(const QString idPsu)
     \return QString query string
     */
 
-        QString strQuery=QObject::tr(
+        QString strQuery=
         "SELECT     DISTINCT "
         "             A.HomePort, B.id_psu, B.name "
         "FROM         dbo.Reg_Vessels A INNER JOIN "
         "              dbo.Ref_Source ON A.VesselID = dbo.Ref_Source.VesselID "
         "                    INNER JOIN Ref_Ports B on A.HomePort=B.ID "
         " WHERE     (dbo.Ref_Source.IsLogBook = 1)  AND ((SELECT count(ID) from Ref_Ports WHEre B.id_psu<>PAR)>0)"
-        );
+        ;
 
-        strQuery.replace(QObject::tr("PAR"),idPsu);
+        strQuery.replace("PAR",idPsu);
     return strQuery;
 }
 
@@ -1695,7 +1697,7 @@ static QString viewVesselsFromAnotherPort(const QString idPsu)
     \return QString query string
     */
 
-    return QObject::tr(
+    return QString(
         "SELECT     dbo.Ref_Source.VesselID, dbo.Reg_Vessels.UniqueRegistrationNumber, dbo.Reg_Vessels.Name, dbo.Reg_Vessels.MainGearType, "
         "                      dbo.Reg_Vessels.Flag, dbo.Reg_Vessels.HomePort, dbo.Reg_Vessels.Length, dbo.Reg_Vessels.EnginePower, dbo.Reg_Vessels.GT, "
         "                      dbo.Reg_Vessels.VesselType "
@@ -1705,7 +1707,7 @@ static QString viewVesselsFromAnotherPort(const QString idPsu)
         "                          (SELECT     ID"
         "                            FROM          dbo.Ref_Ports"
         "                            WHERE      (id_psu = ") + idPsu + 
-        QObject::tr(" ))) AND (dbo.Ref_Source.IsLogBook = 1)        ")
+        QString(" ))) AND (dbo.Ref_Source.IsLogBook = 1)        ")
         ;
 }
 
@@ -1720,7 +1722,7 @@ static QString updateMonthlyFrameWithAddedVessel()
     \return QString query string
     */
 
-        return QObject::tr(
+        return QString(
     "DECLARE @par int, @id_activity int, @added INT, @tempAdded INT; "
     "SET @par=:par "
     "SET @id_activity=(SELECT Top(1) id_activity from CAS_Activity ORDER BY id_activity DESC) "
@@ -1734,9 +1736,9 @@ static QString updateMonthlyFrameWithAddedVessel()
 
 static QString rebuildIndexesSql()
 {
-    return QObject::tr(
+    return
         "EXEC sp_MSforeachtable @command1=\"print '?' DBCC DBREINDEX ('?', ' ', 80)\""
-        );
+        ;
 }
 
 static bool grabDateById(const int inId, QDateTime& outDate)
@@ -1890,8 +1892,204 @@ static bool getLastUpdate(int& outID)
      return true;
 }
 
+static bool getLastSessionData(QSqlQuery& query){
+
+    QString strError, strQuery=
+    "SELECT     TOP (1) dbo.GL_Dates.Date_UTC, dbo.GL_Dates.Date_Local, dbo.GL_Dates.Date_Type, dbo.Ref_Location.City_Name, dbo.GL_Session.ID"
+    " FROM         dbo.GL_Session INNER JOIN"
+    "                      dbo.GL_Dates ON dbo.GL_Session.id_base_date = dbo.GL_Dates.ID INNER JOIN"
+    "                      dbo.Ref_Location ON dbo.GL_Session.id_location = dbo.Ref_Location.ID"
+    " ORDER BY dbo.GL_Session.ID DESC";
+
+    query.prepare(strQuery);
+
+    query.setForwardOnly(true);
+    if (!query.exec()){
+         if (query.lastError().type() != QSqlError::NoError)
+             qDebug() << query.lastError().text() << endl;
+         else
+             qDebug() << QObject::tr("Could not retrieve data from current session!") << endl;
+         return false;
+     }
+
+return true;
+}
+
+static bool isDateTime(const QString strTable, const QString strField, bool& bIsDateTime)
+{
+     bIsDateTime=false;
+
+    QString strQuery=
+    "select count(*)"
+    " from sys.foreign_key_columns as fk"
+    " inner join sys.tables as t on fk.parent_object_id = t.object_id"
+    " inner join sys.columns as c on fk.parent_object_id = c.object_id and fk.parent_column_id = c.column_id"
+    " where fk.referenced_object_id = (select object_id from sys.tables where name = 'GL_Dates')"
+    " and t.name=:table and c.name=:field";
+
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.bindValue(":table",strTable);
+    query.bindValue(":field",strField);
+    query.setForwardOnly(true);
+    if (!query.exec()){
+         if (query.lastError().type() != QSqlError::NoError)
+             qDebug() << query.lastError().text() << endl;
+         else
+             qDebug() <<  "Could not determine if this field is datetime!!" << endl;
+
+         return false;
+    }else {
+        query.first();
+        if (query.value(0).toInt()==1){
+            bIsDateTime=true;
+        }
+    }
+    return true;
+}
+
+static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
+{
+   QSqlQuery query;
+   QString strQuery=
+    "SELECT  "
+    "      [Date_UTC]"
+    "      ,[Date_Local]"
+    "      ,[Date_Type]"
+    "  FROM [GL_Dates] where ID =:id";
+
+    query.prepare(strQuery);
+    query.bindValue(":id",id);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             qDebug() << query.lastError().text() << endl;
+         else
+             qDebug() << QObject::tr("Could not retrieve date details!") << endl;
+         return false;
+        }
+
+   return true;
+}
+
+static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
+{
+    QVariantMap nestedMap2;
+
+    nestedMap["id"]=query.value(query.record().indexOf("id")).toString();
+    nestedMap["table"]=query.value(query.record().indexOf("table")).toString();
+    nestedMap["column"]=query.value(query.record().indexOf("column")).toString();
+
+    QString strField=query.value(query.record().indexOf("column")).toString();
+    strField=strField.remove("[");
+    strField=strField.remove("]");
+
+    bool bIsDateTime;
+    if (!isDateTime(query.value(query.record().indexOf("table")).toString(),
+        strField,bIsDateTime)) return false;
+
+    nestedMap2["from"]=bIsDateTime? "DATE": query.value(query.record().indexOf("from")).toString();
+    nestedMap2["to"]=bIsDateTime? "DATE": query.value(query.record().indexOf("to")).toString();
+    nestedMap["values"]=nestedMap2;
+
+    return true;
+}
+
 static bool getLastChanges(const int ID, QString& strJSON)
 {
+    QString strError;
+    QSqlQuery query;
+
+    QString strQuery=
+    "SELECT     *"
+    " FROM [info_changes] WHERE ID > :id ORDER BY ID ASC";
+
+    query.prepare(strQuery);
+    query.bindValue(":id",ID);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not retrieve last changes!");
+         return false;
+        }
+
+    QVariantMap map, nestedMap, nestedMap2 ;
+    QList<QVariant> mapList;
+    query.first();
+
+    if (!buildJSONCell(query,nestedMap)){
+        qDebug() << QObject::tr("Could not read info change row!");
+        return false;
+    }
+    mapList.push_back(nestedMap);
+
+     while (query.next()) {
+        if (!buildJSONCell(query,nestedMap)){
+            qDebug() << QObject::tr("Could not read info change row!");
+            return false;
+        }
+        mapList.push_back(nestedMap);
+     }
+
+     //Let's reuse this query
+     if (query.isActive()) query.finish();
+    if (!getLastSessionData(query))
+        return false;
+
+    query.first();
+
+    if (query.record().indexOf("date_utc")==-1 ||query.record().indexOf("date_local")==-1
+        || query.record().indexOf("date_type")==-1 || query.record().indexOf("city_name")==-1)
+            return false;
+
+    nestedMap2["date_utc"]=query.value(query.record().indexOf("date_utc")).toString();
+    nestedMap2["date_local"]=query.value(query.record().indexOf("date_local")).toString();
+    nestedMap2["date_type"]=query.value(query.record().indexOf("date_type")).toString();
+    nestedMap2["city_name"]=query.value(query.record().indexOf("city_name")).toString();
+
+    map["session"]=nestedMap2;
+    map["change"]=mapList;
+
+    QByteArray data = Json::serialize(map);
+    strJSON=QString::fromUtf8(data.constData());
+
+
+/*
+    QString strQuery=
+    "SELECT     [table], [column]"
+    "FROM         dbo.info_changes";
+
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             qDebug() << query.lastError().text() << endl;
+         else
+             qDebug() << QObject::tr("Could not retrieve the latest changes!");
+         return false;
+        }
+     query.first();
+     bool bIsDateTime;
+
+     //IMPORTANT: remove the enclosing [ ]!!
+    QString strField=query.value(1).toString();
+    strField=strField.remove("[");
+    strField=strField.remove("]");
+
+     if (!isDateTime(query.value(0).toString(),strField,bIsDateTime)) return false;
+     while (query.next()) {
+        //IMPORTANT: remove the enclosing [ ]!!
+         strField=query.value(1).toString();
+         strField=strField.remove("[");
+         strField=strField.remove("]");
+         if (!isDateTime(query.value(0).toString(),strField,bIsDateTime)) return false;
+         //if (bIsDateTime)
+     }
+*/
+
+/*
     QString strError;
     QSqlQuery query;
 
@@ -1922,26 +2120,48 @@ static bool getLastChanges(const int ID, QString& strJSON)
          if (query.lastError().type() != QSqlError::NoError)
              strError=query.lastError().text();
          else
-            strError=QObject::tr("Could not retrieve ID from last update!");
+             strError=QObject::tr("Could not retrieve ID from last update!");
          return false;
         }
      query.first();
      strJSON=query.value(0).toString();
-     int i =0;
      while (query.next()) {
         strJSON+=query.value(0).toString();
-        ++i;
      }
 
+    if (!getLastSessionData(query))
+        return false;
+
+    query.first();
+
+    if (query.record().indexOf("date_utc")==-1 ||query.record().indexOf("date_local")==-1
+        || query.record().indexOf("date_type")==-1 || query.record().indexOf("city_name")==-1)
+            return false;
+
+    QString strDateUTC=query.value(query.record().indexOf("date_utc")).toString();
+    QString strDateLocal=query.value(query.record().indexOf("date_local")).toString();
+    QString strDateType=query.value(query.record().indexOf("date_type")).toString();
+    QString strCityName=query.value(query.record().indexOf("city_name")).toString();
+
+    QString strSession=
+        "\"session\" : { \n"
+        "   \"date_utc\": \"" + strDateUTC + "\",\n" +
+        "   \"date_local\": \"" + strDateLocal + "\",\n" +
+        "   \"date_type\": " + strDateType + ",\n" +
+        "   \"city_name\": \"" + strCityName + "\"\n" +
+
+        "   },\n";
+
      strJSON="{ \n"
-     "\"encoding\" : \"UTF-8\","
+     "\"encoding\" : \"UTF-8\", \n"
+     + strSession +
      "  \"change\": [\n "
      + strJSON + "\n"
      "]\n"
      "}"
      ;
+*/
      return true;
-
 }
 
 #endif

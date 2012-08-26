@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmlegend.h'
 **
-** Created: Sun 12. Aug 17:30:27 2012
+** Created: Thu 23. Aug 18:06:30 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
