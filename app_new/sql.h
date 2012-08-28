@@ -19,20 +19,16 @@ using namespace QtJson;
 /*!
     This file defines helper functions and constants for sql queries and XML
 */
-static const char *COLLATE = 
-     QT_TRANSLATE_NOOP("db", "COLLATE SQL_Latin1_General_CP1_CI_AS");//TODO: GET THIS FROM THE DB OR THE UI?
+static const char *COLLATE = "COLLATE SQL_Latin1_General_CP1_CI_AS";
+     //TODO: GET THIS FROM THE DB OR THE UI?
 
-static const char *DEFAULTSCHEMA = 
-     QT_TRANSLATE_NOOP("db", "dbo");
+static const char *DEFAULTSCHEMA = "dbo";
 
-static const char *URI = 
-     QT_TRANSLATE_NOOP("xml", "http://tempuri.org/");
+static const char *URI = "http://tempuri.org/";
 
-static const char *SCHEMA = 
-     QT_TRANSLATE_NOOP("xml", "http://www.w3.org/2001/XMLSchema");
+static const char *SCHEMA = "http://www.w3.org/2001/XMLSchema";
 
-static const char *TMPCHAR = 
-     QT_TRANSLATE_NOOP("db", "_");
+static const char *TMPCHAR = "_";
 
 static QString bottomLevelTable="Ref_Minor_Strata";//This is the default table for the bottom level, but we can change it within the regions UI
 
