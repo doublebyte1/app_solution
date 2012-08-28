@@ -25,6 +25,20 @@ void                      resizeToVisibleColumns ( QTableView* table );
 void                      filterTable(QSqlTableModel* table);
 bool                      insertRecordIntoModel(QSqlTableModel* m);
 
+//! Info Date struct
+/*! TODO: write somethin here later!!!
+*/
+struct InfoDate {
+    InfoDate( const QString strUTC, const QString strLocal, const int type):
+    m_strUTC(strUTC), m_strLocal(strLocal), m_type(type)
+    {}
+    InfoDate()
+    {}
+   QString             m_strLocal;//!< Local date
+   QString             m_strUTC;//!< UTC date
+   int                 m_type;//!< Date type
+};
+
 //! Info Changes struct
 /*! TODO: write somethin here later!!!
 */
@@ -667,7 +681,10 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              readFile(const QString strFileName, QString& outStr);
         bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
                                                     int& dateType, QString& strCityName,listInfoChanges& lChanges);
-        bool                              applyChangesfromPatch(const listInfoChanges& lChanges);
+        bool                              applyChangesfromPatch(const listInfoChanges& lChanges,
+                                                                    int& cnew, int& cmod, int& cdel);
+        bool                              insertNewRecord(const listInfoChanges& lChanges);
+        bool                              insertDate(const InfoDate date, int& id);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

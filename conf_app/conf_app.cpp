@@ -576,11 +576,12 @@ void conf_app::doPatch()
              +tr("\n Please connect and try again!"));
              return;
     }
-    //TODO: grab filename here
     QString fileName = QFileDialog::getOpenFileName(this,
      tr("Open patch file"), "", tr("Patch Files (*.diff)"));
 
     if (!fileName.isEmpty()){
+        qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+
         QString strContent;
         if (!readFile(fileName,strContent)){
                  QMessageBox::warning(this, tr("Patch Process"),
@@ -597,43 +598,183 @@ void conf_app::doPatch()
                  +tr("\n Are you sure the syntax is valid?"));
                  return;
             }
-        //3 - backup db (establish rollback mechanism)
-        //4 - prompt the user with changes
+            //3 - backup db (establish rollback mechanism)
+            //4 - prompt the user with changes
 
-            if (!applyChangesfromPatch(lChanges))
+            int ctNew=0;
+            int ctMod=9;
+            int ctDel=0;
+            if (!applyChangesfromPatch(lChanges,ctNew,ctMod,ctDel))
             {
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  QMessageBox::warning(this, tr("Patch Process"),
-                 tr("Could apply this patch!"));
+                 tr("Could not apply this patch!"));
                  return;
+            }else{
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+                QMessageBox::information(this, tr("Patch Process"),
+                                         tr("Patch successfully applied.\n") +
+                                         QString("There were %1 inserts, %2 removals and %3 modifications!").arg(ctNew)
+                                         .arg(ctDel).arg(ctMod));
             }
-        }
+
         //5 - apply patches sequentially (establish rollback mechanism)
         //FK?
         //6 - store the stamp of the last update
         //7 - report results
+
+        }//read file
     }
 }
 
-bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges)
+bool conf_app::insertDate(const InfoDate date, int& id)
+{
+    QSqlTableModel* tModel = new QSqlTableModel;
+    tModel->setTable(QSqlDatabase().driver()->escapeIdentifier("GL_DATES",
+    QSqlDriver::TableName));
+    tModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tModel->select();
+
+    //qDebug() << tModel->rowCount() << endl;
+    if (!insertRecordIntoModel(tModel)) return false;
+    //qDebug() << tModel->rowCount() << endl;
+
+    QModelIndex idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("Date_UTC"));
+    if (!idx.isValid()) return false;
+    QDateTime dt=QDateTime::fromString(date.m_strUTC,strDateFormat);
+    if (!dt.isValid()) return false;
+    tModel->setData(idx, dt);
+
+    idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("Date_Local"));
+    if (!idx.isValid()) return false;
+    dt=QDateTime::fromString(date.m_strLocal,strDateFormat);
+    if (!dt.isValid()) return false;
+    tModel->setData(idx, dt);
+
+    idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("Date_Type"));
+    if (!idx.isValid()) return false;
+    tModel->setData(idx, date.m_type);
+
+    bool bOk=tModel->submitAll();
+
+    if (bOk){
+
+        while(tModel->canFetchMore())
+            tModel->fetchMore();
+
+        idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("ID"));
+        if (!idx.isValid()) return false;
+        id=idx.data().toInt();
+    }
+
+    return bOk;
+}
+
+bool conf_app::insertNewRecord(const listInfoChanges& lChanges)
+{
+    bool bOk=true;
+
+    QSqlTableModel* tModel = new QSqlTableModel;
+    tModel->setTable(QSqlDatabase().driver()->escapeIdentifier(lChanges.at(0).m_strTable,
+    QSqlDriver::TableName));
+    tModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tModel->select();
+
+    //qDebug() << tModel->rowCount() << endl;
+    if (!insertRecordIntoModel(tModel)) return false;
+    //qDebug() << tModel->rowCount() << endl;
+
+    for (int i=0; i < lChanges.size(); ++i){
+
+        QString strField=lChanges.at(i).m_strField;
+        strField=strField.remove("[");
+        strField=strField.remove("]");
+
+        QModelIndex idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf(strField));
+        if (!idx.isValid()) return false;
+
+        bool bIsDate=false;
+        int newDate=-1;
+        if (lChanges.at(i).m_varNew.type()==QVariant::Map){
+
+            QVariantMap nestedDate=lChanges.at(i).m_varNew.toMap();
+            QVariantMap nestedDate2=nestedDate["date"].toMap();
+            QString strDateUTC=nestedDate2["date_utc"].toString();
+            QString strDateLocal=nestedDate2["date_local"].toString();
+            int dateType=nestedDate2["date_type"].toInt();
+
+            if (!insertDate(InfoDate(strDateUTC,strDateLocal,dateType),newDate)){
+
+                QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                    tr("Could not insert date in the database!"),QMessageBox::Ok,0);
+                msgBox.exec();
+                return false;
+            }
+            bIsDate=true;
+        }
+
+        tModel->setData(idx, bIsDate?newDate:lChanges.at(i).m_varNew);
+    }
+    bOk=tModel->submitAll();
+
+    if (!bOk){
+        QString strError;
+        if (tModel->lastError().type() != QSqlError::NoError)
+            strError=tModel->lastError().text();
+        else
+            strError=tr("Could not insert record in the database!");
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                strError,QMessageBox::Ok,0);
+            msgBox.exec();
+    }
+
+    //a bit of house-keeping...
+    delete tModel; tModel=0;
+    return bOk;
+}
+
+bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, int& cmod, int& cdel)
 {
     //TODO: write session data
 
     for (int i=0; i < lChanges.count(); ++i)
     {
-        if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0)//REM
+        if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
             qDebug() << "delete" << endl;
-        else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
-                    lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0)//EDIT
-            qDebug() << "delete" << endl;
-        else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
+            cdel++;
+        }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
+            lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
+            qDebug() << "edit" << endl;
+            cmod++;
+        }else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
             listInfoChanges newRecord;
             QString curTable=lChanges.at(i).m_strTable;
-            while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0){
+            QSqlTableModel  *aTable=new QSqlTableModel ();
+            aTable->setTable(curTable);
+            int start=i;
+
+            while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0
+                && i < (start + aTable->record().count()-1)){
                 newRecord.push_back(lChanges.at(i));
                 ++i;
             }
+
+            if (i==lChanges.count()) break;
+            else if (lChanges.at(i).m_strTable.compare(curTable)!=0 || i==(start + aTable->record().count()-1))
+                    i--;
+
+            delete aTable; aTable=0;
+            if (newRecord.size()>0){
+                if (!insertNewRecord(newRecord)){
+                    qDebug() << tr("Could not insert record in the database!") << endl;
+                    return false;
+                }
+            }else return false; //it should never come here!
+            cnew++;
         }
-        else return false;//It should never come here!!!
+        else return false;
+
     }
 
     return true;
@@ -660,8 +801,7 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
         QVariantMap nestedMap2 = nestedMap["values"].toMap();
 
         InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
-            nestedMap["column"].toString(),nestedMap2["from"].toString(),nestedMap2["to"].toString());
-
+            nestedMap["column"].toString(), nestedMap2["from"],nestedMap2["to"]);
         lChanges.push_back(ichanges);
     }
 

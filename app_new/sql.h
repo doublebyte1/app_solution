@@ -38,6 +38,8 @@ static QString bottomLevelTable="Ref_Minor_Strata";//This is the default table f
 
 static const QString strNoValue="274b68192b056e268f128ff63bfcd4a4";
 
+static const QString strDateFormat="yyyy-MM-ddThh:mm:ss";
+
 //! Table Sequence struct
 /*! This structure allows us to construct a one direction table flow for a sampling process. 
 Each element (table) provides us with the necessary information for navigation: the name of the parent field, the name of
@@ -1978,7 +1980,7 @@ static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
     nestedMap2["date_local"]=query.value(query.record().indexOf("Date_Local")).toString();
     nestedMap2["date_type"]=query.value(query.record().indexOf("Date_Type")).toInt();
 
-    nestedMap["Date"]=nestedMap2;
+    nestedMap["date"]=nestedMap2;
     return true;
 }
 
@@ -2084,112 +2086,6 @@ static bool getLastChanges(const int ID, QString& strJSON)
     QByteArray data = Json::serialize(map);
     strJSON=QString::fromUtf8(data.constData());
 
-
-/*
-    QString strQuery=
-    "SELECT     [table], [column]"
-    "FROM         dbo.info_changes";
-
-    query.prepare(strQuery);
-    query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() < 1){
-         if (query.lastError().type() != QSqlError::NoError)
-             qDebug() << query.lastError().text() << endl;
-         else
-             qDebug() << QObject::tr("Could not retrieve the latest changes!");
-         return false;
-        }
-     query.first();
-     bool bIsDateTime;
-
-     //IMPORTANT: remove the enclosing [ ]!!
-    QString strField=query.value(1).toString();
-    strField=strField.remove("[");
-    strField=strField.remove("]");
-
-     if (!isDateTime(query.value(0).toString(),strField,bIsDateTime)) return false;
-     while (query.next()) {
-        //IMPORTANT: remove the enclosing [ ]!!
-         strField=query.value(1).toString();
-         strField=strField.remove("[");
-         strField=strField.remove("]");
-         if (!isDateTime(query.value(0).toString(),strField,bIsDateTime)) return false;
-         //if (bIsDateTime)
-     }
-*/
-
-/*
-    QString strError;
-    QSqlQuery query;
-
-    QString strQuery=
-    "select '\n"
-    "       {\n"
-    "      \"id\": \"'+CAST([ID] AS VARCHAR(50))+'\",\n"
-    "                       \n"
-    "      \"table\": \"'+[Table]+'\",\n"
-    "                       \n"
-    "      \"column\": \"'+[Column]+'\",\n"
-    "                       \n"
-    "      \"values\": {\n"
-    "                       \n"
-    "        \"from\": \"'+[from]+'\",\n"
-    "                       \n"
-    "        \"to\": \"'+[to]+'\"\n"
-    "           }"
-    "                       \n"
-    "      },'\n"
-    "                       \n"
-    "FROM [FAOCASDATA].[dbo].[info_changes] WHERE ID > :id ORDER BY ID ASC";
-
-    query.prepare(strQuery);
-    query.bindValue(QObject::tr(":id"),ID);
-    query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() < 1){
-         if (query.lastError().type() != QSqlError::NoError)
-             strError=query.lastError().text();
-         else
-             strError=QObject::tr("Could not retrieve ID from last update!");
-         return false;
-        }
-     query.first();
-     strJSON=query.value(0).toString();
-     while (query.next()) {
-        strJSON+=query.value(0).toString();
-     }
-
-    if (!getLastSessionData(query))
-        return false;
-
-    query.first();
-
-    if (query.record().indexOf("date_utc")==-1 ||query.record().indexOf("date_local")==-1
-        || query.record().indexOf("date_type")==-1 || query.record().indexOf("city_name")==-1)
-            return false;
-
-    QString strDateUTC=query.value(query.record().indexOf("date_utc")).toString();
-    QString strDateLocal=query.value(query.record().indexOf("date_local")).toString();
-    QString strDateType=query.value(query.record().indexOf("date_type")).toString();
-    QString strCityName=query.value(query.record().indexOf("city_name")).toString();
-
-    QString strSession=
-        "\"session\" : { \n"
-        "   \"date_utc\": \"" + strDateUTC + "\",\n" +
-        "   \"date_local\": \"" + strDateLocal + "\",\n" +
-        "   \"date_type\": " + strDateType + ",\n" +
-        "   \"city_name\": \"" + strCityName + "\"\n" +
-
-        "   },\n";
-
-     strJSON="{ \n"
-     "\"encoding\" : \"UTF-8\", \n"
-     + strSession +
-     "  \"change\": [\n "
-     + strJSON + "\n"
-     "]\n"
-     "}"
-     ;
-*/
      return true;
 }
 
