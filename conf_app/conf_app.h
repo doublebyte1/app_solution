@@ -685,6 +685,9 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                                                     int& cnew, int& cmod, int& cdel);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
         bool                              insertDate(const InfoDate date, int& id);
+        bool                              packRecord(const listInfoChanges& lChanges, int& i, 
+                                            listInfoChanges& aRecord, bool& bBreak);
+        bool                              removeRecord(const listInfoChanges& packRecord);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

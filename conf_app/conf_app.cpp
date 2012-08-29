@@ -734,6 +734,53 @@ bool conf_app::insertNewRecord(const listInfoChanges& lChanges)
     return bOk;
 }
 
+bool conf_app::packRecord(const listInfoChanges& lChanges, int& i, listInfoChanges& aRecord, bool& bBreak)
+{
+    bBreak=false;
+    QString curTable=lChanges.at(i).m_strTable;
+    QSqlTableModel *aTable=new QSqlTableModel ();
+    aTable->setTable(curTable);
+    int start=i;
+
+    while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0
+        && i < (start + aTable->record().count()-1)){
+        aRecord.push_back(lChanges.at(i));
+        ++i;
+    }
+
+    if (i==lChanges.count()) bBreak=true;
+    else if (lChanges.at(i).m_strTable.compare(curTable)!=0 || i==(start + aTable->record().count()-1))
+            i--;
+
+    delete aTable; aTable=0;
+
+    return true;
+}
+
+bool conf_app::removeRecord(const listInfoChanges& packRecord)
+{
+    QString curTable=packRecord.at(0).m_strTable;
+
+    //IDENTIFY RECORD
+    QString strQuery=QString("select ID from ")+curTable+ QString(" WHERE ");
+    for (int i=0; i < packRecord.count(); ++i){
+        //TODO: IF ITS DATE, DESERIALIZE
+        if (i>0) strQuery+= QString(" AND ");
+        strQuery+= packRecord.at(i).m_strField + QString("=");
+
+        //TODO: FIND OUT THE TYPE AND IF ITS A VARCHAR PUT THE QUOTES
+        if (packRecord.at(i).m_varOld.type()==QVariant::String)
+            strQuery+= "\"" + packRecord.at(i).m_varOld.toString() + "\"";
+        else
+            strQuery+= packRecord.at(i).m_varOld.toString();
+    }
+
+    //MAKE SUTE ITS 1!
+    //DELETE IT
+
+    return true;
+}
+
 bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, int& cmod, int& cdel)
 {
     //TODO: write session data
@@ -741,30 +788,36 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
     for (int i=0; i < lChanges.count(); ++i)
     {
         if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
-            qDebug() << "delete" << endl;
+
+            listInfoChanges delRecord;
+            bool bBreak;
+            if (!packRecord(lChanges,i,delRecord,bBreak)){
+                qDebug() << tr("Could not distinguish removed record!") << endl;
+                return false;
+            }
+            if (bBreak) break;
+
+            if (delRecord.size()>0){
+                if (!removeRecord(delRecord)){
+                    qDebug() << tr("Could not remove record from the database!") << endl;
+                    return false;
+                }
+            }else return false; //it should never come here!
             cdel++;
         }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
             lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
             qDebug() << "edit" << endl;
             cmod++;
         }else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
+
             listInfoChanges newRecord;
-            QString curTable=lChanges.at(i).m_strTable;
-            QSqlTableModel  *aTable=new QSqlTableModel ();
-            aTable->setTable(curTable);
-            int start=i;
-
-            while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0
-                && i < (start + aTable->record().count()-1)){
-                newRecord.push_back(lChanges.at(i));
-                ++i;
+            bool bBreak;
+            if (!packRecord(lChanges,i,newRecord,bBreak)){
+                qDebug() << tr("Could not distinguish new record!") << endl;
+                return false;
             }
+            if (bBreak) break;
 
-            if (i==lChanges.count()) break;
-            else if (lChanges.at(i).m_strTable.compare(curTable)!=0 || i==(start + aTable->record().count()-1))
-                    i--;
-
-            delete aTable; aTable=0;
             if (newRecord.size()>0){
                 if (!insertNewRecord(newRecord)){
                     qDebug() << tr("Could not insert record in the database!") << endl;
