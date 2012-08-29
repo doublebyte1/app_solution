@@ -34,6 +34,8 @@ static QString bottomLevelTable="Ref_Minor_Strata";//This is the default table f
 
 static const QString strNoValue="274b68192b056e268f128ff63bfcd4a4";
 
+static const QString strSomeDate="SomeDate";
+
 static const QString strDateFormat="yyyy-MM-ddThh:mm:ss";
 
 //! Table Sequence struct
@@ -2002,10 +2004,11 @@ static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
     if (bIsDateTime){
         if (query.value(query.record().indexOf("from")).toString().compare(
             strNoValue)!=0){
+            /*
             QVariantMap nestedMap3;
             if (!deserializeDateTime(query.value(query.record().indexOf("from")).toInt(),
-                nestedMap3)) return false;
-            nestedMap2["from"]=nestedMap3;
+                nestedMap3)) return false;*/
+            nestedMap2["from"]=strSomeDate;
         }
 
         if (query.value(query.record().indexOf("to")).toString().compare(
