@@ -602,7 +602,7 @@ void conf_app::doPatch()
             //4 - prompt the user with changes
 
             int ctNew=0;
-            int ctMod=9;
+            int ctMod=0;
             int ctDel=0;
             if (!applyChangesfromPatch(lChanges,ctNew,ctMod,ctDel))
             {
@@ -761,22 +761,107 @@ bool conf_app::removeRecord(const listInfoChanges& packRecord)
 {
     QString curTable=packRecord.at(0).m_strTable;
 
-    //IDENTIFY RECORD
-    QString strQuery=QString("select ID from ")+curTable+ QString(" WHERE ");
+    bool bIsDateTime=false;
+    QString strQuery;
+    QString strFirst=QString("select ") + curTable + QString(".ID FROM ")+curTable;
     for (int i=0; i < packRecord.count(); ++i){
-        //TODO: IF ITS DATE, DESERIALIZE
         if (i>0) strQuery+= QString(" AND ");
-        strQuery+= packRecord.at(i).m_strField + QString("=");
 
-        //TODO: FIND OUT THE TYPE AND IF ITS A VARCHAR PUT THE QUOTES
-        if (packRecord.at(i).m_varOld.type()==QVariant::String)
-            strQuery+= "\"" + packRecord.at(i).m_varOld.toString() + "\"";
-        else
+        QString strField=packRecord.at(i).m_strField;
+        strField=strField.remove("[");
+        strField=strField.remove("]");
+
+        QString strType;
+        if (!getFieldType(packRecord.at(i).m_strTable,strField,strType)){
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                "Could not get field type!",QMessageBox::Ok,0);
+            msgBox.exec();
+
+            return false;
+        }
+
+        if (!isDateTime(curTable,strField,bIsDateTime)){
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                "Could not determine if this field is datetime!",QMessageBox::Ok,0);
+            msgBox.exec();
+            return false;
+        }
+
+        if (bIsDateTime){
+
+            if (packRecord.at(i).m_varOld.type()!=QVariant::Map) return false;
+            QVariantMap nestedDate=packRecord.at(i).m_varOld.toMap();
+            QVariantMap nestedDate2=nestedDate["date"].toMap();
+            QString strDateUTC=nestedDate2["date_utc"].toString();
+            QString strDateLocal=nestedDate2["date_local"].toString();
+            int dateType=nestedDate2["date_type"].toInt();
+
+            strQuery+=
+     " LEFT(CONVERT(varchar, (dt" + QVariant(i).toString() + ".Date_UTC), 126),"
+     "LEN(CONVERT(varchar, (dt" + QVariant(i).toString() + QString(".Date_UTC), 126)))='")
+                + strDateUTC + "'";
+
+            strQuery+=
+     " AND LEFT(CONVERT(varchar, (dt" + QVariant(i).toString() + ".Date_Local), 126),"
+     "LEN(CONVERT(varchar, (dt" + QVariant(i).toString() + QString(".Date_Local), 126))-4)='")
+                + strDateLocal + "'";
+
+            strQuery+=" AND dt" + QVariant(i).toString() + QString(".date_type=") + QVariant(dateType).toString();
+            strFirst.append(QString(" INNER JOIN GL_DATES AS dt") + QVariant(i).toString()
+                + QString(" ON ") + curTable + "." + strField + QString("=dt")+ QVariant(i).toString()
+                +QString(".ID"));
+
+        }else if (strType.contains("CHAR",Qt::CaseInsensitive)){
+            strQuery+= curTable + "." + strField + QString("=");
+            strQuery+= "'" + packRecord.at(i).m_varOld.toString() + "'";
+        }else{
+            strQuery+= curTable + "." + strField + QString("=");
             strQuery+= packRecord.at(i).m_varOld.toString();
+        }
     }
 
-    //MAKE SUTE ITS 1!
-    //DELETE IT
+    strQuery.prepend(strFirst + QString(" WHERE "));
+
+    QString strError;
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() != 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not identify record to remove!");
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                strError,QMessageBox::Ok,0);
+            msgBox.exec();
+
+         return false;
+        }
+
+     query.first();
+     int rID=query.value(0).toInt();
+
+    strQuery=QString("delete from ") + curTable + QString(" WHERE ID=:id");
+
+    if (query.isActive()) query.finish();
+    query.prepare(strQuery);
+    query.bindValue(":id",rID);
+    query.setForwardOnly(true);
+    if (!query.exec() || query.numRowsAffected() != 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not remove record to remove!");
+
+            QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                strError,QMessageBox::Ok,0);
+            msgBox.exec();
+
+         return false;
+    }
 
     return true;
 }
@@ -795,8 +880,6 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
                 qDebug() << tr("Could not distinguish removed record!") << endl;
                 return false;
             }
-            if (bBreak) break;
-
             if (delRecord.size()>0){
                 if (!removeRecord(delRecord)){
                     qDebug() << tr("Could not remove record from the database!") << endl;
@@ -804,6 +887,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
                 }
             }else return false; //it should never come here!
             cdel++;
+            if (bBreak) break;
         }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
             lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
             qDebug() << "edit" << endl;

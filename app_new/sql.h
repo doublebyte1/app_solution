@@ -2087,6 +2087,34 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
      return true;
 }
+/*
+static bool getFieldType(const QString strTable, const QString strField, QString& strSQLType)
+{
+    QString strError;
+    QSqlQuery query;
 
+    QString strQuery=
+        "select column_name, data_type from information_schema.columns where table_name = :table and"
+        "column_name=:col";
+
+    query.prepare(strQuery);
+    query.bindValue(":table",strTable);
+    query.bindValue(":col",strField);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() != 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not retrieve last changes!");
+
+         qDebug() << strError << endl;
+         return false;
+        }
+
+     query.first();
+     strSQLType=query.value(0).toString();
+     return true;
+}
+*/
 #endif
 
