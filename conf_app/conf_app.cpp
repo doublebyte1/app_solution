@@ -757,7 +757,7 @@ bool conf_app::packRecord(const listInfoChanges& lChanges, int& i, listInfoChang
     return true;
 }
 
-bool conf_app::removeRecord(const listInfoChanges& packRecord)
+bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
 {
     QString curTable=packRecord.at(0).m_strTable;
 
@@ -842,13 +842,29 @@ bool conf_app::removeRecord(const listInfoChanges& packRecord)
         }
 
      query.first();
-     int rID=query.value(0).toInt();
+     outID=query.value(0).toInt();
 
-    strQuery=QString("delete from ") + curTable + QString(" WHERE ID=:id");
+    return true;
+}
 
-    if (query.isActive()) query.finish();
+bool conf_app::removeRecord(const listInfoChanges& packRecord)
+{
+    int outID;
+
+    if (!identifyRecord(packRecord,outID)){
+        qDebug() << "Could not identify record!" << endl;
+        return false;
+    }
+
+    QString strError;
+    QSqlQuery query;
+    QString curTable=packRecord.at(0).m_strTable;
+
+    QString strQuery=QString("delete from ") + curTable + QString(" WHERE ID=:id");
+
+    //if (query.isActive()) query.finish();
     query.prepare(strQuery);
-    query.bindValue(":id",rID);
+    query.bindValue(":id",outID);
     query.setForwardOnly(true);
     if (!query.exec() || query.numRowsAffected() != 1){
          if (query.lastError().type() != QSqlError::NoError)
@@ -866,12 +882,143 @@ bool conf_app::removeRecord(const listInfoChanges& packRecord)
     return true;
 }
 
+bool conf_app::modRecord(const listInfoChanges& lChanges)
+{
+    //-check if it is a date thing
+
+
+
+
+    return true;
+}
+
 bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, int& cmod, int& cdel)
 {
     //TODO: write session data
 
     for (int i=0; i < lChanges.count(); ++i)
     {
+            if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
+
+                listInfoChanges aRecord;
+                bool bBreak;
+                if (!packRecord(lChanges,i,aRecord,bBreak)){
+                    qDebug() << tr("Could not distinguish record!") << endl;
+                    return false;
+                }
+
+                if (aRecord.size()>0){
+
+                        if (!removeRecord(aRecord)){
+                            qDebug() << tr("Could not remove record from the database!") << endl;
+                            return false;
+                        }
+                        cdel++;
+                }else return false;
+
+                if (bBreak) break;
+
+            }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
+                lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
+
+                    //If it is a date
+                    bool bIsDate=false;
+                    listInfoChanges iDt;
+                    if (lChanges.at(i).m_strTable.compare("GL_DATES",Qt::CaseInsensitive)==0){
+                        iDt.push_back(lChanges.at(i));
+                        ++i;
+                        bIsDate=true;
+
+                        while(lChanges.at(i).m_strTable.compare("GL_DATES",Qt::CaseInsensitive)==0)
+                        {
+                            iDt.push_back(lChanges.at(i));
+                            ++i;
+                        }
+
+                    }
+                    listInfoChanges aRecord;
+                    bool bBreak;
+                    if (!packRecord(lChanges,i,aRecord,bBreak)){
+                        qDebug() << tr("Could not distinguish record!") << endl;
+                        return false;
+                    }
+
+                    if (bIsDate){
+                        listInfoChanges dtRecs;
+                        QString curTable=aRecord.at(0).m_strTable;
+                        for (int j=0; j < aRecord.size(); j++){
+                            bool bIsDateTime;
+
+                            QString strField=aRecord.at(j).m_strField;
+                            strField=strField.remove("[");
+                            strField=strField.remove("]");
+
+                            if (!isDateTime(curTable,strField,bIsDateTime)){
+                                QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+                                "Could not determine if this field is datetime!",QMessageBox::Ok,0);
+                                msgBox.exec();
+                                return false;
+                            } 
+                            if (bIsDateTime) dtRecs.push_back(aRecord.at(j));
+                        }
+
+                        if (bIsDate && dtRecs.size() < 1) return false;
+                        for (int j=0; j < dtRecs.size(); ++j){
+
+                            if (dtRecs.at(j).m_varNew.type()!=QVariant::Map) return false;
+                            QVariantMap nestedDate=dtRecs.at(j).m_varNew.toMap();
+                            QVariantMap nestedDate2=nestedDate["date"].toMap();
+
+                            bool bIsEqual=true;
+                            for (int k=0; k < iDt.count(); ++k){
+
+                                QString strField=iDt.at(k).m_strField;
+                                strField=strField.remove("[");
+                                strField=strField.remove("]");
+
+                                QString strVal=nestedDate2[strField.toLower()].toString();
+                                if (strVal.isEmpty()) return false;
+
+                                if (iDt.at(k).m_varNew.toString().compare(strVal)!=0){
+                                    bIsEqual=false;
+                                    break;
+                                }
+                            }//for k
+                        }//for j
+
+                            //UPDATE NEW DATETIME ON THE PACK
+
+                    }// if b is date
+
+                    //IDENTIFY RECORD
+                    //IF IT IS A DATETIME; INSERT A NEW DATE AND UPDATE REF
+                    //OTHERWISE UPDATE VALUE
+
+                cmod++;
+            }else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
+
+                listInfoChanges aRecord;
+                bool bBreak;
+                if (!packRecord(lChanges,i,aRecord,bBreak)){
+                    qDebug() << tr("Could not distinguish record!") << endl;
+                    return false;
+                }
+
+                if (aRecord.size()>0){
+
+                    if (!insertNewRecord(aRecord)){
+                        qDebug() << tr("Could not insert record in the database!") << endl;
+                        return false;
+                    }
+                    cnew++;
+                }else return false;
+
+                if (bBreak) break;
+
+            }else
+                return false;
+
+        /*
         if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
 
             listInfoChanges delRecord;
@@ -890,7 +1037,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
             if (bBreak) break;
         }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
             lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
-            qDebug() << "edit" << endl;
+
             cmod++;
         }else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
 
@@ -911,8 +1058,13 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
             cnew++;
         }
         else return false;
+*/
+//        }else
+//            return false;
 
-    }
+//        if (bBreak) break;
+
+    }//for
 
     return true;
 }

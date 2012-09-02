@@ -37,6 +37,7 @@ static const QString strNoValue="274b68192b056e268f128ff63bfcd4a4";
 //static const QString strSomeDate="SomeDate";
 
 static const QString strDateFormat="yyyy-MM-ddThh:mm:ss";
+//static const QString strDBDateFormat="ddd d yyyy hh:mmAP";
 
 //! Table Sequence struct
 /*! This structure allows us to construct a one direction table flow for a sampling process. 
@@ -2032,7 +2033,7 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
     QString strQuery=
     "SELECT     *"
-    " FROM [info_changes] WHERE ID > :id ORDER BY ID ASC";
+    " FROM [info_changes] WHERE ID > :id ORDER BY ID DESC";
 
     query.prepare(strQuery);
     query.bindValue(":id",ID);
@@ -2087,34 +2088,6 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
      return true;
 }
-/*
-static bool getFieldType(const QString strTable, const QString strField, QString& strSQLType)
-{
-    QString strError;
-    QSqlQuery query;
 
-    QString strQuery=
-        "select column_name, data_type from information_schema.columns where table_name = :table and"
-        "column_name=:col";
-
-    query.prepare(strQuery);
-    query.bindValue(":table",strTable);
-    query.bindValue(":col",strField);
-    query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() != 1){
-         if (query.lastError().type() != QSqlError::NoError)
-             strError=query.lastError().text();
-         else
-             strError=QObject::tr("Could not retrieve last changes!");
-
-         qDebug() << strError << endl;
-         return false;
-        }
-
-     query.first();
-     strSQLType=query.value(0).toString();
-     return true;
-}
-*/
 #endif
 
