@@ -43,8 +43,8 @@ struct InfoDate {
 /*! TODO: write somethin here later!!!
 */
 struct InfoChanges {
-    InfoChanges( const int id, const QString strTable, const QString strField,
-        const QVariant varOld, const QVariant varNew):
+    InfoChanges(int id,QString strTable, QString strField,
+        QVariant varOld, QVariant varNew):
     m_id(id), m_strTable(strTable), m_strField(strField),m_varOld(varOld),m_varNew(varNew)
     {}
     InfoChanges()
@@ -685,11 +685,17 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                                                     int& cnew, int& cmod, int& cdel);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
         bool                              insertDate(const InfoDate date, int& id);
+        bool                              amendDate(const int ID, const QString strField, const QString strDate);
         bool                              packRecord(const listInfoChanges& lChanges, int& i, 
                                             listInfoChanges& aRecord, bool& bBreak);
         bool                              removeRecord(const listInfoChanges& packRecord);
-        bool                              modRecord(const listInfoChanges& lChanges);
+        bool                              modRecord(const InfoChanges& chRec, const int id);
         bool                              identifyRecord(const listInfoChanges& packRecord, int& outID);
+        bool                              modDateRecord(const listInfoChanges& aRecord, const listInfoChanges& iDt);
+        bool                              identifyRecordByDate(const listInfoChanges& aRecord,
+                                                                 const listInfoChanges& dtRecs, const listInfoChanges& iDt,
+                                                                 listInfoChanges& lcopy, int & outID, QString& modField, bool& bFound);
+        bool                              findDateID(const QString strTable, const QString strField, const int inID, int &outID);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

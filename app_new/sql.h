@@ -1951,6 +1951,16 @@ static bool isDateTime(const QString strTable, const QString strField, bool& bIs
     return true;
 }
 
+static bool serializeDateTime(const QVariantMap nestedMap, QString& strDateUTC, QString& strDateLocal, int& dateType)
+{
+    QVariantMap nestedDate2=nestedMap["date"].toMap();
+    strDateUTC=nestedDate2["date_utc"].toString();
+    strDateLocal=nestedDate2["date_local"].toString();
+    dateType=nestedDate2["date_type"].toInt();
+
+    return true;
+}
+
 static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
 {
    QVariantMap nestedMap2;

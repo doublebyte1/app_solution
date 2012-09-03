@@ -763,6 +763,9 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
 
     bool bIsDateTime=false;
     QString strQuery;
+
+    //TODO: get ID name?
+
     QString strFirst=QString("select ") + curTable + QString(".ID FROM ")+curTable;
     for (int i=0; i < packRecord.count(); ++i){
         if (i>0) strQuery+= QString(" AND ");
@@ -824,6 +827,8 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
 
     strQuery.prepend(strFirst + QString(" WHERE "));
 
+    //qDebug() << strQuery << endl;
+
     QString strError;
     QSqlQuery query;
     query.prepare(strQuery);
@@ -882,14 +887,202 @@ bool conf_app::removeRecord(const listInfoChanges& packRecord)
     return true;
 }
 
-bool conf_app::modRecord(const listInfoChanges& lChanges)
+bool conf_app::modRecord(const InfoChanges& chRec, const int id)
 {
-    //-check if it is a date thing
+    QString strType;
+    QString strField=chRec.m_strField;
+    strField=strField.remove("[");
+    strField=strField.remove("]");
 
+    if (!getFieldType(chRec.m_strTable,strField,strType)){
+        qDebug() << "Could not determine field type!" << endl;
+        return false;
+    }
 
+    QString strQuery= "UPDATE " + chRec.m_strTable + " SET "
+         + chRec.m_strField + 
+         (strType.contains("CHAR",Qt::CaseInsensitive)? "='"
+         :"=") + chRec.m_varNew.toString() + 
+         (strType.contains("CHAR",Qt::CaseInsensitive)? "' WHERE ID=":
+         " WHERE ID=")
+         + QVariant(id).toString();
 
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             qDebug() << query.lastError().text() << endl;
+         else
+             qDebug() << QObject::tr("Could not update record!") << endl;
+         return false;
+     }
+    return true;
+}
+
+bool conf_app::identifyRecordByDate(const listInfoChanges& aRecord,
+                         const listInfoChanges& dtRecs, const listInfoChanges& iDt,
+                         listInfoChanges& lcopy, int & outID, QString& modField, bool& bFound)
+{
+    bool bIsEqual;
+    for (int j=0; j < dtRecs.size(); ++j){
+
+        if (dtRecs.at(j).m_varNew.type()!=QVariant::Map) return false;
+        QVariantMap nestedDate=dtRecs.at(j).m_varNew.toMap();
+        QVariantMap nestedDate2=nestedDate["date"].toMap();
+
+        bIsEqual=true;
+        int k;
+        for (k=0; k < iDt.count(); ++k){
+
+            QString strField=iDt.at(k).m_strField;
+            strField=strField.remove("[");
+            strField=strField.remove("]");
+
+            QString strVal=nestedDate2[strField.toLower()].toString();
+            if (strVal.isEmpty()) return false;
+
+            if (iDt.at(k).m_varNew.toString().compare(strVal)!=0){
+                bIsEqual=false;
+                break;
+            }
+        }//for k
+        if (bIsEqual){
+            int y;
+            for (y=0; y < aRecord.size(); ++y){
+                if (aRecord.at(y).m_strField.compare(dtRecs.at(j).m_strField)==0)
+                {
+                    //qDebug() << aRecord.at(y).m_strField << endl;
+                    break;
+                }
+            }
+            lcopy=listInfoChanges(aRecord);
+            lcopy.removeAt(y);
+            QVariantMap nestedMap, nestedMap2;
+
+            for (int z=0; z < iDt.size(); ++z){
+
+                QString strField=iDt.at(z).m_strField;
+                strField=strField.remove("[");
+                strField=strField.remove("]");
+                strField=strField.toLower();
+
+                nestedMap2[strField]=iDt.at(z).m_varOld;
+                if (iDt.at(z).m_varOld.toString().compare(
+                    iDt.at(z).m_varNew.toString())!=0)
+                    modField=iDt.at(z).m_strField;
+            }
+
+            nestedMap["date"]=nestedMap2;
+
+            lcopy.push_back(InfoChanges(aRecord.at(y).m_id,
+                aRecord.at(y).m_strTable,aRecord.at(y).m_strField,
+                nestedMap,aRecord.at(y).m_varNew));
+
+            if (identifyRecord(lcopy,outID)){
+                bFound=true;
+                break;
+            }
+        }
+    }//for j
 
     return true;
+}
+
+bool conf_app::findDateID(const QString strTable, const QString strField, const int inID, int &outID)
+{
+    QString strQuery="SELECT " + strField + 
+        " FROM " + strTable + " WHERE ID=" + QVariant(inID).toString();
+
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             qDebug() << query.lastError().text() << endl;
+         else
+             qDebug() << QObject::tr("Could not retrieve datetime id!") << endl;
+         return false;
+     }
+     query.first();
+     outID=query.value(0).toInt();
+
+     return true;
+}
+
+bool conf_app::modDateRecord(const listInfoChanges& aRecord, const listInfoChanges& iDt)
+{
+    listInfoChanges dtRecs;
+    QString curTable=aRecord.at(0).m_strTable;
+
+    //Identify all the datetime records on this table
+    for (int j=0; j < aRecord.size(); j++){
+        bool bIsDateTime;
+
+        QString strField=aRecord.at(j).m_strField;
+        strField=strField.remove("[");
+        strField=strField.remove("]");
+
+        if (!isDateTime(curTable,strField,bIsDateTime)){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
+            "Could not determine if this field is datetime!",QMessageBox::Ok,0);
+            msgBox.exec();
+            return false;
+        } 
+        if (bIsDateTime) dtRecs.push_back(aRecord.at(j));
+    }
+
+    //The structure of the patch is DateTime record (GL_Dates) precedeed by a table, means
+    // that we have a table with a datetime record that changed.
+    //We have to identify at least one record!
+    if (dtRecs.size() < 1){
+        qDebug() <<
+            "This table was identified as having one datetime record, but we cant find any!" << endl;
+        return false;
+    }
+
+    int outID;
+    bool bFound;
+    listInfoChanges lcopy;
+    QString modField;
+
+    //Here is the challenge: identify which one of the date-fields had the date changed;
+    //For that, we try replacing the changed date in all the date fields, till we identify
+    //a unique record.
+    if (!identifyRecordByDate(aRecord,dtRecs,iDt,lcopy,outID,modField,bFound)){
+        qDebug() << "Could not identify date record!" << endl;
+        return false;
+    }
+
+    if (!bFound){
+        qDebug() << "Could not find any date record matching this field!" << endl;
+        return false;
+    }
+
+    //Find FK reference for this field on GL_Dates
+    int dtID;
+    if (!findDateID(lcopy.at(0).m_strTable, lcopy.at(lcopy.size()-1).m_strField, outID,dtID))
+    {
+        qDebug() << "Could not find the matching date for this reference!" << endl;
+        return false;
+    }
+
+     QString strDateUTC, strDateLocal;
+     int dateType;
+     if (lcopy.at(lcopy.size()-1).m_varNew.type()!=
+         QVariant::Map)
+         return false;
+
+     if (!serializeDateTime(lcopy.at(lcopy.size()-1).m_varNew.toMap(),
+         strDateUTC,strDateLocal,dateType)){
+        return false;
+     }
+
+     //Finally amend this date
+     if (!amendDate(dtID,modField,strDateLocal))
+         return false;
+
+     return true;
 }
 
 bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, int& cmod, int& cdel)
@@ -921,7 +1114,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
             }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
                 lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
 
-                    //If it is a date
+                    //If it is a date, extracts the date records and goes further
                     bool bIsDate=false;
                     listInfoChanges iDt;
                     if (lChanges.at(i).m_strTable.compare("GL_DATES",Qt::CaseInsensitive)==0){
@@ -934,8 +1127,9 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
                             iDt.push_back(lChanges.at(i));
                             ++i;
                         }
-
                     }
+
+                    //packs the following records
                     listInfoChanges aRecord;
                     bool bBreak;
                     if (!packRecord(lChanges,i,aRecord,bBreak)){
@@ -943,58 +1137,45 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
                         return false;
                     }
 
+                    //Dates don't get amended on the spot. Instead, the reference record
+                    //on GL_Dates gets amended
                     if (bIsDate){
-                        listInfoChanges dtRecs;
-                        QString curTable=aRecord.at(0).m_strTable;
-                        for (int j=0; j < aRecord.size(); j++){
-                            bool bIsDateTime;
 
-                            QString strField=aRecord.at(j).m_strField;
-                            strField=strField.remove("[");
-                            strField=strField.remove("]");
+                        if (!modDateRecord(aRecord,iDt)){
+                            qDebug() << "Could not modify date record!" << endl;
+                            return false;
+                        }
+                        cmod++;
+                    }else{
 
-                            if (!isDateTime(curTable,strField,bIsDateTime)){
-                                QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
-                                "Could not determine if this field is datetime!",QMessageBox::Ok,0);
-                                msgBox.exec();
-                                return false;
-                            } 
-                            if (bIsDateTime) dtRecs.push_back(aRecord.at(j));
+                        //JUMP redundant records that are on the log
+                        //Lets just ignore them for now, till we solve the problem!
+                        bool bDif=false;
+                        InfoChanges ch;
+                        for (int z=0; z < aRecord.size(); ++z){
+                            if (aRecord.at(z).m_varOld!=aRecord.at(z).m_varNew){
+                                bDif=true;
+                                ch=InfoChanges(aRecord.at(z));
+                                break;
+                            }
                         }
 
-                        if (bIsDate && dtRecs.size() < 1) return false;
-                        for (int j=0; j < dtRecs.size(); ++j){
+                        if (bDif){
+                            int outID;
+                            if (!identifyRecord(aRecord, outID)){
+                                qDebug() << "Could not indentify this record!" << endl;
+                                return false;
+                            }
 
-                            if (dtRecs.at(j).m_varNew.type()!=QVariant::Map) return false;
-                            QVariantMap nestedDate=dtRecs.at(j).m_varNew.toMap();
-                            QVariantMap nestedDate2=nestedDate["date"].toMap();
+                            if (!modRecord(ch,outID)){
+                                qDebug() << "Could not modify record" << endl;
+                                return false;
+                            }
+                            cmod++;
+                        }
+                    }
 
-                            bool bIsEqual=true;
-                            for (int k=0; k < iDt.count(); ++k){
 
-                                QString strField=iDt.at(k).m_strField;
-                                strField=strField.remove("[");
-                                strField=strField.remove("]");
-
-                                QString strVal=nestedDate2[strField.toLower()].toString();
-                                if (strVal.isEmpty()) return false;
-
-                                if (iDt.at(k).m_varNew.toString().compare(strVal)!=0){
-                                    bIsEqual=false;
-                                    break;
-                                }
-                            }//for k
-                        }//for j
-
-                            //UPDATE NEW DATETIME ON THE PACK
-
-                    }// if b is date
-
-                    //IDENTIFY RECORD
-                    //IF IT IS A DATETIME; INSERT A NEW DATE AND UPDATE REF
-                    //OTHERWISE UPDATE VALUE
-
-                cmod++;
             }else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
 
                 listInfoChanges aRecord;
@@ -1068,6 +1249,28 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
 
     return true;
 }
+
+
+bool conf_app::amendDate(const int ID, const QString strField, const QString strDate)
+{
+    QString strQuery="UPDATE [GL_DATES] SET "
+        + strField + "='" +
+        strDate + "' WHERE ID=" + QVariant(ID).toString();
+
+        QSqlQuery query;
+        query.prepare(strQuery);
+        query.setForwardOnly(true);
+         if (!query.exec() || query.numRowsAffected() < 1){
+             if (query.lastError().type() != QSqlError::NoError)
+                 qDebug() << query.lastError().text() << endl;
+             else
+                 qDebug() << QObject::tr("Could not amend datetime!") << endl;
+             return false;
+            }
+
+    return true;
+}
+
 
 bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
                         int& dateType, QString& strCityName,listInfoChanges& lChanges)

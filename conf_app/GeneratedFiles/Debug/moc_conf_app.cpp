@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'conf_app.h'
 **
-** Created: Sun 2. Sep 15:05:11 2012
+** Created: Mon 3. Sep 13:50:54 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
