@@ -801,14 +801,14 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
             QString strDateLocal=nestedDate2["date_local"].toString();
             int dateType=nestedDate2["date_type"].toInt();
 
+            //Dates are in ISO86, but to make sure they dont *include* the ms, we have to trim it to 
+            // the left 19 characters
             strQuery+=
-     " LEFT(CONVERT(varchar, (dt" + QVariant(i).toString() + ".Date_UTC), 126),"
-     "LEN(CONVERT(varchar, (dt" + QVariant(i).toString() + QString(".Date_UTC), 126)))='")
+     " LEFT(CONVERT(varchar, (dt" + QVariant(i).toString() + ".Date_UTC), 126),19)='"
                 + strDateUTC + "'";
 
             strQuery+=
-     " AND LEFT(CONVERT(varchar, (dt" + QVariant(i).toString() + ".Date_Local), 126),"
-     "LEN(CONVERT(varchar, (dt" + QVariant(i).toString() + QString(".Date_Local), 126))-4)='")
+     " AND LEFT(CONVERT(varchar, (dt" + QVariant(i).toString() + ".Date_Local), 126),19)='"
                 + strDateLocal + "'";
 
             strQuery+=" AND dt" + QVariant(i).toString() + QString(".date_type=") + QVariant(dateType).toString();
@@ -1122,11 +1122,21 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
                         ++i;
                         bIsDate=true;
 
-                        while(lChanges.at(i).m_strTable.compare("GL_DATES",Qt::CaseInsensitive)==0)
+                        while(i < lChanges.size() &&
+                            lChanges.at(i).m_strTable.compare("GL_DATES",Qt::CaseInsensitive)==0)
                         {
                             iDt.push_back(lChanges.at(i));
                             ++i;
                         }
+                        //Let's jump to the previous rec
+                        i=i-iDt.size();
+                        i--;
+                        QString prevTable=lChanges.at(i).m_strTable;
+                        while (i>-1 && prevTable==lChanges.at(i).m_strTable){
+                            i--;
+                        }
+
+                        i++;
                     }
 
                     //packs the following records
@@ -1145,6 +1155,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
                             qDebug() << "Could not modify date record!" << endl;
                             return false;
                         }
+                        i=(aRecord.size()+iDt.size())-1;
                         cmod++;
                     }else{
 
@@ -1198,52 +1209,6 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
 
             }else
                 return false;
-
-        /*
-        if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
-
-            listInfoChanges delRecord;
-            bool bBreak;
-            if (!packRecord(lChanges,i,delRecord,bBreak)){
-                qDebug() << tr("Could not distinguish removed record!") << endl;
-                return false;
-            }
-            if (delRecord.size()>0){
-                if (!removeRecord(delRecord)){
-                    qDebug() << tr("Could not remove record from the database!") << endl;
-                    return false;
-                }
-            }else return false; //it should never come here!
-            cdel++;
-            if (bBreak) break;
-        }else if (lChanges.at(i).m_varNew.toString().compare(strNoValue)!=0 &&
-            lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
-
-            cmod++;
-        }else if (lChanges.at(i).m_varOld.toString().compare(strNoValue)==0){//INSERT
-
-            listInfoChanges newRecord;
-            bool bBreak;
-            if (!packRecord(lChanges,i,newRecord,bBreak)){
-                qDebug() << tr("Could not distinguish new record!") << endl;
-                return false;
-            }
-            if (bBreak) break;
-
-            if (newRecord.size()>0){
-                if (!insertNewRecord(newRecord)){
-                    qDebug() << tr("Could not insert record in the database!") << endl;
-                    return false;
-                }
-            }else return false; //it should never come here!
-            cnew++;
-        }
-        else return false;
-*/
-//        }else
-//            return false;
-
-//        if (bBreak) break;
 
     }//for
 
