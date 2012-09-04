@@ -2043,7 +2043,7 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
     QString strQuery=
     "SELECT     *"
-    " FROM [info_changes] WHERE ID > :id ORDER BY ID DESC";
+    " FROM [info_changes] WHERE ID > :id ORDER BY ID ASC";
 
     query.prepare(strQuery);
     query.bindValue(":id",ID);
