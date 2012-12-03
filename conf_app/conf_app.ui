@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Medfisis Configurator</string>
+   <string>CAS Configurator</string>
   </property>
   <property name="windowIcon">
    <iconset resource="conf_app.qrc">

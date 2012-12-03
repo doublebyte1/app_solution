@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'login.ui'
 **
-** Created: Thu 23. Aug 18:06:10 2012
+** Created: Mon 3. Dec 12:45:19 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

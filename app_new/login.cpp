@@ -296,6 +296,19 @@ void Login::showEvent ( QShowEvent * event )
             exit(0);
         }
     }
+    //now let's check if it's a master database (if it is, we don't want to use it!)
+    bool bIsMaster;
+    if (!isMaster(bIsMaster)){
+        QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
+            tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
+        msgBox.exec();
+        exit(0);
+    } else if (bIsMaster){
+        QMessageBox msgBox(QMessageBox::Critical,tr("Access Error"),
+        tr("This is a master database: It cannot be used for data introduction!"),QMessageBox::Ok,0);
+        msgBox.exec();
+        exit(0);
+    }
     //if everything went ok, lets read the users from the db!
     initCmbUsers();
 

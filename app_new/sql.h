@@ -39,6 +39,10 @@ static const QString strNoValue="274b68192b056e268f128ff63bfcd4a4";
 static const QString strDateFormat="yyyy-MM-ddThh:mm:ss";
 //static const QString strDBDateFormat="ddd d yyyy hh:mmAP";
 
+static const QString strMasterTable="MASTER";
+static const QString strMasterName="master";
+static const QString strClientName="client";
+
 //! Table Sequence struct
 /*! This structure allows us to construct a one direction table flow for a sampling process. 
 Each element (table) provides us with the necessary information for navigation: the name of the parent field, the name of
@@ -2035,6 +2039,16 @@ static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
 
     return true;
 }
+//! Is Master
+/*! This function checks if the current database is master. The check consists in verifying the existence of the master table.
+\par the address of a boolean variable to write the results
+\return boolean has success or faillure
+*/
+static bool isMaster(bool& bIsMaster)
+{
+    bIsMaster= QSqlDatabase::database().tables().indexOf(strMasterTable)!=-1;
+    return true;
+}
 
 static bool getLastChanges(const int ID, QString& strJSON)
 {
@@ -2056,7 +2070,7 @@ static bool getLastChanges(const int ID, QString& strJSON)
          return false;
         }
 
-    QVariantMap map, nestedMap, nestedMap2 ;
+    QVariantMap map, nestedMap, nestedMap2;
     QList<QVariant> mapList;
     query.first();
 
@@ -2092,6 +2106,14 @@ static bool getLastChanges(const int ID, QString& strJSON)
 
     map["session"]=nestedMap2;
     map["change"]=mapList;
+
+    bool bIsMaster;
+    if (!isMaster(bIsMaster)){
+        qDebug() << QObject::tr("Could not search for master information! Database may be corrupted!")
+            << endl;
+        return false;
+    }
+    map["mode"]=bIsMaster?strMasterName:strClientName;
 
     QByteArray data = Json::serialize(map);
     strJSON=QString::fromUtf8(data.constData());

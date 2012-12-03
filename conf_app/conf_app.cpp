@@ -531,6 +531,18 @@ void conf_app::doDump()
     if (!fileName.isEmpty()){
         qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
         statusShow(tr("Wait..."));
+
+/*
+        bool bIsMaster;
+        if (!isMaster(bIsMaster)){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
+                tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
+            msgBox.exec();
+            exit(0);
+        }
+        else if (bIsMaster) fileName=fileName.replace(".diff", "-master.diff");
+        else fileName=fileName.replace(".diff", "-client.diff");
+*/
         if (!writeDiff(fileName)){
             QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
                 tr("Could not write patch file!"),QMessageBox::Ok,0);
@@ -587,15 +599,14 @@ void conf_app::doPatch()
                  QMessageBox::warning(this, tr("Patch Process"),
                  tr("Could not read patch file!")
                  +tr("\n Are you sure this is a valid file?"));
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  return;
         }else{
             listInfoChanges lChanges;
             QString strDateUTC, strDateLocal, strCityName;
             int dateType;
             if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,strCityName,lChanges)){
-                 QMessageBox::warning(this, tr("Patch Process"),
-                 tr("Could not parse JSON content!")
-                 +tr("\n Are you sure the syntax is valid?"));
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  return;
             }
             //3 - backup db (establish rollback mechanism)
@@ -1243,7 +1254,37 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
 
-    if(!ok) return false;
+    if(!ok){
+        QMessageBox::warning(this, tr("Patch Process"),
+        tr("Could not parse JSON content!")
+        +tr("\n Are you sure the syntax is valid?"));
+
+        return false;
+    }
+
+    QString strMode= result["mode"].toString();
+
+    bool bIsMaster;
+    if (!isMaster(bIsMaster)){
+        QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
+            tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
+        msgBox.exec();
+        exit(0);
+    } else if (bIsMaster && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
+
+        QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
+            tr("Master databases can only be updated by clients!"),QMessageBox::Ok,0);
+        msgBox.exec();
+        return false;
+
+    }else if (!bIsMaster && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
+
+        QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
+            tr("Client databases can only be updated by the master!"),QMessageBox::Ok,0);
+        msgBox.exec();
+        return false;
+
+    }
 
     QVariantMap nestedMap1 = result["session"].toMap();
 
@@ -1493,6 +1534,24 @@ void conf_app::connectDB()
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 
     if (m_bConnected){
+
+        //Checks the type of the database (master/client)
+        bool bIsMaster;
+        if (!isMaster(bIsMaster)){
+            QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
+                tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
+            msgBox.exec();
+            exit(0);
+        } else if (bIsMaster){
+            toolbar->setStyleSheet("background-color: rgb(255, 0, 0);");
+            setWindowTitle(QApplication::translate("conf_appClass", "CAS Configurator (") + strMasterName + 
+                QApplication::translate("conf_appClass", " Mode)", 0, QApplication::UnicodeUTF8));
+        }else{
+            toolbar->setStyleSheet("");
+            setWindowTitle(QApplication::translate("conf_appClass", "CAS Configurator (") + strClientName + 
+                QApplication::translate("conf_appClass", " Mode)", 0, QApplication::UnicodeUTF8));
+        }
+
         saveSettings(0);
         if (!fillLocations()){
             QMessageBox msgBox(QMessageBox::Critical,tr("Connection Error"),
