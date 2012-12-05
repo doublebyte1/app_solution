@@ -42,6 +42,8 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     nullDelegateUsers=0;
     nullDelegateRoles=0;
     m_lastIndex=QModelIndex();
+    m_dbmode=INVALID;
+    m_frmlu=0;
     //tablePerm=0;
     //proxymodel=0;
 
@@ -62,6 +64,7 @@ conf_app::~conf_app()
         if (mapperRoles!=0) delete mapperRoles;
         if (nullDelegateUsers!=0) delete nullDelegateUsers;
         if (nullDelegateRoles!=0) delete nullDelegateRoles;
+        if (m_frmlu!=0) delete m_frmlu;
         //if (tablePerm!=0) delete tablePerm;
         //if (proxymodel!=0) delete proxymodel;
     //}
@@ -525,6 +528,30 @@ void conf_app::doDump()
              return;
     }
 
+    if (m_dbmode==MASTER){
+
+        if (m_frmlu==0){
+            m_frmlu=new frmlu();
+
+             connect(m_frmlu, SIGNAL(LU(int)),this,
+                SLOT(continueDump(int) ),Qt::UniqueConnection);
+
+        }
+        m_frmlu->show();
+
+    }else if (m_dbmode==CLIENT){
+        int lastUpdate;
+        if (!getLastUpdate(lastUpdate)){
+            QMessageBox::critical(this, tr("Patch Process"),
+             tr("Could not read the value of the last update!"));
+            return;
+        }
+        continueDump(lastUpdate);
+    }
+}
+
+void conf_app::continueDump(const int lu)
+{
     QString fileName = QFileDialog::getSaveFileName(this,
      tr("Dump patch to file"), getOutputName("diff"), tr("Patch Files (*.diff)"));
 
@@ -532,18 +559,7 @@ void conf_app::doDump()
         qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
         statusShow(tr("Wait..."));
 
-/*
-        bool bIsMaster;
-        if (!isMaster(bIsMaster)){
-            QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
-                tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
-            msgBox.exec();
-            exit(0);
-        }
-        else if (bIsMaster) fileName=fileName.replace(".diff", "-master.diff");
-        else fileName=fileName.replace(".diff", "-client.diff");
-*/
-        if (!writeDiff(fileName)){
+        if (!writeDiff(fileName,lu)){
             QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
                 tr("Could not write patch file!"),QMessageBox::Ok,0);
             msgBox.exec();
@@ -554,12 +570,13 @@ void conf_app::doDump()
     }
 }
 
-bool conf_app::writeDiff(const QString strFileName)
+bool conf_app::writeDiff(const QString strFileName, const int lu)
 {
+    /*
     int lastUpdate;
-    if (!getLastUpdate(lastUpdate)) return false;
+    if (!getLastUpdate(lastUpdate)) return false;*/
     QString strJSON;
-    if (!getLastChanges(lastUpdate,strJSON)) return false;
+    if (!getLastChanges(lu,strJSON)) return false;
 
     QFile file(strFileName);
 
@@ -1264,27 +1281,26 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
 
     QString strMode= result["mode"].toString();
 
+    /*
     bool bIsMaster;
     if (!isMaster(bIsMaster)){
         QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
             tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
         msgBox.exec();
         exit(0);
-    } else if (bIsMaster && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
+    } else if (bIsMaster && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){*/
 
+    if (m_dbmode==MASTER && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
         QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
             tr("Master databases can only be updated by clients!"),QMessageBox::Ok,0);
         msgBox.exec();
         return false;
-
-    }else if (!bIsMaster && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
-
+    }else if (m_dbmode==CLIENT && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
         QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
             tr("Client databases can only be updated by the master!"),QMessageBox::Ok,0);
         msgBox.exec();
         return false;
-
-    }
+    } else return false; // it should never come here
 
     QVariantMap nestedMap1 = result["session"].toMap();
 
@@ -1517,6 +1533,8 @@ qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     groupUsers->setEnabled(m_bConnected);
     groupRole->setEnabled(m_bConnected);
 
+    m_dbmode=INVALID;
+
 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
 
@@ -1542,14 +1560,22 @@ void conf_app::connectDB()
                 tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
             msgBox.exec();
             exit(0);
-        } else if (bIsMaster){
+        }
+        m_dbmode=(bIsMaster?MASTER:CLIENT);
+        
+        if (m_dbmode==MASTER){
             toolbar->setStyleSheet("background-color: rgb(255, 0, 0);");
             setWindowTitle(QApplication::translate("conf_appClass", "CAS Configurator (") + strMasterName + 
                 QApplication::translate("conf_appClass", " Mode)", 0, QApplication::UnicodeUTF8));
-        }else{
+        }else if (m_dbmode==CLIENT){
             toolbar->setStyleSheet("");
             setWindowTitle(QApplication::translate("conf_appClass", "CAS Configurator (") + strClientName + 
                 QApplication::translate("conf_appClass", " Mode)", 0, QApplication::UnicodeUTF8));
+        }else{
+            QMessageBox msgBox(QMessageBox::Critical,tr("App Error"),
+                tr("Could not assign master/client mode to the application!"),QMessageBox::Ok,0);
+            msgBox.exec();
+            exit(0);
         }
 
         saveSettings(0);

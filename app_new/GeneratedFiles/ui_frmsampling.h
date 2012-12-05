@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmsampling.ui'
 **
-** Created: Mon 3. Dec 12:45:18 2012
+** Created: Wed 5. Dec 16:55:30 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

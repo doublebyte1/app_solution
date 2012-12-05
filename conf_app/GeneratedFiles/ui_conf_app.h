@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Mon 3. Dec 16:36:07 2012
+** Created: Wed 5. Dec 17:50:05 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -359,7 +359,7 @@ public:
         toolBox->addItem(page_4, QString::fromUtf8("Global Settings"));
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 190, 162));
+        page->setGeometry(QRect(0, 0, 595, 331));
         gridLayout_4 = new QGridLayout(page);
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'frmtrip.h'
 **
-** Created: Mon 3. Dec 12:45:24 2012
+** Created: Wed 5. Dec 16:55:38 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!

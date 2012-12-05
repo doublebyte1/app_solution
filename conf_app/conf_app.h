@@ -7,6 +7,7 @@
 #include "nullrelationaldelegate.h"
 #include "booleantable.h"
 #include "genericsortproxymodel.h"
+#include "frmlu.h"
 
 #if defined(WIN32) && defined(_DEBUG)
  #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
@@ -73,6 +74,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
     public:
         conf_app(QWidget *parent = 0, Qt::WFlags flags = 0);
         ~conf_app();
+
+    enum DBMode { MASTER=1, CLIENT=2, INVALID=-1 };
 
     signals:
         void                    connectionChanged();//!< Signal to indicate that the connection state changed (connected or disconnected)
@@ -204,6 +207,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         TODO: write something here later!!
          \sa doDump()
         */
+        void                    continueDump(const int lu);
         void                    doPatch();
         //! Read Process Error
         /*!
@@ -581,7 +585,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              runScript(const QString strScript, QStringList& args);
         void                              createProcess();
         QString                           getOutputName(const QString strExt);
-        bool                              writeDiff(const QString strFileName);
+        bool                              writeDiff(const QString strFileName, const int lu);
         //! Generic Create Record
         /*!
         Generic function to create a new record (applied to roles and users). It is called by createRecord.
@@ -710,6 +714,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         QString                            m_logPath;
         QString                            m_strBackupName;
         bool                               m_bShowSqlMessages;
+        DBMode                             m_dbmode;
 
         QSqlQueryModel*                    viewUsers;
         QSqlQueryModel*                    viewRoles;
@@ -718,6 +723,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;//!< variable that stores the last clicked index
+        frmlu*                             m_frmlu;
 };
 
 #endif // CONF_APP_H
