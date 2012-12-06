@@ -47,6 +47,11 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     //tablePerm=0;
     //proxymodel=0;
 
+    //frmlu m_frmlu();
+     connect(&m_frmlu, SIGNAL(LU(int)),this,
+    SLOT(continueDump(int) ),Qt::UniqueConnection);
+
+
     initUI();
 }
 
@@ -1245,7 +1250,9 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
 
     }//for
 
-    if (!insertLastUpdate()) return false;
+    //Writing the ID of the last update
+    if (m_dbmode==CLIENT)
+        if (!insertLastUpdate()) return false;
 
     return true;
 }
