@@ -1350,6 +1350,8 @@ bool conf_app::readFile(const QString strFileName, QString& outStr)
 
 void conf_app::initUI()
 {
+    this->setWindowTitle(qApp->applicationName() + qApp->applicationVersion());
+
     toolbar->addAction(this->actionExit);
     toolbar->addAction(this->actionCreate_backup);
     toolbar->addAction(this->actionRestore_backup);
@@ -1548,6 +1550,7 @@ qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
     groupRole->setEnabled(m_bConnected);
 
     m_dbmode=INVALID;
+    setWindowTitle(qApp->applicationName() + qApp->applicationVersion());
 
 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 }
@@ -1579,12 +1582,14 @@ void conf_app::connectDB()
         
         if (m_dbmode==MASTER){
             toolbar->setStyleSheet("background-color: rgb(255, 0, 0);");
-            setWindowTitle(QApplication::translate("conf_appClass", "CAS Configurator (") + strMasterName + 
-                QApplication::translate("conf_appClass", " Mode)", 0, QApplication::UnicodeUTF8));
+            setWindowTitle(qApp->applicationName() + qApp->applicationVersion()
+                + " (" + strMasterName + ")");
+
         }else if (m_dbmode==CLIENT){
             toolbar->setStyleSheet("");
-            setWindowTitle(QApplication::translate("conf_appClass", "CAS Configurator (") + strClientName + 
-                QApplication::translate("conf_appClass", " Mode)", 0, QApplication::UnicodeUTF8));
+            setWindowTitle(qApp->applicationName() + qApp->applicationVersion()
+                + " (" + strClientName + ")");
+
         }else{
             QMessageBox msgBox(QMessageBox::Critical,tr("App Error"),
                 tr("Could not assign master/client mode to the application!"),QMessageBox::Ok,0);

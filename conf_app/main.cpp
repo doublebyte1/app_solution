@@ -21,6 +21,12 @@ int main(int argc, char *argv[])
     #endif
 
     QApplication a(argc, argv);
+
+    a.setApplicationName(QObject::tr("FAOFish CAS Configurator"));
+    a.setOrganizationName(QObject::tr("FAO-FIRF"));
+    a.setOrganizationDomain(QObject::tr("http://www.fao.org/"));
+    a.setApplicationVersion(QObject::tr("1.3"));
+
     Login l;
     l.show();
     return a.exec();
