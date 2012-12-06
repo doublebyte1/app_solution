@@ -723,7 +723,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;//!< variable that stores the last clicked index
-        frmlu*                             m_frmlu;
+        frmlu                             m_frmlu;
 };
 
 #endif // CONF_APP_H

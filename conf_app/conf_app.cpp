@@ -43,7 +43,7 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     nullDelegateRoles=0;
     m_lastIndex=QModelIndex();
     m_dbmode=INVALID;
-    m_frmlu=0;
+    //m_frmlu=0;
     //tablePerm=0;
     //proxymodel=0;
 
@@ -64,7 +64,7 @@ conf_app::~conf_app()
         if (mapperRoles!=0) delete mapperRoles;
         if (nullDelegateUsers!=0) delete nullDelegateUsers;
         if (nullDelegateRoles!=0) delete nullDelegateRoles;
-        if (m_frmlu!=0) delete m_frmlu;
+        //if (m_frmlu!=0) delete m_frmlu;
         //if (tablePerm!=0) delete tablePerm;
         //if (proxymodel!=0) delete proxymodel;
     //}
@@ -530,14 +530,15 @@ void conf_app::doDump()
 
     if (m_dbmode==MASTER){
 
-        if (m_frmlu==0){
-            m_frmlu=new frmlu();
-
+        //if (m_frmlu==0){
+           // m_frmlu=new frmlu();
+/*
              connect(m_frmlu, SIGNAL(LU(int)),this,
                 SLOT(continueDump(int) ),Qt::UniqueConnection);
-
-        }
-        m_frmlu->show();
+*/
+        //}
+        //m_frmlu->show();
+        m_frmlu.show();
 
     }else if (m_dbmode==CLIENT){
         int lastUpdate;
@@ -623,6 +624,10 @@ void conf_app::doPatch()
             QString strDateUTC, strDateLocal, strCityName;
             int dateType;
             if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,strCityName,lChanges)){
+
+                QMessageBox::critical(this, tr("Patch Process"),
+                 tr("Could not read any changes in this file!!"));
+
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  return;
             }
@@ -1240,6 +1245,8 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
 
     }//for
 
+    if (!insertLastUpdate()) return false;
+
     return true;
 }
 
@@ -1300,7 +1307,7 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
             tr("Client databases can only be updated by the master!"),QMessageBox::Ok,0);
         msgBox.exec();
         return false;
-    } else return false; // it should never come here
+    } else if (m_dbmode==INVALID) return false; // it should never come here
 
     QVariantMap nestedMap1 = result["session"].toMap();
 

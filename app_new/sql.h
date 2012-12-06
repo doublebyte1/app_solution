@@ -1899,6 +1899,23 @@ static bool getLastUpdate(int& outID)
      return true;
 }
 
+static bool insertLastUpdate()
+{
+    QString strError;
+    QSqlQuery query;
+    query.prepare("insert into info_patch(log_id) select TOP(1) ID from info_changes order by ID DESC");
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not insert ID from last update!");
+         return false;
+        }
+     return true;
+}
+
+
 static bool getLastSessionData(QSqlQuery& query){
 
     QString strError, strQuery=
