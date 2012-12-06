@@ -865,7 +865,7 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
 
     strQuery.prepend(strFirst + QString(" WHERE "));
 
-    //qDebug() << strQuery << endl;
+    qDebug() << strQuery << endl;
 
     QString strError;
     QSqlQuery query;
@@ -875,7 +875,7 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
          if (query.lastError().type() != QSqlError::NoError)
              strError=query.lastError().text();
          else
-             strError=QObject::tr("Could not identify record to remove!");
+             strError=QObject::tr("Could not identify a unique record! Please check if you have duplicates");
 
             QMessageBox msgBox(QMessageBox::Critical,tr("Patch Error"),
                 strError,QMessageBox::Ok,0);

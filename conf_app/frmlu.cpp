@@ -17,7 +17,9 @@ bool frmlu::checkID()
      model->setQuery("SELECT ID from info_changes where ID=" +
          QVariant(this->spinBox->value()).toString());
 
-     return model->rowCount()==1;
+     int ct=model->rowCount();
+     delete model; model=0;
+     return ct==1;
 }
 
 void frmlu::emitLU()
