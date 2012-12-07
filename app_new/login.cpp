@@ -112,8 +112,18 @@ void Login::validate()
                 connect(this, SIGNAL(showStatus(QString)), mainFrmPtr,
                     SLOT(statusShow(QString)));
 
+                //base date
+                if (!insertBaseDate()) return;
+
+                 QVariant basedateID;
+                 QString strError;
+                 if (!getIDfromLastInsertedDate(basedateID,strError)){
+                    QMessageBox::critical(0, QObject::tr("Session Error"), strError);
+                    return;
+                 }
+
                 if (!startSession(cmbUser->currentText(),settings.value("city").toString(),
-                    getMacAddress())){
+                    getMacAddress(),basedateID)){
                     emit showError(tr("Could not initialize session data!"));
                 }
 

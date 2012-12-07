@@ -2164,6 +2164,19 @@ static QString getMacAddress()
     return QString();
 }
 
+static bool insertBaseDate()
+{
+    QSqlQuery query1;
+    query1.prepare("exec Insert_Base_Date");
+    query1.setForwardOnly(true);
+    query1.exec();
+    if (query1.lastError().type()!=QSqlError::NoError){
+     QMessageBox::critical(0, QObject::tr("Database Error"), query1.lastError().text());
+    return false;
+    }
+    return true;
+}
+
     //! Start Session
     /*! This function initializes session data in the database, by creating a record on table GL_Dates.
     This record is completed, at the end of the session (with end date).
@@ -2172,24 +2185,10 @@ static QString getMacAddress()
     \return boolean as success or failure
     \sa endSession()
                 */
-static bool startSession(const QString strUser, const QString strLocation, QString strMacAddress)
+static bool startSession(const QString strUser, const QString strLocation,
+                         const QString strMacAddress, const QVariant basedateID)
 {
-    //base date
-     QSqlQuery query1;
-     query1.prepare("exec Insert_Base_Date");
-     query1.setForwardOnly(true);
-     query1.exec();
-     if (query1.lastError().type()!=QSqlError::NoError){
-         QMessageBox::critical(0, QObject::tr("Database Error"), query1.lastError().text());
-        return false;
-     }
-
-     QVariant basedateID, startdateID;
-     QString strError;
-     if (!getIDfromLastInsertedDate(basedateID,strError)){
-        QMessageBox::critical(0, QObject::tr("Session Error"), strError);
-        return false;
-     }
+    QVariant startdateID;
 
      //location
      QSqlQuery query2;
@@ -2213,6 +2212,8 @@ static bool startSession(const QString strUser, const QString strLocation, QStri
         QMessageBox::critical(0, QObject::tr("Database Error"), query3.lastError().text());
         return false;
      }
+
+     QString strError;
      if (!getIDfromLastInsertedDate(startdateID,strError)){
         QMessageBox::critical(0, QObject::tr("Database Error"), strError);
         return false;
