@@ -9,7 +9,6 @@
      #define new DEBUG_NEW
   #endif
 
-bool                                  insertRecordIntoModel(QSqlTableModel* m);
 //! Set Source Text
 /*! Here we format the header label, and fill its text according to the fact that it is
 \par label pointer to a label

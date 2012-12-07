@@ -565,9 +565,11 @@ void conf_app::continueDump(const int lu)
         qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
         statusShow(tr("Wait..."));
 
-        if (!writeDiff(fileName,lu)){
+        QString strError;
+        if (!writeDiff(fileName,lu, strError)){
+            if (strError.isEmpty()) strError=tr("Could not write patch file!");
             QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
-                tr("Could not write patch file!"),QMessageBox::Ok,0);
+                strError,QMessageBox::Ok,0);
             msgBox.exec();
             statusShow(tr(""));
         }else
@@ -576,13 +578,10 @@ void conf_app::continueDump(const int lu)
     }
 }
 
-bool conf_app::writeDiff(const QString strFileName, const int lu)
+bool conf_app::writeDiff(const QString strFileName, const int lu, QString& strError)
 {
-    /*
-    int lastUpdate;
-    if (!getLastUpdate(lastUpdate)) return false;*/
     QString strJSON;
-    if (!getLastChanges(lu,strJSON)) return false;
+    if (!getLastChanges(lu,strJSON,strError)) return false;
 
     QFile file(strFileName);
 
@@ -2540,11 +2539,4 @@ void filterTable(QSqlTableModel* table)
             + "' AND Name<>'" + qApp->translate("null_replacements", strOther)
             + "' AND Name<>'" + qApp->translate("null_replacements", strUnknown)
             + "'");
-}
-bool insertRecordIntoModel(QSqlTableModel* m)
-{
-    while(m->canFetchMore())
-        m->fetchMore();
-
-    return m->insertRow(m->rowCount());
 }

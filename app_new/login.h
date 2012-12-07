@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtSql>
  #include <QThread>
-#include <QtNetwork/QNetworkInterface>
+//#include <QtNetwork/QNetworkInterface>
 
 #include "ui_login.h"
 #include "mainfrm.h"
@@ -13,8 +13,6 @@
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
      #define new DEBUG_NEW
   #endif
-
-QString                         getMacAddress();
 
 //! StoreSettingsThread Class
 /*!
@@ -264,21 +262,6 @@ class Login : public QWidget, public Ui::frmLogin
             Reimplemented from the base class.
              */
             void                            showEvent ( QShowEvent * event );
-            //! Start Session
-            /*! This function initializes session data in the database, by creating a record on table GL_Dates.
-            This record is completed, at the end of the session (with end date).
-            \par strUser username as string
-            \par strLocation location as string
-            \return boolean as success or failure
-            \sa endSession()
-            */
-            bool                            startSession(const QString strUser, const QString strLocation);
-            //! End Session
-            /*! This function completes the session data in the database, by amending a record on table GL_Dates.
-            This record was initialized with startSession(const QString strUser, const QString strLocation).
-            \sa startSession(const QString strUser, const QString strLocation)
-            */
-            void                            endSession();
             QSqlQueryModel*                 userModel;//!< Pointer to a model containing the users and roles from the database
             MainFrm*                        mainFrmPtr;//!< Pointer to a main form object
             RoleDef*                        m_roleDef;//!< Pointer to a RoleDef structure

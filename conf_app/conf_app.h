@@ -24,7 +24,6 @@ bool                      queryShowSqlMsg();
 
 void                      resizeToVisibleColumns ( QTableView* table );
 void                      filterTable(QSqlTableModel* table);
-bool                      insertRecordIntoModel(QSqlTableModel* m);
 
 //! Info Date struct
 /*! TODO: write somethin here later!!!
@@ -585,7 +584,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              runScript(const QString strScript, QStringList& args);
         void                              createProcess();
         QString                           getOutputName(const QString strExt);
-        bool                              writeDiff(const QString strFileName, const int lu);
+        bool                              writeDiff(const QString strFileName, const int lu, QString& strError);
         //! Generic Create Record
         /*!
         Generic function to create a new record (applied to roles and users). It is called by createRecord.

@@ -7,6 +7,8 @@
 #include <QDebug>
 #include <QVariant>
 #include <QtSql>
+#include <QtGui>
+#include <QtNetwork/QNetworkInterface>
 #include <boost/shared_ptr.hpp>
 #include "globaldefs.h"
 #include "json.h"
@@ -1919,7 +1921,7 @@ static bool insertLastUpdate()
 static bool getLastSessionData(QSqlQuery& query){
 
     QString strError, strQuery=
-    "SELECT     TOP (1) dbo.GL_Dates.Date_UTC, dbo.GL_Dates.Date_Local, dbo.GL_Dates.Date_Type, dbo.Ref_Location.City_Name, dbo.GL_Session.ID"
+    "SELECT     TOP (1) dbo.GL_Dates.Date_UTC, dbo.GL_Dates.Date_Local, dbo.GL_Dates.Date_Type, dbo.Ref_Location.City_Name, dbo.GL_Session.ID, dbo.GL_Session.mac_address"
     " FROM         dbo.GL_Session INNER JOIN"
     "                      dbo.GL_Dates ON dbo.GL_Session.id_base_date = dbo.GL_Dates.ID INNER JOIN"
     "                      dbo.Ref_Location ON dbo.GL_Session.id_location = dbo.Ref_Location.ID"
@@ -2067,9 +2069,9 @@ static bool isMaster(bool& bIsMaster)
     return true;
 }
 
-static bool getLastChanges(const int ID, QString& strJSON)
+static bool getLastChanges(const int ID, QString& strJSON, QString& strError)
 {
-    QString strError;
+    //QString strError;
     QSqlQuery query;
 
     QString strQuery=
@@ -2079,13 +2081,17 @@ static bool getLastChanges(const int ID, QString& strJSON)
     query.prepare(strQuery);
     query.bindValue(":id",ID);
     query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() < 1){
+     if (!query.exec()){
          if (query.lastError().type() != QSqlError::NoError)
              strError=query.lastError().text();
          else
              strError=QObject::tr("Could not retrieve last changes!");
          return false;
         }
+     else if (query.numRowsAffected() < 1){
+         strError=QObject::tr("There are no changes to export!");
+         return false;
+     }
 
     QVariantMap map, nestedMap, nestedMap2;
     QList<QVariant> mapList;
@@ -2120,6 +2126,7 @@ static bool getLastChanges(const int ID, QString& strJSON)
     nestedMap2["date_local"]=query.value(query.record().indexOf("date_local")).toString();
     nestedMap2["date_type"]=query.value(query.record().indexOf("date_type")).toString();
     nestedMap2["city_name"]=query.value(query.record().indexOf("city_name")).toString();
+    nestedMap2["mac_address"]=query.value(query.record().indexOf("mac_address")).toString();
 
     map["session"]=nestedMap2;
     map["change"]=mapList;
@@ -2136,6 +2143,176 @@ static bool getLastChanges(const int ID, QString& strJSON)
     strJSON=QString::fromUtf8(data.constData());
 
      return true;
+}
+
+static bool insertRecordIntoModel(QSqlTableModel* m)
+{
+    while(m->canFetchMore())
+        m->fetchMore();
+
+    return m->insertRow(m->rowCount());
+}
+
+static QString getMacAddress()
+{
+    foreach(QNetworkInterface interface, QNetworkInterface::allInterfaces())
+    {
+        // Return only the first non-loopback MAC Address
+        if (!(interface.flags() & QNetworkInterface::IsLoopBack))
+            return interface.hardwareAddress();
+    }
+    return QString();
+}
+
+    //! Start Session
+    /*! This function initializes session data in the database, by creating a record on table GL_Dates.
+    This record is completed, at the end of the session (with end date).
+    \par strUser username as string
+    \par strLocation location as string
+    \return boolean as success or failure
+    \sa endSession()
+                */
+static bool startSession(const QString strUser, const QString strLocation, QString strMacAddress)
+{
+    //base date
+     QSqlQuery query1;
+     query1.prepare("exec Insert_Base_Date");
+     query1.setForwardOnly(true);
+     query1.exec();
+     if (query1.lastError().type()!=QSqlError::NoError){
+         QMessageBox::critical(0, QObject::tr("Database Error"), query1.lastError().text());
+        return false;
+     }
+
+     QVariant basedateID, startdateID;
+     QString strError;
+     if (!getIDfromLastInsertedDate(basedateID,strError)){
+        QMessageBox::critical(0, QObject::tr("Session Error"), strError);
+        return false;
+     }
+
+     //location
+     QSqlQuery query2;
+     query2.prepare("SELECT ID FROM Ref_Location WHERE (City_Name=:location)");
+     query2.bindValue(":location", strLocation);
+     query2.setForwardOnly(true);
+     query2.exec();
+     if (query2.lastError().type()!=QSqlError::NoError){
+        QMessageBox::critical(0, QObject::tr("Database Error"), query2.lastError().text());
+        return false;
+     }
+     query2.first();
+     QVariant locationID=query2.value(0);
+
+     //start date
+     QSqlQuery query3;
+     query3.prepare("exec InsertCurrentDateTime");
+     query3.setForwardOnly(true);
+     query3.exec();
+     if (query3.lastError().type()!=QSqlError::NoError){
+        QMessageBox::critical(0, QObject::tr("Database Error"), query3.lastError().text());
+        return false;
+     }
+     if (!getIDfromLastInsertedDate(startdateID,strError)){
+        QMessageBox::critical(0, QObject::tr("Database Error"), strError);
+        return false;
+     }
+
+     //end date (for now "n/a": ammend in the end!)
+     QVariant enddateID;
+     if (!getNADate(enddateID,strError)){
+        QMessageBox::critical(0, QObject::tr("Database Error"), strError);
+        return false;
+     }
+
+     //user
+     QSqlQuery query4;
+     query4.prepare("SELECT ID FROM UI_USER WHERE (username=:username)");
+     query4.bindValue(":username", strUser);
+     query4.setForwardOnly(true);
+     query4.exec();
+     if (query4.lastError().type()!=QSqlError::NoError){
+        QMessageBox::critical(0, QObject::tr("Database Error"), query4.lastError().text());
+        return false;
+     }
+     query4.first();
+     QVariant userID=query4.value(0);
+
+    QSqlTableModel* table= new QSqlTableModel;
+    table->setTable(QSqlDatabase().driver()->escapeIdentifier("GL_SESSION",
+    QSqlDriver::TableName));
+    table->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    table->sort(0,Qt::AscendingOrder);
+    table->select();
+
+    if (!insertRecordIntoModel(table)){
+        QMessageBox::critical(0, QObject::tr("Database Error"), 
+            QObject::tr("Could not insert record into GL_Sessions table!"));
+        return false;
+    }
+
+    QModelIndex idx=table->index(table->rowCount()-1,1);
+    table->setData(idx,userID);
+    idx=table->index(table->rowCount()-1,2);
+    table->setData(idx,strMacAddress/*getMacAddress()*/);
+    idx=table->index(table->rowCount()-1,3);
+    table->setData(idx,basedateID);
+    idx=table->index(table->rowCount()-1,4);
+    table->setData(idx,locationID);
+    idx=table->index(table->rowCount()-1,5);
+    table->setData(idx,startdateID);
+    idx=table->index(table->rowCount()-1,6);
+    table->setData(idx,enddateID);
+    idx=table->index(table->rowCount()-1,7);
+    table->setData(idx,QObject::tr("This is an automated generated session record: pls do not attempt to edit it!"));
+
+    if (!table->submitAll()){
+        QMessageBox::critical(0, QObject::tr("Session Error"), 
+            QObject::tr("Could not insert record into GL_Sessions table!"));
+        delete table;
+        return false;
+    }
+
+    delete table;
+    return true;
+}
+
+//! End Session
+/*! This function completes the session data in the database, by amending a record on table GL_Dates.
+This record was initialized with startSession(const QString strUser, const QString strLocation).
+\sa startSession(const QString strUser, const QString strLocation)
+*/
+static void endSession()
+{
+    QSqlTableModel* table= new QSqlTableModel();
+    table->setTable(QSqlDatabase().driver()->escapeIdentifier("GL_SESSION",
+    QSqlDriver::TableName));
+    table->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    table->sort(0,Qt::AscendingOrder);
+    table->select();
+
+     //end date
+     QSqlQuery query;
+     query.prepare("exec InsertCurrentDateTime");
+     query.exec();
+     if (query.lastError().type()!=QSqlError::NoError){
+        qDebug() << query.lastError().text() << endl;
+     }
+
+    QVariant enddateID;
+     QString strError;
+     if (!getIDfromLastInsertedDate(enddateID,strError)){
+        qDebug() << strError << endl;
+     }
+
+    QModelIndex idx=table->index(table->rowCount()-1,6);
+    table->setData(idx,enddateID);
+
+    if (!table->submitAll()){
+        qDebug() << QObject::tr("Could not submit record into GL_Sessions table!") << endl;
+    }
+
+    delete table;
 }
 
 #endif
