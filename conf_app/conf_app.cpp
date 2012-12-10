@@ -601,6 +601,18 @@ bool conf_app::writeDiff(const QString strFileName, const int lu, QString& strEr
     return true;
 }
 
+bool conf_app::startPatchSession(const QString strDateUTC, const QString strDateLocal,
+                        const int dateType, const QString strCityName, const QString strMacAddress, const QString strUser)
+{
+//TODO: replace city name, by pair: (country,city)
+    int newDate;
+    if (!insertDate(InfoDate(strDateUTC,strDateLocal,dateType),newDate)) return false;
+    QVariant baseDateID=QVariant(newDate);
+
+    return startSession(strUser, strCityName, strMacAddress, baseDateID,
+        QString("This record was generated during a patch!"));
+}
+
 void conf_app::doPatch()
 {
     if (!m_bConnected){
@@ -625,18 +637,25 @@ void conf_app::doPatch()
                  return;
         }else{
             listInfoChanges lChanges;
-            QString strDateUTC, strDateLocal, strCityName;
+            QString strDateUTC, strDateLocal, strCityName, strMacAddress, strUser;
             int dateType;
-            if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,strCityName,lChanges)){
+            if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,
+                strCityName,strMacAddress,strUser,lChanges)){
 
                 QMessageBox::critical(this, tr("Patch Process"),
                  tr("Could not read any changes in this file!!"));
-
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  return;
             }
             //3 - backup db (establish rollback mechanism)
             //4 - prompt the user with changes
+
+            if (!startPatchSession(strDateUTC,strDateLocal,dateType,strCityName,strMacAddress,strUser)){
+                QMessageBox::critical(this, tr("Patch Process"),
+                 tr("Could not start a mini session!!"));
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+                 return;
+            }
 
             int ctNew=0;
             int ctMod=0;
@@ -646,7 +665,6 @@ void conf_app::doPatch()
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  QMessageBox::warning(this, tr("Patch Process"),
                  tr("Could not apply this patch!"));
-                 return;
             }else{
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                 QMessageBox::information(this, tr("Patch Process"),
@@ -655,10 +673,10 @@ void conf_app::doPatch()
                                          .arg(ctDel).arg(ctMod));
             }
 
+            endSession();
+
         //5 - apply patches sequentially (establish rollback mechanism)
         //FK?
-        //6 - store the stamp of the last update
-        //7 - report results
 
         }//read file
     }
@@ -864,7 +882,7 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
 
     strQuery.prepend(strFirst + QString(" WHERE "));
 
-    qDebug() << strQuery << endl;
+    //qDebug() << strQuery << endl;
 
     QString strError;
     QSqlQuery query;
@@ -1124,8 +1142,6 @@ bool conf_app::modDateRecord(const listInfoChanges& aRecord, const listInfoChang
 
 bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, int& cmod, int& cdel)
 {
-    //TODO: write session data
-
     for (int i=0; i < lChanges.count(); ++i)
     {
             if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
@@ -1279,7 +1295,7 @@ bool conf_app::amendDate(const int ID, const QString strField, const QString str
 
 
 bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                        int& dateType, QString& strCityName,listInfoChanges& lChanges)
+                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, listInfoChanges& lChanges)
 {
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
@@ -1294,15 +1310,6 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
 
     QString strMode= result["mode"].toString();
 
-    /*
-    bool bIsMaster;
-    if (!isMaster(bIsMaster)){
-        QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
-            tr("Could not search for master information! Database may be corrupted"),QMessageBox::Ok,0);
-        msgBox.exec();
-        exit(0);
-    } else if (bIsMaster && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){*/
-
     if (m_dbmode==MASTER && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
         QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
             tr("Master databases can only be updated by clients!"),QMessageBox::Ok,0);
@@ -1316,11 +1323,14 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
     } else if (m_dbmode==INVALID) return false; // it should never come here
 
     QVariantMap nestedMap1 = result["session"].toMap();
+    QVariantMap nestedMap3 = nestedMap1["base_date"].toMap();
 
-    strDateUTC=nestedMap1["date_utc"].toString();
-    strDateLocal=nestedMap1["date_local"].toString();
-    dateType=nestedMap1["date_type"].toInt();
+    strDateUTC=nestedMap3["date_utc"].toString();
+    strDateLocal=nestedMap3["date_local"].toString();
+    dateType=nestedMap3["date_type"].toInt();
     strCityName=nestedMap1["city_name"].toString();
+    strMacAddress=nestedMap1["mac_address"].toString();
+    strUser=nestedMap1["user"].toString();
 
     foreach(QVariant change, result["change"].toList()) {
 

@@ -1921,10 +1921,11 @@ static bool insertLastUpdate()
 static bool getLastSessionData(QSqlQuery& query){
 
     QString strError, strQuery=
-    "SELECT     TOP (1) dbo.GL_Dates.Date_UTC, dbo.GL_Dates.Date_Local, dbo.GL_Dates.Date_Type, dbo.Ref_Location.City_Name, dbo.GL_Session.ID, dbo.GL_Session.mac_address"
+    "SELECT     TOP (1) dbo.GL_Dates.Date_UTC, dbo.GL_Dates.Date_Local, dbo.GL_Dates.Date_Type, dbo.Ref_Location.City_Name, dbo.GL_Session.ID, dbo.GL_Session.mac_address, dbo.UI_User.username"
     " FROM         dbo.GL_Session INNER JOIN"
     "                      dbo.GL_Dates ON dbo.GL_Session.id_base_date = dbo.GL_Dates.ID INNER JOIN"
-    "                      dbo.Ref_Location ON dbo.GL_Session.id_location = dbo.Ref_Location.ID"
+    "                      dbo.Ref_Location ON dbo.GL_Session.id_location = dbo.Ref_Location.ID INNER JOIN"
+    "                      dbo.UI_USER ON dbo.GL_Session.id_user = dbo.UI_USER.ID"
     " ORDER BY dbo.GL_Session.ID DESC";
 
     query.prepare(strQuery);
@@ -2093,7 +2094,7 @@ static bool getLastChanges(const int ID, QString& strJSON, QString& strError)
          return false;
      }
 
-    QVariantMap map, nestedMap, nestedMap2;
+    QVariantMap map, nestedMap, nestedMap2, nestedMap3;
     QList<QVariant> mapList;
     query.first();
 
@@ -2122,11 +2123,14 @@ static bool getLastChanges(const int ID, QString& strJSON, QString& strError)
         || query.record().indexOf("date_type")==-1 || query.record().indexOf("city_name")==-1)
             return false;
 
-    nestedMap2["date_utc"]=query.value(query.record().indexOf("date_utc")).toString();
-    nestedMap2["date_local"]=query.value(query.record().indexOf("date_local")).toString();
-    nestedMap2["date_type"]=query.value(query.record().indexOf("date_type")).toString();
+    nestedMap3["date_utc"]=query.value(query.record().indexOf("date_utc")).toString();
+    nestedMap3["date_local"]=query.value(query.record().indexOf("date_local")).toString();
+    nestedMap3["date_type"]=query.value(query.record().indexOf("date_type")).toString();
+
+    nestedMap2["base_date"]=nestedMap3;
     nestedMap2["city_name"]=query.value(query.record().indexOf("city_name")).toString();
     nestedMap2["mac_address"]=query.value(query.record().indexOf("mac_address")).toString();
+    nestedMap2["user"]=query.value(query.record().indexOf("username")).toString();
 
     map["session"]=nestedMap2;
     map["change"]=mapList;
@@ -2186,7 +2190,7 @@ static bool insertBaseDate()
     \sa endSession()
                 */
 static bool startSession(const QString strUser, const QString strLocation,
-                         const QString strMacAddress, const QVariant basedateID)
+                         const QString strMacAddress, const QVariant basedateID, const QString strComment)
 {
     QVariant startdateID;
 
@@ -2265,7 +2269,8 @@ static bool startSession(const QString strUser, const QString strLocation,
     idx=table->index(table->rowCount()-1,6);
     table->setData(idx,enddateID);
     idx=table->index(table->rowCount()-1,7);
-    table->setData(idx,QObject::tr("This is an automated generated session record: pls do not attempt to edit it!"));
+    //table->setData(idx,QObject::tr("This is an automated generated session record: pls do not attempt to edit it!"));
+    table->setData(idx,strComment);
 
     if (!table->submitAll()){
         QMessageBox::critical(0, QObject::tr("Session Error"), 

@@ -683,7 +683,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
         bool                              readFile(const QString strFileName, QString& outStr);
         bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                                                    int& dateType, QString& strCityName,listInfoChanges& lChanges);
+                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, listInfoChanges& lChanges);
         bool                              applyChangesfromPatch(const listInfoChanges& lChanges,
                                                                     int& cnew, int& cmod, int& cdel);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
@@ -699,6 +699,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                                                  const listInfoChanges& dtRecs, const listInfoChanges& iDt,
                                                                  listInfoChanges& lcopy, int & outID, QString& modField, bool& bFound);
         bool                              findDateID(const QString strTable, const QString strField, const int inID, int &outID);
+        bool                              startPatchSession(const QString strDateUTC, const QString strDateLocal,
+                                                                const int dateType, const QString strCityName, const QString strMacAddress, const QString strUser);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

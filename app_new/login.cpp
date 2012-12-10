@@ -123,7 +123,8 @@ void Login::validate()
                  }
 
                 if (!startSession(cmbUser->currentText(),settings.value("city").toString(),
-                    getMacAddress(),basedateID)){
+                    getMacAddress(),basedateID,
+                    QString("This is an automated generated session record: pls do not attempt to edit it!"))){
                     emit showError(tr("Could not initialize session data!"));
                 }
 
