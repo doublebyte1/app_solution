@@ -2129,9 +2129,10 @@ static bool getLastChanges(const int ID, QString& strJSON, QString& strError)
 
     nestedMap2["base_date"]=nestedMap3;
     nestedMap2["city_name"]=query.value(query.record().indexOf("city_name")).toString();
-    nestedMap2["mac_address"]=query.value(query.record().indexOf("mac_address")).toString();
+    //TODO: replace database name by mac address
+    //nestedMap2["mac_address"]=query.value(query.record().indexOf("mac_address")).toString();
+    nestedMap2["mac_address"]=QSqlDatabase::database().databaseName();
     nestedMap2["user"]=query.value(query.record().indexOf("username")).toString();
-
     map["session"]=nestedMap2;
     map["change"]=mapList;
 

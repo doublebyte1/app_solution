@@ -534,15 +534,6 @@ void conf_app::doDump()
     }
 
     if (m_dbmode==MASTER){
-
-        //if (m_frmlu==0){
-           // m_frmlu=new frmlu();
-/*
-             connect(m_frmlu, SIGNAL(LU(int)),this,
-                SLOT(continueDump(int) ),Qt::UniqueConnection);
-*/
-        //}
-        //m_frmlu->show();
         m_frmlu.show();
 
     }else if (m_dbmode==CLIENT){
@@ -610,7 +601,7 @@ bool conf_app::startPatchSession(const QString strDateUTC, const QString strDate
     QVariant baseDateID=QVariant(newDate);
 
     return startSession(strUser, strCityName, strMacAddress, baseDateID,
-        QString("This record was generated during a patch!"));
+        QString("This record was generated during a patch session!"));
 }
 
 void conf_app::doPatch()
@@ -1578,6 +1569,8 @@ void conf_app::connectDB()
     qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 
     if (m_bConnected){
+
+        QSqlDatabase::database().setDatabaseName(lineDatabase->text());
 
         //Checks the type of the database (master/client)
         bool bIsMaster;
