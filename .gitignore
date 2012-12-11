@@ -1,12 +1,13 @@
- conf_app/Debug/*.*
- conf_app/Release/*.*
- conf_app/GeneratedFiles/*.*
+ *.obj
+ conf_app/Debug
+ conf_app/Release
+ conf_app/GeneratedFiles
  app_solution.ncb
  app_new/*.dll
-  app_new/Debug/*.*
- app_new/Release/*.*
- app_new/GeneratedFiles/*.*
+ app_new/Debug
+ app_new/Release
+ app_new/GeneratedFiles
  app_solution.ncb
- Debug/*.*
- Release/*.*
+ Debug
+ Release
  Doxyfile

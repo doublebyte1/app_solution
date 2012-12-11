@@ -543,7 +543,9 @@ void conf_app::doDump()
              tr("Could not read the value of the last update!"));
             return;
         }
-        continueDump(lastUpdate);
+        //continueDump(lastUpdate,getMacAddress());
+        //TODO: replace databasename by macaddress
+        continueDump(lastUpdate,QSqlDatabase::database().databaseName());
     }
 }
 
@@ -572,7 +574,7 @@ void conf_app::continueDump(const int lu, const QString strMacAddress)
 bool conf_app::writeDiff(const QString strFileName, const int lu, const QString strMacAddress, QString& strError)
 {
     QString strJSON;
-    if (!getLastChanges(lu,strJSON,strMacAddress,strError)) return false;
+    if (!getLastChanges(lu,strJSON,strMacAddress,(m_dbmode==MASTER),strError)) return false;
 
     QFile file(strFileName);
 

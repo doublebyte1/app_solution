@@ -2070,16 +2070,17 @@ static bool isMaster(bool& bIsMaster)
     return true;
 }
 
-static bool getLastChanges(const int ID, QString& strJSON, const QString strMacAddress, QString& strError)
+static bool getLastChanges(const int ID, QString& strJSON, const QString strMacAddress, const bool bIsMaster, QString& strError)
 {
-    //QString strError;
     QSqlQuery query;
 
+    //master: mac addresses different from the given ones
+    //client: mac addresses differentes from ours
     QString strQuery=
-    "SELECT     *"
-    " FROM [info_changes] INNER JOIN [GL_SESSION] ON [GL_SESSION].ID=[info_changes].id_session"
-    " WHERE [info_changes].ID > :id AND [GL_SESSION].[mac_address] <> :mac "
-    " ORDER BY [info_changes].ID ASC";
+        "SELECT     *"
+        " FROM [info_changes] INNER JOIN [GL_SESSION] ON [GL_SESSION].ID=[info_changes].id_session"
+        " WHERE [info_changes].ID > :id AND [GL_SESSION].[mac_address] <> :mac"
+        " ORDER BY [info_changes].ID ASC";
 
     query.prepare(strQuery);
     query.bindValue(":id",ID);
@@ -2138,13 +2139,13 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
     nestedMap2["user"]=query.value(query.record().indexOf("username")).toString();
     map["session"]=nestedMap2;
     map["change"]=mapList;
-
+/*
     bool bIsMaster;
     if (!isMaster(bIsMaster)){
         qDebug() << QObject::tr("Could not search for master information! Database may be corrupted!")
             << endl;
         return false;
-    }
+    }*/
     map["mode"]=bIsMaster?strMasterName:strClientName;
 
     QByteArray data = Json::serialize(map);

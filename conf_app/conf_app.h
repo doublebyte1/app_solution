@@ -206,7 +206,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         TODO: write something here later!!
          \sa doDump()
         */
-        void                    continueDump(const int lu, const QString strMacAddress="CLIENT");
+        void                    continueDump(const int lu, const QString strMacAddress);
         void                    doPatch();
         //! Read Process Error
         /*!

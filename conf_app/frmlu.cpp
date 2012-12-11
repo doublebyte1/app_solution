@@ -39,13 +39,15 @@ bool frmlu::checkMacAddress()
 
 void frmlu::emitLU()
 {
+    /*
     if (!checkID()){
         QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
         tr("Could not find this ID in the database!"),QMessageBox::Ok,0);
         msgBox.exec();
         show();
         return;
-    }
+    }*/
+    //Maybe we do not have this ID in the database? (that is allowed...)
     if (!checkMacAddress()){
         QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
         tr("Could not find this mac address in the database!"),QMessageBox::Ok,0);
