@@ -25,12 +25,13 @@ class frmlu : public QDialog, public Ui::frmlu
 
     private:
         bool                checkID();
+        bool                checkMacAddress();
 
     private slots:
         void                emitLU();
 
     signals:
-        void                LU(int val);
+        void                LU(const int val, const QString mac);
 };
 
 #endif

@@ -48,8 +48,8 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     //proxymodel=0;
 
     //frmlu m_frmlu();
-     connect(&m_frmlu, SIGNAL(LU(int)),this,
-    SLOT(continueDump(int) ),Qt::UniqueConnection);
+     connect(&m_frmlu, SIGNAL(LU(const int,const QString)),this,
+    SLOT(continueDump(const int, const QString) ),Qt::UniqueConnection);
 
 
     initUI();
@@ -547,7 +547,7 @@ void conf_app::doDump()
     }
 }
 
-void conf_app::continueDump(const int lu)
+void conf_app::continueDump(const int lu, const QString strMacAddress)
 {
     QString fileName = QFileDialog::getSaveFileName(this,
      tr("Dump patch to file"), getOutputName("diff"), tr("Patch Files (*.diff)"));
@@ -557,7 +557,7 @@ void conf_app::continueDump(const int lu)
         statusShow(tr("Wait..."));
 
         QString strError;
-        if (!writeDiff(fileName,lu, strError)){
+        if (!writeDiff(fileName,lu, strMacAddress, strError)){
             if (strError.isEmpty()) strError=tr("Could not write patch file!");
             QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
                 strError,QMessageBox::Ok,0);
@@ -569,10 +569,10 @@ void conf_app::continueDump(const int lu)
     }
 }
 
-bool conf_app::writeDiff(const QString strFileName, const int lu, QString& strError)
+bool conf_app::writeDiff(const QString strFileName, const int lu, const QString strMacAddress, QString& strError)
 {
     QString strJSON;
-    if (!getLastChanges(lu,strJSON,strError)) return false;
+    if (!getLastChanges(lu,strJSON,strMacAddress,strError)) return false;
 
     QFile file(strFileName);
 

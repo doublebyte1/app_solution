@@ -206,7 +206,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         TODO: write something here later!!
          \sa doDump()
         */
-        void                    continueDump(const int lu);
+        void                    continueDump(const int lu, const QString strMacAddress="CLIENT");
         void                    doPatch();
         //! Read Process Error
         /*!
@@ -584,7 +584,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              runScript(const QString strScript, QStringList& args);
         void                              createProcess();
         QString                           getOutputName(const QString strExt);
-        bool                              writeDiff(const QString strFileName, const int lu, QString& strError);
+        bool                              writeDiff(const QString strFileName, const int lu,
+            const QString strMacAddress, QString& strError);
         //! Generic Create Record
         /*!
         Generic function to create a new record (applied to roles and users). It is called by createRecord.

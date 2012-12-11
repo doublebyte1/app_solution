@@ -2070,17 +2070,20 @@ static bool isMaster(bool& bIsMaster)
     return true;
 }
 
-static bool getLastChanges(const int ID, QString& strJSON, QString& strError)
+static bool getLastChanges(const int ID, QString& strJSON, const QString strMacAddress, QString& strError)
 {
     //QString strError;
     QSqlQuery query;
 
     QString strQuery=
     "SELECT     *"
-    " FROM [info_changes] WHERE ID > :id ORDER BY ID ASC";
+    " FROM [info_changes] INNER JOIN [GL_SESSION] ON [GL_SESSION].ID=[info_changes].id_session"
+    " WHERE [info_changes].ID > :id AND [GL_SESSION].[mac_address] <> :mac "
+    " ORDER BY [info_changes].ID ASC";
 
     query.prepare(strQuery);
     query.bindValue(":id",ID);
+    query.bindValue(":mac",strMacAddress);
     query.setForwardOnly(true);
      if (!query.exec()){
          if (query.lastError().type() != QSqlError::NoError)

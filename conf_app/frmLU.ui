@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>379</width>
-    <height>107</height>
+    <height>166</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Last Update Info</string>
+   <string> Update Info</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -42,9 +42,39 @@
        </property>
       </widget>
      </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
     </layout>
    </item>
    <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="lineEdit"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Insert mac address of the requester</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -83,6 +113,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>spinBox</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>okButton</tabstop>
+  <tabstop>cancelButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -92,8 +128,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>276</x>
-     <y>87</y>
+     <x>223</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>96</x>
@@ -108,8 +144,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>359</x>
-     <y>87</y>
+     <x>306</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>179</x>
@@ -124,8 +160,8 @@
    <slot>emitLU()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>247</x>
-     <y>77</y>
+     <x>223</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>189</x>

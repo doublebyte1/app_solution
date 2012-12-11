@@ -18,8 +18,23 @@ bool frmlu::checkID()
          QVariant(this->spinBox->value()).toString());
 
      int ct=model->rowCount();
+
      delete model; model=0;
      return ct==1;
+}
+
+bool frmlu::checkMacAddress()
+{
+    QSqlDatabase db=QSqlDatabase::database();
+     QSqlQueryModel *model = new QSqlQueryModel;
+
+    model->setQuery("SELECT ID from GL_SESSION where mac_address='" +
+        this->lineEdit->text() + "'");
+
+    int ct2=model->rowCount();
+
+    delete model; model=0;
+    return ct2>0;
 }
 
 void frmlu::emitLU()
@@ -31,5 +46,13 @@ void frmlu::emitLU()
         show();
         return;
     }
-    emit LU(this->spinBox->value());
+    if (!checkMacAddress()){
+        QMessageBox msgBox(QMessageBox::Critical,tr("Database Error"),
+        tr("Could not find this mac address in the database!"),QMessageBox::Ok,0);
+        msgBox.exec();
+        show();
+        return;
+    }
+
+    emit LU(this->spinBox->value(),this->lineEdit->text());
 }
