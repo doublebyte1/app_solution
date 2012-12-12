@@ -1901,6 +1901,22 @@ static bool getLastUpdate(int& outID)
      return true;
 }
 
+static bool insertLastClientUpdate(QString& strError)
+{
+    QString strError;
+    QSqlQuery query;
+    query.prepare("insert into info_patch(lu_client) select TOP(1) ID from info_changes order by ID DESC");
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not insert ID from last client update!");
+         return false;
+        }
+     return true;
+}
+
 static bool insertLastUpdate()
 {
     QString strError;
@@ -2139,13 +2155,6 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
     nestedMap2["user"]=query.value(query.record().indexOf("username")).toString();
     map["session"]=nestedMap2;
     map["change"]=mapList;
-/*
-    bool bIsMaster;
-    if (!isMaster(bIsMaster)){
-        qDebug() << QObject::tr("Could not search for master information! Database may be corrupted!")
-            << endl;
-        return false;
-    }*/
     map["mode"]=bIsMaster?strMasterName:strClientName;
 
     QByteArray data = Json::serialize(map);

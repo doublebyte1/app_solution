@@ -549,6 +549,7 @@ void conf_app::doDump()
     }
 }
 
+//TODO: TEST
 void conf_app::continueDump(const int lu, const QString strMacAddress)
 {
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -565,13 +566,24 @@ void conf_app::continueDump(const int lu, const QString strMacAddress)
                 strError,QMessageBox::Ok,0);
             msgBox.exec();
             statusShow(tr(""));
-        }else
+            qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+            return;
+        }
 
-        //Writing the ID of the last update
-        if (m_dbmode==CLIENT)
-            if (!insertLastUpdate()) return;
-
-                statusShow(tr("Patch saved on ") + fileName);
+        //Writing the ID of the last local update
+        if (m_dbmode==CLIENT){
+            QString strError="";
+            if (!insertLastClientUpdate(strError)){
+                if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
+                QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
+                    strError,QMessageBox::Ok,0);
+                msgBox.exec();
+                statusShow(tr(""));
+                qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
+                return;
+            }
+        }
+        statusShow(tr("Patch saved on ") + fileName);
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     }
 }
