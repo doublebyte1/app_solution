@@ -566,6 +566,11 @@ void conf_app::continueDump(const int lu, const QString strMacAddress)
             msgBox.exec();
             statusShow(tr(""));
         }else
+
+        //Writing the ID of the last update
+        if (m_dbmode==CLIENT)
+            if (!insertLastUpdate()) return;
+
                 statusShow(tr("Patch saved on ") + fileName);
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     }
