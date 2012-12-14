@@ -29,6 +29,8 @@ static bool createConnection(const QString strHost, const QString strDatabase, c
             qDebug() <<  error ;
             return false;
         }
+    //TODO: remove this when redoing the mac address function!
+    db.setDatabaseName(strDatabase);
     return true;
 }
 

@@ -43,14 +43,6 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     nullDelegateRoles=0;
     m_lastIndex=QModelIndex();
     m_dbmode=INVALID;
-    //m_frmlu=0;
-    //tablePerm=0;
-    //proxymodel=0;
-
-    //frmlu m_frmlu();
-     //connect(&m_frmlu, SIGNAL(LU(const int,const QString)),this,
-    //SLOT(continueDump(const int, const QString) ),Qt::UniqueConnection);
-
 
     initUI();
 }
@@ -69,10 +61,6 @@ conf_app::~conf_app()
         if (mapperRoles!=0) delete mapperRoles;
         if (nullDelegateUsers!=0) delete nullDelegateUsers;
         if (nullDelegateRoles!=0) delete nullDelegateRoles;
-        //if (m_frmlu!=0) delete m_frmlu;
-        //if (tablePerm!=0) delete tablePerm;
-        //if (proxymodel!=0) delete proxymodel;
-    //}
     if (myProcess!=0 && myProcess->isOpen()){
         myProcess->close();
         delete myProcess;
@@ -523,7 +511,7 @@ bool conf_app::runScript(const QString strScript, QStringList& args)
         return true;
 }
 
-bool conf_app::doDump(const int lastUpdate)
+bool conf_app::doDump(const int lu, const QString strMacAddress)
 {
     if (!m_bConnected){
 
@@ -532,13 +520,7 @@ bool conf_app::doDump(const int lastUpdate)
              +tr("\n Please connect and try again!"));
              return false;
     }
-    //TODO: replace databasename by macaddress
-    return continueDump(lastUpdate,QSqlDatabase::database().databaseName());
-}
 
-//TODO: TEST
-bool conf_app::continueDump(const int lu, const QString strMacAddress)
-{
     QString fileName = QFileDialog::getSaveFileName(this,
      tr("Dump patch to file"), getOutputName("diff"), tr("Patch Files (*.diff)"));
 
@@ -557,23 +539,9 @@ bool conf_app::continueDump(const int lu, const QString strMacAddress)
             return false;
         }
 
-        //Writing the ID of the last local update
-        if (m_dbmode==CLIENT){
-            QString strError="";
-            if (!insertLastClientUpdate(strError)){
-                if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
-                QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
-                    strError,QMessageBox::Ok,0);
-                msgBox.exec();
-                statusShow(tr(""));
-                qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
-                return false;
-            }
-        }
         statusShow(tr("Patch saved on ") + fileName);
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     }
-    //DO we want an empty filename to return true?
     return true;
 }
 
@@ -615,8 +583,9 @@ bool conf_app::startPatchSession(const QString strDateUTC, const QString strDate
 
 void conf_app::doPatch()
 {
-    int lu_master;
-    if (!doApply(lu_master)){
+    int lu_master;//we want to store this variable for the master
+    QString strClientMac;//we want to store this variable for the master
+    if (!doApply(lu_master,strClientMac)){
         if (m_dbmode==MASTER){
             QMessageBox::critical(this, tr("Patch Process"),
              tr("You must apply a patch before requesting a diff!"));
@@ -624,7 +593,10 @@ void conf_app::doPatch()
         }
     }
 
+    //For the client, the last update is on info_client; for the master, it is the value we read
+    //on the patch (this is why the patch is compulsory)
     int lastUpdate;
+    QString strMacAddress;
     if (m_dbmode==CLIENT){
         QString strError;
         if (!getLastUpdate(lastUpdate,strError)){
@@ -632,14 +604,16 @@ void conf_app::doPatch()
              strError);
             return;
         }
+        strMacAddress=getMacAddress();
     }else {
         lastUpdate=lu_master;
+        strMacAddress=strClientMac;
     }
 
-    doDump(lastUpdate);
+    doDump(lastUpdate,strMacAddress);
 }
 
-bool conf_app::doApply(int& lu_master)
+bool conf_app::doApply(int& lu_master, QString& strMacAddress)
 {
     if (!m_bConnected){
 
@@ -663,8 +637,8 @@ bool conf_app::doApply(int& lu_master)
                  return false;
         }else{
             listInfoChanges lChanges;
-            QString strDateUTC, strDateLocal, strCityName, strMacAddress, strUser;
-            int dateType/*,lu_master*/;
+            QString strDateUTC, strDateLocal, strCityName, strUser;
+            int dateType;
             if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,
                 strCityName,strMacAddress,strUser,lu_master,lChanges)){
 
@@ -718,24 +692,24 @@ bool conf_app::insertDate(const InfoDate date, int& id)
     tModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tModel->select();
 
-    //qDebug() << tModel->rowCount() << endl;
-    if (!insertRecordIntoModel(tModel)) return false;
-    //qDebug() << tModel->rowCount() << endl;
-
+    if (!insertRecordIntoModel(tModel)){
+        delete tModel; tModel=0;
+        return false;
+    }
     QModelIndex idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("Date_UTC"));
-    if (!idx.isValid()) return false;
+    if (!idx.isValid()){delete tModel; tModel=0; return false;}
     QDateTime dt=QDateTime::fromString(date.m_strUTC,strDateFormat);
-    if (!dt.isValid()) return false;
+    if (!dt.isValid()){delete tModel; tModel=0; return false;}
     tModel->setData(idx, dt);
 
     idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("Date_Local"));
-    if (!idx.isValid()) return false;
+    if (!idx.isValid()){delete tModel; tModel=0; return false;}
     dt=QDateTime::fromString(date.m_strLocal,strDateFormat);
-    if (!dt.isValid()) return false;
+    if (!dt.isValid()){delete tModel; tModel=0; return false;}
     tModel->setData(idx, dt);
 
     idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("Date_Type"));
-    if (!idx.isValid()) return false;
+    if (!idx.isValid()){delete tModel; tModel=0; return false;}
     tModel->setData(idx, date.m_type);
 
     bool bOk=tModel->submitAll();
@@ -746,10 +720,11 @@ bool conf_app::insertDate(const InfoDate date, int& id)
             tModel->fetchMore();
 
         idx=tModel->index(tModel->rowCount()-1,tModel->record().indexOf("ID"));
-        if (!idx.isValid()) return false;
+        if (!idx.isValid()){delete tModel; tModel=0; return false;}
         id=idx.data().toInt();
     }
 
+    delete tModel; tModel=0;
     return bOk;
 }
 
@@ -1293,16 +1268,20 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
 
     }//for
 
-    //Writing the ID of the last update
-    if (m_dbmode==CLIENT){/*
-        if (!insertLastClientUpdate(strError)){
-            qDebug() << strError << endl;
-            return false;
-        }*/
-        QString strError;
+    //Writing the ID of the last update (master and client)
+    if (m_dbmode==CLIENT){
+        QString strError="";
         if (!insertLastMasterUpdate(lu_master,strError)){
-            qDebug() << strError << endl;
+            if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
+            QMessageBox msgBox(QMessageBox::Critical,tr("Apply Patch Error"),
+                strError,QMessageBox::Ok,0);
+            msgBox.exec();
             return false;
+        }else if (!insertLastClientUpdate(strError)){
+            if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
+            QMessageBox msgBox(QMessageBox::Critical,tr("Apply Patch Error"),
+                strError,QMessageBox::Ok,0);
+            msgBox.exec();
         }
     }
 
@@ -1613,7 +1592,7 @@ void conf_app::connectDB()
 
     if (m_bConnected){
 
-        QSqlDatabase::database().setDatabaseName(lineDatabase->text());
+        //QSqlDatabase::database().setDatabaseName(lineDatabase->text());
 
         //Checks the type of the database (master/client)
         bool bIsMaster;

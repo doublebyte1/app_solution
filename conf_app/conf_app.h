@@ -200,15 +200,15 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         the patch itself is a text file, written in JSON format (http://www.json.org/)
          \sa doPatch()
         */
-        bool                    doDump(const int lastUpdate);
+        bool                    doDump(const int lu, const QString strMacAddress);
         //! Do Patch
         /*!
         TODO: write something here later!!
          \sa doDump()
         */
-        bool                    continueDump(const int lu, const QString strMacAddress);
+        //bool                    continueDump(const int lu, const QString strMacAddress);
         void                    doPatch();
-        bool                    doApply(int& lu_master);
+        bool                    doApply(int& lu_master, QString& strMacAddress);
         //! Read Process Error
         /*!
         This slot connects to the readyReadStandardError() signal of the process launched with sqlcmd;
@@ -726,7 +726,6 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;//!< variable that stores the last clicked index
-        //frmlu                             m_frmlu;
 };
 
 #endif // CONF_APP_H

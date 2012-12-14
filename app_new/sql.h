@@ -1883,66 +1883,6 @@ static bool getNADate(QVariant& outID,QString& strError)
      return true;
 }
 
-static bool getLastClientUpdate(const bool bIsMaster,int& outID, QString& strError)
-{
-    QString strQuery;
-    QSqlQuery query;
-
-    if (bIsMaster)
-        strQuery="SELECT     TOP (1) ID FROM         dbo.Info_Changes ORDER BY ID DESC";
-    else
-        strQuery="SELECT     TOP (1) master_ID FROM         dbo.Info_Master ORDER BY ID DESC";
-
-    query.prepare(strQuery);
-    query.setForwardOnly(true);
-     if (!query.exec() /*|| query.numRowsAffected() < 1*/){
-         if (query.lastError().type() != QSqlError::NoError)
-             strError=query.lastError().text();
-         else
-            strError=QObject::tr("Could not retrieve ID from last update!");
-         return false;
-        }
-
-     //It is the first time and we do not have master values yet
-     if (query.numRowsAffected()<1){
-         outID=1;
-     }else{
-         query.first();
-         outID=query.value(0).toInt();
-     }
-     return true;
-}
-
-static bool getLastMasterUpdate(const bool bIsMaster,int& outID, QString& strError)
-{
-    QString strQuery;
-    QSqlQuery query;
-
-    if (bIsMaster)
-        strQuery="SELECT     TOP (1) ID FROM         dbo.Info_Changes ORDER BY ID DESC";
-    else
-        strQuery="SELECT     TOP (1) master_ID FROM         dbo.Info_Master ORDER BY ID DESC";
-
-    query.prepare(strQuery);
-    query.setForwardOnly(true);
-     if (!query.exec() /*|| query.numRowsAffected() < 1*/){
-         if (query.lastError().type() != QSqlError::NoError)
-             strError=query.lastError().text();
-         else
-            strError=QObject::tr("Could not retrieve ID from last update!");
-         return false;
-        }
-
-     //It is the first time and we do not have master values yet
-     if (query.numRowsAffected()<1){
-         outID=1;
-     }else{
-         query.first();
-         outID=query.value(0).toInt();
-     }
-     return true;
-}
-
 static bool getLastUpdate(int& outID, QString& strError)
 {
     QString strQuery;
@@ -2194,10 +2134,11 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
     //master: mac addresses different from the given ones
     //client: mac addresses differentes from ours
     QString strQuery=
-        "SELECT     *"
+        QString("SELECT     *"
         " FROM [info_changes] INNER JOIN [GL_SESSION] ON [GL_SESSION].ID=[info_changes].id_session"
-        " WHERE [info_changes].ID > :id AND [GL_SESSION].[mac_address] <> :mac"
-        " ORDER BY [info_changes].ID ASC";
+        " WHERE [info_changes].ID > :id AND [GL_SESSION].[mac_address] ")
+        +(bIsMaster?"<>":"=")+ QString(":mac"
+        " ORDER BY [info_changes].ID ASC");
 
     query.prepare(strQuery);
     query.bindValue(":id",ID);
@@ -2209,11 +2150,7 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
          else
              strError=QObject::tr("Could not retrieve last changes!");
          return false;
-        }/*
-     else if (query.numRowsAffected() < 1){
-         strError=QObject::tr("There are no changes to export!");
-         return false;
-     }*/
+        }
 
     QVariantMap map, nestedMap, nestedMap2, nestedMap3;
     QList<QVariant> mapList;
@@ -2285,13 +2222,17 @@ static bool insertRecordIntoModel(QSqlTableModel* m)
 
 static QString getMacAddress()
 {
+    /*
     foreach(QNetworkInterface interface, QNetworkInterface::allInterfaces())
     {
         // Return only the first non-loopback MAC Address
         if (!(interface.flags() & QNetworkInterface::IsLoopBack))
             return interface.hardwareAddress();
     }
-    return QString();
+    return QString();*/
+    //TODO: replace databasename by macaddress
+    //qDebug() << QSqlDatabase::database().databaseName() << endl;
+    return QSqlDatabase::database().databaseName();
 }
 
 static bool insertBaseDate()
