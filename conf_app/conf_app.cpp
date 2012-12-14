@@ -48,8 +48,8 @@ conf_app::conf_app(QWidget *parent, Qt::WFlags flags)
     //proxymodel=0;
 
     //frmlu m_frmlu();
-     connect(&m_frmlu, SIGNAL(LU(const int,const QString)),this,
-    SLOT(continueDump(const int, const QString) ),Qt::UniqueConnection);
+     //connect(&m_frmlu, SIGNAL(LU(const int,const QString)),this,
+    //SLOT(continueDump(const int, const QString) ),Qt::UniqueConnection);
 
 
     initUI();
@@ -523,34 +523,21 @@ bool conf_app::runScript(const QString strScript, QStringList& args)
         return true;
 }
 
-void conf_app::doDump()
+bool conf_app::doDump(const int lastUpdate)
 {
     if (!m_bConnected){
 
              QMessageBox::warning(this, tr("Patch Process"),
              tr("You must be connected to the database to perform the 'Dump'!")
              +tr("\n Please connect and try again!"));
-             return;
+             return false;
     }
-
-    if (m_dbmode==MASTER){
-        m_frmlu.show();
-
-    }else if (m_dbmode==CLIENT){
-        int lastUpdate;
-        if (!getLastUpdate(lastUpdate)){
-            QMessageBox::critical(this, tr("Patch Process"),
-             tr("Could not read the value of the last update!"));
-            return;
-        }
-        //continueDump(lastUpdate,getMacAddress());
-        //TODO: replace databasename by macaddress
-        continueDump(lastUpdate,QSqlDatabase::database().databaseName());
-    }
+    //TODO: replace databasename by macaddress
+    return continueDump(lastUpdate,QSqlDatabase::database().databaseName());
 }
 
 //TODO: TEST
-void conf_app::continueDump(const int lu, const QString strMacAddress)
+bool conf_app::continueDump(const int lu, const QString strMacAddress)
 {
     QString fileName = QFileDialog::getSaveFileName(this,
      tr("Dump patch to file"), getOutputName("diff"), tr("Patch Files (*.diff)"));
@@ -567,7 +554,7 @@ void conf_app::continueDump(const int lu, const QString strMacAddress)
             msgBox.exec();
             statusShow(tr(""));
             qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
-            return;
+            return false;
         }
 
         //Writing the ID of the last local update
@@ -580,17 +567,20 @@ void conf_app::continueDump(const int lu, const QString strMacAddress)
                 msgBox.exec();
                 statusShow(tr(""));
                 qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
-                return;
+                return false;
             }
         }
         statusShow(tr("Patch saved on ") + fileName);
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     }
+    //DO we want an empty filename to return true?
+    return true;
 }
 
 bool conf_app::writeDiff(const QString strFileName, const int lu, const QString strMacAddress, QString& strError)
 {
     QString strJSON;
+
     if (!getLastChanges(lu,strJSON,strMacAddress,(m_dbmode==MASTER),strError)) return false;
 
     QFile file(strFileName);
@@ -625,12 +615,38 @@ bool conf_app::startPatchSession(const QString strDateUTC, const QString strDate
 
 void conf_app::doPatch()
 {
+    int lu_master;
+    if (!doApply(lu_master)){
+        if (m_dbmode==MASTER){
+            QMessageBox::critical(this, tr("Patch Process"),
+             tr("You must apply a patch before requesting a diff!"));
+            return;
+        }
+    }
+
+    int lastUpdate;
+    if (m_dbmode==CLIENT){
+        QString strError;
+        if (!getLastUpdate(lastUpdate,strError)){
+            QMessageBox::critical(this, tr("Patch Process"),
+             strError);
+            return;
+        }
+    }else {
+        lastUpdate=lu_master;
+    }
+
+    doDump(lastUpdate);
+}
+
+bool conf_app::doApply(int& lu_master)
+{
     if (!m_bConnected){
 
              QMessageBox::warning(this, tr("Patch Process"),
              tr("You must be connected to the database to apply the 'Patch'!")
              +tr("\n Please connect and try again!"));
-             return;
+             return false;
     }
     QString fileName = QFileDialog::getOpenFileName(this,
      tr("Open patch file"), "", tr("Patch Files (*.diff)"));
@@ -644,18 +660,18 @@ void conf_app::doPatch()
                  tr("Could not read patch file!")
                  +tr("\n Are you sure this is a valid file?"));
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-                 return;
+                 return false;
         }else{
             listInfoChanges lChanges;
             QString strDateUTC, strDateLocal, strCityName, strMacAddress, strUser;
-            int dateType;
+            int dateType/*,lu_master*/;
             if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,
-                strCityName,strMacAddress,strUser,lChanges)){
+                strCityName,strMacAddress,strUser,lu_master,lChanges)){
 
                 QMessageBox::critical(this, tr("Patch Process"),
                  tr("Could not read any changes in this file!!"));
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-                 return;
+                 return false;
             }
             //3 - backup db (establish rollback mechanism)
             //4 - prompt the user with changes
@@ -664,32 +680,34 @@ void conf_app::doPatch()
                 QMessageBox::critical(this, tr("Patch Process"),
                  tr("Could not start a mini session!!"));
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-                 return;
+                 return false;
             }
 
             int ctNew=0;
             int ctMod=0;
             int ctDel=0;
-            if (!applyChangesfromPatch(lChanges,ctNew,ctMod,ctDel))
+            if (!applyChangesfromPatch(lChanges,lu_master,ctNew,ctMod,ctDel))
             {
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  QMessageBox::warning(this, tr("Patch Process"),
                  tr("Could not apply this patch!"));
-            }else{
-                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-                QMessageBox::information(this, tr("Patch Process"),
-                                         tr("Patch successfully applied.\n") +
-                                         QString("There were %1 inserts, %2 removals and %3 modifications!").arg(ctNew)
-                                         .arg(ctDel).arg(ctMod));
+                 return false;
             }
+            QMessageBox::information(this, tr("Patch Process"),
+                                     tr("Patch successfully applied.\n") +
+                                     QString("There were %1 inserts, %2 removals and %3 modifications!").arg(ctNew)
+                                     .arg(ctDel).arg(ctMod));
 
             endSession();
+            qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 
         //5 - apply patches sequentially (establish rollback mechanism)
         //FK?
 
         }//read file
+        return true;
     }
+    return false;
 }
 
 bool conf_app::insertDate(const InfoDate date, int& id)
@@ -1150,7 +1168,7 @@ bool conf_app::modDateRecord(const listInfoChanges& aRecord, const listInfoChang
      return true;
 }
 
-bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, int& cmod, int& cdel)
+bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master, int& cnew, int& cmod, int& cdel)
 {
     for (int i=0; i < lChanges.count(); ++i)
     {
@@ -1276,8 +1294,17 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges,int& cnew, 
     }//for
 
     //Writing the ID of the last update
-    if (m_dbmode==CLIENT)
-        if (!insertLastUpdate()) return false;
+    if (m_dbmode==CLIENT){/*
+        if (!insertLastClientUpdate(strError)){
+            qDebug() << strError << endl;
+            return false;
+        }*/
+        QString strError;
+        if (!insertLastMasterUpdate(lu_master,strError)){
+            qDebug() << strError << endl;
+            return false;
+        }
+    }
 
     return true;
 }
@@ -1303,9 +1330,8 @@ bool conf_app::amendDate(const int ID, const QString strField, const QString str
     return true;
 }
 
-
 bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, listInfoChanges& lChanges)
+                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges)
 {
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
@@ -1342,6 +1368,8 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
     strMacAddress=nestedMap1["mac_address"].toString();
     strUser=nestedMap1["user"].toString();
 
+    lu_master=result["lu_master"].toInt();
+
     foreach(QVariant change, result["change"].toList()) {
 
         QVariantMap nestedMap = change.toMap();
@@ -1374,8 +1402,7 @@ void conf_app::initUI()
     toolbar->addAction(this->actionExit);
     toolbar->addAction(this->actionCreate_backup);
     toolbar->addAction(this->actionRestore_backup);
-    toolbar->addAction(this->actionDump_patch);
-    toolbar->addAction(this->actionApply_patch);
+    toolbar->addAction(this->actionPatch);
     toolbar->setFloatable(true);
     toolbar->setMovable(true);
 
@@ -1388,10 +1415,7 @@ void conf_app::initUI()
      connect(actionRestore_backup, SIGNAL(triggered()),this,
         SLOT(doRestore() ),Qt::UniqueConnection);
 
-     connect(actionDump_patch, SIGNAL(triggered()),this,
-        SLOT(doDump() ),Qt::UniqueConnection);
-
-     connect(actionApply_patch, SIGNAL(triggered()),this,
+     connect(actionPatch, SIGNAL(triggered()),this,
         SLOT(doPatch() ),Qt::UniqueConnection);
 
     if (QSqlDatabase::drivers().isEmpty())

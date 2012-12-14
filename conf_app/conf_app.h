@@ -200,14 +200,15 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         the patch itself is a text file, written in JSON format (http://www.json.org/)
          \sa doPatch()
         */
-        void                    doDump();
+        bool                    doDump(const int lastUpdate);
         //! Do Patch
         /*!
         TODO: write something here later!!
          \sa doDump()
         */
-        void                    continueDump(const int lu, const QString strMacAddress);
+        bool                    continueDump(const int lu, const QString strMacAddress);
         void                    doPatch();
+        bool                    doApply(int& lu_master);
         //! Read Process Error
         /*!
         This slot connects to the readyReadStandardError() signal of the process launched with sqlcmd;
@@ -684,8 +685,8 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
         bool                              readFile(const QString strFileName, QString& outStr);
         bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, listInfoChanges& lChanges);
-        bool                              applyChangesfromPatch(const listInfoChanges& lChanges,
+                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges);
+        bool                              applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master,
                                                                     int& cnew, int& cmod, int& cdel);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
         bool                              insertDate(const InfoDate date, int& id);
@@ -725,7 +726,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         NullRelationalDelegate*            nullDelegateUsers;
         NullRelationalDelegate*            nullDelegateRoles;
         QModelIndex                        m_lastIndex;//!< variable that stores the last clicked index
-        frmlu                             m_frmlu;
+        //frmlu                             m_frmlu;
 };
 
 #endif // CONF_APP_H

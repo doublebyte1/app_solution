@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'conf_app.ui'
 **
-** Created: Wed 5. Dec 17:50:05 2012
+** Created: Thu 13. Dec 09:29:31 2012
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -47,8 +47,7 @@ public:
     QAction *actionCreate_backup;
     QAction *actionRestore_backup;
     QAction *actionShow_SQL_message;
-    QAction *actionDump_patch;
-    QAction *actionApply_patch;
+    QAction *actionPatch;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_7;
     QToolBox *toolBox;
@@ -190,16 +189,11 @@ public:
         actionShow_SQL_message->setObjectName(QString::fromUtf8("actionShow_SQL_message"));
         actionShow_SQL_message->setCheckable(true);
         actionShow_SQL_message->setChecked(true);
-        actionDump_patch = new QAction(conf_appClass);
-        actionDump_patch->setObjectName(QString::fromUtf8("actionDump_patch"));
+        actionPatch = new QAction(conf_appClass);
+        actionPatch->setObjectName(QString::fromUtf8("actionPatch"));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/conf_app/writer.png"), QSize(), QIcon::Normal, QIcon::Off);
-        actionDump_patch->setIcon(icon4);
-        actionApply_patch = new QAction(conf_appClass);
-        actionApply_patch->setObjectName(QString::fromUtf8("actionApply_patch"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/conf_app/kexi.png"), QSize(), QIcon::Normal, QIcon::Off);
-        actionApply_patch->setIcon(icon5);
+        actionPatch->setIcon(icon4);
         centralWidget = new QWidget(conf_appClass);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         verticalLayout_7 = new QVBoxLayout(centralWidget);
@@ -274,18 +268,18 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         pushConnect = new QPushButton(page_3);
         pushConnect->setObjectName(QString::fromUtf8("pushConnect"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8(":/conf_app/encrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushConnect->setIcon(icon6);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/conf_app/encrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushConnect->setIcon(icon5);
 
         horizontalLayout->addWidget(pushConnect);
 
         pushDisconnect = new QPushButton(page_3);
         pushDisconnect->setObjectName(QString::fromUtf8("pushDisconnect"));
         pushDisconnect->setEnabled(true);
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/conf_app/decrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushDisconnect->setIcon(icon7);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/conf_app/decrypted.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushDisconnect->setIcon(icon6);
 
         horizontalLayout->addWidget(pushDisconnect);
 
@@ -295,7 +289,7 @@ public:
         toolBox->addItem(page_3, QString::fromUtf8("Connection Properties"));
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 161, 121));
+        page_4->setGeometry(QRect(0, 0, 595, 331));
         gridLayout_2 = new QGridLayout(page_4);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -395,17 +389,17 @@ public:
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         pushInsert = new QPushButton(groupTables);
         pushInsert->setObjectName(QString::fromUtf8("pushInsert"));
-        QIcon icon8;
-        icon8.addFile(QString::fromUtf8(":/conf_app/add.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushInsert->setIcon(icon8);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/conf_app/add.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushInsert->setIcon(icon7);
 
         verticalLayout_2->addWidget(pushInsert);
 
         pushRemove = new QPushButton(groupTables);
         pushRemove->setObjectName(QString::fromUtf8("pushRemove"));
-        QIcon icon9;
-        icon9.addFile(QString::fromUtf8(":/conf_app/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushRemove->setIcon(icon9);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/conf_app/cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushRemove->setIcon(icon8);
 
         verticalLayout_2->addWidget(pushRemove);
 
@@ -444,7 +438,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("Edit Tables"));
         RolePage = new QWidget();
         RolePage->setObjectName(QString::fromUtf8("RolePage"));
-        RolePage->setGeometry(QRect(0, 0, 381, 302));
+        RolePage->setGeometry(QRect(0, 0, 595, 331));
         verticalLayout_12 = new QVBoxLayout(RolePage);
         verticalLayout_12->setSpacing(6);
         verticalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -468,9 +462,9 @@ public:
         verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
         pushNewRole = new QPushButton(groupRole);
         pushNewRole->setObjectName(QString::fromUtf8("pushNewRole"));
-        QIcon icon10;
-        icon10.addFile(QString::fromUtf8(":/conf_app/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushNewRole->setIcon(icon10);
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/conf_app/filenew.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushNewRole->setIcon(icon9);
 
         verticalLayout_10->addWidget(pushNewRole);
 
@@ -481,9 +475,9 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(pushEditRole->sizePolicy().hasHeightForWidth());
         pushEditRole->setSizePolicy(sizePolicy);
-        QIcon icon11;
-        icon11.addFile(QString::fromUtf8(":/conf_app/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushEditRole->setIcon(icon11);
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/conf_app/pencil.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushEditRole->setIcon(icon10);
         pushEditRole->setCheckable(true);
 
         verticalLayout_10->addWidget(pushEditRole);
@@ -492,7 +486,7 @@ public:
         pushRemoveRole->setObjectName(QString::fromUtf8("pushRemoveRole"));
         sizePolicy.setHeightForWidth(pushRemoveRole->sizePolicy().hasHeightForWidth());
         pushRemoveRole->setSizePolicy(sizePolicy);
-        pushRemoveRole->setIcon(icon9);
+        pushRemoveRole->setIcon(icon8);
 
         verticalLayout_10->addWidget(pushRemoveRole);
 
@@ -604,7 +598,7 @@ public:
         toolBox->addItem(RolePage, QString::fromUtf8("Role Management"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 371, 308));
+        page_2->setGeometry(QRect(0, 0, 595, 331));
         verticalLayout_6 = new QVBoxLayout(page_2);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -633,7 +627,7 @@ public:
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
         pushNewUser = new QPushButton(groupUsers);
         pushNewUser->setObjectName(QString::fromUtf8("pushNewUser"));
-        pushNewUser->setIcon(icon10);
+        pushNewUser->setIcon(icon9);
 
         verticalLayout_4->addWidget(pushNewUser);
 
@@ -641,7 +635,7 @@ public:
         pushEditUser->setObjectName(QString::fromUtf8("pushEditUser"));
         sizePolicy.setHeightForWidth(pushEditUser->sizePolicy().hasHeightForWidth());
         pushEditUser->setSizePolicy(sizePolicy);
-        pushEditUser->setIcon(icon11);
+        pushEditUser->setIcon(icon10);
         pushEditUser->setCheckable(true);
 
         verticalLayout_4->addWidget(pushEditUser);
@@ -650,7 +644,7 @@ public:
         pushRemoveUser->setObjectName(QString::fromUtf8("pushRemoveUser"));
         sizePolicy.setHeightForWidth(pushRemoveUser->sizePolicy().hasHeightForWidth());
         pushRemoveUser->setSizePolicy(sizePolicy);
-        pushRemoveUser->setIcon(icon9);
+        pushRemoveUser->setIcon(icon8);
 
         verticalLayout_4->addWidget(pushRemoveUser);
 
@@ -844,8 +838,7 @@ public:
         menuOptions->addAction(actionShow_SQL_message);
         menuBackups->addAction(actionCreate_backup);
         menuBackups->addAction(actionRestore_backup);
-        menuPatches->addAction(actionDump_patch);
-        menuPatches->addAction(actionApply_patch);
+        menuPatches->addAction(actionPatch);
 
         retranslateUi(conf_appClass);
         QObject::connect(actionExit, SIGNAL(triggered()), conf_appClass, SLOT(close()));
@@ -898,8 +891,10 @@ public:
         actionRestore_backup->setWhatsThis(QApplication::translate("conf_appClass", "Restores backup from file", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
         actionShow_SQL_message->setText(QApplication::translate("conf_appClass", "Show SQL messages", 0, QApplication::UnicodeUTF8));
-        actionDump_patch->setText(QApplication::translate("conf_appClass", "Dump patch", 0, QApplication::UnicodeUTF8));
-        actionApply_patch->setText(QApplication::translate("conf_appClass", "Apply patch", 0, QApplication::UnicodeUTF8));
+        actionPatch->setText(QApplication::translate("conf_appClass", "Patch", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_STATUSTIP
+        actionPatch->setStatusTip(QApplication::translate("conf_appClass", "Patch", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_STATUSTIP
 #ifndef QT_NO_TOOLTIP
         toolBox->setToolTip(QApplication::translate("conf_appClass", "Highlight checkboxes to view their meaning", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

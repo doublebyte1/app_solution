@@ -1883,29 +1883,111 @@ static bool getNADate(QVariant& outID,QString& strError)
      return true;
 }
 
-static bool getLastUpdate(int& outID)
+static bool getLastClientUpdate(const bool bIsMaster,int& outID, QString& strError)
 {
-    QString strError;
+    QString strQuery;
     QSqlQuery query;
-    query.prepare("SELECT     TOP (1) log_ID FROM         dbo.Info_Patch ORDER BY ID DESC");
+
+    if (bIsMaster)
+        strQuery="SELECT     TOP (1) ID FROM         dbo.Info_Changes ORDER BY ID DESC";
+    else
+        strQuery="SELECT     TOP (1) master_ID FROM         dbo.Info_Master ORDER BY ID DESC";
+
+    query.prepare(strQuery);
     query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() < 1){
+     if (!query.exec() /*|| query.numRowsAffected() < 1*/){
          if (query.lastError().type() != QSqlError::NoError)
              strError=query.lastError().text();
          else
             strError=QObject::tr("Could not retrieve ID from last update!");
          return false;
         }
-     query.first();
-     outID=query.value(0).toInt();
+
+     //It is the first time and we do not have master values yet
+     if (query.numRowsAffected()<1){
+         outID=1;
+     }else{
+         query.first();
+         outID=query.value(0).toInt();
+     }
      return true;
+}
+
+static bool getLastMasterUpdate(const bool bIsMaster,int& outID, QString& strError)
+{
+    QString strQuery;
+    QSqlQuery query;
+
+    if (bIsMaster)
+        strQuery="SELECT     TOP (1) ID FROM         dbo.Info_Changes ORDER BY ID DESC";
+    else
+        strQuery="SELECT     TOP (1) master_ID FROM         dbo.Info_Master ORDER BY ID DESC";
+
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+     if (!query.exec() /*|| query.numRowsAffected() < 1*/){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not retrieve ID from last update!");
+         return false;
+        }
+
+     //It is the first time and we do not have master values yet
+     if (query.numRowsAffected()<1){
+         outID=1;
+     }else{
+         query.first();
+         outID=query.value(0).toInt();
+     }
+     return true;
+}
+
+static bool getLastUpdate(int& outID, QString& strError)
+{
+    QString strQuery;
+    QSqlQuery query;
+    query.prepare("SELECT     TOP (1) ID FROM         dbo.Info_CLIENT ORDER BY ID DESC");
+    query.setForwardOnly(true);
+     if (!query.exec() /*|| query.numRowsAffected() < 1*/){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+            strError=QObject::tr("Could not retrieve ID from last update!");
+         return false;
+        }
+
+     //It is the first time and we do not have client values yet
+     if (query.numRowsAffected()<1){
+         outID=1;
+     }else{
+         query.first();
+         outID=query.value(0).toInt();
+     }
+     return true;
+}
+
+static bool insertLastMasterUpdate(const int masterID, QString& strError)
+{
+    QSqlQuery query;
+    query.prepare
+        ("insert into info_master(master_id) values(:id)");
+    query.bindValue(":id",masterID);
+    query.setForwardOnly(true);
+    if (!query.exec()){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not insert ID from last master update!");
+         return false;
+    }
+    return query.numRowsAffected()==1;
 }
 
 static bool insertLastClientUpdate(QString& strError)
 {
-    QString strError;
     QSqlQuery query;
-    query.prepare("insert into info_patch(lu_client) select TOP(1) ID from info_changes order by ID DESC");
+    query.prepare("insert into info_client(client_id) select TOP(1) ID from info_changes order by ID DESC");
     query.setForwardOnly(true);
      if (!query.exec() || query.numRowsAffected() < 1){
          if (query.lastError().type() != QSqlError::NoError)
@@ -1914,25 +1996,9 @@ static bool insertLastClientUpdate(QString& strError)
             strError=QObject::tr("Could not insert ID from last client update!");
          return false;
         }
-     return true;
+     //return true;
+    return query.numRowsAffected()==1;
 }
-
-static bool insertLastUpdate()
-{
-    QString strError;
-    QSqlQuery query;
-    query.prepare("insert into info_patch(log_id) select TOP(1) ID from info_changes order by ID DESC");
-    query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() < 1){
-         if (query.lastError().type() != QSqlError::NoError)
-             strError=query.lastError().text();
-         else
-            strError=QObject::tr("Could not insert ID from last update!");
-         return false;
-        }
-     return true;
-}
-
 
 static bool getLastSessionData(QSqlQuery& query){
 
@@ -2086,7 +2152,42 @@ static bool isMaster(bool& bIsMaster)
     return true;
 }
 
-static bool getLastChanges(const int ID, QString& strJSON, const QString strMacAddress, const bool bIsMaster, QString& strError)
+static bool getLuMaster(const bool bIsMaster,int& lu, QString strError)
+{
+    QSqlQuery query;
+    QString strQuery;
+
+    if (bIsMaster){
+        strQuery="SELECT     TOP (1) ID"
+        " FROM         dbo.info_changes"
+        " ORDER BY ID DESC";
+    }else{
+        strQuery="SELECT     TOP (1) master_id"
+        " FROM         dbo.INFO_MASTER"
+        " ORDER BY ID DESC";
+    }
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+    if (!query.exec()){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not retrieve ID from last ") +
+             (bIsMaster?QObject::tr(" master"):QObject::tr("client")) + QObject::tr(" master update!");
+         return false;
+    }
+
+    if (query.numRowsAffected()>0){
+        query.first();
+        lu=query.value(0).toInt();
+    }else{
+        lu=1;
+    }
+    return true;
+}
+
+static bool getLastChanges(const int ID, QString& strJSON, const QString strMacAddress,
+                           const bool bIsMaster, QString& strError)
 {
     QSqlQuery query;
 
@@ -2108,32 +2209,36 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
          else
              strError=QObject::tr("Could not retrieve last changes!");
          return false;
-        }
+        }/*
      else if (query.numRowsAffected() < 1){
          strError=QObject::tr("There are no changes to export!");
          return false;
-     }
+     }*/
 
     QVariantMap map, nestedMap, nestedMap2, nestedMap3;
     QList<QVariant> mapList;
-    query.first();
 
-    if (!buildJSONCell(query,nestedMap)){
-        qDebug() << QObject::tr("Could not read info change row!");
-        return false;
-    }
-    mapList.push_back(nestedMap);
+    if (query.numRowsAffected() > 0){
 
-     while (query.next()) {
+        query.first();
         if (!buildJSONCell(query,nestedMap)){
             qDebug() << QObject::tr("Could not read info change row!");
             return false;
         }
         mapList.push_back(nestedMap);
-     }
 
-     //Let's reuse this query
-     if (query.isActive()) query.finish();
+         while (query.next()) {
+            if (!buildJSONCell(query,nestedMap)){
+                qDebug() << QObject::tr("Could not read info change row!");
+                return false;
+            }
+            mapList.push_back(nestedMap);
+         }
+
+    }
+
+         //Let's reuse this query
+    if (query.isActive()) query.finish();
     if (!getLastSessionData(query))
         return false;
 
@@ -2145,7 +2250,7 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
 
     nestedMap3["date_utc"]=query.value(query.record().indexOf("date_utc")).toString();
     nestedMap3["date_local"]=query.value(query.record().indexOf("date_local")).toString();
-    nestedMap3["date_type"]=query.value(query.record().indexOf("date_type")).toString();
+    nestedMap3["date_type"]=query.value(query.record().indexOf("date_type")).toInt();
 
     nestedMap2["base_date"]=nestedMap3;
     nestedMap2["city_name"]=query.value(query.record().indexOf("city_name")).toString();
@@ -2156,6 +2261,13 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
     map["session"]=nestedMap2;
     map["change"]=mapList;
     map["mode"]=bIsMaster?strMasterName:strClientName;
+
+    int lu;
+    if (!getLuMaster(bIsMaster,lu,strError)){
+        qDebug() << strError << endl;
+        return false;
+    }
+    map["lu_master"]=lu;
 
     QByteArray data = Json::serialize(map);
     strJSON=QString::fromUtf8(data.constData());

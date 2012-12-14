@@ -160,8 +160,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>161</width>
-         <height>121</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -405,8 +405,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>381</width>
-         <height>302</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -699,8 +699,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>371</width>
-         <height>308</height>
+         <width>595</width>
+         <height>331</height>
         </rect>
        </property>
        <attribute name="label">
@@ -964,8 +964,7 @@
      <property name="title">
       <string>Patches</string>
      </property>
-     <addaction name="actionDump_patch"/>
-     <addaction name="actionApply_patch"/>
+     <addaction name="actionPatch"/>
     </widget>
     <addaction name="menuOptions"/>
     <addaction name="menuBackups"/>
@@ -1053,22 +1052,16 @@
     <string>Show SQL messages</string>
    </property>
   </action>
-  <action name="actionDump_patch">
+  <action name="actionPatch">
    <property name="icon">
     <iconset resource="conf_app.qrc">
      <normaloff>:/conf_app/writer.png</normaloff>:/conf_app/writer.png</iconset>
    </property>
    <property name="text">
-    <string>Dump patch</string>
+    <string>Patch</string>
    </property>
-  </action>
-  <action name="actionApply_patch">
-   <property name="icon">
-    <iconset resource="conf_app.qrc">
-     <normaloff>:/conf_app/kexi.png</normaloff>:/conf_app/kexi.png</iconset>
-   </property>
-   <property name="text">
-    <string>Apply patch</string>
+   <property name="statusTip">
+    <string>Patch</string>
    </property>
   </action>
  </widget>
