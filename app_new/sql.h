@@ -1887,7 +1887,7 @@ static bool getLastUpdate(int& outID, QString& strError)
 {
     QString strQuery;
     QSqlQuery query;
-    query.prepare("SELECT     TOP (1) ID FROM         dbo.Info_CLIENT ORDER BY ID DESC");
+    query.prepare("SELECT     TOP (1) client_ID FROM         dbo.Info_CLIENT ORDER BY ID DESC");
     query.setForwardOnly(true);
      if (!query.exec() /*|| query.numRowsAffected() < 1*/){
          if (query.lastError().type() != QSqlError::NoError)
@@ -2159,20 +2159,26 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
 
         query.first();
         if (!buildJSONCell(query,nestedMap)){
-            qDebug() << QObject::tr("Could not read info change row!");
+            strError=QObject::tr("Could not read info change row!");
             return false;
         }
         mapList.push_back(nestedMap);
 
          while (query.next()) {
             if (!buildJSONCell(query,nestedMap)){
-                qDebug() << QObject::tr("Could not read info change row!");
+                strError=QObject::tr("Could not read info change row!");
                 return false;
             }
             mapList.push_back(nestedMap);
          }
-
     }
+
+     if (!bIsMaster){
+        if (!insertLastClientUpdate(strError)){
+            strError=QObject::tr("Could not write ID of last local update !");
+            return false;
+        }
+     }
 
          //Let's reuse this query
     if (query.isActive()) query.finish();

@@ -662,23 +662,24 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress)
             int ctNew=0;
             int ctMod=0;
             int ctDel=0;
-            if (!applyChangesfromPatch(lChanges,lu_master,ctNew,ctMod,ctDel))
+            strError="";
+            if (!applyChangesfromPatch(lChanges,lu_master,ctNew,ctMod,ctDel,strError))
             {
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  QMessageBox::warning(this, tr("Patch Process"),
-                 tr("Could not apply this patch!"));
+                     (strError.isEmpty()?tr("Could not apply this patch!"):strError));
                  return false;
             }
+            endSession();
+
+            //5 - apply patches sequentially (establish rollback mechanism)
+            //FK?
+
             qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
             QMessageBox::information(this, tr("Patch Process"),
                                      tr("Patch successfully applied.\n") +
                                      QString("There were %1 inserts, %2 removals and %3 modifications!").arg(ctNew)
                                      .arg(ctDel).arg(ctMod));
-
-            endSession();
-
-        //5 - apply patches sequentially (establish rollback mechanism)
-        //FK?
 
         }//read file
         return true;
@@ -1150,7 +1151,7 @@ bool conf_app::modDateRecord(const listInfoChanges& aRecord, const listInfoChang
      return true;
 }
 
-bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master, int& cnew, int& cmod, int& cdel)
+bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master, int& cnew, int& cmod, int& cdel, QString& strError)
 {
     for (int i=0; i < lChanges.count(); ++i)
     {
@@ -1159,14 +1160,14 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                 listInfoChanges aRecord;
                 bool bBreak;
                 if (!packRecord(lChanges,i,aRecord,bBreak)){
-                    qDebug() << tr("Could not distinguish record!") << endl;
+                    strError=tr("Could not distinguish record!");
                     return false;
                 }
 
                 if (aRecord.size()>0){
 
                         if (!removeRecord(aRecord)){
-                            qDebug() << tr("Could not remove record from the database!") << endl;
+                            strError=tr("Could not remove record from the database!");
                             return false;
                         }
                         cdel++;
@@ -1206,7 +1207,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                     listInfoChanges aRecord;
                     bool bBreak;
                     if (!packRecord(lChanges,i,aRecord,bBreak)){
-                        qDebug() << tr("Could not distinguish record!") << endl;
+                        strError=tr("Could not distinguish record!");
                         return false;
                     }
 
@@ -1215,7 +1216,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                     if (bIsDate){
 
                         if (!modDateRecord(aRecord,iDt)){
-                            qDebug() << "Could not modify date record!" << endl;
+                            strError="Could not modify date record!";
                             return false;
                         }
                         i=(aRecord.size()+iDt.size())-1;
@@ -1237,12 +1238,12 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                         if (bDif){
                             int outID;
                             if (!identifyRecord(aRecord, outID)){
-                                qDebug() << "Could not indentify this record!" << endl;
+                                strError="Could not indentify this record!";
                                 return false;
                             }
 
                             if (!modRecord(ch,outID)){
-                                qDebug() << "Could not modify record" << endl;
+                                strError="Could not modify record!";
                                 return false;
                             }
                             cmod++;
@@ -1255,14 +1256,14 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                 listInfoChanges aRecord;
                 bool bBreak;
                 if (!packRecord(lChanges,i,aRecord,bBreak)){
-                    qDebug() << tr("Could not distinguish record!") << endl;
+                    strError=tr("Could not distinguish record!");
                     return false;
                 }
 
                 if (aRecord.size()>0){
 
                     if (!insertNewRecord(aRecord)){
-                        qDebug() << tr("Could not insert record in the database!") << endl;
+                        strError=tr("Could not insert record in the database!");
                         return false;
                     }
                     cnew++;
@@ -1280,15 +1281,13 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
         QString strError="";
         if (!insertLastMasterUpdate(lu_master,strError)){
             if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
-            QMessageBox msgBox(QMessageBox::Critical,tr("Apply Patch Error"),
+            /*QMessageBox msgBox(QMessageBox::Critical,tr("Apply Patch Error"),
                 strError,QMessageBox::Ok,0);
-            msgBox.exec();
-            return false;
+            msgBox.exec();*/
+            return false;/*
         }else if (!insertLastClientUpdate(strError)){
             if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
-            QMessageBox msgBox(QMessageBox::Critical,tr("Apply Patch Error"),
-                strError,QMessageBox::Ok,0);
-            msgBox.exec();
+            return false;*/
         }
     }
 

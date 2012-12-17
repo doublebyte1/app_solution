@@ -687,7 +687,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
                                                     int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, QString& strError);
         bool                              applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master,
-                                                                    int& cnew, int& cmod, int& cdel);
+                                                                    int& cnew, int& cmod, int& cdel, QString& strError);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
         bool                              insertDate(const InfoDate date, int& id);
         bool                              amendDate(const int ID, const QString strField, const QString strDate);
