@@ -528,14 +528,16 @@ bool conf_app::doDump(const int lu, const QString strMacAddress)
         qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
         statusShow(tr("Wait..."));
 
+        qApp->processEvents();
+
         QString strError;
         if (!writeDiff(fileName,lu, strMacAddress, strError)){
             if (strError.isEmpty()) strError=tr("Could not write patch file!");
+            qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
             QMessageBox msgBox(QMessageBox::Critical,tr("Dumping Error"),
                 strError,QMessageBox::Ok,0);
             msgBox.exec();
             statusShow(tr(""));
-            qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
             return false;
         }
 
@@ -589,8 +591,8 @@ void conf_app::doPatch()
         if (m_dbmode==MASTER){
             QMessageBox::critical(this, tr("Patch Process"),
              tr("You must apply a patch before requesting a diff!"));
+            }
             return;
-        }
     }
 
     //For the client, the last update is on info_client; for the master, it is the value we read
@@ -628,32 +630,32 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress)
     if (!fileName.isEmpty()){
         qApp->setOverrideCursor( QCursor(Qt::BusyCursor ) );
 
+        qApp->processEvents();
         QString strContent;
         if (!readFile(fileName,strContent)){
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  QMessageBox::warning(this, tr("Patch Process"),
                  tr("Could not read patch file!")
                  +tr("\n Are you sure this is a valid file?"));
-                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  return false;
         }else{
             listInfoChanges lChanges;
-            QString strDateUTC, strDateLocal, strCityName, strUser;
+            QString strDateUTC, strDateLocal, strCityName, strUser, strError="";
             int dateType;
             if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,
-                strCityName,strMacAddress,strUser,lu_master,lChanges)){
-
-                QMessageBox::critical(this, tr("Patch Process"),
-                 tr("Could not read any changes in this file!!"));
+                strCityName,strMacAddress,strUser,lu_master,lChanges,strError)){
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+                QMessageBox::critical(this, tr("Patch Process"),
+                    (strError.isEmpty()?tr("Could not read any changes in this file!!"):strError));
                  return false;
             }
             //3 - backup db (establish rollback mechanism)
             //4 - prompt the user with changes
 
             if (!startPatchSession(strDateUTC,strDateLocal,dateType,strCityName,strMacAddress,strUser)){
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                 QMessageBox::critical(this, tr("Patch Process"),
                  tr("Could not start a mini session!!"));
-                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  return false;
             }
 
@@ -667,20 +669,25 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress)
                  tr("Could not apply this patch!"));
                  return false;
             }
+            qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
             QMessageBox::information(this, tr("Patch Process"),
                                      tr("Patch successfully applied.\n") +
                                      QString("There were %1 inserts, %2 removals and %3 modifications!").arg(ctNew)
                                      .arg(ctDel).arg(ctMod));
 
             endSession();
-            qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
 
         //5 - apply patches sequentially (establish rollback mechanism)
         //FK?
 
         }//read file
         return true;
+    }else if(m_dbmode==CLIENT){
+        qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+        return true;
     }
+
+    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     return false;
 }
 
@@ -1310,15 +1317,15 @@ bool conf_app::amendDate(const int ID, const QString strField, const QString str
 }
 
 bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges)
+                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, QString& strError)
 {
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
 
-    if(!ok){
-        QMessageBox::warning(this, tr("Patch Process"),
-        tr("Could not parse JSON content!")
-        +tr("\n Are you sure the syntax is valid?"));
+    if(!ok){/*
+        QMessageBox::warning(this, tr("Patch Process"),*/
+        strError=tr("Could not parse JSON content!")
+        +tr("\n Are you sure the syntax is valid?");
 
         return false;
     }
@@ -1326,14 +1333,14 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
     QString strMode= result["mode"].toString();
 
     if (m_dbmode==MASTER && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
-        QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
-            tr("Master databases can only be updated by clients!"),QMessageBox::Ok,0);
-        msgBox.exec();
+        //QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
+            strError=tr("Master databases can only be updated by clients!");/*,QMessageBox::Ok,0);
+        msgBox.exec();*/
         return false;
     }else if (m_dbmode==CLIENT && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
-        QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
-            tr("Client databases can only be updated by the master!"),QMessageBox::Ok,0);
-        msgBox.exec();
+        /*QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),*/
+            strError=tr("Client databases can only be updated by the master!");/*,QMessageBox::Ok,0);
+        msgBox.exec();*/
         return false;
     } else if (m_dbmode==INVALID) return false; // it should never come here
 

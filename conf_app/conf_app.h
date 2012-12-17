@@ -685,7 +685,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
         bool                              readFile(const QString strFileName, QString& outStr);
         bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges);
+                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, QString& strError);
         bool                              applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master,
                                                                     int& cnew, int& cmod, int& cdel);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
