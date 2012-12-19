@@ -746,9 +746,7 @@ bool conf_app::insertNewRecord(const listInfoChanges& lChanges)
     tModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tModel->select();
 
-    //qDebug() << tModel->rowCount() << endl;
     if (!insertRecordIntoModel(tModel)) return false;
-    //qDebug() << tModel->rowCount() << endl;
 
     for (int i=0; i < lChanges.size(); ++i){
 
@@ -1332,14 +1330,10 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
     QString strMode= result["mode"].toString();
 
     if (m_dbmode==MASTER && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
-        //QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),
-            strError=tr("Master databases can only be updated by clients!");/*,QMessageBox::Ok,0);
-        msgBox.exec();*/
+            strError=tr("Master databases can only be updated by clients!");
         return false;
     }else if (m_dbmode==CLIENT && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
-        /*QMessageBox msgBox(QMessageBox::Critical,tr("Mode Error"),*/
-            strError=tr("Client databases can only be updated by the master!");/*,QMessageBox::Ok,0);
-        msgBox.exec();*/
+            strError=tr("Client databases can only be updated by the master!");
         return false;
     } else if (m_dbmode==INVALID) return false; // it should never come here
 

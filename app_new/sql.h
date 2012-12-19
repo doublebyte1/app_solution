@@ -113,6 +113,9 @@ struct NodeRef {
 typedef shared_ptr<NodeRef>                     nodeRefPtr;//!< typedef for a smart pointer containing a Node Reference Structure
 typedef QHash<int,nodeRefPtr>                   HashNodeRef;//!< typedef for mapping Node References (key=level,value=NodeRef(table,field)
 
+static bool buildFKRec(const QString strTable, const int ID, QVariantMap& map, QList<QVariant>& mapFK,
+                       QString& strError);
+
 static bool getImportedName(const QString inName, QString& outName, bool& bExists)
 {
     //! Get Imported Table Name
@@ -2039,7 +2042,177 @@ static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
     return true;
 }
 
-static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
+static bool identifyFK(const QString strTable, const QString strField, bool& bIsFK,
+                       QString& outTable, QString& strError)
+{
+QString strQuery=
+"SELECT   fkTableName = FK.TABLE_NAME,"
+"         fkColumnName = FK.COLUMN_NAME,"
+"         pkTableName = PK.TABLE_NAME,"
+//"         pkColumnName = PK.COLUMN_NAME,"
+"         isDisabled = CASE"
+"                        WHEN is_disabled = 1 THEN 'DISABLED'"
+"                        ELSE ''"
+"                      END,"
+"         fkName = RC.CONSTRAINT_NAME"
+" FROM     INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS RC"
+"         INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE FK"
+"           ON FK.CONSTRAINT_NAME = RC.CONSTRAINT_NAME"
+"         INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE PK"
+"           ON PK.CONSTRAINT_NAME = RC.UNIQUE_CONSTRAINT_NAME"
+"         INNER JOIN sys.foreign_keys sfk"
+"           ON sfk.name = RC.CONSTRAINT_NAME"
+" WHERE    FK.ORDINAL_POSITION = PK.ORDINAL_POSITION"
+" AND FK.TABLE_NAME=:table and"
+" FK.COLUMN_NAME=:field"
+" order by"
+"         fkTableName,"
+"         fkColumnName";
+
+     QSqlQuery query;
+     query.prepare(strQuery);
+     query.bindValue(":table", strTable);
+     query.bindValue(":field", strField);
+     query.setForwardOnly(true);
+     if (!query.exec()){
+         if (query.lastError().type()!=QSqlError::NoError){
+            //QMessageBox::critical(0, QObject::tr("Database Error"), query.lastError().text());
+             strError= query.lastError().text();
+         }
+         else strError=QString("Could not identify FK!");
+
+        return false;
+     }
+
+     bIsFK=(query.numRowsAffected()>0);
+     if (!bIsFK) return true;
+
+     query.first();
+     outTable=query.value(2).toString();
+     if (outTable.compare("GL_DATES",Qt::CaseInsensitive)==0){
+         bIsFK=false;//skip for dates!
+     }
+
+     return true;
+}
+
+static bool createFKRec(const QString strTable, const int ID, QList<QVariant>& mapFK, int& outID, QString& strError)
+{
+    QVariantMap nestedMap;
+    QList<QVariant> mapList;
+    static int x=0;
+
+   x++;
+
+    nestedMap["id"]=x;
+    nestedMap["table"]=strTable;
+
+    outID=x;
+
+    QVariantMap map;
+    if (!buildFKRec(strTable,ID,map,mapFK,strError))return false;
+
+    nestedMap["record"]=map;
+
+    mapFK.push_back(nestedMap);
+
+    return true;
+}
+
+static bool insertFKCell(const QString strTable, QVariant val, QList<QVariant>& mapFK, QString& strRef,
+                         QString& strError)
+{
+    if (val.toString().compare(strNoValue)==0){
+        strRef=val.toString();
+        return true;
+    }
+
+    if (!val.canConvert(QVariant::Int)){
+        strError= QObject::tr("This ID is not int!");
+        return false;
+    }
+
+    int outID;
+    if (!createFKRec(strTable, val.toInt(), mapFK, outID,strError)) return false;
+
+    strRef=QString("Ref:")+QVariant(outID).toString();
+    return true;
+}
+
+static bool buildFKRec(const QString strTable, const int ID, QVariantMap& map, QList<QVariant>& mapFK,
+                       QString& strError)
+{
+    QMap<QString,QString> mapTypes;
+    QMap<QString,int> mapSizes;
+    if (!getFields(strTable,mapTypes,mapSizes)){
+        strError= QObject::tr("Could not retrieve fields from this record!");
+        return false;
+    }
+
+    QString strQuery="SELECT ";
+     QMap<QString,QString>::const_iterator i;
+     for (i = mapTypes.constBegin(); i != mapTypes.constEnd(); ++i){
+
+         if (i!=mapTypes.constBegin()) strQuery+=",";
+         strQuery+="[";
+         strQuery+=i.key();
+         strQuery+="]";
+     }
+     strQuery+=" FROM ";
+     strQuery+=strTable;
+     strQuery+=" WHERE ID=";
+     strQuery+=QVariant(ID).toString();
+
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+    if (!query.exec() || query.numRowsAffected()!=1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError= query.lastError().text();
+         else
+             strError= QObject::tr("Could not retrieve identified record!");
+         return false;
+    }
+
+    query.first();
+
+    int j=0;
+     for (i = mapTypes.constBegin(); i != mapTypes.constEnd(); ++i){
+
+         //checks recursively for another reference
+        QString strKTable,strKField;
+        bool bIsFK;
+        if (!identifyFK(strTable,i.key(),
+            bIsFK,strKTable,strError)) return false;
+        //Checks if its a date
+        bool bIsDateTime;
+        if (!isDateTime(strTable,
+            i.key(),bIsDateTime)) return false;
+
+        map[i.key()]=query.value(j).toString();
+
+        QString strRef;
+        if (bIsFK){
+            if (!insertFKCell(strKTable,query.value(j),
+                mapFK,strRef,strError)) return false;
+            map[i.key()]=strRef;
+        }else if (bIsDateTime){
+            if (query.value(j).toString().compare(
+                strNoValue)!=0){
+                    QVariantMap nestedMap3;
+                    if (!deserializeDateTime(query.value(j).toString().toInt(),
+                        nestedMap3)) return false;
+                    map[i.key()]=nestedMap3;
+            }
+        }
+
+        j++;
+    }
+
+    return true;
+}
+
+static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap, QList<QVariant>& mapFK, QString& strError)
 {
     QVariantMap nestedMap2;
 
@@ -2051,23 +2224,37 @@ static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
     strField=strField.remove("[");
     strField=strField.remove("]");
 
+    //Checks if we need to add any FK references
+    QString strKTable,strKField;
+    bool bIsFK;
+    if (!identifyFK(query.value(query.record().indexOf("table")).toString(),strField,
+        bIsFK,strKTable,strError)){
+            qDebug()<< QObject::tr("Could not identify if this is a FK field!") << endl;
+            return false;
+    }
+    QString strRefFrom,strRefTo;
+    if (bIsFK){
+        if (!insertFKCell(strKTable,query.value(query.record().indexOf("from")),
+            mapFK,strRefFrom,strError)) return false;
+        if (!insertFKCell(strKTable,query.value(query.record().indexOf("to")),
+            mapFK,strRefTo,strError)) return false;
+    }
+
+    nestedMap2["from"]=bIsFK?strRefFrom:query.value(query.record().indexOf("from")).toString();
+    nestedMap2["to"]=bIsFK?strRefTo:query.value(query.record().indexOf("to")).toString();
+
+    //Checks if its a date
     bool bIsDateTime;
     if (!isDateTime(query.value(query.record().indexOf("table")).toString(),
         strField,bIsDateTime)) return false;
-
-    nestedMap2["from"]=query.value(query.record().indexOf("from")).toString();
-    nestedMap2["to"]=query.value(query.record().indexOf("to")).toString();
-
     if (bIsDateTime){
         if (query.value(query.record().indexOf("from")).toString().compare(
             strNoValue)!=0){
-
             QVariantMap nestedMap3;
             if (!deserializeDateTime(query.value(query.record().indexOf("from")).toInt(),
                 nestedMap3)) return false;
             nestedMap2["from"]=nestedMap3;
         }
-
         if (query.value(query.record().indexOf("to")).toString().compare(
             strNoValue)!=0){
             QVariantMap nestedMap3;
@@ -2075,7 +2262,6 @@ static bool buildJSONCell(const QSqlQuery& query, QVariantMap& nestedMap)
                 nestedMap3)) return false;
             nestedMap2["to"]=nestedMap3;
         }
-
     }
     nestedMap["values"]=nestedMap2;
 
@@ -2152,23 +2338,17 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
          return false;
         }
 
-    QVariantMap map, nestedMap, nestedMap2, nestedMap3;
-    QList<QVariant> mapList;
+    QVariantMap map, nestedMap, nestedMap2, nestedMap3;//, nestedMapFK;
+    QList<QVariant> mapList, mapFK;
 
     if (query.numRowsAffected() > 0){
 
         query.first();
-        if (!buildJSONCell(query,nestedMap)){
-            strError=QObject::tr("Could not read info change row!");
-            return false;
-        }
+        if (!buildJSONCell(query,nestedMap,mapFK,strError))return false;
         mapList.push_back(nestedMap);
 
          while (query.next()) {
-            if (!buildJSONCell(query,nestedMap)){
-                strError=QObject::tr("Could not read info change row!");
-                return false;
-            }
+            if (!buildJSONCell(query,nestedMap,mapFK,strError)) return false;
             mapList.push_back(nestedMap);
          }
     }
@@ -2203,6 +2383,7 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
     nestedMap2["user"]=query.value(query.record().indexOf("username")).toString();
     map["session"]=nestedMap2;
     map["change"]=mapList;
+    map["FK"]=mapFK;
     map["mode"]=bIsMaster?strMasterName:strClientName;
 
     int lu;
