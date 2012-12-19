@@ -703,6 +703,12 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         bool                              findDateID(const QString strTable, const QString strField, const int inID, int &outID);
         bool                              startPatchSession(const QString strDateUTC, const QString strDateLocal,
                                                                 const int dateType, const QString strCityName, const QString strMacAddress, const QString strUser);
+        bool                              identifyReference(const QList<QVariant>& mapReferences, const QString strRef,
+                                                              QVariant& outV, QString& strError);
+        bool                               findJSONReference(const QList<QVariant>& mapReferences, const int ID, 
+                                                    QVariantMap& map, QString& strTable, QString& strError);
+        bool                               findDBReference(const QList<QVariant>& mapReferences,const QString strTable, QVariantMap map,
+                                                    QVariant& outID, QString& strError);
 
         bool                              m_bConnected;//!< Boolean flag to indicate the connection status
         QSqlQueryModel                    *cityModel;//!< Pointer to the city database model (table "Ref_Location")

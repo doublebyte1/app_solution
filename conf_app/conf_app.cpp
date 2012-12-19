@@ -891,8 +891,6 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
 
     strQuery.prepend(strFirst + QString(" WHERE "));
 
-    //qDebug() << strQuery << endl;
-
     QString strError;
     QSqlQuery query;
     query.prepare(strQuery);
@@ -1236,7 +1234,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                         if (bDif){
                             int outID;
                             if (!identifyRecord(aRecord, outID)){
-                                strError="Could not indentify this record!";
+                                strError="Could not identify this record!";
                                 return false;
                             }
 
@@ -1319,8 +1317,7 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
 
-    if(!ok){/*
-        QMessageBox::warning(this, tr("Patch Process"),*/
+    if(!ok){
         strError=tr("Could not parse JSON content!")
         +tr("\n Are you sure the syntax is valid?");
 
@@ -1354,10 +1351,109 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
         QVariantMap nestedMap = change.toMap();
         QVariantMap nestedMap2 = nestedMap["values"].toMap();
 
+        QVariant vFrom=nestedMap2["from"];
+        QVariant vTo=nestedMap2["to"];
+
+        if (nestedMap2["from"].toString().contains("Ref:",Qt::CaseInsensitive)){
+            if (!identifyReference(result["FK"].toList(),nestedMap2["from"].toString(),
+                vFrom,strError)) return false;
+        }
+
+        if (nestedMap2["to"].toString().contains("Ref:",Qt::CaseInsensitive)){
+            if (!identifyReference(result["FK"].toList(),nestedMap2["to"].toString(),
+                vTo,strError)) return false;
+        }
+
         InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
-            nestedMap["column"].toString(), nestedMap2["from"],nestedMap2["to"]);
+            nestedMap["column"].toString(), vFrom, vTo);
         lChanges.push_back(ichanges);
     }
+
+    return true;
+}
+
+bool conf_app::findJSONReference(const QList<QVariant>& mapReferences, const int ID, QVariantMap& map,
+                             QString& strTable, QString& strError)
+{
+    foreach(QVariant fk, mapReferences) {
+        QVariantMap nestedMap = fk.toMap();
+        if (nestedMap["id"].toInt()==ID){
+            map=nestedMap["record"].toMap();
+            strTable=nestedMap["table"].toString();
+            break;
+        }
+    }
+
+    if (map.isEmpty()|| strTable.isEmpty()){
+        strError=QObject::tr("Could not find this reference on the FK section!");
+        return false;
+    }
+    return true;
+}
+
+bool conf_app::findDBReference(const QList<QVariant>& mapReferences, const QString strTable, QVariantMap map, QVariant& outID, QString& strError)
+{
+    map.remove("ID");
+
+    QString strQuery="SELECT ID FROM [";
+    strQuery+=strTable;
+    strQuery+="] WHERE ";
+
+    QVariantMap::const_iterator i;
+     for (i = map.constBegin(); i != map.constEnd(); ++i){
+        if (i!=map.constBegin()) strQuery +=" AND ";
+        strQuery+=i.key();
+
+        bool bHasQuotes=false;
+
+        //TODO: test if the type is coming ok
+        QSqlRecord rec;
+        if (!getTypeInfo(strTable,i.key(),rec)) return false;
+
+        if (rec.field(0).value()=="nvarchar") bHasQuotes=true;
+
+        QString strValue=i.value().toString();
+        if (i.value().toString().contains("Ref:",Qt::CaseInsensitive)){
+            QVariant outV;
+            if (!identifyReference(mapReferences,i.value().toString(),outV,strError)) return false;
+            strValue=outV.toString();
+        }
+        //TODO: identify dates
+
+
+        strQuery+=QString("=")+(bHasQuotes?QString("'"):QString(""))+strValue
+            +(bHasQuotes?QString("'"):QString(""));
+     }
+
+    QSqlQuery query;
+    query.prepare(strQuery);
+    query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type() != QSqlError::NoError)
+             strError=query.lastError().text();
+         else
+             strError=QObject::tr("Could not identify any record in the DB!");
+         return false;
+        }
+
+    //TODO: what about if there is more than one record?
+    if (query.numRowsAffected() > 1)
+        qDebug() << "Warning: identifed more than one record in the DB!" << endl;
+
+    query.first();
+    outID=query.value(0);
+
+    return true;
+}
+
+bool conf_app::identifyReference(const QList<QVariant>& mapReferences, const QString strRef, QVariant& outV, QString& strError)
+{
+    QVariantMap map;
+    QString strID=strRef.right(strRef.length()-strRef.lastIndexOf(":")-1);
+    QString strTable;
+
+    if (!findJSONReference(mapReferences,strID.toInt(),map,strTable,strError)) return false;
+    if (!findDBReference(mapReferences,strTable,map,outV,strError)) return false;
 
     return true;
 }
