@@ -685,14 +685,16 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                             QSqlQueryModel* viewModel, const QString strQuery, QTableView* aTable);
         bool                              readFile(const QString strFileName, QString& outStr);
         bool                              readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, QString& strError);
-        bool                              applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master,
+                                                    int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, 
+                                                    QList<QVariant>& mapReferences, QString& strError);
+        bool                              applyChangesfromPatch(const QList<QVariant>& mapReferences, listInfoChanges& lChanges, const int lu_master,
                                                                     int& cnew, int& cmod, int& cdel, QString& strError);
+        bool                              readAndApplyChangesfromPatch(const QString strContent, int& ctNew, int& ctMod, int& ctDel, QString& strError);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
         bool                              insertDate(const InfoDate date, int& id);
         bool                              amendDate(const int ID, const QString strField, const QString strDate);
-        bool                              packRecord(const listInfoChanges& lChanges, int& i, 
-                                            listInfoChanges& aRecord, bool& bBreak);
+        bool                              packRecord(const QList<QVariant>& mapReferences, listInfoChanges& lChanges, int& i, 
+                                            listInfoChanges& aRecord, bool& bBreak, QString& strError);
         bool                              removeRecord(const listInfoChanges& packRecord);
         bool                              modRecord(const InfoChanges& chRec, const int id);
         bool                              identifyRecord(const listInfoChanges& packRecord, int& outID);

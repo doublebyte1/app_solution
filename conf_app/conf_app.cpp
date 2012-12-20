@@ -639,11 +639,24 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress)
                  +tr("\n Are you sure this is a valid file?"));
                  return false;
         }else{
+            /*
+            QString strError="";
+            int ctNew=0;
+            int ctMod=0;
+            int ctDel=0;
+            if (!readAndApplyChangesfromPatch(strContent, ctNew, ctMod, ctDel, strError)){
+                qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+                QMessageBox::critical(this, tr("Patch Process"),
+                    (strError.isEmpty()?tr("Could not read and apply changes in this file!!"):strError));
+                 return false;
+            }
+            */
             listInfoChanges lChanges;
             QString strDateUTC, strDateLocal, strCityName, strUser, strError="";
             int dateType;
+            QList<QVariant> mapReferences;
             if (!readChangesfromPatch(strContent,strDateUTC,strDateLocal,dateType,
-                strCityName,strMacAddress,strUser,lu_master,lChanges,strError)){
+                strCityName,strMacAddress,strUser,lu_master,lChanges,mapReferences,strError)){
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                 QMessageBox::critical(this, tr("Patch Process"),
                     (strError.isEmpty()?tr("Could not read any changes in this file!!"):strError));
@@ -663,7 +676,7 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress)
             int ctMod=0;
             int ctDel=0;
             strError="";
-            if (!applyChangesfromPatch(lChanges,lu_master,ctNew,ctMod,ctDel,strError))
+            if (!applyChangesfromPatch(mapReferences,lChanges,lu_master,ctNew,ctMod,ctDel,strError))
             {
                 qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
                  QMessageBox::warning(this, tr("Patch Process"),
@@ -798,7 +811,7 @@ bool conf_app::insertNewRecord(const listInfoChanges& lChanges)
     return bOk;
 }
 
-bool conf_app::packRecord(const listInfoChanges& lChanges, int& i, listInfoChanges& aRecord, bool& bBreak)
+bool conf_app::packRecord(const QList<QVariant>& mapReferences, listInfoChanges& lChanges, int& i, listInfoChanges& aRecord, bool& bBreak, QString& strError)
 {
     bBreak=false;
     QString curTable=lChanges.at(i).m_strTable;
@@ -808,6 +821,22 @@ bool conf_app::packRecord(const listInfoChanges& lChanges, int& i, listInfoChang
 
     while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0
         && i < (start + aTable->record().count()-1)){
+
+
+        //Identify references here
+        QVariant vFrom, vTo;
+        if (lChanges.at(i).m_varOld.toString().contains("Ref:",Qt::CaseInsensitive)){
+            if (!identifyReference(mapReferences,lChanges.at(i).m_varOld.toString(),
+                vFrom,strError)) return false;
+            lChanges[i].m_varOld=vFrom;
+        }
+
+        if (lChanges.at(i).m_varNew.toString().contains("Ref:",Qt::CaseInsensitive)){
+            if (!identifyReference(mapReferences,lChanges.at(i).m_varNew.toString(),
+                vTo,strError)) return false;
+            lChanges[i].m_varNew=vTo;
+        }
+
         aRecord.push_back(lChanges.at(i));
         ++i;
     }
@@ -1147,15 +1176,29 @@ bool conf_app::modDateRecord(const listInfoChanges& aRecord, const listInfoChang
      return true;
 }
 
-bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int lu_master, int& cnew, int& cmod, int& cdel, QString& strError)
+bool conf_app::applyChangesfromPatch(const QList<QVariant>& mapReferences, listInfoChanges& lChanges, const int lu_master, int& cnew, int& cmod, int& cdel, QString& strError)
 {
     for (int i=0; i < lChanges.count(); ++i)
     {
+        /*
+            QVariant vFrom, vTo;
+            if (lChanges.at(i).m_varOld.toString().contains("Ref:",Qt::CaseInsensitive)){
+                if (!identifyReference(mapReferences,lChanges.at(i).m_varOld.toString(),
+                    vFrom,strError)) return false;
+                lChanges[i].m_varOld=vFrom;
+            }
+
+            if (lChanges.at(i).m_varNew.toString().contains("Ref:",Qt::CaseInsensitive)){
+                if (!identifyReference(mapReferences,lChanges.at(i).m_varNew.toString(),
+                    vTo,strError)) return false;
+                lChanges[i].m_varNew=vTo;
+            }
+*/
             if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
 
                 listInfoChanges aRecord;
                 bool bBreak;
-                if (!packRecord(lChanges,i,aRecord,bBreak)){
+                if (!packRecord(mapReferences,lChanges,i,aRecord,bBreak,strError)){
                     strError=tr("Could not distinguish record!");
                     return false;
                 }
@@ -1202,7 +1245,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
                     //packs the following records
                     listInfoChanges aRecord;
                     bool bBreak;
-                    if (!packRecord(lChanges,i,aRecord,bBreak)){
+                    if (!packRecord(mapReferences,lChanges,i,aRecord,bBreak,strError)){
                         strError=tr("Could not distinguish record!");
                         return false;
                     }
@@ -1251,7 +1294,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
 
                 listInfoChanges aRecord;
                 bool bBreak;
-                if (!packRecord(lChanges,i,aRecord,bBreak)){
+                if (!packRecord(mapReferences,lChanges,i,aRecord,bBreak,strError)){
                     strError=tr("Could not distinguish record!");
                     return false;
                 }
@@ -1277,13 +1320,7 @@ bool conf_app::applyChangesfromPatch(const listInfoChanges& lChanges, const int 
         QString strError="";
         if (!insertLastMasterUpdate(lu_master,strError)){
             if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
-            /*QMessageBox msgBox(QMessageBox::Critical,tr("Apply Patch Error"),
-                strError,QMessageBox::Ok,0);
-            msgBox.exec();*/
-            return false;/*
-        }else if (!insertLastClientUpdate(strError)){
-            if (strError.isEmpty()) strError=tr("Could not write ID of last local Update !");
-            return false;*/
+            return false;
         }
     }
 
@@ -1310,9 +1347,82 @@ bool conf_app::amendDate(const int ID, const QString strField, const QString str
 
     return true;
 }
+/*
+bool conf_app::readAndApplyChangesfromPatch(const QString strContent, int& ctNew, int& ctMod,
+                                            int& ctDel, QString& strError)
+{
+    bool ok;
+    QVariantMap result = Json::parse(strContent, ok).toMap();
 
+    if(!ok){
+        strError=tr("Could not parse JSON content!")
+        +tr("\n Are you sure the syntax is valid?");
+
+        return false;
+    }
+
+    QString strMode= result["mode"].toString();
+
+    if (m_dbmode==MASTER && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
+            strError=tr("Master databases can only be updated by clients!");
+        return false;
+    }else if (m_dbmode==CLIENT && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
+            strError=tr("Client databases can only be updated by the master!");
+        return false;
+    } else if (m_dbmode==INVALID) return false; // it should never come here
+
+    QVariantMap nestedMap1 = result["session"].toMap();
+    QVariantMap nestedMap3 = nestedMap1["base_date"].toMap();
+
+    QString strDateUTC=nestedMap3["date_utc"].toString();
+    QString strDateLocal=nestedMap3["date_local"].toString();
+    int dateType=nestedMap3["date_type"].toInt();
+    QString strCityName=nestedMap1["city_name"].toString();
+    QString strMacAddress=nestedMap1["mac_address"].toString();
+    QString strUser=nestedMap1["user"].toString();
+
+    QString lu_master=result["lu_master"].toInt();
+
+    if (!startPatchSession(strDateUTC,strDateLocal,dateType,strCityName,strMacAddress,strUser)){
+         strError=tr("Could not start a mini session!!");
+         return false;
+    }
+
+    foreach(QVariant change, result["change"].toList()) {
+
+        QVariantMap nestedMap = change.toMap();
+        QVariantMap nestedMap2 = nestedMap["values"].toMap();
+
+        QVariant vFrom=nestedMap2["from"];
+        QVariant vTo=nestedMap2["to"];
+
+        
+        //identifying fk references
+        if (nestedMap2["from"].toString().contains("Ref:",Qt::CaseInsensitive)){
+            if (!identifyReference(result["FK"].toList(),nestedMap2["from"].toString(),
+                vFrom,strError)) return false;
+        }
+
+        if (nestedMap2["to"].toString().contains("Ref:",Qt::CaseInsensitive)){
+            if (!identifyReference(result["FK"].toList(),nestedMap2["to"].toString(),
+                vTo,strError)) return false;
+        }
+
+        //apply
+
+        InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
+            nestedMap["column"].toString(), vFrom, vTo);
+        lChanges.push_back(ichanges);
+    }
+
+    endSession();
+
+    return true;
+}
+*/
 bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
-                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, QString& strError)
+                        int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, 
+                        QList<QVariant>& mapReferences, QString& strError)
 {
     bool ok;
     QVariantMap result = Json::parse(strContent, ok).toMap();
@@ -1346,6 +1456,8 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
 
     lu_master=result["lu_master"].toInt();
 
+    mapReferences=result["FK"].toList();
+
     foreach(QVariant change, result["change"].toList()) {
 
         QVariantMap nestedMap = change.toMap();
@@ -1354,6 +1466,7 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
         QVariant vFrom=nestedMap2["from"];
         QVariant vTo=nestedMap2["to"];
 
+        /*
         if (nestedMap2["from"].toString().contains("Ref:",Qt::CaseInsensitive)){
             if (!identifyReference(result["FK"].toList(),nestedMap2["from"].toString(),
                 vFrom,strError)) return false;
@@ -1362,7 +1475,7 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
         if (nestedMap2["to"].toString().contains("Ref:",Qt::CaseInsensitive)){
             if (!identifyReference(result["FK"].toList(),nestedMap2["to"].toString(),
                 vTo,strError)) return false;
-        }
+        }*/
 
         InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
             nestedMap["column"].toString(), vFrom, vTo);
