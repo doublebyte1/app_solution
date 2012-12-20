@@ -2575,5 +2575,36 @@ static void endSession()
     delete table;
 }
 
+static bool identifyDate(const InfoDate& dateTime, QList<int>& ids, QString& strError)
+{
+    QString strQuery="SELECT ID FROM [GL_DATES] WHERE Date_UTC=:dateUTC AND "
+        "Date_Local=:dateLocal AND Date_Type=:dateType";
+
+     QSqlQuery query;
+     query.prepare(strQuery);
+     query.bindValue(":dateUTC", dateTime.m_strUTC);
+     query.bindValue(":dateLocal", dateTime.m_strLocal);
+     query.bindValue(":dateType", dateTime.m_type);
+
+     query.setForwardOnly(true);
+     if (!query.exec() || query.numRowsAffected() < 1){
+         if (query.lastError().type()!=QSqlError::NoError)
+            strError= query.lastError().text();
+         else
+            strError= QObject::tr("Could not identify this date record!");
+        return false;
+     }
+
+     query.first();
+     ids.push_back(query.value(0).toInt());
+
+     while (query.next())
+        ids.push_back(query.value(0).toInt());
+
+    return true;
+}
+
+
+
 #endif
 

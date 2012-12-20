@@ -1402,7 +1402,6 @@ bool conf_app::findDBReference(const QList<QVariant>& mapReferences, const QStri
     QVariantMap::const_iterator i;
      for (i = map.constBegin(); i != map.constEnd(); ++i){
         if (i!=map.constBegin()) strQuery +=" AND ";
-        strQuery+=i.key();
 
         bool bHasQuotes=false;
 
@@ -1418,11 +1417,26 @@ bool conf_app::findDBReference(const QList<QVariant>& mapReferences, const QStri
             if (!identifyReference(mapReferences,i.value().toString(),outV,strError)) return false;
             strValue=outV.toString();
         }
-        //TODO: identify dates
+        if (!i.value().toMap().isEmpty() && i.value().toMap()["date"].isValid()){
+            QList<int> ids;
+            if (!identifyDate(InfoDate(i.value().toMap()["date"].toMap()["date_utc"].toString(),
+                i.value().toMap()["date"].toMap()["date_local"].toString(),
+                i.value().toMap()["date"].toMap()["date_type"].toInt()),ids,strError))
+                    return false;
 
-
-        strQuery+=QString("=")+(bHasQuotes?QString("'"):QString(""))+strValue
-            +(bHasQuotes?QString("'"):QString(""));
+            strQuery+=" (";
+            for (int j=0; j < ids.size(); ++j){
+                if (j>0) strQuery+=" OR ";
+                strQuery+=i.key();
+                strQuery+="=";
+                strQuery+=QVariant(ids.at(j)).toString();
+            }
+            strQuery+=" )";
+        }else{
+            strQuery+=i.key();
+            strQuery+=QString("=")+(bHasQuotes?QString("'"):QString(""))+strValue
+                +(bHasQuotes?QString("'"):QString(""));
+        }
      }
 
     QSqlQuery query;
