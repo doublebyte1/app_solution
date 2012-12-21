@@ -14,17 +14,6 @@
  #define new DEBUG_NEW
 #endif
 
-//! Query show startup Msg
-/*! This is an utility function to query the registry and
-find out if we need to display the startup msg dialog
-\return boolean to indicate if we need to display the startup msg
-*/
-bool                      queryShowStartupMsg();
-bool                      queryShowSqlMsg();
-
-void                      resizeToVisibleColumns ( QTableView* table );
-void                      filterTable(QSqlTableModel* table);
-
 //! Info Date struct
 /*! TODO: write somethin here later!!!
 */
@@ -56,7 +45,18 @@ struct InfoChanges {
    QVariant            m_varNew;//
 };
 
-typedef QList<InfoChanges>                    listInfoChanges;
+typedef QList<InfoChanges>                      listInfoChanges;
+
+//! Query show startup Msg
+/*! This is an utility function to query the registry and
+find out if we need to display the startup msg dialog
+\return boolean to indicate if we need to display the startup msg
+*/
+bool                      queryShowStartupMsg();
+bool                      queryShowSqlMsg();
+
+void                      resizeToVisibleColumns ( QTableView* table );
+void                      filterTable(QSqlTableModel* table);
 
 //! Configure Application Class
 /*!

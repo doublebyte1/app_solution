@@ -1180,20 +1180,6 @@ bool conf_app::applyChangesfromPatch(const QList<QVariant>& mapReferences, listI
 {
     for (int i=0; i < lChanges.count(); ++i)
     {
-        /*
-            QVariant vFrom, vTo;
-            if (lChanges.at(i).m_varOld.toString().contains("Ref:",Qt::CaseInsensitive)){
-                if (!identifyReference(mapReferences,lChanges.at(i).m_varOld.toString(),
-                    vFrom,strError)) return false;
-                lChanges[i].m_varOld=vFrom;
-            }
-
-            if (lChanges.at(i).m_varNew.toString().contains("Ref:",Qt::CaseInsensitive)){
-                if (!identifyReference(mapReferences,lChanges.at(i).m_varNew.toString(),
-                    vTo,strError)) return false;
-                lChanges[i].m_varNew=vTo;
-            }
-*/
             if (lChanges.at(i).m_varNew.toString().compare(strNoValue)==0){//REM
 
                 listInfoChanges aRecord;
@@ -1465,17 +1451,6 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
 
         QVariant vFrom=nestedMap2["from"];
         QVariant vTo=nestedMap2["to"];
-
-        /*
-        if (nestedMap2["from"].toString().contains("Ref:",Qt::CaseInsensitive)){
-            if (!identifyReference(result["FK"].toList(),nestedMap2["from"].toString(),
-                vFrom,strError)) return false;
-        }
-
-        if (nestedMap2["to"].toString().contains("Ref:",Qt::CaseInsensitive)){
-            if (!identifyReference(result["FK"].toList(),nestedMap2["to"].toString(),
-                vTo,strError)) return false;
-        }*/
 
         InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
             nestedMap["column"].toString(), vFrom, vTo);
