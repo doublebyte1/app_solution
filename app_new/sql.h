@@ -2046,10 +2046,12 @@ static bool identifyFK(const QString strTable, const QString strField, bool& bIs
                        QString& outTable, QString& strError)
 {
 QString strQuery=
+"select pk_table, pk_field from info_fk where fk_table=:table and fk_field=:field";
+/*
 "SELECT   fkTableName = FK.TABLE_NAME,"
 "         fkColumnName = FK.COLUMN_NAME,"
 "         pkTableName = PK.TABLE_NAME,"
-//"         pkColumnName = PK.COLUMN_NAME,"
+"         pkColumnName = PK.COLUMN_NAME,"
 "         isDisabled = CASE"
 "                        WHEN is_disabled = 1 THEN 'DISABLED'"
 "                        ELSE ''"
@@ -2068,7 +2070,7 @@ QString strQuery=
 " order by"
 "         fkTableName,"
 "         fkColumnName";
-
+*/
      QSqlQuery query;
      query.prepare(strQuery);
      query.bindValue(":table", strTable);
@@ -2087,7 +2089,8 @@ QString strQuery=
      if (!bIsFK) return true;
 
      query.first();
-     outTable=query.value(2).toString();
+     //outTable=query.value(2).toString();
+     outTable=query.value(0).toString();
      if (outTable.compare("GL_DATES",Qt::CaseInsensitive)==0){
          bIsFK=false;//skip for dates!
      }
@@ -2131,10 +2134,14 @@ static bool insertFKCell(const listInfoChanges& listChanges, const QString strTa
         return false;
     }
 
-    int outID;
-    if (!createFKRec(listChanges, strTable, val.toInt(), mapFK, outID,strError)) return false;
+    if (val.toInt()==44444){//n/a
+        strRef=QString("44444");
+    }else{
+        int outID;
+        if (!createFKRec(listChanges, strTable, val.toInt(), mapFK, outID,strError)) return false;
 
-    strRef=QString("Ref:")+QVariant(outID).toString();
+        strRef=QString("Ref:")+QVariant(outID).toString();
+    }
     return true;
 }
 

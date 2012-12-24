@@ -822,7 +822,6 @@ bool conf_app::packRecord(const QList<QVariant>& mapReferences, listInfoChanges&
     while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0
         && i < (start + aTable->record().count()-1)){
 
-
         //Identify references here
         QVariant vFrom, vTo;
         if (lChanges.at(i).m_varOld.toString().contains("Ref:",Qt::CaseInsensitive)){
@@ -1539,8 +1538,10 @@ bool conf_app::findDBReference(const QList<QVariant>& mapReferences, const QStri
         }
 
     //TODO: what about if there is more than one record?
-    if (query.numRowsAffected() > 1)
+     if (query.numRowsAffected() > 1){
         qDebug() << "Warning: identifed more than one record in the DB!" << endl;
+        qDebug() << strQuery << endl;
+     }
 
     query.first();
     outID=query.value(0);
