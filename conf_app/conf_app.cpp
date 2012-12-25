@@ -923,7 +923,7 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
     QSqlQuery query;
     query.prepare(strQuery);
     query.setForwardOnly(true);
-     if (!query.exec() || query.numRowsAffected() != 1){
+     if (!query.exec() || query.numRowsAffected() < 1){
          if (query.lastError().type() != QSqlError::NoError)
              strError=query.lastError().text();
          else
@@ -1540,7 +1540,7 @@ bool conf_app::findDBReference(const QList<QVariant>& mapReferences, const QStri
     //TODO: what about if there is more than one record?
      if (query.numRowsAffected() > 1){
         qDebug() << "Warning: identifed more than one record in the DB!" << endl;
-        qDebug() << strQuery << endl;
+        //qDebug() << strQuery << endl;
      }
 
     query.first();

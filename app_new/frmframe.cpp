@@ -148,25 +148,27 @@ bool FrmFrame::applyChanges()
     bool bError=true;
 
     QString strError;
+
     if (!checkDependantDates("Fr_Time", customDtStart->dateTime(),
         customDtEnd->dateTime(),"Fr_Time",m_sample->frameTimeId, strError))
     {
         emit showError(strError);
     }else{
 
-        int cur= mapper->currentIndex();
-        bError=!submitMapperAndModel(mapper);
+        QVariant start,end;
+        bError=!amendDates(mapperStartDt, mapperEndDt,start,end);
         if (!bError){
-            mapper->setCurrentIndex(cur);
-            int curStart, curEnd;
-            curStart=mapperStartDt->currentIndex();
-            curEnd=mapperEndDt->currentIndex();
 
-            bError=!submitDates(mapperStartDt, mapperEndDt);
+            if (mapper->model()->index(0,2).data()!=start)
+                mapper->model()->setData(mapper->model()->index(0,2),start);
+            if (mapper->model()->index(0,3).data()!=end)
+                mapper->model()->setData(mapper->model()->index(0,3),end);
 
-            mapperStartDt->setCurrentIndex(curStart);
-            mapperEndDt->setCurrentIndex(curEnd);
-
+            int cur= mapper->currentIndex();
+            bError=!submitMapperAndModel(mapper);
+            if (!bError){
+                mapper->setCurrentIndex(cur);
+            }
         }
     }
 

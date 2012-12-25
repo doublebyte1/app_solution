@@ -197,6 +197,9 @@ class PreviewTab : public GenericTab
         */
         bool                                  submitMapperAndModel(QDataWidgetMapper* aMapper);
         bool                                  submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper);
+        bool                                  amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper,
+                                                    QVariant& start, QVariant& end);
+
         bool                                  translateIndex(const QModelIndex inIdx, QModelIndex& outIdx);
 
         bool                                  discardNewRecord();

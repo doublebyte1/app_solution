@@ -110,6 +110,38 @@ struct NodeRef {
    QString             m_strField;//!< field name
 };
 
+//! Info Date struct
+/*! TODO: write somethin here later!!!
+*/
+struct InfoDate {
+    InfoDate( const QString strUTC, const QString strLocal, const int type):
+    m_strUTC(strUTC), m_strLocal(strLocal), m_type(type)
+    {}
+    InfoDate()
+    {}
+   QString             m_strLocal;//!< Local date
+   QString             m_strUTC;//!< UTC date
+   int                 m_type;//!< Date type
+};
+
+//! Info Changes struct
+/*! TODO: write somethin here later!!!
+*/
+struct InfoChanges {
+    InfoChanges(int id,QString strTable, QString strField,
+        QVariant varOld, QVariant varNew):
+    m_id(id), m_strTable(strTable), m_strField(strField),m_varOld(varOld),m_varNew(varNew)
+    {}
+    InfoChanges()
+    {}
+   int                 m_id;
+   QString             m_strTable;//!< name of the table involved in these changes
+   QString             m_strField;//!< name of the field involved in these changes
+   QVariant            m_varOld;//
+   QVariant            m_varNew;//
+};
+
+typedef QList<InfoChanges>                      listInfoChanges;
 typedef shared_ptr<NodeRef>                     nodeRefPtr;//!< typedef for a smart pointer containing a Node Reference Structure
 typedef QHash<int,nodeRefPtr>                   HashNodeRef;//!< typedef for mapping Node References (key=level,value=NodeRef(table,field)
 
@@ -2281,14 +2313,19 @@ static bool buildJSONCell(const listInfoChanges& listChanges, const InfoChanges&
         }
         QString strRefFrom,strRefTo;
         if (bIsFK){
-            if (!insertFKCell(listChanges,strKTable,change.m_varOld,
-                mapFK,strRefFrom,strError)) return false;
-            if (!insertFKCell(listChanges,strKTable,change.m_varNew,
-                mapFK,strRefTo,strError)) return false;
+                if (!insertFKCell(listChanges,strKTable,change.m_varOld,
+                    mapFK,strRefFrom,strError)) return false;
+
+                if (change.m_varOld!=change.m_varNew){
+                    if (!insertFKCell(listChanges,strKTable,change.m_varNew,
+                        mapFK,strRefTo,strError)) return false;
+                }else{
+                    strRefTo=strRefFrom;
+                }
         }
 
-        nestedMap2["from"]=bIsFK?strRefFrom:change.m_varOld;
         nestedMap2["to"]=bIsFK?strRefTo:change.m_varNew;
+        nestedMap2["from"]=bIsFK?strRefFrom:change.m_varOld;
 
         //Checks if its a date
         bool bIsDateTime;

@@ -61,6 +61,98 @@ void PreviewTab::setTips(const bool bLogbook)
     lbHead->setWhatsThis(tr("This is a ") + (bLogbook? tr("logbook"): tr("sampling")) + tr(" frame"));
 }
 
+bool PreviewTab::amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper,
+                            QVariant& start, QVariant& end)
+{
+    bool bError=false;
+
+    startMapper->submit();
+    endMapper->submit();
+
+    //grabbed the comited values
+    QVariant startUTC=m_tDateTime->index(0,1).data();
+    QVariant startLocal=m_tDateTime->index(0,2).data();
+    QVariant startType=m_tDateTime->index(0,3).data();
+
+    QVariant endUTC=m_tDateTime->index(1,1).data();
+    QVariant endLocal=m_tDateTime->index(1,2).data();
+    QVariant endType=m_tDateTime->index(1,3).data();
+
+    //and undo the changes
+    m_tDateTime->revertAll();
+    startMapper->revert();
+    endMapper->revert();
+
+    bool bChangeStart=startLocal!=m_tDateTime->index(0,2).data();
+    bool bChangeEnd=endLocal!=m_tDateTime->index(1,2).data();
+
+    //nothing changed
+    start=m_tDateTime->index(0,0).data();
+    end=m_tDateTime->index(1,0).data();
+
+    if (bChangeStart || bChangeEnd){
+
+        //First of all, remove the filter
+         m_tDateTime->setFilter("");
+
+         int rowCount;
+        if (bChangeStart){
+            if (!insertRecordIntoModel(m_tDateTime)) return false;
+
+            while(m_tDateTime->canFetchMore())
+                m_tDateTime->fetchMore();
+
+            rowCount=m_tDateTime->rowCount();
+
+            QModelIndex idx=m_tDateTime->index(rowCount-1,1);
+            m_tDateTime->setData(idx,startUTC);
+            idx=m_tDateTime->index(rowCount-1,2);
+            m_tDateTime->setData(idx,startLocal);
+            idx=m_tDateTime->index(rowCount-1,3);
+            m_tDateTime->setData(idx,startType);
+            m_tDateTime->submitAll();
+
+        }
+        if (bChangeEnd){
+            if (!insertRecordIntoModel(m_tDateTime)) return false;
+
+            while(m_tDateTime->canFetchMore())
+                m_tDateTime->fetchMore();
+
+            rowCount=m_tDateTime->rowCount();
+
+            QModelIndex idx=m_tDateTime->index(rowCount-1,1);
+            m_tDateTime->setData(idx,endUTC);
+            idx=m_tDateTime->index(rowCount-1,2);
+            m_tDateTime->setData(idx,endLocal);
+            idx=m_tDateTime->index(rowCount-1,3);
+            m_tDateTime->setData(idx,endType);
+            m_tDateTime->submitAll();
+
+        }
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
+
+        rowCount=m_tDateTime->rowCount();
+
+        if (bChangeStart)
+            start=m_tDateTime->index(rowCount-2,0).data();
+        if (bChangeEnd)
+            end=m_tDateTime->index(rowCount-1,0).data();
+
+        QString strFilter="ID=" +start.toString()+" OR ID=" + end.toString();
+        m_tDateTime->setFilter(strFilter);
+
+        while(m_tDateTime->canFetchMore())
+            m_tDateTime->fetchMore();
+
+        startMapper->setCurrentIndex(0);
+        endMapper->setCurrentIndex(1);
+        }
+
+    return !bError;
+}
+
 bool PreviewTab::submitDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* endMapper)
 {
     bool bError=false;

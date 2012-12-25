@@ -7,45 +7,13 @@
 #include "nullrelationaldelegate.h"
 #include "booleantable.h"
 #include "genericsortproxymodel.h"
-#include "frmlu.h"
+//#include "frmlu.h"
+#include "sql.h"
 
 #if defined(WIN32) && defined(_DEBUG)
  #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )
  #define new DEBUG_NEW
 #endif
-
-//! Info Date struct
-/*! TODO: write somethin here later!!!
-*/
-struct InfoDate {
-    InfoDate( const QString strUTC, const QString strLocal, const int type):
-    m_strUTC(strUTC), m_strLocal(strLocal), m_type(type)
-    {}
-    InfoDate()
-    {}
-   QString             m_strLocal;//!< Local date
-   QString             m_strUTC;//!< UTC date
-   int                 m_type;//!< Date type
-};
-
-//! Info Changes struct
-/*! TODO: write somethin here later!!!
-*/
-struct InfoChanges {
-    InfoChanges(int id,QString strTable, QString strField,
-        QVariant varOld, QVariant varNew):
-    m_id(id), m_strTable(strTable), m_strField(strField),m_varOld(varOld),m_varNew(varNew)
-    {}
-    InfoChanges()
-    {}
-   int                 m_id;
-   QString             m_strTable;//!< name of the table involved in these changes
-   QString             m_strField;//!< name of the field involved in these changes
-   QVariant            m_varOld;//
-   QVariant            m_varNew;//
-};
-
-typedef QList<InfoChanges>                      listInfoChanges;
 
 //! Query show startup Msg
 /*! This is an utility function to query the registry and
