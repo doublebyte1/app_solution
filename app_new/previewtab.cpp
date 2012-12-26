@@ -66,6 +66,9 @@ bool PreviewTab::amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* e
 {
     bool bError=false;
 
+    int curStart=startMapper->currentIndex();
+    int curEnd=endMapper->currentIndex();
+
     startMapper->submit();
     endMapper->submit();
 
@@ -79,9 +82,9 @@ bool PreviewTab::amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* e
     QVariant endType=m_tDateTime->index(1,3).data();
 
     //and undo the changes
-    m_tDateTime->revertAll();
     startMapper->revert();
     endMapper->revert();
+    m_tDateTime->revertAll();
 
     bool bChangeStart=startLocal!=m_tDateTime->index(0,2).data();
     bool bChangeEnd=endLocal!=m_tDateTime->index(1,2).data();
@@ -94,8 +97,8 @@ bool PreviewTab::amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* e
 
         //First of all, remove the filter
          m_tDateTime->setFilter("");
-
          int rowCount;
+
         if (bChangeStart){
             if (!insertRecordIntoModel(m_tDateTime)) return false;
 
@@ -130,25 +133,31 @@ bool PreviewTab::amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* e
             m_tDateTime->submitAll();
 
         }
+
         while(m_tDateTime->canFetchMore())
             m_tDateTime->fetchMore();
 
         rowCount=m_tDateTime->rowCount();
 
-        if (bChangeStart)
-            start=m_tDateTime->index(rowCount-2,0).data();
+        if (bChangeStart){
+            if(bChangeEnd)
+                start=m_tDateTime->index(rowCount-2,0).data();
+            else
+                start=m_tDateTime->index(rowCount-1,0).data();
+        }
         if (bChangeEnd)
             end=m_tDateTime->index(rowCount-1,0).data();
 
-        QString strFilter="ID=" +start.toString()+" OR ID=" + end.toString();
+        QString strFilter="ID=" +start.toString()+" OR ID=" + end.toString() + " ORDER BY DATE_LOCAL ASC";
         m_tDateTime->setFilter(strFilter);
+        m_tDateTime->select();
 
-        while(m_tDateTime->canFetchMore())
-            m_tDateTime->fetchMore();
+        if (m_tDateTime->rowCount()!=2)
+            return false;
+    }
 
-        startMapper->setCurrentIndex(0);
-        endMapper->setCurrentIndex(1);
-        }
+    startMapper->setCurrentIndex(0);
+    endMapper->setCurrentIndex(1);
 
     return !bError;
 }

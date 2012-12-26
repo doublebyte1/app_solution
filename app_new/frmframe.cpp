@@ -159,12 +159,12 @@ bool FrmFrame::applyChanges()
         bError=!amendDates(mapperStartDt, mapperEndDt,start,end);
         if (!bError){
 
-            if (mapper->model()->index(0,2).data()!=start)
+            int cur= mapper->currentIndex();
+            if (mapper->model()->index(cur,2).data()!=start)
                 mapper->model()->setData(mapper->model()->index(0,2),start);
-            if (mapper->model()->index(0,3).data()!=end)
+            if (mapper->model()->index(cur,3).data()!=end)
                 mapper->model()->setData(mapper->model()->index(0,3),end);
 
-            int cur= mapper->currentIndex();
             bError=!submitMapperAndModel(mapper);
             if (!bError){
                 mapper->setCurrentIndex(cur);
@@ -294,7 +294,8 @@ void FrmFrame::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt + " ORDER BY DATE_LOCAL ASC");
+        //m_tDateTime->sort(2,Qt::AscendingOrder);
 
         if (m_tDateTime->rowCount()!=2)
             return;
