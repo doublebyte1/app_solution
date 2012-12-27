@@ -97,7 +97,7 @@ void FrmOperation::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt);
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt + " ORDER BY DATE_LOCAL ASC");
 
         if (m_tDateTime->rowCount()!=2)
             return;
@@ -627,53 +627,56 @@ bool FrmOperation::applyChanges()
             bError=true;
         }else{
 
-            int startIdx=mapperStartDt->currentIndex();
-            int endIdx=mapperEndDt->currentIndex();
-
-            //Setting the datetime type changes here!
-            bool bDate, bTime;
-            int typeID;
-
-            customDtStart->getIsDateTime(bDate,bTime);
-            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
-                return false;
-            }
-            m_tDateTime->setData(m_tDateTime->index(0,3),typeID);
-
-            customDtEnd->getIsDateTime(bDate,bTime);
-            if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
-                return false;
-            }
-            m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
-
-            bError=!submitDates(mapperStartDt, mapperEndDt);
-
+	
+	
+            QVariant start,end;
+            bError=!amendDates(mapperStartDt, mapperEndDt,start,end);
             if (!bError){
-                mapperStartDt->setCurrentIndex(startIdx);
-                mapperEndDt->setCurrentIndex(endIdx);
 
                 int cur= mapper1->currentIndex();
-                bError=!submitMapperAndModel(mapper1);
+                if (mapper1->model()->index(cur,2).data()!=start)
+                    mapper1->model()->setData(mapper1->model()->index(cur,2),start);
+                if (mapper1->model()->index(cur,3).data()!=end)
+                    mapper1->model()->setData(mapper1->model()->index(cur,3),end);
+
+                //Setting the datetime type changes here!
+                bool bDate, bTime;
+                int typeID;
+
+                customDtStart->getIsDateTime(bDate,bTime);
+                if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                    return false;
+                }
+                m_tDateTime->setData(m_tDateTime->index(0,3),typeID);
+
+                customDtEnd->getIsDateTime(bDate,bTime);
+                if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                    return false;
+                }
+                m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
+
+                bError=!submitDates(mapperStartDt, mapperEndDt);
                 if (!bError){
-                    mapper1->setCurrentIndex(cur);
+                    int cur= mapper1->currentIndex();
+                    bError=!submitMapperAndModel(mapper1);
+                    if (!bError){
+                        mapper1->setCurrentIndex(cur);
 
-                    //Comiting Sampled_Fishing_Operations_Categories
-                    if (tOperations->rowCount()!=1) return false;
+                        //Comiting Sampled_Fishing_Operations_Categories
+                        if (tOperations->rowCount()!=1) return false;
 
-                    QModelIndex idd=tOperations->index(0,0);
-                    multiModelI->setParentId(idd.data().toInt());
-                    QString strError;
-                    if (!multiModelI->list2Model(strError,false)){
-                        emit showError(strError);
-                        bError=true;
-                    }
-
-                }// mapper 1 submission
-            } else emit showError(tr("Could not edit dates in the database!"));
+                        QModelIndex idd=tOperations->index(0,0);
+                        multiModelI->setParentId(idd.data().toInt());
+                        QString strError;
+				if (!multiModelI->list2Model(strError,false)){
+				    emit showError(strError);
+				    bError=true;
+				}
+			}
+		}//bError			
+	}//bError		
         }//check dependant dates
-
-    }
-
+    }//list categories
     if (!bError) emit editLeave(true,false);
     return !bError;
 }

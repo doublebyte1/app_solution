@@ -562,14 +562,15 @@ bool FrmCell::applyChanges()
         emit showError(strError);
     }else{
 
-        int cur= mapper1->currentIndex();
-        bError=!submitMapperAndModel(mapper1);
+        QVariant start,end;
+        bError=!amendDates(mapperStartDt, mapperEndDt,start,end);
         if (!bError){
-            mapper1->setCurrentIndex(cur);
 
-            int curStart, curEnd;
-            curStart=mapperStartDt->currentIndex();
-            curEnd=mapperEndDt->currentIndex();
+            int cur= mapper1->currentIndex();
+            if (mapper1->model()->index(cur,2).data()!=start)
+                mapper1->model()->setData(mapper1->model()->index(cur,2),start);
+            if (mapper1->model()->index(cur,3).data()!=end)
+                mapper1->model()->setData(mapper1->model()->index(cur,3),end);
 
             //Setting the datetime type changes here!
             bool bDate, bTime;
@@ -587,13 +588,10 @@ bool FrmCell::applyChanges()
             }
             m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
 
-            bError=!submitDates(mapperStartDt, mapperEndDt);
-
+            bError=!submitMapperAndModel(mapper1);
             if (!bError){
-                mapperStartDt->setCurrentIndex(curStart);
-                mapperEndDt->setCurrentIndex(curEnd);
+                mapper1->setCurrentIndex(cur);
             }
-
         }
     }
 

@@ -103,7 +103,7 @@ void FrmTrip::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter("ID=" + strStartDt + " OR ID=" + strEndDt);
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt + " ORDER BY DATE_LOCAL ASC");
 
         if (m_tDateTime->rowCount()!=2)
             return;
@@ -713,32 +713,32 @@ bool FrmTrip::applyChanges()
                 bError=true;
             }else{
 
-                int startIdx=mapperStartDt->currentIndex();
-                int endIdx=mapperEndDt->currentIndex();
-
-                //Setting the datetime type changes here!
-                bool bDate, bTime;
-                int typeID;
-
-                customDtStart->getIsDateTime(bDate,bTime);
-                if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
-                    return false;
-                }
-                m_tDateTime->setData(m_tDateTime->index(0,3),typeID);
-
-                customDtEnd->getIsDateTime(bDate,bTime);
-                if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
-                    return false;
-                }
-                m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
-
-                bError=!submitDates(mapperStartDt, mapperEndDt);
-
+                QVariant start,end;
+                bError=!amendDates(mapperStartDt, mapperEndDt,start,end);
                 if (!bError){
-                    mapperStartDt->setCurrentIndex(startIdx);
-                    mapperEndDt->setCurrentIndex(endIdx);
 
                     int cur= mapper1->currentIndex();
+                    if (mapper1->model()->index(cur,2).data()!=start)
+                        mapper1->model()->setData(mapper1->model()->index(cur,2),start);
+                    if (mapper1->model()->index(cur,3).data()!=end)
+                        mapper1->model()->setData(mapper1->model()->index(cur,3),end);
+
+                    //Setting the datetime type changes here!
+                    bool bDate, bTime;
+                    int typeID;
+
+                    customDtStart->getIsDateTime(bDate,bTime);
+                    if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                    return false;
+                    }
+                    m_tDateTime->setData(m_tDateTime->index(0,3),typeID);
+
+                    customDtEnd->getIsDateTime(bDate,bTime);
+                    if (!m_tDateTime->getDateTimeType(true,bTime,typeID)){
+                    return false;
+                    }
+                    m_tDateTime->setData(m_tDateTime->index(1,3),typeID);
+
                     bError=!submitMapperAndModel(mapper1);
                     if (!bError){
                         mapper1->setCurrentIndex(cur);
