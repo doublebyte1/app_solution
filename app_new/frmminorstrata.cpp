@@ -112,21 +112,20 @@ bool FrmMinorStrata::applyChanges()
         emit showError(strError);
     }else{
 
-        int cur= mapper1->currentIndex();
-        bError=!submitMapperAndModel(mapper1);
+        QVariant start,end;
+        bError=!amendDates(mapperStartDt, mapperEndDt,start,end);
         if (!bError){
-            mapper1->setCurrentIndex(cur);
-            int curStart, curEnd;
-            curStart=mapperStartDt->currentIndex();
-            curEnd=mapperEndDt->currentIndex();
 
-            bError=!submitDates(mapperStartDt, mapperEndDt);
+            int cur= mapper1->currentIndex();
+            if (mapper1->model()->index(cur,1).data()!=start)
+                mapper1->model()->setData(mapper1->model()->index(cur,1),start);
+            if (mapper1->model()->index(cur,2).data()!=end)
+                mapper1->model()->setData(mapper1->model()->index(cur,2),end);
 
+            bError=!submitMapperAndModel(mapper1);
             if (!bError){
-                mapperStartDt->setCurrentIndex(curStart);
-                mapperEndDt->setCurrentIndex(curEnd);
+                mapper1->setCurrentIndex(cur);
             }
-
         }
     }
 
@@ -214,7 +213,7 @@ void FrmMinorStrata::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter("ID=" + strStartDt + " OR ID=" + strEndDt);
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt + " ORDER BY DATE_LOCAL ASC");
 
         if (m_tDateTime->rowCount()!=2)
             return;

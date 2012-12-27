@@ -130,7 +130,7 @@ void FrmCell::previewRow(QModelIndex index)
         }
         QString strEndDt=idx.data().toString();
 
-        m_tDateTime->setFilter("ID=" + strStartDt + " OR ID=" + strEndDt);
+        m_tDateTime->setFilter(tr("ID=") + strStartDt + tr(" OR ID=") + strEndDt + " ORDER BY DATE_LOCAL ASC");
 
         if (m_tDateTime->rowCount()!=2)
             return;
