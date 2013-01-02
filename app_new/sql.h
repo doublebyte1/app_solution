@@ -2683,14 +2683,15 @@ static void endSession()
 
 static bool identifyDate(const InfoDate& dateTime, QList<int>& ids, QString& strError)
 {
-    QString strQuery="SELECT ID FROM [GL_DATES] WHERE Date_UTC=:dateUTC AND "
-        "Date_Local=:dateLocal AND Date_Type=:dateType";
+    QString strQuery="SELECT ID FROM [GL_DATES] WHERE LEFT(CONVERT(varchar, (Date_UTC), 126),19)=:dateUTC AND "
+        "LEFT(CONVERT(varchar, (Date_Local), 126),19)=:dateLocal AND Date_Type=:dateType";
 
-     QSqlQuery query;
-     query.prepare(strQuery);
-     query.bindValue(":dateUTC", dateTime.m_strUTC);
-     query.bindValue(":dateLocal", dateTime.m_strLocal);
-     query.bindValue(":dateType", dateTime.m_type);
+    QSqlQuery query;
+    query.prepare(strQuery);
+
+    query.bindValue(":dateUTC", dateTime.m_strUTC);
+    query.bindValue(":dateLocal", dateTime.m_strLocal);
+    query.bindValue(":dateType", dateTime.m_type);
 
      query.setForwardOnly(true);
      if (!query.exec() || query.numRowsAffected() < 1){
