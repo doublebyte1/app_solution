@@ -807,7 +807,16 @@ bool conf_app::packRecord(const QList<QVariant>& mapReferences, listInfoChanges&
     aTable->setTable(curTable);
     int start=i;
 
-    while (i < lChanges.count() && lChanges.at(i).m_strTable.compare(curTable)==0
+    /*
+    QMap<QString,QString> mapTypes;
+    QMap<QString,int> mapSizes;
+    if (!getFields(curTable,mapTypes,mapSizes)){
+        strError=tr("Could not get fields for this table!");
+        return false;
+    }
+*/
+
+    while (i < lChanges.count() /*&& lChanges.at(i).m_strTable.compare(curTable)==0*/
         && i < (start + aTable->record().count()-1)){
 
         //Identify references here
@@ -826,11 +835,18 @@ bool conf_app::packRecord(const QList<QVariant>& mapReferences, listInfoChanges&
 
         aRecord.push_back(lChanges.at(i));
         ++i;
+        if (i==start + aTable->record().count()-1){
+            i--;
+            break;
+        }
+/*
+        
+        else if (lChanges.at(i).m_strTable.compare(curTable)!=0 ||
+            i==(start + aTable->record().count()))
+                i--;
+*/
     }
 
-    if (i==lChanges.count()) bBreak=true;
-    else if (lChanges.at(i).m_strTable.compare(curTable)!=0 || i==(start + aTable->record().count()-1))
-            i--;
 
     delete aTable; aTable=0;
 
@@ -906,6 +922,8 @@ bool conf_app::identifyRecord(const listInfoChanges& packRecord, int& outID)
     }
 
     strQuery.prepend(strFirst + QString(" WHERE "));
+
+    qDebug() << strQuery << endl;
 
     QString strError;
     QSqlQuery query;
@@ -1255,7 +1273,7 @@ bool conf_app::applyChangesfromPatch(const QList<QVariant>& mapReferences, listI
                 listInfoChanges aRecord;
                 bool bBreak;
                 if (!packRecord(mapReferences,lChanges,i,aRecord,bBreak,strError)){
-                    strError=tr("Could not distinguish record!");
+                    //strError=tr("Could not distinguish record!");
                     return false;
                 }
 
@@ -1438,13 +1456,17 @@ bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUT
 bool conf_app::findJSONReference(const QList<QVariant>& mapReferences, const int ID, QVariantMap& map,
                              QString& strTable, QString& strError)
 {
+QVariantMap nestedMap;
+
     foreach(QVariant fk, mapReferences) {
-        QVariantMap nestedMap = fk.toMap();
+        nestedMap = fk.toMap();
         if (nestedMap["id"].toInt()==ID){
             map=nestedMap["record"].toMap();
             strTable=nestedMap["table"].toString();
-            break;
+            //break;
         }
+        if (nestedMap["id"].toInt()==ID)
+            break;
     }
 
     if (map.isEmpty()|| strTable.isEmpty()){
@@ -1502,6 +1524,8 @@ bool conf_app::findDBReference(const QList<QVariant>& mapReferences, const QStri
         }
      }
 
+     qDebug() << strQuery << endl;
+
     QSqlQuery query;
     query.prepare(strQuery);
     query.setForwardOnly(true);
@@ -1531,8 +1555,10 @@ bool conf_app::identifyReference(const QList<QVariant>& mapReferences, const QSt
     QString strID=strRef.right(strRef.length()-strRef.lastIndexOf(":")-1);
     QString strTable;
 
-    if (!findJSONReference(mapReferences,strID.toInt(),map,strTable,strError)) return false;
-    if (!findDBReference(mapReferences,strTable,map,outV,strError)) return false;
+    if (!findJSONReference(mapReferences,strID.toInt(),map,strTable,strError))
+        return false;
+    if (!findDBReference(mapReferences,strTable,map,outV,strError))
+        return false;
 
     return true;
 }

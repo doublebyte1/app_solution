@@ -2146,6 +2146,9 @@ static bool createFKRec(const listInfoChanges& listChanges, const QString strTab
     QVariantMap map;
     if (!buildFKRec(listChanges, strTable,ID,map,mapFK,strError))return false;
 
+    if (map.isEmpty())
+        return false;
+
     nestedMap["record"]=map;
 
     mapFK.push_back(nestedMap);
@@ -2189,7 +2192,7 @@ static bool getChangedRecord(const listInfoChanges& listChanges,const QString st
             return false;
         }
         if (listChanges.at(i).m_strTable.compare(strTable,Qt::CaseInsensitive)!=0){
-            i=i+mapTypes.size();
+            i=i+mapTypes.size()-1;
         }else{
             QMap<QString,QVariant> map;
             bool bFound=false;
@@ -2199,14 +2202,16 @@ static bool getChangedRecord(const listInfoChanges& listChanges,const QString st
                     && listChanges.at(i).m_varOld.toInt()==ID)
                         bFound=true;
                 map[listChanges.at(i).m_strField]=listChanges.at(i).m_varOld;
+                if (i==ct-1) break;
                 ++i;
             }
             if (bFound){
                 fkRec=map;
                 break;
             }
+            //--i;
         }
-        --i;
+        //--i;
      }
      return true;
 }
@@ -2683,9 +2688,14 @@ static void endSession()
 
 static bool identifyDate(const InfoDate& dateTime, QList<int>& ids, QString& strError)
 {
+
     QString strQuery="SELECT ID FROM [GL_DATES] WHERE LEFT(CONVERT(varchar, (Date_UTC), 126),19)=:dateUTC AND "
         "LEFT(CONVERT(varchar, (Date_Local), 126),19)=:dateLocal AND Date_Type=:dateType";
+/*
 
+    QString strQuery="SELECT ID FROM [GL_DATES] WHERE LEFT(CONVERT(varchar, (Date_UTC), 126),19)='" + dateTime.m_strUTC + "' AND "
+        "LEFT(CONVERT(varchar, (Date_Local), 126),19)='"+dateTime.m_strLocal+"' AND Date_Type=:dateType";
+*/
     QSqlQuery query;
     query.prepare(strQuery);
 
