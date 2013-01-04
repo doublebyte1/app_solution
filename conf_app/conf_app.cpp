@@ -551,7 +551,8 @@ bool conf_app::writeDiff(const QString strFileName, const int lu, const QString 
 {
     QString strJSON;
 
-    if (!getLastChanges(lu,strJSON,strMacAddress,(m_dbmode==MASTER),strError)) return false;
+    int add=0,del=0,mod=0;
+    if (!getLastChanges(lu,strJSON,strMacAddress,(m_dbmode==MASTER),add,del,mod,strError)) return false;
 
     QFile file(strFileName);
 
@@ -567,6 +568,11 @@ bool conf_app::writeDiff(const QString strFileName, const int lu, const QString 
          out << strJSON;
          file.close();
     }
+
+    QMessageBox::information(this, tr("Patch Process"),
+                             tr("Patch successfully created.\n") +
+                             QString("There were %1 inserts, %2 removals and %3 modifications!").arg(add)
+                             .arg(del).arg(mod));
 
     return true;
 }
@@ -687,7 +693,7 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress, bool& bApplied)
 
         }//read file
         bApplied=true;
-        return true;
+        //return true;
     }/*else if(m_dbmode==CLIENT){
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         return true;
@@ -695,6 +701,7 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress, bool& bApplied)
 
     //qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
     //return false;
+    return true;
 }
 
 bool conf_app::insertDate(const InfoDate date, int& id)
@@ -811,16 +818,7 @@ bool conf_app::packRecord(const QList<QVariant>& mapReferences, listInfoChanges&
     aTable->setTable(curTable);
     int start=i;
 
-    /*
-    QMap<QString,QString> mapTypes;
-    QMap<QString,int> mapSizes;
-    if (!getFields(curTable,mapTypes,mapSizes)){
-        strError=tr("Could not get fields for this table!");
-        return false;
-    }
-*/
-
-    while (i < lChanges.count() /*&& lChanges.at(i).m_strTable.compare(curTable)==0*/
+    while (i < lChanges.count()
         && i < (start + aTable->record().count()-1)){
 
         //Identify references here
@@ -843,12 +841,6 @@ bool conf_app::packRecord(const QList<QVariant>& mapReferences, listInfoChanges&
             i--;
             break;
         }
-/*
-        
-        else if (lChanges.at(i).m_strTable.compare(curTable)!=0 ||
-            i==(start + aTable->record().count()))
-                i--;
-*/
     }
 
 

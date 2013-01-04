@@ -2387,8 +2387,49 @@ static void createInfoChange(QSqlQuery& query, listInfoChanges& infoChanges)
     infoChanges.push_back(infoChange);
 }
 
+static bool doClassify(const listInfoChanges changeList, const int start, const int end,
+                       int& add, int& del, int& mod, QString& strError)
+{
+    bool bFoundChange=false;
+    for (int i=start; i < end; ++i)
+    {
+        if (changeList.at(i).m_varNew!=changeList.at(i).m_varOld){
+            if (changeList.at(i).m_varOld.toString().compare(strNoValue)==0) add++;
+            else if (changeList.at(i).m_varNew.toString().compare(strNoValue)==0) del++;
+            else if (changeList.at(i).m_varOld.toString().compare(strNoValue)!=0 && 
+                changeList.at(i).m_varNew.toString().compare(strNoValue)!=0) mod++;
+
+            bFoundChange=true;
+            break;
+        }
+    }
+    if (!bFoundChange) strError=QObject::tr("Could not find any changes on this record!");
+    return bFoundChange;
+}
+
+static bool classifyChanges(const listInfoChanges changeList, int& add, int& del, int& mod, QString& strError)
+{
+    QSqlTableModel *aTable=new QSqlTableModel ();
+    int start,end;
+
+    for (int i=0; i < changeList.count(); ++i)
+    {
+        aTable->setTable(changeList.at(i).m_strTable);
+        start=i; end=start+aTable->columnCount();
+
+        if (!doClassify(changeList,start,end,add,del,mod,strError)){
+            delete aTable; aTable=0;
+            return false;
+        }
+        i=i+aTable->columnCount()-1;
+    }
+
+    delete aTable; aTable=0;
+    return true;
+}
+
 static bool getLastChanges(const int ID, QString& strJSON, const QString strMacAddress,
-                           const bool bIsMaster, QString& strError)
+                           const bool bIsMaster, int&add, int &del, int& mod, QString& strError)
 {
     QSqlQuery query;
 
@@ -2424,6 +2465,11 @@ static bool getLastChanges(const int ID, QString& strJSON, const QString strMacA
          while (query.next()) {
              createInfoChange(query,infoChanges);
          }
+    }
+
+    if (!classifyChanges(infoChanges,add,del,mod,strError)){
+        strError=QObject::tr("Could not classify changes!");
+        return false;
     }
 
     //dump changes into JSON
