@@ -176,7 +176,7 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
         */
         //bool                    continueDump(const int lu, const QString strMacAddress);
         void                    doPatch();
-        bool                    doApply(int& lu_master, QString& strMacAddress);
+        bool                    doApply(int& lu_master, QString& strMacAddress, bool& bApplied);
         //! Read Process Error
         /*!
         This slot connects to the readyReadStandardError() signal of the process launched with sqlcmd;

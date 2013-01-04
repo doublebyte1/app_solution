@@ -587,11 +587,12 @@ void conf_app::doPatch()
 {
     int lu_master;//we want to store this variable for the master
     QString strClientMac;//we want to store this variable for the master
-    if (!doApply(lu_master,strClientMac)){
-        if (m_dbmode==MASTER){
+    bool bApplied;
+    if (!doApply(lu_master,strClientMac,bApplied)){
+        return;
+    }else if (!bApplied && m_dbmode==MASTER){
             QMessageBox::critical(this, tr("Patch Process"),
              tr("You must apply a patch before requesting a diff!"));
-            }
             return;
     }
 
@@ -615,8 +616,10 @@ void conf_app::doPatch()
     doDump(lastUpdate,strMacAddress);
 }
 
-bool conf_app::doApply(int& lu_master, QString& strMacAddress)
+bool conf_app::doApply(int& lu_master, QString& strMacAddress, bool& bApplied)
 {
+    bApplied=false;
+
     if (!m_bConnected){
 
              QMessageBox::warning(this, tr("Patch Process"),
@@ -683,14 +686,15 @@ bool conf_app::doApply(int& lu_master, QString& strMacAddress)
                                      .arg(ctDel).arg(ctMod));
 
         }//read file
+        bApplied=true;
         return true;
-    }else if(m_dbmode==CLIENT){
+    }/*else if(m_dbmode==CLIENT){
         qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
         return true;
-    }
+    }*/
 
-    qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
-    return false;
+    //qApp->setOverrideCursor( QCursor(Qt::ArrowCursor ) );
+    //return false;
 }
 
 bool conf_app::insertDate(const InfoDate date, int& id)
