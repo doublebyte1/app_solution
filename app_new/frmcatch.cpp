@@ -356,10 +356,10 @@ void FrmCatch::onEditLeave(const bool bFinished, const bool bDiscarded)
 
 bool FrmCatch::applyChanges()
 {
-   bool bError=true;
+   //bool bError=true;
 
     int cur= mapper1->currentIndex();
-    bError=!submitMapperAndModel(mapper1);
+    bool bError=!submitMapperAndModel(mapper1);
     if (!bError){
         mapper1->setCurrentIndex(cur);
     }

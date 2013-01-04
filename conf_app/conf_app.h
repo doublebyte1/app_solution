@@ -657,20 +657,13 @@ class conf_app : public QMainWindow, public Ui::conf_appClass
                                                     QList<QVariant>& mapReferences, QString& strError);
         bool                              applyChangesfromPatch(const QList<QVariant>& mapReferences, listInfoChanges& lChanges, const int lu_master,
                                                                     int& cnew, int& cmod, int& cdel, QString& strError);
-        //bool                              readAndApplyChangesfromPatch(const QString strContent, int& ctNew, int& ctMod, int& ctDel, QString& strError);
         bool                              insertNewRecord(const listInfoChanges& lChanges);
         bool                              insertDate(const InfoDate date, int& id);
-        //bool                              amendDate(const int ID, const QString strField, const QString strDate);
         bool                              packRecord(const QList<QVariant>& mapReferences, listInfoChanges& lChanges, int& i, 
                                             listInfoChanges& aRecord, bool& bBreak, QString& strError);
         bool                              removeRecord(const listInfoChanges& packRecord);
         bool                              modRecord(InfoChanges& chRec, const int id);
         bool                              identifyRecord(const listInfoChanges& packRecord, int& outID);
-        /*bool                              modDateRecord(const listInfoChanges& aRecord, const listInfoChanges& iDt);
-        bool                              identifyRecordByDate(const listInfoChanges& aRecord,
-                                                                 const listInfoChanges& dtRecs, const listInfoChanges& iDt,
-                                                                 listInfoChanges& lcopy, int & outID, QString& modField, bool& bFound);
-        bool                              findDateID(const QString strTable, const QString strField, const int inID, int &outID);*/
         bool                              startPatchSession(const QString strDateUTC, const QString strDateLocal,
                                                                 const int dateType, const QString strCityName, const QString strMacAddress, const QString strUser);
         bool                              identifyReference(const QList<QVariant>& mapReferences, const QString strRef,

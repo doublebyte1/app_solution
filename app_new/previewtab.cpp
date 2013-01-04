@@ -66,8 +66,8 @@ bool PreviewTab::amendDates(QDataWidgetMapper* startMapper, QDataWidgetMapper* e
 {
     bool bError=false;
 
-    int curStart=startMapper->currentIndex();
-    int curEnd=endMapper->currentIndex();
+//    int curStart=startMapper->currentIndex();
+//    int curEnd=endMapper->currentIndex();
 
     startMapper->submit();
     endMapper->submit();

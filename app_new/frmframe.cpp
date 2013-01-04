@@ -273,7 +273,10 @@ void FrmFrame::previewRow(QModelIndex index)
         if (!translateIndex(index,pIdx)) return;
 
         idx=viewFrameTime->index(index.row(),0);
-
+        if (!idx.isValid()){
+            emit showError (tr("Could not preview this sampling frame!"));
+            return;
+        }
         mapper->setCurrentModelIndex(pIdx);
 
         blockCustomDateCtrls();

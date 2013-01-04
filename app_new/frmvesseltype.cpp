@@ -310,10 +310,10 @@ void FrmVesselType::initModels()
 
 bool FrmVesselType::applyChanges()
 {
-    bool bError=true;
+    //bool bError=true;
 
     int cur= mapper1->currentIndex();
-    bError=!submitMapperAndModel(mapper1);
+    bool bError=!submitMapperAndModel(mapper1);
     if (!bError){
         mapper1->setCurrentIndex(cur);
     }

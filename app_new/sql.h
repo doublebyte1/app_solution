@@ -54,7 +54,7 @@ struct sTable {
     sTable( const QString refField, const QString next, const bool bHasDates):
     m_refField(refField), m_next(next), m_bHasDates(bHasDates)
     {}
-    sTable()
+    sTable():m_bHasDates(true)
     {}
    QString             m_refField;//!< name of the field that stores a reference to the parent
    QString             m_next;//!< name of the table that is next on the sequence
@@ -117,7 +117,7 @@ struct InfoDate {
     InfoDate( const QString strUTC, const QString strLocal, const int type):
     m_strUTC(strUTC), m_strLocal(strLocal), m_type(type)
     {}
-    InfoDate()
+    InfoDate():m_strLocal(QString()),m_strUTC(QString()),m_type(0)
     {}
    QString             m_strLocal;//!< Local date
    QString             m_strUTC;//!< UTC date
@@ -132,7 +132,7 @@ struct InfoChanges {
         QVariant varOld, QVariant varNew):
     m_id(id), m_strTable(strTable), m_strField(strField),m_varOld(varOld),m_varNew(varNew)
     {}
-    InfoChanges()
+    InfoChanges():m_id(-1)
     {}
    int                 m_id;
    QString             m_strTable;//!< name of the table involved in these changes
@@ -897,9 +897,8 @@ static bool getNullForType(const QString strType, const QString strInternalName,
     else if (strType.compare("decimal")==0/* || strType.compare(QObject::tr("float"))==0*/){
         strPar="float";
     }
-    else if ( strType.compare("float")==0 ){//we currently *DO NOT* support floats: only decimals!!!!
-        return false;
-    }
+    /*else if ( strType.compare("float")==0 )//we currently *DO NOT* support floats: only decimals!!!!
+        return false;*/
     else return false;
 
     strQuery=QString("SELECT ") + strPar + QString(" FROM GL_Null_Replacements WHERE internal_name='")
@@ -2077,32 +2076,9 @@ static bool deserializeDateTime(const int id, QVariantMap & nestedMap)
 static bool identifyFK(const QString strTable, const QString strField, bool& bIsFK,
                        QString& outTable, QString& strError)
 {
-QString strQuery=
-"select pk_table, pk_field from info_fk where fk_table=:table and fk_field=:field";
-/*
-"SELECT   fkTableName = FK.TABLE_NAME,"
-"         fkColumnName = FK.COLUMN_NAME,"
-"         pkTableName = PK.TABLE_NAME,"
-"         pkColumnName = PK.COLUMN_NAME,"
-"         isDisabled = CASE"
-"                        WHEN is_disabled = 1 THEN 'DISABLED'"
-"                        ELSE ''"
-"                      END,"
-"         fkName = RC.CONSTRAINT_NAME"
-" FROM     INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS RC"
-"         INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE FK"
-"           ON FK.CONSTRAINT_NAME = RC.CONSTRAINT_NAME"
-"         INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE PK"
-"           ON PK.CONSTRAINT_NAME = RC.UNIQUE_CONSTRAINT_NAME"
-"         INNER JOIN sys.foreign_keys sfk"
-"           ON sfk.name = RC.CONSTRAINT_NAME"
-" WHERE    FK.ORDINAL_POSITION = PK.ORDINAL_POSITION"
-" AND FK.TABLE_NAME=:table and"
-" FK.COLUMN_NAME=:field"
-" order by"
-"         fkTableName,"
-"         fkColumnName";
-*/
+    QString strQuery=
+    "select pk_table, pk_field from info_fk where fk_table=:table and fk_field=:field";
+
      QSqlQuery query;
      query.prepare(strQuery);
      query.bindValue(":table", strTable);
@@ -2209,9 +2185,7 @@ static bool getChangedRecord(const listInfoChanges& listChanges,const QString st
                 fkRec=map;
                 break;
             }
-            //--i;
         }
-        //--i;
      }
      return true;
 }
@@ -2302,59 +2276,56 @@ static bool buildJSONCell(const listInfoChanges& listChanges, const InfoChanges&
 {
     QVariantMap nestedMap2;
 
-//    if (change.m_strField.compare("ID",Qt::CaseInsensitive)!=0){
+    nestedMap["id"]=change.m_id;
+    nestedMap["table"]=change.m_strTable;
+    nestedMap["column"]=change.m_strField;
 
-        nestedMap["id"]=change.m_id;
-        nestedMap["table"]=change.m_strTable;
-        nestedMap["column"]=change.m_strField;
+    //Checks if we need to add any FK references
+    QString strKTable,strKField;
+    bool bIsFK;
+    if (!identifyFK(change.m_strTable,change.m_strField,
+        bIsFK,strKTable,strError)){
+            qDebug()<< QObject::tr("Could not identify if this is a FK field!") << endl;
+            return false;
+    }
+    QString strRefFrom,strRefTo;
+    if (bIsFK){
+            if (!insertFKCell(listChanges,strKTable,change.m_varOld,
+                mapFK,strRefFrom,strError)) return false;
 
-        //Checks if we need to add any FK references
-        QString strKTable,strKField;
-        bool bIsFK;
-        if (!identifyFK(change.m_strTable,change.m_strField,
-            bIsFK,strKTable,strError)){
-                qDebug()<< QObject::tr("Could not identify if this is a FK field!") << endl;
-                return false;
-        }
-        QString strRefFrom,strRefTo;
-        if (bIsFK){
-                if (!insertFKCell(listChanges,strKTable,change.m_varOld,
-                    mapFK,strRefFrom,strError)) return false;
-
-                if (change.m_varOld!=change.m_varNew){
-                    if (!insertFKCell(listChanges,strKTable,change.m_varNew,
-                        mapFK,strRefTo,strError)) return false;
-                }else{
-                    strRefTo=strRefFrom;
-                }
-        }
-
-        nestedMap2["to"]=bIsFK?strRefTo:change.m_varNew;
-        nestedMap2["from"]=bIsFK?strRefFrom:change.m_varOld;
-
-        //Checks if its a date
-        bool bIsDateTime;
-        if (!isDateTime(change.m_strTable,
-            change.m_strField,bIsDateTime)) return false;
-        if (bIsDateTime){
-            if (change.m_varOld.toString().compare(
-                strNoValue)!=0){
-                QVariantMap nestedMap3;
-                if (!deserializeDateTime(change.m_varOld.toInt(),
-                    nestedMap3)) return false;
-                nestedMap2["from"]=nestedMap3;
+            if (change.m_varOld!=change.m_varNew){
+                if (!insertFKCell(listChanges,strKTable,change.m_varNew,
+                    mapFK,strRefTo,strError)) return false;
+            }else{
+                strRefTo=strRefFrom;
             }
-            if (change.m_varNew.toString().compare(
-                strNoValue)!=0){
-                QVariantMap nestedMap3;
-                if (!deserializeDateTime(change.m_varNew.toInt(),
-                    nestedMap3)) return false;
-                nestedMap2["to"]=nestedMap3;
-            }
-        }
-        nestedMap["values"]=nestedMap2;
+    }
 
-    //}
+    nestedMap2["to"]=bIsFK?strRefTo:change.m_varNew;
+    nestedMap2["from"]=bIsFK?strRefFrom:change.m_varOld;
+
+    //Checks if its a date
+    bool bIsDateTime;
+    if (!isDateTime(change.m_strTable,
+        change.m_strField,bIsDateTime)) return false;
+    if (bIsDateTime){
+        if (change.m_varOld.toString().compare(
+            strNoValue)!=0){
+            QVariantMap nestedMap3;
+            if (!deserializeDateTime(change.m_varOld.toInt(),
+                nestedMap3)) return false;
+            nestedMap2["from"]=nestedMap3;
+        }
+        if (change.m_varNew.toString().compare(
+            strNoValue)!=0){
+            QVariantMap nestedMap3;
+            if (!deserializeDateTime(change.m_varNew.toInt(),
+                nestedMap3)) return false;
+            nestedMap2["to"]=nestedMap3;
+        }
+    }
+    nestedMap["values"]=nestedMap2;
+
     return true;
 }
 //! Is Master
@@ -2691,11 +2662,7 @@ static bool identifyDate(const InfoDate& dateTime, QList<int>& ids, QString& str
 
     QString strQuery="SELECT ID FROM [GL_DATES] WHERE LEFT(CONVERT(varchar, (Date_UTC), 126),19)=:dateUTC AND "
         "LEFT(CONVERT(varchar, (Date_Local), 126),19)=:dateLocal AND Date_Type=:dateType";
-/*
 
-    QString strQuery="SELECT ID FROM [GL_DATES] WHERE LEFT(CONVERT(varchar, (Date_UTC), 126),19)='" + dateTime.m_strUTC + "' AND "
-        "LEFT(CONVERT(varchar, (Date_Local), 126),19)='"+dateTime.m_strLocal+"' AND Date_Type=:dateType";
-*/
     QSqlQuery query;
     query.prepare(strQuery);
 

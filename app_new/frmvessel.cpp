@@ -591,10 +591,10 @@ bool FrmVessel::getNextLabel(QString& strLabel)
 
 bool FrmVessel::applyChanges()
 {
-    bool bError=true;
+    //bool bError=true;
     int cur1= mapper1->currentIndex();
 
-    bError=!submitMapperAndModel(mapper1);
+    bool bError=!submitMapperAndModel(mapper1);
     if (!bError){
         if (!m_sample->bLogBook){
 

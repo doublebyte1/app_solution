@@ -73,7 +73,7 @@ void MapperRuleBinder::onFireTrigger()
         onFireTriggerGeneric(senderWidget,senderWidget->dateTime());
     }
     else if ( qobject_cast<ButtonGroup*>(sender())!=0 ){
-        ButtonGroup *senderWidget = (ButtonGroup *)sender();
+        ButtonGroup *senderWidget = qobject_cast<ButtonGroup*>(sender());
         onFireTriggerGeneric(senderWidget,senderWidget->getCheckedId());
     }
 }

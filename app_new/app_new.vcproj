@@ -3509,6 +3509,10 @@
 			RelativePath=".\app_new.rc"
 			>
 		</File>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

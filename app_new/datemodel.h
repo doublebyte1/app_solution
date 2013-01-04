@@ -19,7 +19,7 @@ class DateModel: public QSqlTableModel
     Q_OBJECT
 
     public:
-		DateModel(){;}// constructor
+		DateModel():m_bAuto(true){;}// constructor
 		
         bool            insertNewRecord(const bool bAuto, const bool bDate, const bool bTime);
         void            setAuto(const bool bAuto){m_bAuto=bAuto;}

@@ -1236,7 +1236,7 @@ bool conf_app::applyChangesfromPatch(const QList<QVariant>& mapReferences, listI
                 lChanges.at(i).m_varOld.toString().compare(strNoValue)!=0){//EDIT
 
                     //If it is a date, extracts the date records and goes further
-                    bool bIsDate=false;
+//                    bool bIsDate=false;
                     listInfoChanges iDt;
 
                     //packs the following records
@@ -1305,99 +1305,7 @@ bool conf_app::applyChangesfromPatch(const QList<QVariant>& mapReferences, listI
     return true;
 }
 
-/*
-bool conf_app::amendDate(const int ID, const QString strField, const QString strDate)
-{
-    QString strQuery="UPDATE [GL_DATES] SET "
-        + strField + "='" +
-        strDate + "' WHERE ID=" + QVariant(ID).toString();
 
-        QSqlQuery query;
-        query.prepare(strQuery);
-        query.setForwardOnly(true);
-         if (!query.exec() || query.numRowsAffected() < 1){
-             if (query.lastError().type() != QSqlError::NoError)
-                 qDebug() << query.lastError().text() << endl;
-             else
-                 qDebug() << QObject::tr("Could not amend datetime!") << endl;
-             return false;
-            }
-
-    return true;
-}
-/*
-bool conf_app::readAndApplyChangesfromPatch(const QString strContent, int& ctNew, int& ctMod,
-                                            int& ctDel, QString& strError)
-{
-    bool ok;
-    QVariantMap result = Json::parse(strContent, ok).toMap();
-
-    if(!ok){
-        strError=tr("Could not parse JSON content!")
-        +tr("\n Are you sure the syntax is valid?");
-
-        return false;
-    }
-
-    QString strMode= result["mode"].toString();
-
-    if (m_dbmode==MASTER && strMode.compare(strMasterName, Qt::CaseInsensitive)==0){
-            strError=tr("Master databases can only be updated by clients!");
-        return false;
-    }else if (m_dbmode==CLIENT && strMode.compare(strClientName, Qt::CaseInsensitive)==0){
-            strError=tr("Client databases can only be updated by the master!");
-        return false;
-    } else if (m_dbmode==INVALID) return false; // it should never come here
-
-    QVariantMap nestedMap1 = result["session"].toMap();
-    QVariantMap nestedMap3 = nestedMap1["base_date"].toMap();
-
-    QString strDateUTC=nestedMap3["date_utc"].toString();
-    QString strDateLocal=nestedMap3["date_local"].toString();
-    int dateType=nestedMap3["date_type"].toInt();
-    QString strCityName=nestedMap1["city_name"].toString();
-    QString strMacAddress=nestedMap1["mac_address"].toString();
-    QString strUser=nestedMap1["user"].toString();
-
-    QString lu_master=result["lu_master"].toInt();
-
-    if (!startPatchSession(strDateUTC,strDateLocal,dateType,strCityName,strMacAddress,strUser)){
-         strError=tr("Could not start a mini session!!");
-         return false;
-    }
-
-    foreach(QVariant change, result["change"].toList()) {
-
-        QVariantMap nestedMap = change.toMap();
-        QVariantMap nestedMap2 = nestedMap["values"].toMap();
-
-        QVariant vFrom=nestedMap2["from"];
-        QVariant vTo=nestedMap2["to"];
-
-        
-        //identifying fk references
-        if (nestedMap2["from"].toString().contains("Ref:",Qt::CaseInsensitive)){
-            if (!identifyReference(result["FK"].toList(),nestedMap2["from"].toString(),
-                vFrom,strError)) return false;
-        }
-
-        if (nestedMap2["to"].toString().contains("Ref:",Qt::CaseInsensitive)){
-            if (!identifyReference(result["FK"].toList(),nestedMap2["to"].toString(),
-                vTo,strError)) return false;
-        }
-
-        //apply
-
-        InfoChanges ichanges(nestedMap["id"].toInt(),nestedMap["table"].toString(),
-            nestedMap["column"].toString(), vFrom, vTo);
-        lChanges.push_back(ichanges);
-    }
-
-    endSession();
-
-    return true;
-}
-*/
 bool conf_app::readChangesfromPatch(const QString strContent, QString& strDateUTC, QString& strDateLocal,
                         int& dateType, QString& strCityName, QString& strMacAddress, QString& strUser, int& lu_master, listInfoChanges& lChanges, 
                         QList<QVariant>& mapReferences, QString& strError)
@@ -2746,8 +2654,8 @@ bool queryShowSqlMsg()
 
 void resizeToVisibleColumns ( QTableView* table )
 {
-    int ct=0;
     if (table->model()!=0){
+        int ct=0;
         for (int i=0; i < table->model()->columnCount(); ++i)
             if (!table->isColumnHidden(i)) ++ ct;
 
