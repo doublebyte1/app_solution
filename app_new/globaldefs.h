@@ -27,11 +27,17 @@ static const char *strOutside =
 static const char *strBin = 
      QT_TRANSLATE_NOOP("bin", "bin");
 
+static const char *strInactive = 
+     QT_TRANSLATE_NOOP("bin", "Inactive");
+
 static const char *strDragged = 
      QT_TRANSLATE_NOOP("dragged", "Dragged by parent");
 
 static const char *strRoot = 
      QT_TRANSLATE_NOOP("frame", "root");
+
+static const char *strActive = 
+     QT_TRANSLATE_NOOP("frame", "Active");
 
 static const char *strLogbook = 
      QT_TRANSLATE_NOOP("frame", "logbook");

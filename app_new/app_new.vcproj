@@ -94,6 +94,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine=" perl C:\projects\VS\app_solution\vsBuildIncrement.pl $(ProjectDir) quiet"
 			/>
 		</Configuration>
 		<Configuration
@@ -172,6 +173,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine=" "
 			/>
 		</Configuration>
 	</Configurations>

@@ -445,7 +445,7 @@ void FrmFrameDetails::setupModel()
 
     model->insertRows(0,2,_root);
     QModelIndex root = model->index(0, 0, _root);
-    model->setData(root, QVariant(tr("Root")).toString());
+    model->setData(root, qApp->translate("frame", strActive)/*QVariant(tr("Root")).toString()*/);
     QModelIndex tId = model->index(0, 1, _root);
     model->setData(tId, QVariant(tr("Frame Root")));
     tId = model->index(0, 2, _root);
@@ -454,7 +454,7 @@ void FrmFrameDetails::setupModel()
     model->setData(tId, tr(":/app_new/exec.png"));
 
     QModelIndex bin = model->index(1, 0, _root);
-    model->setData(bin, QVariant(tr("Bin")).toString());
+    model->setData(bin, qApp->translate("bin", strInactive)/*QVariant(tr("Bin")).toString()*/);
     tId = model->index(1, 1, _root);
     model->setData(tId, QVariant(tr("Root Recycle Bin")));
     tId = model->index(1, 2, _root);

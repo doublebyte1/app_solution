@@ -273,7 +273,13 @@ void PreviewTab::initPreviewTable(QTableView* aTable, QSqlQueryModel* view)
     connect(m_table->model(), SIGNAL(rowsRemoved ( const QModelIndex, int, int)), this,
         SLOT(adjustEnables()));
 
-    m_table->setAlternatingRowColors(true);
+    //Forcing the palette of the table
+    QPalette p = palette();
+    p.setColor(QPalette::Base, QColor(qRgb(0xEA, 0xF5, 0xFF)));
+    p.setColor(QPalette::AlternateBase, QColor(qRgb(0xD5, 0xEA, 0xFF)));
+    m_table->setPalette(p);
+
+    m_table->setAlternatingRowColors(1);
     m_table->verticalHeader()->hide();
     m_table->setSelectionMode(
         QAbstractItemView::SingleSelection);

@@ -227,7 +227,7 @@ void FrameView::dragMoveEvent(QDragMoveEvent * event )
                                     int dragLevel=pIdx.data().toInt();
                                     if ( bHasRecords || m_blackList.contains(dragLevel) ||
                                         (dropLevel!=dragLevel-1 &&
-                                        strParentName.compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)!=0
+                                        strParentName.compare(qApp->translate("bin", strInactive)/*, Qt::CaseInsensitive*/)!=0
                                         ) || index==pIdx.parent()){
                                         event->ignore();
                                         return;
@@ -334,12 +334,12 @@ bool FrameView::isOnTheBin(QSortFilterProxyModel* pModel, QModelIndex& index)
     {
         QModelIndex pII=pModel->sourceModel()->index(pI.row(),0,pI.parent());
         if (pII.data().toString().compare(
-            qApp->translate("bin", strBin), Qt::CaseInsensitive)==0){
+            qApp->translate("bin", strInactive)/*, Qt::CaseInsensitive*/)==0){
                 bBin=true;
                 break;
         }
         else if (pII.data().toString().compare(
-            qApp->translate("frame", strRoot), Qt::CaseInsensitive)==0){
+            qApp->translate("frame", strActive)/*, Qt::CaseInsensitive*/)==0){
                 bBin=false;
                 break;
         }
@@ -396,7 +396,7 @@ void FrameView::dropEvent ( QDropEvent * event )
 
                                             if (m_blackList.contains(dragLevel) ||
                                                 (dropLevel==dragLevel-1 || strParentName
-                                                .compare(qApp->translate("bin", strBin), Qt::CaseInsensitive)==0
+                                                .compare(qApp->translate("bin", strInactive)/*, Qt::CaseInsensitive*/)==0
                                                 ) && index!=pIdx.parent()){
 
                                                     //Set the origin

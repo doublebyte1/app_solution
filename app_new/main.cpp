@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
     a.setApplicationName(QObject::tr("FAOFish CAS"));
     a.setOrganizationName(QObject::tr("FAO-FIRF"));
     a.setOrganizationDomain(QObject::tr("http://www.fao.org/"));
-    a.setApplicationVersion(QObject::tr("1.3"));
-    //a.setApplicationVersion(QObject::tr("-DevBuild_") + QDateTime::currentDateTime().toString());
+    //a.setApplicationVersion(QObject::tr("1.3"));
+    a.setApplicationVersion(QObject::tr("-DevBuild_") + QDateTime::currentDateTime().toString());
 
     Login l;
     l.show();

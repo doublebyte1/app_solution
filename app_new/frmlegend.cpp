@@ -84,11 +84,11 @@ void FrmLegend::init()
         tr("Different herarchical instances"),levels);
 
     root = new QTreeWidgetItem(levels);
-    initTreeChild(normal, italic,QIcon(QString::fromUtf8(":/app_new/exec.png")),tr("Root"),
+    initTreeChild(normal, italic,QIcon(QString::fromUtf8(":/app_new/exec.png")),qApp->translate("frame", strActive)/*tr("Root")*/,
         tr("Frame Root"),root);
 
     bin = new QTreeWidgetItem(levels);
-    initTreeChild(normal, italic,QIcon(QString::fromUtf8(":/app_new/trashcan.png")),tr("Bin"),
+    initTreeChild(normal, italic,QIcon(QString::fromUtf8(":/app_new/trashcan.png")),qApp->translate("bin", strInactive)/*tr("Bin")*/,
         tr("Recycled Bin, where we store (permanent or temporarily) inactive instances"),bin);
 
     gls = new QTreeWidgetItem(levels);

@@ -1,6 +1,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "ui_frmlegend.h"
+#include "globaldefs.h"
 
   #if defined(WIN32) && defined(_DEBUG)
      #define DEBUG_NEW new( _NORMAL_BLOCK, __FILE__, __LINE__ )

@@ -69,6 +69,9 @@
        <property name="whatsThis">
         <string>Select frame that describes physically and temporally  the process of data collection if already exists, otherwise create new one!</string>
        </property>
+       <property name="alternatingRowColors">
+        <bool>false</bool>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::SingleSelection</enum>
        </property>

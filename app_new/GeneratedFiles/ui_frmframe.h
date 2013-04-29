@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframe.ui'
 **
-** Created: Wed 5. Dec 16:55:30 2012
+** Created: Mon 29. Apr 12:18:50 2013
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -117,6 +117,7 @@ public:
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(tableView->sizePolicy().hasHeightForWidth());
         tableView->setSizePolicy(sizePolicy1);
+        tableView->setAlternatingRowColors(false);
         tableView->setSelectionMode(QAbstractItemView::SingleSelection);
         tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 

@@ -151,8 +151,8 @@ bool ModelInterface::writeTempChanges(Sample* sample, int& ct)
 
     for (int i=0; i < root->childCount(); ++i){
         if (root->child(i)->data(0).toString().compare(
-                qApp->translate("bin", strBin)
-                , Qt::CaseInsensitive)!=0)//does not compare
+                qApp->translate("bin", strInactive)
+                /*, Qt::CaseInsensitive*/)!=0)//does not compare
         {
             TreeItem* frameRoot=root->child(i);
             for (int j=0; j < frameRoot->childCount(); ++j){
@@ -868,8 +868,8 @@ bool ModelInterface::writeTables()
 
     for (int i=0; i < root->childCount(); ++i){
         if (root->child(i)->data(0).toString().compare(
-                qApp->translate("bin", strBin)
-                , Qt::CaseInsensitive)!=0)//does not compare
+                qApp->translate("bin", strInactive)
+                /*, Qt::CaseInsensitive*/)!=0)//does not compare
         {
 
             int subFrameId;
@@ -1607,7 +1607,7 @@ bool ModelInterface::createRootElements(QModelIndex& bin, QModelIndex& root)
 
     treeModel->insertRows(0,2,_root);
     root = treeModel->index(0, 0, _root);
-    treeModel->setData(root, QVariant(tr("Root")).toString());
+    treeModel->setData(root, qApp->translate("frame", strActive)/*QVariant(tr("Root")).toString()*/);
     QModelIndex tId = treeModel->index(0, 1, _root);
     treeModel->setData(tId, QVariant(tr("Frame Root")));
     tId = treeModel->index(0, 2, _root);
@@ -1618,7 +1618,7 @@ bool ModelInterface::createRootElements(QModelIndex& bin, QModelIndex& root)
     treeModel->setData(tId, tr(":/app_new/exec.png"));
 
     bin = treeModel->index(1, 0, _root);
-    treeModel->setData(bin, QVariant(tr("Bin")).toString());
+    treeModel->setData(bin, qApp->translate("bin", strInactive)/*QVariant(tr("Bin")).toString()*/);
     tId = treeModel->index(1, 1, _root);
     treeModel->setData(tId, QVariant(tr("Root Recycle Bin")));
     tId = treeModel->index(1, 2, _root);
