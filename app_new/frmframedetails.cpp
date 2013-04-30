@@ -24,6 +24,8 @@ QWidget(parent, flags){
 
     setupUi(this);
 
+    pushUndo->setVisible(false);
+
     initTree();
     pFrmLegend=new FrmLegend();
 }
@@ -82,7 +84,7 @@ bool FrmFrameDetails::onNoChanges()
 {
     pushVerify->setEnabled(true);
     pushApply->setEnabled(false);
-    pushUndo->setEnabled(false);
+    //pushUndo->setEnabled(false);
 
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Information);
@@ -142,27 +144,20 @@ bool FrmFrameDetails::apply()
 
                 bError=true;
             }
-/*
-            if (ct<1){
-                pushVerify->setEnabled(true);
-                pushApply->setEnabled(false);
-                pushUndo->setEnabled(false);
-                m_submitted=false;
 
-                QMessageBox msgBox;
-                msgBox.setIcon(QMessageBox::Information);
-                msgBox.setText(tr("The frame has not been modified."));
-                msgBox.exec();
-
-                m_verified=true;
-                return false;
-            }
-*/
     }
 
     pushApply->setEnabled(bError);
-    pushUndo->setEnabled(!bError);
+    //pushUndo->setEnabled(!bError);
     m_submitted=!bError;
+
+    if (m_submitted){
+     QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("The changes have been saved.");
+        msgBox.exec();
+    }
+    emit hideFrameDetails(m_submitted);
 
     return !bError;
 }
@@ -185,13 +180,38 @@ void FrmFrameDetails::undo()
     }
 
     pushApply->setEnabled(bError);
-    pushUndo->setEnabled(!bError);
+    //pushUndo->setEnabled(!bError);
     m_submitted=!bError;
 }
 
 void FrmFrameDetails::back()
 {
-    emit hideFrameDetails(!m_submitted);
+    //emit hideFrameDetails(!m_submitted);
+
+    if (m_dirty){
+
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("Cancel Changes"));
+        msgBox.setInformativeText(tr("Are you sure you want to exit this form and discard all changes?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+
+         switch (ret) {
+           case QMessageBox::Yes:
+                break;
+           case QMessageBox::No:
+                return;
+                break;
+           default:
+               // should never be reached
+               break;
+         }
+
+    }
+
+    emit hideFrameDetails(false);
 }
 
 bool FrmFrameDetails::setTreeReadOnly(const bool bRO)
@@ -239,7 +259,7 @@ bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
 
     pushVerify->setEnabled(true);
     pushApply->setEnabled(!pushVerify->isEnabled());
-    pushUndo->setEnabled(!pushVerify->isEnabled());
+    //pushUndo->setEnabled(!pushVerify->isEnabled());
 
     pushVerify->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY);
     pushBack->setVisible(true);
@@ -247,7 +267,7 @@ bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
     bool invis=options & FrmFrameDetails::CACHE_CHANGES;
 
     pushApply->setVisible(mode!=FrmFrameDetails::VIEW || (persistence==FrmFrameDetails::TEMPORARY && !invis));
-    pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY && !invis);
+    //pushUndo->setVisible(mode!=FrmFrameDetails::VIEW || persistence==FrmFrameDetails::TEMPORARY && !invis);
 
     lineName->clear();
     textComments->clear();
@@ -265,7 +285,7 @@ bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
         horizontalLayout->addWidget(pushBack);
         persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushVerify):horizontalLayout->addWidget(pushVerify);
         persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushApply): horizontalLayout->addWidget(pushApply);
-        persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushUndo): horizontalLayout->addWidget(pushUndo);
+        //persistence==FrmFrameDetails::PERMANENT? horizontalLayout->removeWidget(pushUndo): horizontalLayout->addWidget(pushUndo);
 
         persistence==FrmFrameDetails::PERMANENT?setTreeReadOnly(true):setTreeReadOnly(false);
 
@@ -333,7 +353,7 @@ bool FrmFrameDetails::setFrameDetails(const Mode mode, const Persistence persist
 
         horizontalLayout->addWidget(pushVerify);
         horizontalLayout->addWidget(pushApply);
-        horizontalLayout->addWidget(pushUndo);
+        //horizontalLayout->addWidget(pushUndo);
         horizontalLayout->addWidget(pushBack);
 
     }

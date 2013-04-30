@@ -341,7 +341,7 @@ void FrmFrame::initModels()
     frModel = new QSqlTableModel;
     frModel->setTable("Fr_Frame");
 
-    filterTable(frModel);
+    //filterTable(frModel);
 
     frModel->select();
 }
@@ -380,7 +380,7 @@ void FrmFrame::initFrModel()
     tFrameTime->setEditStrategy(QSqlTableModel::OnManualSubmit);
     tFrameTime->sort(0,Qt::AscendingOrder);
     tFrameTime->select();
-    filterTable(tFrameTime->relationModel(1));
+    //filterTable(tFrameTime->relationModel(1));
 
     setPreviewModel(tFrameTime);
 }

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'frmframedetails.ui'
 **
-** Created: Wed 5. Dec 16:55:25 2012
+** Created: Tue 30. Apr 09:53:28 2013
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -296,15 +296,15 @@ public:
 #endif // QT_NO_WHATSTHIS
         pushLegend->setText(QApplication::translate("frmframedetails", "Legend", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        pushBack->setToolTip(QApplication::translate("frmframedetails", "Go back", 0, QApplication::UnicodeUTF8));
+        pushBack->setToolTip(QApplication::translate("frmframedetails", "Cancel", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_STATUSTIP
-        pushBack->setStatusTip(QApplication::translate("frmframedetails", "Go back to previous form", 0, QApplication::UnicodeUTF8));
+        pushBack->setStatusTip(QApplication::translate("frmframedetails", "Cancel changes and go back to previous form", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_STATUSTIP
 #ifndef QT_NO_WHATSTHIS
-        pushBack->setWhatsThis(QApplication::translate("frmframedetails", "Goes back to previous form", 0, QApplication::UnicodeUTF8));
+        pushBack->setWhatsThis(QApplication::translate("frmframedetails", "Cancel changes and go back to previous form", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_WHATSTHIS
-        pushBack->setText(QApplication::translate("frmframedetails", "Back", 0, QApplication::UnicodeUTF8));
+        pushBack->setText(QApplication::translate("frmframedetails", "Cancel", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         pushVerify->setToolTip(QApplication::translate("frmframedetails", "Verify changes", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP

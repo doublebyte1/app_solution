@@ -253,16 +253,16 @@
      <item>
       <widget class="QPushButton" name="pushBack">
        <property name="toolTip">
-        <string>Go back</string>
+        <string>Cancel</string>
        </property>
        <property name="statusTip">
-        <string>Go back to previous form</string>
+        <string>Cancel changes and go back to previous form</string>
        </property>
        <property name="whatsThis">
-        <string>Goes back to previous form</string>
+        <string>Cancel changes and go back to previous form</string>
        </property>
        <property name="text">
-        <string>Back</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
