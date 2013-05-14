@@ -12,8 +12,8 @@ INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
     . \
     $(BOOSTDIR) \
-    $(PROJDIR)/customctrl_solution/CustomTimeCtrl \
-    $(PROJDIR)/customctrl_solution/CustomTimeCtrl/GeneratedFiles \
+    $(PROJDIR)/CustomTimeCtrl/CustomTimeCtrl \
+    $(PROJDIR)/CustomTimeCtrl/CustomTimeCtrl/GeneratedFiles \
     $(PROJDIR)/CatchInputCtrl/CatchInputCtrl \
     $(PROJDIR)/CatchInputCtrl/CatchInputCtrl/GeneratedFiles \
     $(EXARO_INCLUDE_DIR)
